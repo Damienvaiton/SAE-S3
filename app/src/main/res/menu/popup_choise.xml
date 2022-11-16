@@ -39,7 +39,14 @@
     <item android:id="@+id/esp12"
         android:title="ESP32 n°12"/>
 
+    <item android:id="@+id/esp13"
+        android:title="ESP32 n°13"/>
 
+    <item android:id="@+id/esp14"
+            android:title="ESP32 n°14"/>
+
+    <item android:id="@+id/esp15"
+                android:title="ESP32 n°15"/>
 
 
 </menu>
