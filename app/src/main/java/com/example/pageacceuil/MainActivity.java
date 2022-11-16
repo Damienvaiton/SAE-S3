@@ -32,37 +32,32 @@ public class MainActivity extends AppCompatActivity {
         btncoEtu = findViewById(R.id.imageButton5);
         btnCoAdmin = findViewById(R.id.imageButton4);
 
-btnselect.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View view) {
-        //Creating the instance of PopupMenu
-        PopupMenu popup = new PopupMenu(MainActivity.this, btnselect);
-        //Inflating the Popup using xml file
-        popup.getMenuInflater().inflate(R.menu.popup_choise, popup.getMenu());
+        btnselect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Creating the instance of PopupMenu
+                PopupMenu popup = new PopupMenu(MainActivity.this, btnselect);
+                //Inflating the Popup using xml file
+                popup.getMenuInflater().inflate(R.menu.popup_choise, popup.getMenu());
 
-        //registering popup with OnMenuItemClickListener
-        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            public boolean onMenuItemClick(MenuItem item) {
-                Toast.makeText(MainActivity.this,"Vous avez choisi " + item.getTitle(), Toast.LENGTH_SHORT).show();
-                ChoixESP = (String) item.getTitle();
-                String[] choixe;
-                choixe = ChoixESP.split(" ");
-                TextView textView = (TextView) findViewById(R.id.IndiqueESPChoise);
+                //registering popup with OnMenuItemClickListener
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+                        Toast.makeText(MainActivity.this, "Vous avez choisi " + item.getTitle(), Toast.LENGTH_SHORT).show();
+                        ChoixESP = (String) item.getTitle();
+                        String[] choixe;
+                        choixe = ChoixESP.split(" ");
+                        TextView textView = (TextView) findViewById(R.id.IndiqueESPChoise);
 
-                textView.setText(choixe[1]);
-                return true;
+                        textView.setText(choixe[1]);
+                        return true;
+                    }
+                });
+
+                popup.show();//showing popup menu
             }
+
         });
-
-        popup.show();//showing popup menu
-    }
-
-});
-
-
-
-
-
 
 
         btncoEtu.setOnClickListener(new View.OnClickListener() {
@@ -84,7 +79,6 @@ btnselect.setOnClickListener(new View.OnClickListener() {
             }
         });
     }
-
 
 
 }

@@ -32,24 +32,29 @@
         android:id="@+id/esp10"
         android:title="ESP32 n°10" />
 
-    <item android:id="@+id/esp11"
-        android:title="ESP32 n°11"
-        />
+    <item
+        android:id="@+id/esp11"
+        android:title="ESP32 n°11" />
 
-    <item android:id="@+id/esp12"
-        android:title="ESP32 n°12"/>
+    <item
+        android:id="@+id/esp12"
+        android:title="ESP32 n°12" />
 
-    <item android:id="@+id/esp13"
-        android:title="ESP32 n°13"/>
+    <item
+        android:id="@+id/esp13"
+        android:title="ESP32 n°13" />
 
-    <item android:id="@+id/esp14"
-            android:title="ESP32 n°14"/>
+    <item
+        android:id="@+id/esp14"
+        android:title="ESP32 n°14" />
 
-    <item android:id="@+id/esp15"
-                android:title="ESP32 n°15"/>
+    <item
+        android:id="@+id/esp15"
+        android:title="ESP32 n°15" />
 
-    <item android:id="@+id/esp16"
-                android:title="ESP32 n°16"/>
+    <item
+        android:id="@+id/esp16"
+        android:title="ESP32 n°16" />
 
 
 </menu>
