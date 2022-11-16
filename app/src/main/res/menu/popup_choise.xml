@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/esp1"
+        android:title="ESP32 n°1" />
+    <item
+        android:id="@+id/esp2"
+        android:title="ESP32 n°2" />
+    <item
+        android:id="@+id/esp3"
+        android:title="ESP32 n°3" />
+    <item
+        android:id="@+id/esp4"
+        android:title="ESP32 n°4" />
+    <item
+        android:id="@+id/esp5"
+        android:title="ESP32 n°5" />
+    <item
+        android:id="@+id/esp6"
+        android:title="ESP32 n°6" />
+    <item
+        android:id="@+id/esp7"
+        android:title="ESP32 n°7" />
+    <item
+        android:id="@+id/esp8"
+        android:title="ESP32 n°8" />
+    <item
+        android:id="@+id/esp9"
+        android:title="ESP32 n°9" />
+    <item
+        android:id="@+id/esp10"
+        android:title="ESP32 n°10" />
+
+
+
+</menu>
