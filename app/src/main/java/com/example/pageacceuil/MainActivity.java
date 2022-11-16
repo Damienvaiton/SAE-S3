@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -42,8 +43,13 @@ btnselect.setOnClickListener(new View.OnClickListener() {
         //registering popup with OnMenuItemClickListener
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem item) {
-                Toast.makeText(MainActivity.this,"You Clicked : " + item.getTitle(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this,"Vous avez choisi " + item.getTitle(), Toast.LENGTH_SHORT).show();
                 ChoixESP = (String) item.getTitle();
+                String[] choixe;
+                choixe = ChoixESP.split(" ");
+                TextView textView = (TextView) findViewById(R.id.IndiqueESPChoise);
+
+                textView.setText(choixe[1]);
                 return true;
             }
         });
