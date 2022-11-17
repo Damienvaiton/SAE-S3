@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -21,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     ImageButton btnselect;
     ImageButton btncoEtu;
     ImageButton btnCoAdmin;
+    Button btnGraph;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -31,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         btnselect = findViewById(R.id.Boutonsel);
         btncoEtu = findViewById(R.id.imageButton5);
         btnCoAdmin = findViewById(R.id.imageButton4);
+        btnGraph=findViewById(R.id.btnGraph);
 
         btnselect.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,9 +81,17 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(connect);
             }
         });
+
+        btnGraph.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent vu;
+                vu = new Intent(MainActivity.this, GraphPage.class);
+
+                startActivity(vu);
+            }
+        });
     }
-
-
 }
 
 

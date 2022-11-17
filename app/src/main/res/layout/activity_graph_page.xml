@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottomMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:backgroundTint="@color/yellowgreen">
+
+    </com.google.android.material.bottomappbar.BottomAppBar>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/black"
+        app:layout_anchor="@id/bottomMenu"
+
+        app:tint="@android:color/white" />
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/lineChart"
+        android:layout_width="331dp"
+        android:layout_height="300dp"
+        android:layout_gravity="center"></com.github.mikephil.charting.charts.LineChart>
+
+    <Spinner
+        android:id="@+id/refreshRate"
+        android:layout_width="157dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="23dp" />
+
+    <Spinner
+        android:id="@+id/valuesNeeded"
+        android:layout_width="81dp"
+        android:layout_height="95dp" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
