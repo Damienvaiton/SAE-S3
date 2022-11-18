@@ -4,10 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -19,8 +21,10 @@ public class MainActivity extends AppCompatActivity {
 
     String ChoixESP = "";
     ImageButton btnselect;
+    Button btnsound;
     ImageButton btncoEtu;
     ImageButton btnCoAdmin;
+    MediaPlayer sn;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -28,6 +32,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        btnsound = findViewById(R.id.buttonsound);
+        sn = MediaPlayer.create(this,R.raw.vege);
         btnselect = findViewById(R.id.Boutonsel);
         btncoEtu = findViewById(R.id.imageButton5);
         btnCoAdmin = findViewById(R.id.imageButton4);
@@ -67,6 +74,13 @@ public class MainActivity extends AppCompatActivity {
                 connec = new Intent(MainActivity.this, connectetu.class);
 
                 startActivity(connec);
+            }
+        });
+
+        btnsound.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                    sn.start();
             }
         });
         btnCoAdmin.setOnClickListener(new View.OnClickListener() {
