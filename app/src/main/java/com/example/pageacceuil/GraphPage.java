@@ -1,11 +1,10 @@
 package com.example.pageacceuil;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
@@ -14,6 +13,8 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class GraphPage extends AppCompatActivity {
 
@@ -29,9 +30,21 @@ public class GraphPage extends AppCompatActivity {
         valuesNeeded=findViewById(R.id.valuesNeeded);
 
         creaGraph();
+        //ArrayAdapter adapter= ArrayAdapter(this, android.R.layout.simple_spinner_item,@array/setTime);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.android.R.layout.simple_spinner_item, android.R.layout.simple_spinner_item);
+
+// Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
 
-        };
+// Apply the adapter to the spinner
+        refreshRate.setAdapter(adapter);
+
+
+
+
+    };
 
 
 
@@ -66,6 +79,25 @@ public class GraphPage extends AppCompatActivity {
            graph.setData(data);
 
        }
+       // new Thread(new Runnable() {
+
+        //@Override
+        //public void run() {
+          //  for(int i = 0; i < 500; i++) {
+            //    runOnUiThread(new Runnable() {
+              //      @Override
+                //    public void run() {
+                  //      addEntry();
+                   // }
+                //});
+
+                //try {
+                  //  Thread.sleep(1000);
+                //} catch (InterruptedException e) {
+                //}
+            //}
+        //}
+    //}).start();
 
 
     }

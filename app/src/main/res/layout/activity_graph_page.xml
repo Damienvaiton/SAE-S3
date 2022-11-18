@@ -40,7 +40,7 @@
         android:layout_height="220dp"
         android:layout_marginTop="23dp"
         android:layout_marginLeft="250dp"
-        android:entries="@array/setTime"
+
 
         />
 
