@@ -27,17 +27,30 @@
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/lineChart"
         android:layout_width="331dp"
-        android:layout_height="300dp"
-        android:layout_gravity="center"></com.github.mikephil.charting.charts.LineChart>
+        android:layout_height="400dp"
+        android:layout_gravity="center"
+        tools:ignore="MissingClass"
+     >
+
+    </com.github.mikephil.charting.charts.LineChart>
 
     <Spinner
         android:id="@+id/refreshRate"
-        android:layout_width="157dp"
-        android:layout_height="36dp"
-        android:layout_marginTop="23dp" />
+        android:layout_width="120dp"
+        android:layout_height="220dp"
+        android:layout_marginTop="23dp"
+        android:layout_marginLeft="250dp"
+        android:entries="@array/setTime"
+
+        />
 
     <Spinner
         android:id="@+id/valuesNeeded"
-        android:layout_width="81dp"
-        android:layout_height="95dp" />
+        android:layout_width="170dp"
+        android:layout_height="220dp"
+        android:layout_marginTop="23dp"
+        android:entries="@array/setValues"
+
+        />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
