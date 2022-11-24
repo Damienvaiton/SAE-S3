@@ -23,6 +23,32 @@
         app:layout_anchor="@id/bottomMenu"
 
         app:tint="@android:color/white" />
+    <CheckBox
+        android:id="@+id/boxTemp"
+        android:layout_marginTop="150px"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:rotationX="27"
+        android:text="Te" />
+
+
+    <CheckBox
+        android:id="@+id/boxLux"
+        android:layout_marginTop="150px"
+        android:layout_marginLeft="200dp"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:text="Temp" />
+
+    <CheckBox
+        android:id="@+id/boxO2"
+
+        android:text="Te"
+        android:layout_marginTop="150px"
+        android:layout_marginLeft="350dp"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        />
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/lineChart"
@@ -33,24 +59,5 @@
      >
 
     </com.github.mikephil.charting.charts.LineChart>
-
-    <Spinner
-        android:id="@+id/refreshRate"
-        android:layout_width="120dp"
-        android:layout_height="220dp"
-        android:layout_marginTop="23dp"
-        android:layout_marginLeft="250dp"
-
-
-        />
-
-    <Spinner
-        android:id="@+id/valuesNeeded"
-        android:layout_width="170dp"
-        android:layout_height="220dp"
-        android:layout_marginTop="23dp"
-        android:entries="@array/setValues"
-
-        />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
