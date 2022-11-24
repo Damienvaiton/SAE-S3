@@ -65,9 +65,8 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         // if disabled, scaling can be done on x- and y-axis separately
         graph.setPinchZoom(false);
 
-
-
         creaGraph();
+
 
 
     }
@@ -90,7 +89,16 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
             O2.add(new Entry(2, (float) (Math.random() * (40 - 25))));
             O2.add(new Entry(3, (float) (Math.random() * (40 - 25))));
 
-            LineDataSet set = new LineDataSet(O2, "yo");
+            LineDataSet set = new LineDataSet(O2, "O2");
+
+            set.setLineWidth(2.5f);
+            set.setCircleRadius(4f);
+
+
+            set.setColor(R.color.teal_200);
+            set.setCircleColor(R.color.orange);
+
+
             dataSets.add(set);
         }
 
@@ -103,7 +111,14 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
             O2.add(new Entry(2, (float) (Math.random() * (40 - 25))));
             O2.add(new Entry(3, (float) (Math.random() * (40 - 25))));
 
-            LineDataSet set = new LineDataSet(O2, "yo");
+            LineDataSet set = new LineDataSet(O2, "Lux");
+
+            set.setColor(R.color.jaunorange);
+            set.setCircleColor(R.color.black);
+
+            set.setLineWidth(2.5f);
+            set.setCircleRadius(4f);
+
             dataSets.add(set);
         }
 
@@ -116,7 +131,14 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
           O2.add(new Entry(2, (float) (Math.random() * (40 - 25))));
           O2.add(new Entry(3, (float) (Math.random() * (40 - 25))));
 
-          LineDataSet set = new LineDataSet(O2, "yo");
+          LineDataSet set = new LineDataSet(O2, "Température");
+
+          set.setColor(R.color.orange);
+          set.setCircleColor(R.color.orange);
+
+          set.setLineWidth(2.5f);
+          set.setCircleRadius(4f);
+
           dataSets.add(set);
       }
 

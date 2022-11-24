@@ -9,4 +9,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="redoblack">#3B0D04</color>
     <color name="yellowgreen">#9ACD32</color>
+    <color name="jaunorange">#FFCF29</color>
+    <color name="orange">#FF5B28</color>
 </resources>
