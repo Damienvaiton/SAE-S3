@@ -19,44 +19,64 @@
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/black"
         app:layout_anchor="@id/bottomMenu"
 
         app:tint="@android:color/white" />
-    <CheckBox
-        android:id="@+id/boxTemp"
-        android:layout_marginTop="150px"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        android:rotationX="27"
-        android:text="Te" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="629dp">
 
 
-    <CheckBox
-        android:id="@+id/boxLux"
-        android:layout_marginTop="150px"
-        android:layout_marginLeft="200dp"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        android:text="Temp" />
+        <CheckBox
+            android:id="@+id/boxTemp"
+            android:layout_width="54dp"
+            android:layout_height="21dp"
+            android:layout_marginStart="39dp"
+            android:layout_marginTop="130dp"
+            android:layout_marginBottom="464dp"
+            android:text="T°"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/boxLux"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <CheckBox
-        android:id="@+id/boxO2"
+        <CheckBox
+            android:id="@+id/boxLux"
+            android:layout_width="54dp"
+            android:layout_height="21dp"
+            android:layout_marginTop="130dp"
+            android:layout_marginBottom="464dp"
+            android:text="Lux"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/boxO2"
+            app:layout_constraintStart_toEndOf="@+id/boxTemp"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        android:text="Te"
-        android:layout_marginTop="150px"
-        android:layout_marginLeft="350dp"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        />
+        <CheckBox
+            android:id="@+id/boxO2"
+            android:layout_width="54dp"
+            android:layout_height="21dp"
+            android:layout_marginTop="130dp"
+            android:layout_marginEnd="210dp"
+            android:layout_marginBottom="464dp"
+            android:text="O2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/boxLux"
+            app:layout_constraintTop_toTopOf="parent" />
 
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/lineChart"
         android:layout_width="331dp"
         android:layout_height="400dp"
         android:layout_gravity="center"
-        tools:ignore="MissingClass"
-     >
+        tools:ignore="MissingClass">
+
+
+
+
 
     </com.github.mikephil.charting.charts.LineChart>
 
