@@ -1,12 +1,10 @@
 package com.example.pageacceuil;
 
-import static java.lang.Thread.sleep;
-
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
+import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,6 +13,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -24,6 +23,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
     private CheckBox boxTemp;
     private CheckBox boxO2;
     private CheckBox boxLux;
+    private Button btnAjout;
 
 
     @Override
@@ -32,6 +32,8 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
         setContentView(R.layout.activity_graph_page);
 
+        FloatingActionButton btnAdd = findViewById(R.id.btnAdd);
+        btnAdd.setOnClickListener(this);
 
         boxTemp=(CheckBox)findViewById(R.id.boxTemp);
         boxTemp.setOnClickListener(this);
@@ -43,7 +45,6 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         boxLux.setOnClickListener(this);
 
         graph = (LineChart) findViewById(R.id.lineChart);
-
 
         graph.setDrawGridBackground(false);
         graph.getDescription().setEnabled(false);
@@ -77,6 +78,17 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
         graph.resetTracking();
         graph.clear();
+
+       /* graph.setDrawGridBackground(true);
+        graph.getDescription().setEnabled(true);
+        graph.setDrawBorders(true);*/
+
+        graph.getAxisLeft().setEnabled(true);
+        graph.getAxisRight().setDrawAxisLine(true);
+        graph.getAxisRight().setDrawGridLines(true);
+        graph.getXAxis().setDrawAxisLine(true);
+        graph.getXAxis().setDrawGridLines(true);
+
 
 
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
@@ -167,6 +179,10 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
                 System.out.println("dld");
                 creaGraph();
                 break;
+            case R.id.btnAdd:
+                Intent addData;
+                addData = new Intent(GraphPage.this, connectetu.class);
+                startActivity(addData);
             default:
                 break;
 
