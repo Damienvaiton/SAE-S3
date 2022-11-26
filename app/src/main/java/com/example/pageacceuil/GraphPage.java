@@ -2,9 +2,13 @@ package com.example.pageacceuil;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,17 +17,36 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.google.android.material.bottomappbar.BottomAppBar;
+import com.google.android.material.bottomnavigation.BottomNavigationItemView;
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class GraphPage extends AppCompatActivity implements View.OnClickListener  {
 
     private LineChart graph;
+
+
+    private TextView val4;
+    private TextView val3;
+    private TextView val2;
+    private TextView val1;
+
+
     private CheckBox boxTemp;
     private CheckBox boxO2;
     private CheckBox boxLux;
+
     private Button btnAjout;
+
+
+    private BottomAppBar bottomNav;
+
+
 
 
     @Override
@@ -32,8 +55,20 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
         setContentView(R.layout.activity_graph_page);
 
+        val1=(TextView)findViewById(R.id.barVu1);
+        val2=(TextView)findViewById(R.id.barVu2);
+        val3=(TextView)findViewById(R.id.barVu3);
+        val4=(TextView)findViewById(R.id.barVu4);
+
         FloatingActionButton btnAdd = findViewById(R.id.btnAdd);
         btnAdd.setOnClickListener(this);
+
+        bottomNav=findViewById(R.id.bottomNav);
+        setSupportActionBar(bottomNav);
+
+
+
+
 
         boxTemp=(CheckBox)findViewById(R.id.boxTemp);
         boxTemp.setOnClickListener(this);
@@ -79,9 +114,9 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         graph.resetTracking();
         graph.clear();
 
-       /* graph.setDrawGridBackground(true);
+        graph.setDrawGridBackground(true);
         graph.getDescription().setEnabled(true);
-        graph.setDrawBorders(true);*/
+        graph.setDrawBorders(true);
 
         graph.getAxisLeft().setEnabled(true);
         graph.getAxisRight().setDrawAxisLine(true);
@@ -92,6 +127,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
 
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+
         if(boxO2.isChecked()) {
 
             ArrayList<Entry> O2 = new ArrayList<>();
@@ -162,6 +198,22 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
     }
 
+    void actuValues(){
+        DecimalFormat a=new DecimalFormat("#.##");
+
+
+        val1.setText(a.format((Math.random() * (40 - 25))));
+        val2.setText(a.format((Math.random() * (40 - 25))));
+        val3.setText(a.format((Math.random() * (40 - 25))));
+        val4.setText(a.format((Math.random() * (40 - 25))));
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.export,menu);
+        return true;
+    }
 
     @Override
 
@@ -183,6 +235,10 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
                 Intent addData;
                 addData = new Intent(GraphPage.this, connectetu.class);
                 startActivity(addData);
+                break;
+            case R.id.btnExport:
+                System.out.println("dld");
+
             default:
                 break;
 
