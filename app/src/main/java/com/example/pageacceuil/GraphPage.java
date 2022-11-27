@@ -67,9 +67,6 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         setSupportActionBar(bottomNav);
 
 
-
-
-
         boxTemp=(CheckBox)findViewById(R.id.boxTemp);
         boxTemp.setOnClickListener(this);
 
@@ -101,12 +98,20 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         // if disabled, scaling can be done on x- and y-axis separately
         graph.setPinchZoom(false);
 
-        creaGraph();
-
+        try {
+            Thread.sleep(2);
+            refreshRate();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
 
     }
 
+void refreshRate(){
+        creaGraph();
+        actuValues();
+    }
 
 
     void creaGraph() {
@@ -216,20 +221,24 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.btnExport:
+                System.out.println("bruh"); //Page export
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+    @Override
 
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.boxTemp:
-                System.out.println("oe");
-                creaGraph();
-                break;
-            case R.id.boxO2:
-                System.out.println("oe");
-                creaGraph();
-                break;
-            case R.id.boxLux:
-                System.out.println("dld");
-                creaGraph();
+                case R.id.boxTemp:
+                case R.id.boxO2:
+                case R.id.boxLux:
+                      System.out.println("oe");
+                             creaGraph();
                 break;
             case R.id.btnAdd:
                 Intent addData;

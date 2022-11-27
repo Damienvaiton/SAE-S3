@@ -12,7 +12,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:backgroundTint="@color/yellowgreen"
-        app:navigationIcon="@drawable/back"
         app:menu="@menu/export">
 
     </com.google.android.material.bottomappbar.BottomAppBar>

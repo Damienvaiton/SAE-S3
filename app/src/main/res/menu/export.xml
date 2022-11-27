@@ -7,4 +7,11 @@
         android:icon="@drawable/export"
         app:showAsAction="ifRoom"/>
     <!-- Faire btnExport pour excel -->
+    <item android:title="Item"
+        android:id="@+id/retourArr"
+        android:icon="@drawable/ic_arrow"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/esp1"
+        android:title="ESP32 n°1" />
 </menu>
