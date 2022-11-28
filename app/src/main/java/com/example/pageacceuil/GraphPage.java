@@ -1,9 +1,8 @@
 package com.example.pageacceuil;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -18,8 +17,6 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.google.android.material.bottomappbar.BottomAppBar;
-import com.google.android.material.bottomnavigation.BottomNavigationItemView;
-import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -45,6 +42,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
 
     private BottomAppBar bottomNav;
+    private BottomNavigationView bottomNavigationView;
 
 
 
@@ -65,6 +63,10 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
         bottomNav=findViewById(R.id.bottomNav);
         setSupportActionBar(bottomNav);
+
+        bottomNavigationView=findViewById(R.id.bottomNavMenuView);
+        bottomNavigationView.setBackground(null);
+
 
 
         boxTemp=(CheckBox)findViewById(R.id.boxTemp);
@@ -113,7 +115,7 @@ void refreshRate(){
         actuValues();
     }
 
-
+    //Faire un systeme de min mSax
     void creaGraph() {
 
         graph.resetTracking();
@@ -121,6 +123,8 @@ void refreshRate(){
 
         graph.setDrawGridBackground(true);
         graph.getDescription().setEnabled(true);
+        graph.getDescription().setText("c les ratz");
+
         graph.setDrawBorders(true);
 
         graph.getAxisLeft().setEnabled(true);
@@ -129,6 +133,10 @@ void refreshRate(){
         graph.getXAxis().setDrawAxisLine(true);
         graph.getXAxis().setDrawGridLines(true);
 
+       /* graph.getAxisLeft().setSpaceTop(10000000);
+        graph.getAxisRight().setSpaceTop(1000);
+        graph.getAxisLeft().setSpaceBottom(400);
+        Contrôle des échelle */
 
 
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
@@ -145,11 +153,17 @@ void refreshRate(){
             LineDataSet set = new LineDataSet(O2, "O2");
 
             set.setLineWidth(2.5f);
-            set.setCircleRadius(4f);
+            set.setCircleRadius(5f);
+            set.setCircleHoleRadius(2.5f);
 
 
-            set.setColor(R.color.teal_200);
-            set.setCircleColor(R.color.orange);
+            set.setValueTextColor(Color.BLACK);
+            set.setValueTextSize(12f);
+            set.setDrawValues(true);
+
+            set.setColor(Color.BLUE) ;
+            set.setCircleColor(Color.BLUE);
+
 
 
             dataSets.add(set);
@@ -159,18 +173,25 @@ void refreshRate(){
 
             ArrayList<Entry> O2 = new ArrayList<>();
 
-            O2.add(new Entry(0, (float) (Math.random() * (40 - 25))));
-            O2.add(new Entry(1, (float) (Math.random() * (40 - 25))));
-            O2.add(new Entry(2, (float) (Math.random() * (40 - 25))));
-            O2.add(new Entry(3, (float) (Math.random() * (40 - 25))));
+            O2.add(new Entry(0, (float) (Math.random() * (180 - 250))));
+            O2.add(new Entry(1, (float) (Math.random() * (180 - 250))));
+            O2.add(new Entry(2, (float) (Math.random() * (180 - 250))));
+            O2.add(new Entry(3, (float) (Math.random() * (180 - 250))));
 
             LineDataSet set = new LineDataSet(O2, "Lux");
 
-            set.setColor(R.color.jaunorange);
-            set.setCircleColor(R.color.black);
+            set.setColor(Color.YELLOW);
+            set.setCircleColor(Color.YELLOW);
 
             set.setLineWidth(2.5f);
-            set.setCircleRadius(4f);
+            set.setCircleRadius(5f);
+            set.setCircleHoleRadius(2.5f);
+
+
+            set.setValueTextColor(Color.BLACK);
+            set.setValueTextSize(12f);
+            set.setDrawValues(true);
+
 
             dataSets.add(set);
         }
@@ -179,21 +200,30 @@ void refreshRate(){
 
           ArrayList<Entry> O2 = new ArrayList<>();
 
-          O2.add(new Entry(0, (float) (Math.random() * (40 - 25))));
-          O2.add(new Entry(1, (float) (Math.random() * (40 - 25))));
-          O2.add(new Entry(2, (float) (Math.random() * (40 - 25))));
-          O2.add(new Entry(3, (float) (Math.random() * (40 - 25))));
+          O2.add(new Entry(0, (float) (Math.random() * (360 - 25))));
+          O2.add(new Entry(1, (float) (Math.random() * (360 - 25))));
+          O2.add(new Entry(2, (float) (Math.random() * (360 - 25))));
+          O2.add(new Entry(3, (float) (Math.random() * (360 - 25))));
 
           LineDataSet set = new LineDataSet(O2, "Température");
 
-          set.setColor(R.color.orange);
-          set.setCircleColor(R.color.orange);
+
+          set.setColor(Color.RED);
+          set.setCircleColor(Color.RED);
+
 
           set.setLineWidth(2.5f);
-          set.setCircleRadius(4f);
+          set.setCircleRadius(5f);
+          set.setCircleHoleRadius(2.5f);
+
+
+          set.setValueTextColor(Color.BLACK);
+          set.setValueTextSize(12f);
+          set.setDrawValues(true);
 
           dataSets.add(set);
       }
+
 
 
 
@@ -213,12 +243,14 @@ void refreshRate(){
         val4.setText(a.format((Math.random() * (40 - 25))));
     }
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.export,menu);
         return true;
-    }
+    }*/
+
+       View.OnCreateContextMenuListener
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
