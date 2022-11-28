@@ -1,6 +1,5 @@
 package com.example.pageacceuil;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -9,6 +8,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -23,7 +23,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-public class GraphPage extends AppCompatActivity implements View.OnClickListener  {
+public class GraphPage extends AppCompatActivity implements View.OnClickListener,BottomNavigationView.OnNavigationItemSelectedListener  {
 
     private LineChart graph;
 
@@ -64,8 +64,10 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         bottomNav=findViewById(R.id.bottomNav);
         setSupportActionBar(bottomNav);
 
-        bottomNavigationView=findViewById(R.id.bottomNavMenuView);
+        bottomNavigationView=(BottomNavigationView)findViewById(R.id.bottomNavMenuView);
         bottomNavigationView.setBackground(null);
+        bottomNavigationView.setOnNavigationItemSelectedListener(this);
+
 
 
 
@@ -99,13 +101,13 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
         // if disabled, scaling can be done on x- and y-axis separately
         graph.setPinchZoom(false);
-
-        try {
+        refreshRate();
+       /* try {
             Thread.sleep(2);
-            refreshRate();
+
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
+        }*/
 
 
     }
@@ -250,20 +252,9 @@ void refreshRate(){
         return true;
     }*/
 
-       View.OnCreateContextMenuListener
+
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.btnExport:
-                System.out.println("bruh"); //Page export
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-    @Override
-
     public void onClick(View view) {
         switch (view.getId()){
                 case R.id.boxTemp:
@@ -273,9 +264,8 @@ void refreshRate(){
                              creaGraph();
                 break;
             case R.id.btnAdd:
-                Intent addData;
-                addData = new Intent(GraphPage.this, connectetu.class);
-                startActivity(addData);
+ Pop_up customPopup = new Pop_up(this);
+customPopup.build();
                 break;
             case R.id.btnExport:
                 System.out.println("dld");
@@ -284,6 +274,25 @@ void refreshRate(){
                 break;
 
         }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.btnExport:
+                System.out.println("Fonction export sur excel");
+                break;
+            case R.id.rotate:
+                System.out.println("Rotation écran paysage");
+                break;
+            case R.id.retourArr:
+                System.out.println("Retour écran titre ");
+                break;
+            case R.id.setting:
+                System.out.println("Parametre");
+                break;
+        }
+        return false;
     }
 
     ;
