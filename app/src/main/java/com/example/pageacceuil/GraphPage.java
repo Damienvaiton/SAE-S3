@@ -104,7 +104,6 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         refreshRate();
        /* try {
             Thread.sleep(2);
-
         } catch (InterruptedException e) {
             e.printStackTrace();
         }*/
@@ -112,7 +111,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
     }
 
-void refreshRate(){
+    void refreshRate(){
         creaGraph();
         actuValues();
     }
@@ -198,33 +197,33 @@ void refreshRate(){
             dataSets.add(set);
         }
 
-      if(boxTemp.isChecked()) {
+        if(boxTemp.isChecked()) {
 
-          ArrayList<Entry> O2 = new ArrayList<>();
+            ArrayList<Entry> O2 = new ArrayList<>();
 
-          O2.add(new Entry(0, (float) (Math.random() * (360 - 25))));
-          O2.add(new Entry(1, (float) (Math.random() * (360 - 25))));
-          O2.add(new Entry(2, (float) (Math.random() * (360 - 25))));
-          O2.add(new Entry(3, (float) (Math.random() * (360 - 25))));
+            O2.add(new Entry(0, (float) (Math.random() * (360 - 25))));
+            O2.add(new Entry(1, (float) (Math.random() * (360 - 25))));
+            O2.add(new Entry(2, (float) (Math.random() * (360 - 25))));
+            O2.add(new Entry(3, (float) (Math.random() * (360 - 25))));
 
-          LineDataSet set = new LineDataSet(O2, "Température");
-
-
-          set.setColor(Color.RED);
-          set.setCircleColor(Color.RED);
+            LineDataSet set = new LineDataSet(O2, "Température");
 
 
-          set.setLineWidth(2.5f);
-          set.setCircleRadius(5f);
-          set.setCircleHoleRadius(2.5f);
+            set.setColor(Color.RED);
+            set.setCircleColor(Color.RED);
 
 
-          set.setValueTextColor(Color.BLACK);
-          set.setValueTextSize(12f);
-          set.setDrawValues(true);
+            set.setLineWidth(2.5f);
+            set.setCircleRadius(5f);
+            set.setCircleHoleRadius(2.5f);
 
-          dataSets.add(set);
-      }
+
+            set.setValueTextColor(Color.BLACK);
+            set.setValueTextSize(12f);
+            set.setDrawValues(true);
+
+            dataSets.add(set);
+        }
 
 
 
@@ -257,15 +256,15 @@ void refreshRate(){
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-                case R.id.boxTemp:
-                case R.id.boxO2:
-                case R.id.boxLux:
-                      System.out.println("oe");
-                             creaGraph();
+            case R.id.boxTemp:
+            case R.id.boxO2:
+            case R.id.boxLux:
+                System.out.println("oe");
+                creaGraph();
                 break;
             case R.id.btnAdd:
- Pop_up customPopup = new Pop_up(this);
-customPopup.build();
+                Pop_up customPopup = new Pop_up(this);
+                customPopup.build();
                 break;
             case R.id.btnExport:
                 System.out.println("dld");
