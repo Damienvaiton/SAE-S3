@@ -19,9 +19,6 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
 
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference myRef = database.getReference("message");
-
 
 
     String ChoixESP = "";
@@ -30,13 +27,14 @@ public class MainActivity extends AppCompatActivity {
     ImageButton btnCoAdmin;
     Button btnGraph;
 
-    @SuppressLint("MissingInflatedId")
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        myRef.
+
+
         btnselect = findViewById(R.id.Boutonsel);
         btncoEtu = findViewById(R.id.imageButton5);
         btnCoAdmin = findViewById(R.id.imageButton4);

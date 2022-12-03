@@ -19,6 +19,11 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -26,6 +31,8 @@ import java.util.ArrayList;
 public class GraphPage extends AppCompatActivity implements View.OnClickListener,BottomNavigationView.OnNavigationItemSelectedListener  {
 
     private LineChart graph;
+
+    private ListData listData;
 
 
     private TextView val4;
@@ -47,11 +54,36 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_graph_page);
+        ListData listData=new ListData();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+       DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32/A8:03:2A:EA:EE:CC");
+      /*   DatabaseReference myRef= FirebaseDatabase.getInstance().getReference().child("A8:03:2A:EA:EE:CC");*/
+
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int i=0;
+                for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                    i++;
+                    Data a=dataSnapshot.getValue(Data.class);
+                    System.out.println(i+" ; "+a.getHumidite()+"/"+a.getTemperature());
+                    listData.list_add_data(a);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                System.out.println("The read failed: ");
+            }
+        });
 
         val1=(TextView)findViewById(R.id.barVu1);
         val2=(TextView)findViewById(R.id.barVu2);
@@ -146,10 +178,9 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
             ArrayList<Entry> O2 = new ArrayList<>();
 
-            O2.add(new Entry(0, (float) (Math.random() * (40 - 25))));
-            O2.add(new Entry(1, (float) (Math.random() * (40 - 25))));
-            O2.add(new Entry(2, (float) (Math.random() * (40 - 25))));
-            O2.add(new Entry(3, (float) (Math.random() * (40 - 25))));
+            for (int i=0;i<783;i++){
+            O2.add(new Entry(i,listData.recup_data(i).getTemperature()));
+            }
 
             LineDataSet set = new LineDataSet(O2, "O2");
 
