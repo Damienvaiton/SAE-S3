@@ -9,6 +9,7 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -19,6 +20,7 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,7 +33,7 @@ import java.util.ArrayList;
 public class GraphPage extends AppCompatActivity implements View.OnClickListener,BottomNavigationView.OnNavigationItemSelectedListener  {
 
     private LineChart graph;
-
+    public int i=0;
 
     public ListData listData;
 
@@ -70,23 +72,57 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         /*   DatabaseReference myRef= FirebaseDatabase.getInstance().getReference().child("A8:03:2A:EA:EE:CC");*/
 
 listData=new ListData();
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                int i=0;
-                for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+       /* myRef.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
 
-                    Data a=dataSnapshot.getValue(Data.class);
-                    listData.list_add_data(a);
-                    System.out.println(i+" ; "+listData.recup_data(i).getHumidite()+"/"+listData.recup_data(i).getTemperature());
-                    i++;
-                    creaGraph();
-                }
-            }
+                                                Data a = dataSnapshot.getValue(Data.class);
+                                                listData.list_add_data(a);
+                                                System.out.println(i + " ; " + listData.recup_data(i).getHumidite() + "/" + listData.recup_data(i).getTemperature());
+                                                i++;
+                                                creaGraph();
+                                            }
+                                        }
+
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 System.out.println("The read failed: ");
+
+            }
+
+        });*/
+
+        myRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Data a=snapshot.getValue(Data.class);
+                listData.list_add_data(a);
+                System.out.println(i + " ; " + listData.recup_data(i).getHumidite() + "/" + listData.recup_data(i).getTemperature());
+                i++;
+                creaGraph();
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
 
@@ -169,10 +205,7 @@ listData=new ListData();
 
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
         if(boxO2.isChecked()) {
-            for (int i = 0; i < 99; i++) {
-                A_O2.add(new Entry(1, listData.recup_data(i).getTemperature()));
-
-                /*A_O2.add(new Entry(1, listData.recup_data(listData.list_size() - 1).getTemperature()));*/
+                A_O2.add(new Entry(1, listData.recup_data(listData.list_size() - 1).getTemperature()));
                 LineDataSet set02 = new LineDataSet(A_O2, "O2");
                 paramSet(set02);
                 set02.setColor(Color.BLUE);
@@ -180,8 +213,9 @@ listData=new ListData();
 
                 dataSets.add(set02);
             }
+        /*Proto*/
             if (boxLux.isChecked()) {
-                A_lux.add(new Entry(1, listData.recup_data(listData.list_size() - 1).getHumidite()));
+                A_lux.add(new Entry(listData.recup_data(listData.list_size() - 1).getTemps(), listData.recup_data(listData.list_size() - 1).getHumidite()));
                 LineDataSet set = new LineDataSet(A_lux, "Lux");
                 paramSet(set);
                 set.setColor(Color.YELLOW);
@@ -205,7 +239,7 @@ listData=new ListData();
             data.notifyDataChanged();
             graph.notifyDataSetChanged();
             graph.invalidate();
-        }
+
     }
 
     private void paramSet(LineDataSet set) {
@@ -214,7 +248,7 @@ listData=new ListData();
         set.setCircleRadius(5f);
         set.setCircleHoleRadius(2.5f);
         set.setValueTextColor(Color.BLACK);
-        set.setValueTextSize(12f);
+        set.setValueTextSize(10f);
         set.setDrawValues(true);
 
     }
