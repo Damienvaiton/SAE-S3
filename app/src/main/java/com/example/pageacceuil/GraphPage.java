@@ -32,6 +32,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
     private LineChart graph;
 
+
     private ListData listData;
 
 
@@ -60,22 +61,24 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_graph_page);
-        ListData listData=new ListData();
+
+
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-       DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32/A8:03:2A:EA:EE:CC");
-      /*   DatabaseReference myRef= FirebaseDatabase.getInstance().getReference().child("A8:03:2A:EA:EE:CC");*/
+        DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32/A8:03:2A:EA:EE:CC");
+        /*   DatabaseReference myRef= FirebaseDatabase.getInstance().getReference().child("A8:03:2A:EA:EE:CC");*/
 
-
+listData=new ListData();
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 int i=0;
                 for (DataSnapshot dataSnapshot: snapshot.getChildren()){
-                    i++;
-                    Data a=dataSnapshot.getValue(Data.class);
-                    System.out.println(i+" ; "+a.getHumidite()+"/"+a.getTemperature());
-                    listData.list_add_data(a);
 
+                    Data a=dataSnapshot.getValue(Data.class);
+                    listData.list_add_data(a);
+                    System.out.println(i+" ; "+listData.recup_data(i).getHumidite()+"/"+listData.recup_data(i).getTemperature());
+                    i++;
+                    creaGraph();
                 }
             }
 
@@ -133,7 +136,29 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
         // if disabled, scaling can be done on x- and y-axis separately
         graph.setPinchZoom(false);
-        refreshRate();
+
+        graph.resetTracking();
+        graph.clear();
+
+        graph.setDrawGridBackground(true);
+        graph.getDescription().setEnabled(true);
+        graph.getDescription().setText("c les ratz");
+
+        graph.setDrawBorders(true);
+
+        graph.getAxisLeft().setEnabled(true);
+        graph.getAxisRight().setDrawAxisLine(true);
+        graph.getAxisRight().setDrawGridLines(true);
+        graph.getXAxis().setDrawAxisLine(true);
+        graph.getXAxis().setDrawGridLines(true);
+
+        /* graph.getAxisLeft().setSpaceTop(10000000);
+        graph.getAxisRight().setSpaceTop(1000);
+        graph.getAxisLeft().setSpaceBottom(400);
+        Contrôle des échelle */
+
+
+
        /* try {
             Thread.sleep(2);
         } catch (InterruptedException e) {
@@ -151,27 +176,6 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
     //Faire un systeme de min mSax
     void creaGraph() {
 
-        graph.resetTracking();
-        graph.clear();
-
-        graph.setDrawGridBackground(true);
-        graph.getDescription().setEnabled(true);
-        graph.getDescription().setText("c les ratz");
-
-        graph.setDrawBorders(true);
-
-        graph.getAxisLeft().setEnabled(true);
-        graph.getAxisRight().setDrawAxisLine(true);
-        graph.getAxisRight().setDrawGridLines(true);
-        graph.getXAxis().setDrawAxisLine(true);
-        graph.getXAxis().setDrawGridLines(true);
-
-       /* graph.getAxisLeft().setSpaceTop(10000000);
-        graph.getAxisRight().setSpaceTop(1000);
-        graph.getAxisLeft().setSpaceBottom(400);
-        Contrôle des échelle */
-
-
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
 
         if(boxO2.isChecked()) {
@@ -179,7 +183,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
             ArrayList<Entry> O2 = new ArrayList<>();
 
             for (int i=0;i<783;i++){
-            O2.add(new Entry(i,listData.recup_data(i).getTemperature()));
+                O2.add(new Entry(i,listData.recup_data(i).getTemperature()));
             }
 
             LineDataSet set = new LineDataSet(O2, "O2");
@@ -232,10 +236,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
             ArrayList<Entry> O2 = new ArrayList<>();
 
-            O2.add(new Entry(0, (float) (Math.random() * (360 - 25))));
-            O2.add(new Entry(1, (float) (Math.random() * (360 - 25))));
-            O2.add(new Entry(2, (float) (Math.random() * (360 - 25))));
-            O2.add(new Entry(3, (float) (Math.random() * (360 - 25))));
+            O2.add(new Entry(i,listData.recup_data(i).getTemperature()));
 
             LineDataSet set = new LineDataSet(O2, "Température");
 
