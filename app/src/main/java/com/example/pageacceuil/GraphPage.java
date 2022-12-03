@@ -155,6 +155,7 @@ listData=new ListData();
         graph.getXAxis().setDrawAxisLine(true);
         graph.getXAxis().setDrawGridLines(true);
 
+        graph.setVisibleXRangeMaximum(5);
         /* graph.getAxisLeft().setSpaceTop(10000000);
         graph.getAxisRight().setSpaceTop(1000);
         graph.getAxisLeft().setSpaceBottom(400);
@@ -168,59 +169,43 @@ listData=new ListData();
 
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
         if(boxO2.isChecked()) {
+            for (int i = 0; i < 99; i++) {
+                A_O2.add(new Entry(1, listData.recup_data(i).getTemperature()));
 
-            A_O2.add(new Entry(1,listData.recup_data(listData.list_size()-1).getTemperature()));
-            LineDataSet set = new LineDataSet(A_O2, "O2");
-            paramSet(set);
+                /*A_O2.add(new Entry(1, listData.recup_data(listData.list_size() - 1).getTemperature()));*/
+                LineDataSet set02 = new LineDataSet(A_O2, "O2");
+                paramSet(set02);
+                set02.setColor(Color.BLUE);
+                set02.setCircleColor(Color.BLUE);
 
-            set.setColor(Color.BLUE) ;
-            set.setCircleColor(Color.BLUE);
+                dataSets.add(set02);
+            }
+            if (boxLux.isChecked()) {
+                A_lux.add(new Entry(1, listData.recup_data(listData.list_size() - 1).getHumidite()));
+                LineDataSet set = new LineDataSet(A_lux, "Lux");
+                paramSet(set);
+                set.setColor(Color.YELLOW);
+                set.setCircleColor(Color.YELLOW);
 
+                dataSets.add(set);
+            }
 
+            if (boxTemp.isChecked()) {
+                A_temp.add(new Entry(1, listData.recup_data(listData.list_size() - 1).getTemperature()));
+                LineDataSet set = new LineDataSet(A_temp, "Température");
+                paramSet(set);
+                set.setColor(Color.RED);
+                set.setCircleColor(Color.RED);
 
-            dataSets.add(set);
+                dataSets.add(set);
+            }
+
+            LineData data = new LineData(dataSets);
+            graph.setData(data);
+            data.notifyDataChanged();
             graph.notifyDataSetChanged();
-
+            graph.invalidate();
         }
-
-        if(boxLux.isChecked()) {
-
-
-
-            A_lux.add(new Entry(1,listData.recup_data(listData.list_size()-1).getHumidite()));
-            LineDataSet set = new LineDataSet(A_lux, "Lux");
-            paramSet(set);
-            set.setColor(Color.YELLOW);
-            set.setCircleColor(Color.YELLOW);
-
-
-
-            dataSets.add(set);
-        }
-
-        if(boxTemp.isChecked()) {
-
-            ArrayList<Entry> O2 = new ArrayList<>();
-
-            O2.add(new Entry(1,listData.recup_data(1).getTemperature()));
-
-            LineDataSet set = new LineDataSet(O2, "Température");
-            paramSet(set);
-
-            set.setColor(Color.RED);
-            set.setCircleColor(Color.RED);
-
-
-
-            dataSets.add(set);
-        }
-
-        LineData data = new LineData(dataSets);
-        graph.setData(data);
-        data.notifyDataChanged();
-        graph.notifyDataSetChanged();
-        graph.invalidate();
-
     }
 
     private void paramSet(LineDataSet set) {
