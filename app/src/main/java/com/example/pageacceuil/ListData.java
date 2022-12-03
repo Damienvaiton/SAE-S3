@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class ListData {
 
-    private ArrayList<Data> listData;
+    public ArrayList<Data> listData;
 
     public ListData(){
        listData = new ArrayList<Data>(1);
@@ -23,5 +23,8 @@ public class ListData {
         listData.clear();
     }
 
+    public int list_size() {
+        return listData.size();
+    }
 }
 

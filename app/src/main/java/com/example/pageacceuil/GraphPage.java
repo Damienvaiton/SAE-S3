@@ -33,7 +33,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
     private LineChart graph;
 
 
-    private ListData listData;
+    public ListData listData;
 
 
     private TextView val4;
@@ -53,7 +53,9 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
     private BottomNavigationView bottomNavigationView;
 
 
-
+    ArrayList<Entry> A_O2 = new ArrayList<>();
+    ArrayList<Entry> A_lux = new ArrayList<>();
+    ArrayList<Entry> A_temp = new ArrayList<>();
 
 
     @Override
@@ -115,6 +117,7 @@ listData=new ListData();
         boxLux=(CheckBox)findViewById(R.id.boxLux);
         boxLux.setOnClickListener(this);
 
+        //Constru graph
         graph = (LineChart) findViewById(R.id.lineChart);
 
         graph.setDrawGridBackground(false);
@@ -157,45 +160,18 @@ listData=new ListData();
         graph.getAxisLeft().setSpaceBottom(400);
         Contrôle des échelle */
 
-
-
-       /* try {
-            Thread.sleep(2);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }*/
-
-
     }
 
-    void refreshRate(){
-        creaGraph();
-        actuValues();
-    }
 
     //Faire un systeme de min mSax
     void creaGraph() {
 
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-
         if(boxO2.isChecked()) {
 
-            ArrayList<Entry> O2 = new ArrayList<>();
-
-            for (int i=0;i<783;i++){
-                O2.add(new Entry(i,listData.recup_data(i).getTemperature()));
-            }
-
-            LineDataSet set = new LineDataSet(O2, "O2");
-
-            set.setLineWidth(2.5f);
-            set.setCircleRadius(5f);
-            set.setCircleHoleRadius(2.5f);
-
-
-            set.setValueTextColor(Color.BLACK);
-            set.setValueTextSize(12f);
-            set.setDrawValues(true);
+            A_O2.add(new Entry(1,listData.recup_data(listData.list_size()-1).getTemperature()));
+            LineDataSet set = new LineDataSet(A_O2, "O2");
+            paramSet(set);
 
             set.setColor(Color.BLUE) ;
             set.setCircleColor(Color.BLUE);
@@ -203,30 +179,20 @@ listData=new ListData();
 
 
             dataSets.add(set);
+            graph.notifyDataSetChanged();
+
         }
 
         if(boxLux.isChecked()) {
 
-            ArrayList<Entry> O2 = new ArrayList<>();
 
-            O2.add(new Entry(0, (float) (Math.random() * (180 - 250))));
-            O2.add(new Entry(1, (float) (Math.random() * (180 - 250))));
-            O2.add(new Entry(2, (float) (Math.random() * (180 - 250))));
-            O2.add(new Entry(3, (float) (Math.random() * (180 - 250))));
 
-            LineDataSet set = new LineDataSet(O2, "Lux");
-
+            A_lux.add(new Entry(1,listData.recup_data(listData.list_size()-1).getHumidite()));
+            LineDataSet set = new LineDataSet(A_lux, "Lux");
+            paramSet(set);
             set.setColor(Color.YELLOW);
             set.setCircleColor(Color.YELLOW);
 
-            set.setLineWidth(2.5f);
-            set.setCircleRadius(5f);
-            set.setCircleHoleRadius(2.5f);
-
-
-            set.setValueTextColor(Color.BLACK);
-            set.setValueTextSize(12f);
-            set.setDrawValues(true);
 
 
             dataSets.add(set);
@@ -236,33 +202,35 @@ listData=new ListData();
 
             ArrayList<Entry> O2 = new ArrayList<>();
 
-            O2.add(new Entry(i,listData.recup_data(i).getTemperature()));
+            O2.add(new Entry(1,listData.recup_data(1).getTemperature()));
 
             LineDataSet set = new LineDataSet(O2, "Température");
-
+            paramSet(set);
 
             set.setColor(Color.RED);
             set.setCircleColor(Color.RED);
 
 
-            set.setLineWidth(2.5f);
-            set.setCircleRadius(5f);
-            set.setCircleHoleRadius(2.5f);
-
-
-            set.setValueTextColor(Color.BLACK);
-            set.setValueTextSize(12f);
-            set.setDrawValues(true);
 
             dataSets.add(set);
         }
 
-
-
-
         LineData data = new LineData(dataSets);
-
         graph.setData(data);
+        data.notifyDataChanged();
+        graph.notifyDataSetChanged();
+        graph.invalidate();
+
+    }
+
+    private void paramSet(LineDataSet set) {
+
+        set.setLineWidth(2.5f);
+        set.setCircleRadius(5f);
+        set.setCircleHoleRadius(2.5f);
+        set.setValueTextColor(Color.BLACK);
+        set.setValueTextSize(12f);
+        set.setDrawValues(true);
 
     }
 
