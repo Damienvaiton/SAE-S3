@@ -102,6 +102,7 @@ listData=new ListData();
                 System.out.println(i + " ; " + listData.recup_data(i).getHumidite() + "/" + listData.recup_data(i).getTemperature());
                 i++;
                 creaGraph();
+                actuValues();
 
             }
 
@@ -122,6 +123,7 @@ listData=new ListData();
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+                System.out.println("Impossible d'accéder au données");
 
             }
         });
@@ -215,7 +217,7 @@ listData=new ListData();
             }
         /*Proto*/
             if (boxLux.isChecked()) {
-                A_lux.add(new Entry(listData.recup_data(listData.list_size() - 1).getTemps(), listData.recup_data(listData.list_size() - 1).getHumidite()));
+                A_lux.add(new Entry(listData.recup_data(listData.list_size() - 1).getHeure(), listData.recup_data(listData.list_size() - 1).getHumidite()));
                 LineDataSet set = new LineDataSet(A_lux, "Lux");
                 paramSet(set);
                 set.setColor(Color.YELLOW);
@@ -254,23 +256,11 @@ listData=new ListData();
     }
 
     void actuValues(){
-        DecimalFormat a=new DecimalFormat("#.##");
-
-
-        val1.setText(a.format((Math.random() * (40 - 25))));
-        val2.setText(a.format((Math.random() * (40 - 25))));
-        val3.setText(a.format((Math.random() * (40 - 25))));
-        val4.setText(a.format((Math.random() * (40 - 25))));
+        /*  val1.setText((int) (listData.recup_data(listData.list_size() - 1).getHeure())); //Veut que des int le fdp
+       val2.setText(listData.recup_data(listData.list_size() - 1).getTemperature();
+        val3.setText(listData.recup_data(listData.list_size() - 1).getTemperature();
+        val4.setText(listData.recup_data(listData.list_size() - 1).getTemperature();*/
     }
-
-    /*@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.export,menu);
-        return true;
-    }*/
-
-
 
     @Override
     public void onClick(View view) {
