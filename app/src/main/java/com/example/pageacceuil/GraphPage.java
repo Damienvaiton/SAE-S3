@@ -25,15 +25,14 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class GraphPage extends AppCompatActivity implements View.OnClickListener,BottomNavigationView.OnNavigationItemSelectedListener  {
 
     private LineChart graph;
     public int i=0;
+    public int pos=0;
 
     public ListData listData;
 
@@ -69,6 +68,24 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32/A8:03:2A:EA:EE:CC");
+
+       /* XAxis xl = graph.getXAxis();
+        xl.setTypeface(tfLight);
+        xl.setTextColor(Color.WHITE);
+        xl.setDrawGridLines(false);
+        xl.setAvoidFirstLastClipping(true);
+        xl.setEnabled(true);
+
+
+        YAxis leftAxis = graph.getAxisLeft();
+        leftAxis.setTypeface(tfLight);
+        leftAxis.setTextColor(Color.WHITE);
+        leftAxis.setAxisMaximum(100f);
+        leftAxis.setAxisMinimum(0f);
+        leftAxis.setDrawGridLines(true);
+
+        YAxis rightAxis = chart.getAxisRight();
+        rightAxis.setEnabled(false);*/
         /*   DatabaseReference myRef= FirebaseDatabase.getInstance().getReference().child("A8:03:2A:EA:EE:CC");*/
 
 listData=new ListData();
@@ -96,11 +113,12 @@ listData=new ListData();
 
         myRef.addChildEventListener(new ChildEventListener() {
             @Override
+
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Data a=snapshot.getValue(Data.class);
                 listData.list_add_data(a);
                 System.out.println(i + " ; " + listData.recup_data(i).getHumidite() + "/" + listData.recup_data(i).getTemperature());
-                i++;
+                pos++;
                 creaGraph();
                 actuValues();
 
@@ -194,7 +212,9 @@ listData=new ListData();
         graph.getXAxis().setDrawGridLines(true);
 
         graph.setVisibleXRangeMaximum(5);
-        /* graph.getAxisLeft().setSpaceTop(10000000);
+        /* graph.setVisibleYRangeMaximum(120);
+         graph.setVisibleYRange(30, YAxis.AxisDependency.LEFT);
+        graph.getAxisLeft().setSpaceTop(10000000);
         graph.getAxisRight().setSpaceTop(1000);
         graph.getAxisLeft().setSpaceBottom(400);
         Contrôle des échelle */
@@ -207,7 +227,7 @@ listData=new ListData();
 
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
         if(boxO2.isChecked()) {
-                A_O2.add(new Entry(1, listData.recup_data(listData.list_size() - 1).getTemperature()));
+                A_O2.add(new Entry(i++, listData.recup_data(listData.list_size() - 1).getTemperature()));
                 LineDataSet set02 = new LineDataSet(A_O2, "O2");
                 paramSet(set02);
                 set02.setColor(Color.BLUE);
