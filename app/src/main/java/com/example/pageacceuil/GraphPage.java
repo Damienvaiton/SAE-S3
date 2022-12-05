@@ -13,6 +13,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -67,28 +69,13 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32/A8:03:2A:EA:EE:CC");
-
-       /* XAxis xl = graph.getXAxis();
-        xl.setTypeface(tfLight);
-        xl.setTextColor(Color.WHITE);
-        xl.setDrawGridLines(false);
-        xl.setAvoidFirstLastClipping(true);
-        xl.setEnabled(true);
+        DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32/A8:03:2A:EA:EE:CC/Mesure");
 
 
-        YAxis leftAxis = graph.getAxisLeft();
-        leftAxis.setTypeface(tfLight);
-        leftAxis.setTextColor(Color.WHITE);
-        leftAxis.setAxisMaximum(100f);
-        leftAxis.setAxisMinimum(0f);
-        leftAxis.setDrawGridLines(true);
 
-        YAxis rightAxis = chart.getAxisRight();
-        rightAxis.setEnabled(false);*/
-        /*   DatabaseReference myRef= FirebaseDatabase.getInstance().getReference().child("A8:03:2A:EA:EE:CC");*/
 
-listData=new ListData();
+
+listData=new ListData();/*
        /* myRef.addValueEventListener(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -117,7 +104,7 @@ listData=new ListData();
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Data a=snapshot.getValue(Data.class);
                 listData.list_add_data(a);
-                System.out.println(i + " ; " + listData.recup_data(i).getHumidite() + "/" + listData.recup_data(i).getTemperature());
+                System.out.println(i + " ; " + listData.recup_data(i).getD_humidite() + "/" + listData.recup_data(i).getTemperature());
                 pos++;
                 creaGraph();
                 actuValues();
@@ -175,6 +162,21 @@ listData=new ListData();
 
         //Constru graph
         graph = (LineChart) findViewById(R.id.lineChart);
+
+        XAxis xl = graph.getXAxis();
+        xl.setTextColor(Color.BLACK);
+        xl.setDrawGridLines(true);
+        xl.setAvoidFirstLastClipping(true);
+        xl.setEnabled(true);
+
+        YAxis leftAxis = graph.getAxisLeft();
+
+        leftAxis.setTextColor(Color.BLACK);
+        leftAxis.setAxisMaximum(30f);
+        leftAxis.setAxisMinimum(0f);
+        leftAxis.setDrawGridLines(true);
+        YAxis rightAxis = graph.getAxisRight();
+        rightAxis.setEnabled(true);
 
         graph.setDrawGridBackground(false);
         graph.getDescription().setEnabled(false);
@@ -237,7 +239,7 @@ listData=new ListData();
             }
         /*Proto*/
             if (boxLux.isChecked()) {
-                A_lux.add(new Entry(listData.recup_data(listData.list_size() - 1).getHeure(), listData.recup_data(listData.list_size() - 1).getHumidite()));
+                A_lux.add(new Entry(listData.recup_data(listData.list_size() - 1).getHeure(), listData.recup_data(listData.list_size() - 1).getD_humidite()));
                 LineDataSet set = new LineDataSet(A_lux, "Lux");
                 paramSet(set);
                 set.setColor(Color.YELLOW);
@@ -247,7 +249,7 @@ listData=new ListData();
             }
 
             if (boxTemp.isChecked()) {
-                A_temp.add(new Entry(1, listData.recup_data(listData.list_size() - 1).getTemperature()));
+                A_temp.add(new Entry(pos, listData.recup_data(listData.list_size() - 1).getD_humidite()));
                 LineDataSet set = new LineDataSet(A_temp, "Température");
                 paramSet(set);
                 set.setColor(Color.RED);

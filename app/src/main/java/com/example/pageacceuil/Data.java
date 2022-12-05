@@ -5,7 +5,7 @@ import java.text.DecimalFormat;
 
 public class Data {
 
-    private float d_humidite;
+    private float d_humi;
     private float d_temperature;
     private float d_lux;
     private float d_O2;
@@ -16,25 +16,23 @@ public class Data {
     }
 
     public Data(float d_humidite, float d_temperature) {
-        this.d_humidite = d_humidite;
+        this.d_humi = d_humidite;
         this.d_temperature = d_temperature;
     }
 
     public Data(float d_humidite, float d_temperature, float d_O2, float d_CO2, float d_heure) {
         DecimalFormat cast=new DecimalFormat("#.##");
-        this.d_humidite = Float.parseFloat(cast.format(d_humidite));
+        this.d_humi = Float.parseFloat(cast.format(d_humidite));
         this.d_temperature = Float.parseFloat(cast.format(d_temperature));
         this.d_O2 = d_O2;
         this.d_CO2 = d_CO2;
         this.d_heure = d_heure;
     }
 
-    public float getHumidite() {
-        return d_humidite;
-    }
+    public float getD_humidite() {return d_humi;}
 
     public void setHumidite(float d_humidite) {
-        this.d_humidite = d_humidite;
+        this.d_humi = d_humidite;
     }
 
     public float getTemperature() {
