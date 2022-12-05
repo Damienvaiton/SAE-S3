@@ -16,8 +16,9 @@ public class Data {
     }
 
     public Data(float d_humidite, float d_temperature) {
-        this.d_humi = d_humidite;
-        this.d_temperature = d_temperature;
+        DecimalFormat cast=new DecimalFormat("#.##");
+        this.d_humi = Float.parseFloat(cast.format(d_humidite));
+        this.d_temperature = Float.parseFloat(cast.format(d_temperature));
     }
 
     public Data(float d_humidite, float d_temperature, float d_O2, float d_CO2, float d_heure) {

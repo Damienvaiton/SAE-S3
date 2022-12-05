@@ -56,9 +56,14 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
     private BottomNavigationView bottomNavigationView;
 
 
+
     ArrayList<Entry> A_O2 = new ArrayList<>();
     ArrayList<Entry> A_lux = new ArrayList<>();
     ArrayList<Entry> A_temp = new ArrayList<>();
+
+    YAxis leftAxis;
+    YAxis rightAxis;
+    XAxis xl;
 
 
     @Override
@@ -75,7 +80,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
 
 
-listData=new ListData();/*
+     listData=new ListData();/*
        /* myRef.addValueEventListener(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -163,20 +168,20 @@ listData=new ListData();/*
         //Constru graph
         graph = (LineChart) findViewById(R.id.lineChart);
 
+        YAxis leftAxis = graph.getAxisLeft();
+        YAxis rightAxis = graph.getAxisRight();
         XAxis xl = graph.getXAxis();
+
+
+xl.setEnabled(false);
+leftAxis.setEnabled(false);
+rightAxis.setEnabled(false);
+
         xl.setTextColor(Color.BLACK);
         xl.setDrawGridLines(true);
         xl.setAvoidFirstLastClipping(true);
         xl.setEnabled(true);
 
-        YAxis leftAxis = graph.getAxisLeft();
-
-        leftAxis.setTextColor(Color.BLACK);
-        leftAxis.setAxisMaximum(30f);
-        leftAxis.setAxisMinimum(0f);
-        leftAxis.setDrawGridLines(true);
-        YAxis rightAxis = graph.getAxisRight();
-        rightAxis.setEnabled(true);
 
         graph.setDrawGridBackground(false);
         graph.getDescription().setEnabled(false);
@@ -229,7 +234,8 @@ listData=new ListData();/*
 
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
         if(boxO2.isChecked()) {
-                A_O2.add(new Entry(i++, listData.recup_data(listData.list_size() - 1).getTemperature()));
+
+                A_O2.add(new Entry  (i++, listData.recup_data(listData.list_size() - 1).getTemperature()));
                 LineDataSet set02 = new LineDataSet(A_O2, "O2");
                 paramSet(set02);
                 set02.setColor(Color.BLUE);
@@ -265,6 +271,20 @@ listData=new ListData();/*
             graph.invalidate();
 
     }
+    private void setLeftAxis() {
+        leftAxis.setTextColor(Color.BLACK);
+        leftAxis.setAxisMaximum(40f);
+        leftAxis.setAxisMinimum(20f);
+        leftAxis.setDrawGridLines(true);
+    }
+
+    private void setRightAxis() {
+        rightAxis.setEnabled(true);
+        rightAxis.setTextColor(Color.BLACK);
+        rightAxis.setAxisMaximum(30f);
+        rightAxis.setAxisMinimum(0f);
+        rightAxis.setDrawGridLines(true);
+    }
 
     private void paramSet(LineDataSet set) {
 
@@ -278,8 +298,7 @@ listData=new ListData();/*
     }
 
     void actuValues(){
-        /*  val1.setText((int) (listData.recup_data(listData.list_size() - 1).getHeure())); //Veut que des int le fdp
-       val2.setText(listData.recup_data(listData.list_size() - 1).getTemperature();
+      /* val2.setText(listData.recup_data(listData.list_size() - 1).getTemperature()));
         val3.setText(listData.recup_data(listData.list_size() - 1).getTemperature();
         val4.setText(listData.recup_data(listData.list_size() - 1).getTemperature();*/
     }
@@ -292,6 +311,17 @@ listData=new ListData();/*
             case R.id.boxLux:
                 System.out.println("oe");
                 creaGraph();
+                if (!rightAxis.isEnabled()){
+                    setRightAxis();
+                } else if (!leftAxis.isEnabled()){
+                    setLeftAxis();}
+                    else{
+                        boxTemp.clearFocus();
+                        boxTemp.setChecked(false);
+                    }
+                        //Créée petit message pour ddire nombre max de graph puis décoche
+
+
                 break;
             case R.id.btnAdd:
                 Pop_up customPopup = new Pop_up(this);
