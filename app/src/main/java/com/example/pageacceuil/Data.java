@@ -7,33 +7,15 @@ public class Data {
 
     private float humidite;
     private float temperature;
-    private float d_lux;
-    private float d_O2;
-    private float d_CO2;
+    private float lux;
+    private float O2;
+    private float CO2;
     private String temps;
 
     public Data() {
     }
 
-    public Data(float humidite, float temperature) {
-        DecimalFormat cast=new DecimalFormat("#.##");
-        this.humidite = humidite;
-        this.temperature =temperature;
-        System.out.println("yo");
-    }
-
-    public Data(float humidite, float temperature, float O2, float CO2, String heure) {
-        DecimalFormat cast=new DecimalFormat("#.##");
-        this.humidite = humidite;
-        this.temperature = temperature;
-        this.d_O2 = O2;
-        this.d_CO2 = CO2;
-        this.temps = heure;
-    }
-
     public float getHumidite() {
-        System.out.println("yo");
-        System.out.println(humidite);
         return humidite;
     }
 
@@ -50,34 +32,34 @@ public class Data {
     }
 
     public float getLux() {
-        return d_lux;
+        return lux;
     }
 
-    public void setLux(float d_lux) {
-        this.d_lux = d_lux;
+    public void setLux(float lux) {
+        this.lux = lux;
     }
 
     public float getO2() {
-        return d_O2;
+        return O2;
     }
 
-    public void setO2(float d_O2) {
-        this.d_O2 = d_O2;
+    public void setO2(float o2) {
+        O2 = o2;
     }
 
     public float getCO2() {
-        return d_CO2;
+        return CO2;
     }
 
-    public void setCO2(float d_CO2) {
-        this.d_CO2 = d_CO2;
+    public void setCO2(float CO2) {
+        this.CO2 = CO2;
     }
 
-    public String getHeure() {
+    public String getTemps() {
         return temps;
     }
 
-    public String setHeure(String d_heure) {
-        return this.temps = d_heure;
+    public void setTemps(String temps) {
+        this.temps = temps;
     }
 }

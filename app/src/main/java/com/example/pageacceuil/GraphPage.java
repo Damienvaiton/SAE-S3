@@ -1,7 +1,11 @@
 package com.example.pageacceuil;
 
+import static java.lang.Integer.valueOf;
+
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -54,11 +58,11 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
     private Button btnAjout;
 
-
+private int valeurTempo;
 
     private BottomAppBar bottomNav;
     private BottomNavigationView bottomNavigationView;
-
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
 
 
     ArrayList<Entry> A_O2 = new ArrayList<>();
@@ -76,9 +80,8 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
         setContentView(R.layout.activity_graph_page);
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32/A8:03:2A:EA:EE:CC/Mesure");
 
+        DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32/A8:03:2A:EA:EE:CC/Mesure");
 
 
      listData=new ListData();
@@ -95,6 +98,8 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
                 pos++;
                 creaGraph();
                 actuValues();
+                editTemps();
+
 
             }
 
@@ -121,6 +126,25 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         });
 
         valTemp=(EditText)findViewById(R.id.setTime);
+        valTemp.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                valeurTempo=Integer.valueOf(valTemp.getText().toString());
+                editTemps();
+
+
+            }
+        });
         val1=(TextView)findViewById(R.id.barVu1);
         val2=(TextView)findViewById(R.id.barVu2);
         val3=(TextView)findViewById(R.id.barVu3);
@@ -182,11 +206,12 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
     //Faire un systeme de min mSax
     void creaGraph() {
-
+        System.out.println(listData.recup_data(0).getTemperature());
+        System.out.println(listData.recup_data(0).getHumidite());
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
         if(boxO2.isChecked()) {
 
-                A_O2.add(new Entry  (i++, listData.recup_data(listData.list_size() - 1).getTemperature()));
+                A_O2.add(new Entry  (i++, listData.recup_data(listData.list_size()-1).getTemperature()));
                 LineDataSet set02 = new LineDataSet(A_O2, "O2");
                 paramSet(set02);
                 set02.setColor(Color.BLUE);
@@ -196,7 +221,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
             }
         /*Proto*/
             if (boxLux.isChecked()) {
-                A_lux.add(new Entry  (i++, listData.recup_data(listData.list_size() - 1).getHumidite()));
+                A_lux.add(new Entry  (i++, listData.recup_data(listData.list_size()-1).getHumidite()));
 
 
                 //       A_lux.add(new Entry(listData.recup_data(listData.list_size() - 1).getHeure(), listData.recup_data(listData.list_size() - 1).getD_humidite()));
@@ -209,7 +234,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
             }
 
             if (boxTemp.isChecked()) {
-                A_temp.add(new Entry(pos, listData.recup_data(listData.list_size() - 1).getHumidite()));
+                A_temp.add(new Entry(pos, listData.recup_data(listData.list_size()-1).getHumidite()));
                 LineDataSet set = new LineDataSet(A_temp, "Température");
                 paramSet(set);
                 set.setColor(Color.RED);
@@ -240,6 +265,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
     }
 
     void actuValues(){
+
       /* val2.setText(listData.recup_data(listData.list_size() - 1).getTemperature()));
         val3.setText(listData.recup_data(listData.list_size() - 1).getTemperature();
         val4.setText(listData.recup_data(listData.list_size() - 1).getTemperature();*/
@@ -344,11 +370,12 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
     }
 
-/*
-public void editTemps(){
-    int value=valTemp.getText().toString();
 
-    DatabaseReference varTemps = database.getReference("SAE_S3_BD/ESP32/A8:03:2A:EA:EE:CC/Mesure");
-    varTemps.updateChildren()
-}*/
+public void editTemps(){
+
+
+    DatabaseReference varTemps = database.getReference("SAE_S3_BD/ESP32/A8:03:2A:EA:EE:CC");
+    varTemps.child("TauxRafraichissement").setValue(valeurTempo);
+
+}
 }

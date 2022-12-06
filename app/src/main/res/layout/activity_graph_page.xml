@@ -62,7 +62,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/setTime"
             android:inputType="numberDecimal"
-            android:hint="Valeur"/>
+            android:hint="2s"/>
 
         <TextView
             android:id="@+id/barVu2"
