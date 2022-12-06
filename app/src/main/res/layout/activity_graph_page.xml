@@ -41,6 +41,8 @@
         android:layout_height="629dp">
 
 
+
+
         <TextView
             android:id="@+id/barVu3"
             android:layout_width="61dp"
@@ -53,6 +55,14 @@
             app:layout_constraintEnd_toStartOf="@+id/barVu2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/setTime"
+            android:inputType="numberDecimal"
+            android:hint="Valeur"/>
 
         <TextView
             android:id="@+id/barVu2"
