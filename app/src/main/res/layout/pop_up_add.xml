@@ -6,23 +6,23 @@
     android:gravity="center"
     android:orientation="vertical">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Valeur O2 :"
+        android:textColor="@color/black"/>
+
     <EditText
         android:id="@+id/pop_txt_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="numberDecimal"
         android:hint="Valeur"
+        android:textColor="@color/black"
         tools:layout_editor_absoluteX="190dp"
         tools:layout_editor_absoluteY="75dp" />
 
-    <EditText
-        android:id="@+id/pop_txt_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="text"
-        android:hint="Heure"
-        tools:layout_editor_absoluteX="187dp"
-        tools:layout_editor_absoluteY="154dp" />
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

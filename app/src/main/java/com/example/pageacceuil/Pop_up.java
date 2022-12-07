@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -12,7 +13,7 @@ public class Pop_up  extends Dialog implements View.OnClickListener{
 
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-    private EditText valeur, horaire;
+    private EditText valeur;
     private Button yesButton, noButton;
 
     public Pop_up(Activity activity) {
@@ -20,7 +21,6 @@ public class Pop_up  extends Dialog implements View.OnClickListener{
         setContentView(R.layout.pop_up_add);
 
         this.valeur = (EditText) findViewById(R.id.pop_txt_value);
-        this.horaire = (EditText) findViewById(R.id.pop_txt_time);
 
         this.yesButton = findViewById(R.id.yesButton);
         this.noButton = findViewById(R.id.noButton);
@@ -36,9 +36,7 @@ public class Pop_up  extends Dialog implements View.OnClickListener{
         return noButton;
     }
 
-    public String getHoraire() {
-        return horaire.getText().toString();
-    }
+
 
     public float getValue() {
         return Float.valueOf(valeur.getText().toString());
@@ -52,11 +50,12 @@ public class Pop_up  extends Dialog implements View.OnClickListener{
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.yesButton:
-                System.out.println( getValue());
+                System.out.println("mo");
+                Toast.makeText(getOwnerActivity(),"ok", Toast.LENGTH_SHORT).show();
                 //Requete bd
                 break;
             case R.id.noButton:
-                v.dismiss();
+
                 //Faire quitter la popup;
                 break;
 
