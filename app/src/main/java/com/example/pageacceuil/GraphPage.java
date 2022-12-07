@@ -1,5 +1,6 @@
 package com.example.pageacceuil;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -315,6 +316,9 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
                 break;
             case R.id.setting:
                 System.out.println("Parametre");
+                Intent openSetting;
+                openSetting = new Intent(GraphPage.this, SettingPage.class);
+                startActivity(openSetting);
                 break;
         }
         return false;
@@ -368,8 +372,6 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
 
 public void editTemps(){
-
-
     DatabaseReference varTemps = database.getReference("SAE_S3_BD/ESP32/A8:03:2A:EA:EE:CC");
     varTemps.child("TauxRafraichissement").setValue(valeurTempo);
 

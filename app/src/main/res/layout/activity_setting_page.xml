@@ -6,4 +6,117 @@
     android:layout_height="match_parent"
     tools:context=".SettingPage">
 
+    <EditText
+        android:id="@+id/min_droit"
+        android:layout_width="38dp"
+        android:layout_height="31dp"
+        android:ems="10"
+        android:inputType="number"
+        tools:layout_editor_absoluteX="35dp"
+        tools:layout_editor_absoluteY="335dp" />
+
+    <EditText
+        android:id="@+id/min_gauche"
+        android:layout_width="38dp"
+        android:layout_height="31dp"
+        android:ems="10"
+        android:inputType="number"
+        tools:layout_editor_absoluteX="35dp"
+        tools:layout_editor_absoluteY="211dp" />
+
+    <EditText
+        android:id="@+id/editNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="171dp"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="31dp"
+        android:layout_marginBottom="642dp"
+        android:ems="10"
+        android:inputType="number"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="285dp"
+        android:layout_height="41dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="66dp"
+        android:layout_marginEnd="110dp"
+        android:layout_marginBottom="535dp"
+        android:text="Valeurs min/max colonne Y gauche"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+/>
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="285dp"
+        android:layout_height="41dp"
+        android:layout_marginStart="19dp"
+        android:layout_marginTop="85dp"
+        android:layout_marginEnd="107dp"
+        android:layout_marginBottom="408dp"
+        android:text="Valeurs min/max colonne Y droit"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    <EditText
+        android:id="@+id/max_droit"
+        android:layout_width="38dp"
+        android:layout_height="31dp"
+        android:ems="10"
+        android:inputType="number"
+        tools:layout_editor_absoluteX="84dp"
+        tools:layout_editor_absoluteY="335dp" />
+
+    <EditText
+        android:id="@+id/max_gauche"
+        android:layout_width="38dp"
+        android:layout_height="31dp"
+        android:ems="10"
+        android:inputType="number"
+        tools:layout_editor_absoluteX="84dp"
+        tools:layout_editor_absoluteY="211dp" />
+
+    <Button
+        android:id="@+id/btn_gauche"
+        android:layout_width="92dp"
+        android:layout_height="41dp"
+        android:text="Button"
+        tools:layout_editor_absoluteX="135dp"
+        tools:layout_editor_absoluteY="210dp" />
+
+    <Button
+        android:id="@+id/btn_droit"
+        android:layout_width="92dp"
+        android:layout_height="41dp"
+        android:text="Button"
+        tools:layout_editor_absoluteX="135dp"
+        tools:layout_editor_absoluteY="335dp" />
+
+    <CheckBox
+        android:id="@+id/auto_droit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CheckBox"
+        tools:layout_editor_absoluteX="301dp"
+        tools:layout_editor_absoluteY="275dp" />
+
+    <CheckBox
+        android:id="@+id/auto_gauche"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CheckBox"
+        tools:layout_editor_absoluteX="304dp"
+        tools:layout_editor_absoluteY="152dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
