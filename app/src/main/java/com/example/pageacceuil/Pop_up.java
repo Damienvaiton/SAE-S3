@@ -6,10 +6,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class Pop_up extends Dialog {
+public class Pop_up  extends Dialog implements View.OnClickListener{
 
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
 
@@ -49,14 +48,25 @@ public class Pop_up extends Dialog {
         show();
     }
 
-    public void onClick(View view) {
-        switch (view.getId()) {
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
             case R.id.yesButton:
-                DatabaseReference varTemps = database.getReference("SAE_S3_BD/ESP32/A8:03:2A:EA:EE:CC");
-                varTemps.child("lux").setValue(valeur.getText());
-
+                System.out.println( getValue());
+                //Requete bd
+                break;
             case R.id.noButton:
-                popup.dismiss;
+                v.dismiss();
+                //Faire quitter la popup;
+                break;
+
         }
+
     }
+
+
 }
+
+
+
+
