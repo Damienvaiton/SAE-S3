@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -91,9 +92,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Data a=snapshot.getValue(Data.class);
                 listData.list_add_data(a);
-                System.out.println(a.getHumidite());
-                System.out.println(a.getTemperature());
-                System.out.println(i + " ; " + listData.recup_data(i).getHumidite() + "/" + listData.recup_data(i).getTemperature());
+                System.out.println(i + " ; " + listData.recup_data(i).getHumidite() + "/" + listData.recup_data(i).getTemperature()+ listData.recup_data(i).getTemps());
                 pos++;
                 creaGraph();
 
@@ -263,6 +262,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
     void actuValues(){
         int y=(listData.list_size())-1;
+        val2.setText(listData.recup_data(y).getTemps());
         val1.setText( ""+listData.recup_data(y).getTemperature());
         val3.setText( ""+listData.recup_data(y).getHumidite());
         val4.setText( ""+ listData.recup_data(y).getTemperature());
@@ -292,6 +292,24 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
             case R.id.btnAdd:
                 Pop_up customPopup = new Pop_up(this);
                 customPopup.build();
+                customPopup.getYesButton().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                                    Toast.makeText(getApplicationContext(),"Valeur ajoutée", Toast.LENGTH_SHORT).show();
+                                    DatabaseReference AjoutO2 = database.getReference("SAE_S3_BD/ESP32/A8:03:2A:EA:EE:CC/Mesure");
+                   //     AjoutO2.child("humidite").equalTo(0).on("child", functon(snapshot){
+                          //  System.out.println("yo"););
+
+                        AjoutO2.child("333").child("humidite").setValue(customPopup.getValue());
+                                    customPopup.dismiss();
+                    }
+                });
+                customPopup.getNoButton().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        customPopup.dismiss();
+                    }
+                });
                 break;
             case R.id.btnExport:
                 System.out.println("dld");
@@ -371,9 +389,9 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
     }
 
 
-public void editTemps(){
+public void editTemps() {
     DatabaseReference varTemps = database.getReference("SAE_S3_BD/ESP32/A8:03:2A:EA:EE:CC");
     varTemps.child("TauxRafraichissement").setValue(valeurTempo);
-
 }
+
 }
