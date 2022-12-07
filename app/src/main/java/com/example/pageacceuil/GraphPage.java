@@ -1,7 +1,5 @@
 package com.example.pageacceuil;
 
-import static java.lang.Integer.valueOf;
-
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -58,7 +56,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
     private Button btnAjout;
 
-private int valeurTempo;
+    private int valeurTempo=2000;
 
     private BottomAppBar bottomNav;
     private BottomNavigationView bottomNavigationView;
@@ -84,7 +82,7 @@ private int valeurTempo;
         DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32/A8:03:2A:EA:EE:CC/Mesure");
 
 
-     listData=new ListData();
+        listData=new ListData();
 
         myRef.addChildEventListener(new ChildEventListener() {
             @Override
@@ -97,9 +95,6 @@ private int valeurTempo;
                 System.out.println(i + " ; " + listData.recup_data(i).getHumidite() + "/" + listData.recup_data(i).getTemperature());
                 pos++;
                 creaGraph();
-                actuValues();
-                editTemps();
-
 
             }
 
@@ -187,15 +182,16 @@ private int valeurTempo;
         xl.setEnabled(true);
 
 
+
         leftAxis.setTextColor(Color.BLACK);
-        leftAxis.setAxisMaximum(500f);
-        leftAxis.setAxisMinimum(0f);
+        leftAxis.setAxisMaximum(30f);
+        leftAxis.setAxisMinimum(20f);
         leftAxis.setDrawGridLines(true);
 
 
         rightAxis.setEnabled(true);
         rightAxis.setTextColor(Color.BLACK);
-        rightAxis.setAxisMaximum(500f);
+        rightAxis.setAxisMaximum(40f);
         rightAxis.setAxisMinimum(0f);
         rightAxis.setDrawGridLines(true);
 
@@ -206,12 +202,10 @@ private int valeurTempo;
 
     //Faire un systeme de min mSax
     void creaGraph() {
-        System.out.println(listData.recup_data(0).getTemperature());
-        System.out.println(listData.recup_data(0).getHumidite());
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
         if(boxO2.isChecked()) {
 
-                A_O2.add(new Entry  (i++, listData.recup_data(listData.list_size()-1).getTemperature()));
+                A_O2.add(new Entry(i++, listData.recup_data(listData.list_size()-1).getTemperature()));
                 LineDataSet set02 = new LineDataSet(A_O2, "O2");
                 paramSet(set02);
                 set02.setColor(Color.BLUE);
@@ -243,6 +237,8 @@ private int valeurTempo;
                 dataSets.add(set);
             }
 
+            actuValues();
+
             LineData data = new LineData(dataSets);
             graph.setData(data);
             data.notifyDataChanged();
@@ -255,8 +251,8 @@ private int valeurTempo;
     private void paramSet(LineDataSet set) {
 
         set.setLineWidth(2.5f);
-        set.setCircleRadius(5f);
-        set.setCircleHoleRadius(2.5f);
+        set.setCircleRadius(3.5f);
+        set.setCircleHoleRadius(1f);
         set.setValueTextSize(0f);
         set.setValueTextColor(Color.BLACK);
       /*  set.setValueTextSize(10f);*/
@@ -265,10 +261,10 @@ private int valeurTempo;
     }
 
     void actuValues(){
-
-      /* val2.setText(listData.recup_data(listData.list_size() - 1).getTemperature()));
-        val3.setText(listData.recup_data(listData.list_size() - 1).getTemperature();
-        val4.setText(listData.recup_data(listData.list_size() - 1).getTemperature();*/
+        int y=(listData.list_size())-1;
+        val1.setText( ""+listData.recup_data(y).getTemperature());
+        val3.setText( ""+listData.recup_data(y).getHumidite());
+        val4.setText( ""+ listData.recup_data(y).getTemperature());
     }
 
     @Override
