@@ -26,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
     ImageButton btncoEtu;
     ImageButton btnCoAdmin;
     Button btnGraph;
+    String temp[];
+    static String ChoixEspTransfert;
 
 
     @Override
@@ -58,6 +60,11 @@ public class MainActivity extends AppCompatActivity {
                         TextView textView = (TextView) findViewById(R.id.IndiqueESPChoise);
 
                         textView.setText(choixe[1]);
+                        ChoixEspTransfert = choixe[1];
+                        temp = ChoixEspTransfert.split("°");
+                        ChoixEspTransfert = temp[1];
+
+
                         return true;
                     }
                 });

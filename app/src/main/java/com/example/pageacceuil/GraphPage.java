@@ -1,7 +1,10 @@
 package com.example.pageacceuil;
 
+import static java.lang.Integer.parseInt;
 import static java.lang.Integer.valueOf;
 
+import android.annotation.SuppressLint;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -32,7 +35,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.core.Path;
 
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 public class GraphPage extends AppCompatActivity implements View.OnClickListener,BottomNavigationView.OnNavigationItemSelectedListener  {
@@ -58,6 +63,9 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
     private Button btnAjout;
 
+  private   String choixESP="";
+
+
 private int valeurTempo;
 
     private BottomAppBar bottomNav;
@@ -74,14 +82,30 @@ private int valeurTempo;
     XAxis xl;
 
 
+    @SuppressLint("SuspiciousIndentation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_graph_page);
 
+        String temp;
+        int cho;
 
-        DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32/A8:03:2A:EA:EE:CC/Mesure");
+        choixESP = MainActivity.ChoixEspTransfert;
+        cho = parseInt(choixESP);
+        cho = cho+1;
+
+
+        Resources res = getResources();
+        String[] test = res.getStringArray(R.array.ChoixESP);
+
+
+        temp = "SAE_S3_BD/ESP32/"+test[cho]+"/Mesure";
+
+
+
+        DatabaseReference myRef = database.getReference(temp);
 
 
      listData=new ListData();
