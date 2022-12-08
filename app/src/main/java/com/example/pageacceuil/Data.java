@@ -1,7 +1,5 @@
 package com.example.pageacceuil;
 
-import java.text.DecimalFormat;
-
 
 public class Data {
 

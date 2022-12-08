@@ -23,6 +23,7 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -38,7 +39,7 @@ import java.util.ArrayList;
 public class GraphPage extends AppCompatActivity implements View.OnClickListener,BottomNavigationView.OnNavigationItemSelectedListener  {
 
     private LineChart graph;
-    public int i=0;
+    public int indice=0;
     public int pos=0;
 
     public ListData listData;
@@ -53,7 +54,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
 
     private CheckBox boxTemp;
-    private CheckBox boxO2;
+    private CheckBox boxHumi;
     private CheckBox boxLux;
 
     private Button btnAjout;
@@ -65,13 +66,13 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
 
 
-    ArrayList<Entry> A_O2 = new ArrayList<>();
-    ArrayList<Entry> A_lux = new ArrayList<>();
     ArrayList<Entry> A_temp = new ArrayList<>();
+    ArrayList<Entry> A_lux = new ArrayList<>();
+    ArrayList<Entry> A_humi = new ArrayList<>();
 
-    YAxis leftAxis;
-    YAxis rightAxis;
-    XAxis xl;
+    private YAxis leftAxis;
+    private YAxis rightAxis;
+    private XAxis xl;
 
 
     @Override
@@ -90,11 +91,13 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
             @Override
 
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                Data a=snapshot.getValue(Data.class);
-                listData.list_add_data(a);
-                System.out.println(i + " ; " + listData.recup_data(i).getHumidite() + "/" + listData.recup_data(i).getTemperature()+ listData.recup_data(i).getTemps());
-                pos++;
-                creaGraph();
+
+                    Data a = snapshot.getValue(Data.class);
+                    listData.list_add_data(a);
+                    System.out.println(pos + " ; " + listData.recup_data(pos).getHumidite() + "/" + listData.recup_data(pos).getTemperature() + listData.recup_data(pos).getTemps());
+                    pos++;
+                    creaGraph();
+                    actuValues();
 
             }
 
@@ -140,6 +143,8 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
             }
         });
+
+        //Textview pour affichage données en haut
         val1=(TextView)findViewById(R.id.barVu1);
         val2=(TextView)findViewById(R.id.barVu2);
         val3=(TextView)findViewById(R.id.barVu3);
@@ -155,15 +160,15 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         bottomNavigationView.setBackground(null);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
 
-
-
-
+        //boxTemp
         boxTemp=(CheckBox)findViewById(R.id.boxTemp);
         boxTemp.setOnClickListener(this);
 
-        boxO2=(CheckBox)findViewById(R.id.boxO2);
-        boxO2.setOnClickListener(this);
+        //boxHumi
+        boxHumi =(CheckBox)findViewById(R.id.boxHumi);
+        boxHumi.setOnClickListener(this);
 
+        //boxLux
         boxLux=(CheckBox)findViewById(R.id.boxLux);
         boxLux.setOnClickListener(this);
 
@@ -171,82 +176,85 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         //Constru graph
         graph = (LineChart) findViewById(R.id.lineChart);
 
-        YAxis leftAxis = graph.getAxisLeft();
-        YAxis rightAxis = graph.getAxisRight();
+        //Création Axe X
         XAxis xl = graph.getXAxis();
-
-
         xl.setTextColor(Color.BLACK);
         xl.setDrawGridLines(true);
         xl.setAvoidFirstLastClipping(true);
         xl.setEnabled(true);
 
-
-
+        //Création Axe Y gauche
+        YAxis leftAxis = graph.getAxisLeft();
         leftAxis.setTextColor(Color.BLACK);
         leftAxis.setAxisMaximum(30f);
         leftAxis.setAxisMinimum(20f);
         leftAxis.setDrawGridLines(true);
 
-
+        //Création Axe Y droit
+        YAxis rightAxis = graph.getAxisRight();
         rightAxis.setEnabled(true);
         rightAxis.setTextColor(Color.BLACK);
-        rightAxis.setAxisMaximum(40f);
+        rightAxis.setAxisMaximum(60f);
         rightAxis.setAxisMinimum(0f);
         rightAxis.setDrawGridLines(true);
 
+        //Set paramètre du graph
         paramGraph();
 
     }
 
 
-    //Faire un systeme de min mSax
+
     void creaGraph() {
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-        if(boxO2.isChecked()) {
+        if(boxTemp.isChecked()) {
+            A_temp.add(new Entry(indice, listData.recup_data(listData.list_size()-1).getTemperature()));
+            LineDataSet setTemp = new LineDataSet(A_temp, "O2");
+            setTemp.setAxisDependency(YAxis.AxisDependency.LEFT);
+            paramSet(setTemp);
+            setTemp.setColor(Color.BLUE);
+            setTemp.setCircleColor(Color.BLUE);
+            dataSets.add(setTemp);
+        }
+        if (boxLux.isChecked()) {
+            A_lux.add(new Entry  (indice, listData.recup_data(listData.list_size()-1).getHumidite()));
+            //       A_lux.add(new Entry(listData.recup_data(listData.list_size() - 1).getHeure(), listData.recup_data(listData.list_size() - 1).getD_humidite()));
+            LineDataSet set02 = new LineDataSet(A_lux, "Lux");
+            paramSet(set02);
+            set02.setColor(Color.YELLOW);
+            set02.setCircleColor(Color.YELLOW);
+            dataSets.add(set02);
+        }
 
-                A_O2.add(new Entry(i++, listData.recup_data(listData.list_size()-1).getTemperature()));
-                LineDataSet set02 = new LineDataSet(A_O2, "O2");
-                paramSet(set02);
-                set02.setColor(Color.BLUE);
-                set02.setCircleColor(Color.BLUE);
+        if (boxHumi.isChecked()) {
+            A_humi.add(new Entry(indice, listData.recup_data(listData.list_size()-10).getHumidite()));
+            System.out.println(listData.recup_data(pos-20).getHumidite());
+            LineDataSet setHumi = new LineDataSet(A_humi, "Humidité");
+            setHumi.setAxisDependency(YAxis.AxisDependency.RIGHT);
+            paramSet(setHumi);
+            setHumi.setColor(Color.RED);
+            setHumi.setCircleColor(Color.RED);
 
-                dataSets.add(set02);
-            }
-        /*Proto*/
-            if (boxLux.isChecked()) {
-                A_lux.add(new Entry  (i++, listData.recup_data(listData.list_size()-1).getHumidite()));
+            dataSets.add(setHumi);
+        }
 
-
-                //       A_lux.add(new Entry(listData.recup_data(listData.list_size() - 1).getHeure(), listData.recup_data(listData.list_size() - 1).getD_humidite()));
-                LineDataSet set02 = new LineDataSet(A_lux, "Lux");
-                paramSet(set02);
-                set02.setColor(Color.YELLOW);
-                set02.setCircleColor(Color.YELLOW);
-
-                dataSets.add(set02);
-            }
-
-            if (boxTemp.isChecked()) {
-                A_temp.add(new Entry(pos, listData.recup_data(listData.list_size()-1).getHumidite()));
-                LineDataSet set = new LineDataSet(A_temp, "Température");
-                paramSet(set);
-                set.setColor(Color.RED);
-                set.setCircleColor(Color.RED);
-
-                dataSets.add(set);
-            }
-
-            actuValues();
-
-            LineData data = new LineData(dataSets);
-            graph.setData(data);
-            data.notifyDataChanged();
-            graph.notifyDataSetChanged();
-            graph.invalidate();
+        LineData data = new LineData(dataSets);
+        graph.setData(data);
+        indice++;
+        data.notifyDataChanged();
+        graph.notifyDataSetChanged();
+        graph.invalidate();
 
     }
 
+    private void checkchkBox(){
+        /*int checkActive=0;
+        for (CheckBox vb: ){ //Faire un tab de checkbox pour voir coombien sont check
+            if (vb.isChecked() && checkActive>2){
+                Toast.makeText(getApplicationContext(),"Il ne peut y avoir plus de 2 valeurs dans le graphique", Toast.LENGTH_SHORT).show();
+            }
+        }*/
+    }
 
     private void paramSet(LineDataSet set) {
 
@@ -255,92 +263,25 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         set.setCircleHoleRadius(1f);
         set.setValueTextSize(0f);
         set.setValueTextColor(Color.BLACK);
-      /*  set.setValueTextSize(10f);*/
+
+        /*  set.setValueTextSize(10f);*/
         set.setDrawValues(true);
 
     }
 
     void actuValues(){
         int y=(listData.list_size())-1;
+        val1.setText( listData.recup_data(y).getTemperature()+"°");
+        val1.setTextSize(18);
         val2.setText(listData.recup_data(y).getTemps());
-        val1.setText( ""+listData.recup_data(y).getTemperature());
-        val3.setText( ""+listData.recup_data(y).getHumidite());
-        val4.setText( ""+ listData.recup_data(y).getTemperature());
+        val2.setTextSize(18);
+
+        val3.setText(listData.recup_data(y).getHumidite()+"%");
+        val3.setTextSize(18);
+        val4.setText(listData.recup_data(y).getTemperature()+"°");
+        val4.setTextSize(18);
     }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()){
-            case R.id.boxTemp:
-            case R.id.boxO2:
-            case R.id.boxLux:
-                System.out.println("oe");
-                creaGraph();
-
-             /*   if (!rightAxis.isEnabled()){
-                    setRightAxis();
-                } else if (!leftAxis.isEnabled()){
-                    setLeftAxis();}
-                    else{
-                        boxTemp.clearFocus();
-                        boxTemp.setChecked(false);
-                    }
-                        //Créée petit message pour ddire nombre max de graph puis décoche
-*/
-
-                break;
-            case R.id.btnAdd:
-                Pop_up customPopup = new Pop_up(this);
-                customPopup.build();
-                customPopup.getYesButton().setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                                    Toast.makeText(getApplicationContext(),"Valeur ajoutée", Toast.LENGTH_SHORT).show();
-                                    DatabaseReference AjoutO2 = database.getReference("SAE_S3_BD/ESP32/A8:03:2A:EA:EE:CC/Mesure");
-                   //     AjoutO2.child("humidite").equalTo(0).on("child", functon(snapshot){
-                          //  System.out.println("yo"););
-
-                        AjoutO2.child("333").child("humidite").setValue(customPopup.getValue());
-                                    customPopup.dismiss();
-                    }
-                });
-                customPopup.getNoButton().setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        customPopup.dismiss();
-                    }
-                });
-                break;
-            case R.id.btnExport:
-                System.out.println("dld");
-
-            default:
-                break;
-
-        }
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch(item.getItemId()) {
-            case R.id.btnExport:
-                System.out.println("Fonction export sur excel");
-                break;
-            case R.id.rotate:
-                System.out.println("Rotation écran paysage");
-                break;
-            case R.id.retourArr:
-                System.out.println("Retour écran titre ");
-                break;
-            case R.id.setting:
-                System.out.println("Parametre");
-                Intent openSetting;
-                openSetting = new Intent(GraphPage.this, SettingPage.class);
-                startActivity(openSetting);
-                break;
-        }
-        return false;
-    }
 
     void paramGraph(){
         graph.setDrawGridBackground(false);
@@ -378,7 +319,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         graph.getXAxis().setDrawAxisLine(true);
         graph.getXAxis().setDrawGridLines(true);
 
-        graph.setVisibleXRangeMaximum(5);
+
         /* graph.setVisibleYRangeMaximum(120);
          graph.setVisibleYRange(30, YAxis.AxisDependency.LEFT);
         graph.getAxisLeft().setSpaceTop(10000000);
@@ -389,9 +330,73 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
     }
 
 
-public void editTemps() {
-    DatabaseReference varTemps = database.getReference("SAE_S3_BD/ESP32/A8:03:2A:EA:EE:CC");
-    varTemps.child("TauxRafraichissement").setValue(valeurTempo);
-}
+    public void editTemps() {
+        DatabaseReference varTemps = database.getReference("SAE_S3_BD/ESP32/A8:03:2A:EA:EE:CC");
+        varTemps.child("TauxRafraichissement").setValue(valeurTempo);
+    }
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.boxTemp:
+            case R.id.boxHumi:
+            case R.id.boxLux:
+                break;
+            case R.id.btnAdd:
+                Pop_up customPopup = new Pop_up(this);
+                customPopup.build();
+                customPopup.getYesButton().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Toast.makeText(getApplicationContext(),"Valeur ajoutée", Toast.LENGTH_SHORT).show();
+                        DatabaseReference AjoutO2 = database.getReference("SAE_S3_BD/ESP32/A8:03:2A:EA:EE:CC/Mesure");
+                        //     AjoutO2.child("humidite").equalTo(0).on("child", functon(snapshot){
+                        //  System.out.println("yo"););
+
+                        AjoutO2.child("333").child("humidite").setValue(customPopup.getValue());
+                        customPopup.dismiss();
+                    }
+                });
+                customPopup.getNoButton().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        customPopup.dismiss();
+                    }
+                });
+                break;
+            case R.id.rotate:
+                System.out.println("Rotation écran paysage");
+                break;
+            default:
+                break;
+
+        }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch(item.getItemId()) {
+
+            case R.id.retourArr:
+                System.out.println("Retour écran titre ");
+                break;
+            case R.id.setting:
+                System.out.println("Parametre");
+                Intent openSetting;
+                openSetting = new Intent(GraphPage.this, SettingPage.class);
+                startActivity(openSetting);
+                break;
+            case R.id.btnExport:
+                System.out.println("dld");
+        }
+        return false;
+    }
+    /*@Override
+    public void onValueSelected(Entry e, Highlight h) {
+        Log.i("VAL SELECTED",
+                "Value: " + e.getY() + ", xIndex: " + e.getX()
+                        + ", DataSet index: " + h.getDataSetIndex());
+
+    }
+*/
 
 }

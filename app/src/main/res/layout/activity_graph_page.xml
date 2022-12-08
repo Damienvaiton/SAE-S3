@@ -112,18 +112,18 @@
             android:layout_marginBottom="464dp"
             android:text="Lux"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/boxO2"
+            app:layout_constraintEnd_toStartOf="@+id/boxHumi"
             app:layout_constraintStart_toEndOf="@+id/boxTemp"
             app:layout_constraintTop_toTopOf="parent" />
 
         <CheckBox
-            android:id="@+id/boxO2"
+            android:id="@+id/boxHumi"
             android:layout_width="54dp"
             android:layout_height="21dp"
             android:layout_marginTop="100dp"
             android:layout_marginEnd="210dp"
             android:layout_marginBottom="464dp"
-            android:text="O2"
+            android:text="Humidité"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/boxLux"
