@@ -3,6 +3,7 @@ package com.example.pageacceuil;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
@@ -33,6 +34,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -85,13 +87,43 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32/A8:03:2A:EA:EE:CC/Mesure");
 
 
+
         listData=new ListData();
 
+         /* myRef.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            int i = 0;
+                                            for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                                                i++;
+                                                Data a = dataSnapshot.getValue(Data.class);
+                                                listData.list_add_data(a);
+                                                System.out.println(i + " ; " + a.getHumidite() + "/" + a.getTemperature());
+                                                listData.list_add_data(a);
+                                                listData.list_add_data(a);
+                                                val2.setText("" + a.getTemperature());
+                                                val2.setTextSize(18);
+                                                val3.setText("" + a.getHumidite());
+                                                val3.setTextSize(18);
+                                                creaGraph();
+
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                        }
+        });*/
         myRef.addChildEventListener(new ChildEventListener() {
             @Override
 
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+            }
 
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                    if(snapshot.getChildrenCount()==3){
                     Data a = snapshot.getValue(Data.class);
                     listData.list_add_data(a);
                     System.out.println(pos + " ; " + listData.recup_data(pos).getHumidite() + "/" + listData.recup_data(pos).getTemperature() + listData.recup_data(pos).getTemps());
@@ -99,12 +131,9 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
                     creaGraph();
                     actuValues();
 
+                }
             }
 
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
@@ -208,8 +237,8 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
     void creaGraph() {
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
         if(boxTemp.isChecked()) {
-            A_temp.add(new Entry(indice, listData.recup_data(listData.list_size()-1).getTemperature()));
-            LineDataSet setTemp = new LineDataSet(A_temp, "O2");
+            A_temp.add(new Entry(indice, (float) listData.recup_data(listData.list_size()-1).getTemperature()));
+            LineDataSet setTemp = new LineDataSet(A_temp, "Température");
             setTemp.setAxisDependency(YAxis.AxisDependency.LEFT);
             paramSet(setTemp);
             setTemp.setColor(Color.BLUE);
@@ -217,7 +246,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
             dataSets.add(setTemp);
         }
         if (boxLux.isChecked()) {
-            A_lux.add(new Entry  (indice, listData.recup_data(listData.list_size()-1).getHumidite()));
+            A_lux.add(new Entry  (indice, (float)listData.recup_data(listData.list_size()-1).getHumidite()));
             //       A_lux.add(new Entry(listData.recup_data(listData.list_size() - 1).getHeure(), listData.recup_data(listData.list_size() - 1).getD_humidite()));
             LineDataSet set02 = new LineDataSet(A_lux, "Lux");
             paramSet(set02);
@@ -227,8 +256,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         }
 
         if (boxHumi.isChecked()) {
-            A_humi.add(new Entry(indice, listData.recup_data(listData.list_size()-10).getHumidite()));
-            System.out.println(listData.recup_data(pos-20).getHumidite());
+            A_humi.add(new Entry(indice, (float)listData.recup_data(listData.list_size()-1).getHumidite()));
             LineDataSet setHumi = new LineDataSet(A_humi, "Humidité");
             setHumi.setAxisDependency(YAxis.AxisDependency.RIGHT);
             paramSet(setHumi);
@@ -258,6 +286,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
     private void paramSet(LineDataSet set) {
 
+        set.setFillAlpha(120);
         set.setLineWidth(2.5f);
         set.setCircleRadius(3.5f);
         set.setCircleHoleRadius(1f);
@@ -333,7 +362,10 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
     public void editTemps() {
         DatabaseReference varTemps = database.getReference("SAE_S3_BD/ESP32/A8:03:2A:EA:EE:CC");
         varTemps.child("TauxRafraichissement").setValue(valeurTempo);
+
     }
+
+
     @Override
     public void onClick(View view) {
         switch (view.getId()){
