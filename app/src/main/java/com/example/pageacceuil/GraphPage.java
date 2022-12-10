@@ -23,7 +23,9 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -165,6 +167,18 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
         //Constru graph
         graph = findViewById(R.id.lineChart);
+        graph.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                Toast.makeText(getApplicationContext(),"X "+h.getXPx()+" ou "+h.getX()+" : Y "+h.getYPx()+" ou "+h.getY(),Toast.LENGTH_SHORT);
+
+            }
+
+            @Override
+            public void onNothingSelected() {
+
+            }
+        });
 
         //Création Axe X
         XAxis xl = graph.getXAxis();
