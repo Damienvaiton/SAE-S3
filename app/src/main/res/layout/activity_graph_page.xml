@@ -20,7 +20,9 @@
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             app:menu="@menu/export"
-            app:labelVisibilityMode="labeled"/>
+            app:labelVisibilityMode="labeled"
+            app:itemIconTint="@color/redoblack"
+            app:itemTextColor="@color/redoblack"/>
 
 
     </com.google.android.material.bottomappbar.BottomAppBar>

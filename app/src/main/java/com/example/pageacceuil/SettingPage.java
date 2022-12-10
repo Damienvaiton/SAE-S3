@@ -17,9 +17,9 @@ public class SettingPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting_page);
 
-        max_g=(EditText)findViewById(R.id.max_gauche);
-        min_g=(EditText)findViewById(R.id.min_gauche);
-        max_d=(EditText)findViewById(R.id.max_droit);
-        min_d=(EditText)findViewById(R.id.min_droit);
+        max_g= findViewById(R.id.max_gauche);
+        min_g= findViewById(R.id.min_gauche);
+        max_d= findViewById(R.id.max_droit);
+        min_d= findViewById(R.id.min_droit);
     }
 }

@@ -3,11 +3,10 @@ package com.example.pageacceuil;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -24,7 +23,6 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -34,15 +32,14 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-public class GraphPage extends AppCompatActivity implements View.OnClickListener,BottomNavigationView.OnNavigationItemSelectedListener  {
+public class GraphPage extends AppCompatActivity implements View.OnClickListener, BottomNavigationView.OnNavigationItemSelectedListener {
 
     private LineChart graph;
-    public int indice=0;
-    public int pos=0;
+    public int indice = 0;
 
     public ListData listData;
 
@@ -61,11 +58,11 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
     private Button btnAjout;
 
-    private int valeurTempo=2000;
+    private final int valeurTempo = 2000;
 
     private BottomAppBar bottomNav;
     private BottomNavigationView bottomNavigationView;
-    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private final FirebaseDatabase database = FirebaseDatabase.getInstance();
 
 
     ArrayList<Entry> A_temp = new ArrayList<>();
@@ -87,34 +84,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32/A8:03:2A:EA:EE:CC/Mesure");
 
 
-
-        listData=new ListData();
-
-         /* myRef.addValueEventListener(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                            int i = 0;
-                                            for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                                                i++;
-                                                Data a = dataSnapshot.getValue(Data.class);
-                                                listData.list_add_data(a);
-                                                System.out.println(i + " ; " + a.getHumidite() + "/" + a.getTemperature());
-                                                listData.list_add_data(a);
-                                                listData.list_add_data(a);
-                                                val2.setText("" + a.getTemperature());
-                                                val2.setTextSize(18);
-                                                val3.setText("" + a.getHumidite());
-                                                val3.setTextSize(18);
-                                                creaGraph();
-
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError error) {
-
-                                        }
-        });*/
+        listData = new ListData();
         myRef.addChildEventListener(new ChildEventListener() {
             @Override
 
@@ -123,11 +93,10 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                    if(snapshot.getChildrenCount()==3){
+                if (snapshot.getChildrenCount() == 3) {
                     Data a = snapshot.getValue(Data.class);
+                    indice++;
                     listData.list_add_data(a);
-                    System.out.println(pos + " ; " + listData.recup_data(pos).getHumidite() + "/" + listData.recup_data(pos).getTemperature() + listData.recup_data(pos).getTemps());
-                    pos++;
                     creaGraph();
                     actuValues();
 
@@ -152,58 +121,50 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
             }
         });
 
-        valTemp=(EditText)findViewById(R.id.setTime);
-        valTemp.addTextChangedListener(new TextWatcher() {
+        valTemp = findViewById(R.id.setTime);
+        valTemp.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                valeurTempo=Integer.valueOf(valTemp.getText().toString());
-                editTemps();
-
-
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    Toast.makeText(getApplicationContext(), "Refresh :" + valTemp.getText(), Toast.LENGTH_SHORT).show();
+                    editTemps();
+                }
+                return false;
             }
         });
 
+
         //Textview pour affichage données en haut
-        val1=(TextView)findViewById(R.id.barVu1);
-        val2=(TextView)findViewById(R.id.barVu2);
-        val3=(TextView)findViewById(R.id.barVu3);
-        val4=(TextView)findViewById(R.id.barVu4);
+        val1 = findViewById(R.id.barVu1);
+        val2 = findViewById(R.id.barVu2);
+        val3 = findViewById(R.id.barVu3);
+        val4 = findViewById(R.id.barVu4);
 
         FloatingActionButton btnAdd = findViewById(R.id.btnAdd);
         btnAdd.setOnClickListener(this);
 
-        bottomNav=findViewById(R.id.bottomNav);
+        bottomNav = findViewById(R.id.bottomNav);
         setSupportActionBar(bottomNav);
 
-        bottomNavigationView=(BottomNavigationView)findViewById(R.id.bottomNavMenuView);
+        bottomNavigationView = findViewById(R.id.bottomNavMenuView);
         bottomNavigationView.setBackground(null);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
 
         //boxTemp
-        boxTemp=(CheckBox)findViewById(R.id.boxTemp);
+        boxTemp = findViewById(R.id.boxTemp);
         boxTemp.setOnClickListener(this);
 
         //boxHumi
-        boxHumi =(CheckBox)findViewById(R.id.boxHumi);
+        boxHumi = findViewById(R.id.boxHumi);
         boxHumi.setOnClickListener(this);
 
         //boxLux
-        boxLux=(CheckBox)findViewById(R.id.boxLux);
+        boxLux = findViewById(R.id.boxLux);
         boxLux.setOnClickListener(this);
 
 
         //Constru graph
-        graph = (LineChart) findViewById(R.id.lineChart);
+        graph = findViewById(R.id.lineChart);
 
         //Création Axe X
         XAxis xl = graph.getXAxis();
@@ -218,6 +179,8 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         leftAxis.setAxisMaximum(30f);
         leftAxis.setAxisMinimum(20f);
         leftAxis.setDrawGridLines(true);
+        leftAxis.setAxisLineColor(Color.RED);
+
 
         //Création Axe Y droit
         YAxis rightAxis = graph.getAxisRight();
@@ -233,11 +196,10 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
     }
 
 
-
     void creaGraph() {
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-        if(boxTemp.isChecked()) {
-            A_temp.add(new Entry(indice, (float) listData.recup_data(listData.list_size()-1).getTemperature()));
+        if (boxTemp.isChecked()) {
+            A_temp.add(new Entry(indice, (float) listData.recup_data(indice-1).getTemperature()));
             LineDataSet setTemp = new LineDataSet(A_temp, "Température");
             setTemp.setAxisDependency(YAxis.AxisDependency.LEFT);
             paramSet(setTemp);
@@ -246,7 +208,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
             dataSets.add(setTemp);
         }
         if (boxLux.isChecked()) {
-            A_lux.add(new Entry  (indice, (float)listData.recup_data(listData.list_size()-1).getHumidite()));
+            A_lux.add(new Entry(indice, (float) listData.recup_data(listData.list_size() - 1).getHumidite()));
             //       A_lux.add(new Entry(listData.recup_data(listData.list_size() - 1).getHeure(), listData.recup_data(listData.list_size() - 1).getD_humidite()));
             LineDataSet set02 = new LineDataSet(A_lux, "Lux");
             paramSet(set02);
@@ -256,7 +218,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         }
 
         if (boxHumi.isChecked()) {
-            A_humi.add(new Entry(indice, (float)listData.recup_data(listData.list_size()-1).getHumidite()));
+            A_humi.add(new Entry(indice, (float) listData.recup_data(listData.list_size()-1 ).getHumidite()));
             LineDataSet setHumi = new LineDataSet(A_humi, "Humidité");
             setHumi.setAxisDependency(YAxis.AxisDependency.RIGHT);
             paramSet(setHumi);
@@ -268,14 +230,13 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
         LineData data = new LineData(dataSets);
         graph.setData(data);
-        indice++;
         data.notifyDataChanged();
         graph.notifyDataSetChanged();
         graph.invalidate();
 
     }
 
-    private void checkchkBox(){
+    private void checkchkBox() {
         /*int checkActive=0;
         for (CheckBox vb: ){ //Faire un tab de checkbox pour voir coombien sont check
             if (vb.isChecked() && checkActive>2){
@@ -298,21 +259,22 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
     }
 
-    void actuValues(){
-        int y=(listData.list_size())-1;
-        val1.setText( listData.recup_data(y).getTemperature()+"°");
+    void actuValues() {
+        DecimalFormat a = new DecimalFormat("##.###");
+        int y = (listData.list_size()) - 1;
+        val1.setText(a.format(listData.recup_data(y).getTemperature()) + "°");
         val1.setTextSize(18);
-        val2.setText(listData.recup_data(y).getTemps());
+        val4.setText(listData.recup_data(y).getTemps());
         val2.setTextSize(18);
 
-        val3.setText(listData.recup_data(y).getHumidite()+"%");
+        val3.setText(a.format(listData.recup_data(y).getHumidite()) + "%");
         val3.setTextSize(18);
-        val4.setText(listData.recup_data(y).getTemperature()+"°");
+        val4.setText(a.format(listData.recup_data(y).getHumidite()) + "%");
         val4.setTextSize(18);
     }
 
 
-    void paramGraph(){
+    void paramGraph() {
         graph.setDrawGridBackground(false);
         graph.getDescription().setEnabled(false);
         graph.setDrawBorders(false);
@@ -368,18 +330,14 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
-            case R.id.boxTemp:
-            case R.id.boxHumi:
-            case R.id.boxLux:
-                break;
+        switch (view.getId()) {
             case R.id.btnAdd:
                 Pop_up customPopup = new Pop_up(this);
                 customPopup.build();
                 customPopup.getYesButton().setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Toast.makeText(getApplicationContext(),"Valeur ajoutée", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Valeur ajoutée", Toast.LENGTH_SHORT).show();
                         DatabaseReference AjoutO2 = database.getReference("SAE_S3_BD/ESP32/A8:03:2A:EA:EE:CC/Mesure");
                         //     AjoutO2.child("humidite").equalTo(0).on("child", functon(snapshot){
                         //  System.out.println("yo"););
@@ -395,9 +353,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
                     }
                 });
                 break;
-            case R.id.rotate:
-                System.out.println("Rotation écran paysage");
-                break;
+
             default:
                 break;
 
@@ -406,10 +362,29 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch(item.getItemId()) {
-
+        switch (item.getItemId()) {
+            case R.id.rotate:
+                System.out.println("Rotation écran paysage");
+                // Surface s=new Surface();
+                // s.ROTATION_90:
+                // Surface.
+                break;
             case R.id.retourArr:
+                Pop_up customPopup = new Pop_up(this);
+                customPopup.build("yo");
                 System.out.println("Retour écran titre ");
+                customPopup.getYesButton().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        GraphPage.this.finish();
+                    }
+                });
+                customPopup.getNoButton().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        customPopup.dismiss();
+                    }
+                });
                 break;
             case R.id.setting:
                 System.out.println("Parametre");
@@ -419,16 +394,20 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
                 break;
             case R.id.btnExport:
                 System.out.println("dld");
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + item.getItemId());
         }
         return false;
     }
-    /*@Override
+  /*  @Override
     public void onValueSelected(Entry e, Highlight h) {
         Log.i("VAL SELECTED",
                 "Value: " + e.getY() + ", xIndex: " + e.getX()
                         + ", DataSet index: " + h.getDataSetIndex());
 
     }
-*/
+    */
+
 
 }

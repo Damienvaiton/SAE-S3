@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
                         ChoixESP = (String) item.getTitle();
                         String[] choixe;
                         choixe = ChoixESP.split(" ");
-                        TextView textView = (TextView) findViewById(R.id.IndiqueESPChoise);
+                        TextView textView = findViewById(R.id.IndiqueESPChoise);
 
                         textView.setText(choixe[1]);
                         return true;

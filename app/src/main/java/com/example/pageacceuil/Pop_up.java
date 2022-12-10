@@ -11,16 +11,17 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class Pop_up  extends Dialog implements View.OnClickListener{
 
-    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private final FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-    private EditText valeur;
-    private Button yesButton, noButton;
+    private final EditText valeur;
+    private final Button yesButton;
+    private final Button noButton;
 
     public Pop_up(Activity activity) {
         super(activity, com.google.android.material.R.style.Theme_AppCompat_Dialog);
         setContentView(R.layout.pop_up_add);
 
-        this.valeur = (EditText) findViewById(R.id.pop_txt_value);
+        this.valeur = findViewById(R.id.pop_txt_value);
 
         this.yesButton = findViewById(R.id.yesButton);
         this.noButton = findViewById(R.id.noButton);
@@ -42,7 +43,13 @@ public class Pop_up  extends Dialog implements View.OnClickListener{
         return Float.valueOf(valeur.getText().toString());
     }
 
+
     public void build() {
+        show();
+    }
+
+    public void build(String txt) {
+        valeur.setText("Êtes-vous vraiment sûr de vouloir quitter? Toutes les données actuelles seront supprimées");
         show();
     }
 
