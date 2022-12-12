@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:background="@color/white">
+
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottomNav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:backgroundTint="@color/yellowgreen">
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNavMenuView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            app:menu="@menu/export"
+            app:labelVisibilityMode="labeled"
+            app:itemIconTint="@color/redoblack"
+            app:itemTextColor="@color/redoblack"/>
+
+
+    </com.google.android.material.bottomappbar.BottomAppBar>
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_anchor="@id/bottomNav"
+        android:src="@drawable/plus"
+        android:backgroundTint="@color/yellowgreen"
+        />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="629dp">
+
+
+
+
+        <TextView
+            android:id="@+id/barVu3"
+            android:layout_width="61dp"
+            android:layout_height="38dp"
+            android:layout_marginStart="79dp"
+            android:layout_marginTop="46dp"
+            android:layout_marginBottom="38dp"
+            android:text="TextView"
+            app:layout_constraintBottom_toTopOf="@+id/boxTemp"
+            app:layout_constraintEnd_toStartOf="@+id/barVu2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/setTime"
+            android:inputType="numberDecimal"
+            android:hint="2s"/>
+
+        <TextView
+            android:id="@+id/barVu2"
+            android:layout_width="61dp"
+            android:layout_height="38dp"
+            android:layout_marginTop="46dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginBottom="38dp"
+            android:text="TextView"
+            app:layout_constraintBottom_toTopOf="@+id/boxLux"
+            app:layout_constraintEnd_toStartOf="@+id/barVu1"
+            app:layout_constraintStart_toEndOf="@+id/barVu3"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/barVu4"
+            android:layout_width="61dp"
+            android:layout_height="38dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="46dp"
+            android:layout_marginEnd="86dp"
+            android:layout_marginBottom="545dp"
+            android:text="TextView"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/barVu1"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <CheckBox
+            android:id="@+id/boxTemp"
+            android:layout_width="54dp"
+            android:layout_height="21dp"
+            android:layout_marginStart="39dp"
+            android:layout_marginTop="100dp"
+            android:layout_marginBottom="464dp"
+            android:text="T°"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/boxLux"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <CheckBox
+            android:id="@+id/boxLux"
+            android:layout_width="54dp"
+            android:layout_height="21dp"
+            android:layout_marginTop="100dp"
+            android:layout_marginBottom="464dp"
+            android:text="Lux"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/boxHumi"
+            app:layout_constraintStart_toEndOf="@+id/boxTemp"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <CheckBox
+            android:id="@+id/boxHumi"
+            android:layout_width="54dp"
+            android:layout_height="21dp"
+            android:layout_marginTop="100dp"
+            android:layout_marginEnd="210dp"
+            android:layout_marginBottom="464dp"
+            android:text="Humidité"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/boxLux"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/barVu1"
+            android:layout_width="61dp"
+            android:layout_height="38dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="46dp"
+            android:layout_marginEnd="2dp"
+            android:layout_marginBottom="545dp"
+            android:text="TextView"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/barVu4"
+            app:layout_constraintStart_toEndOf="@+id/barVu2"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/lineChart"
+        android:layout_width="331dp"
+        android:layout_height="400dp"
+        android:layout_gravity="center"
+        tools:ignore="MissingClass">
+
+
+
+
+
+    </com.github.mikephil.charting.charts.LineChart>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

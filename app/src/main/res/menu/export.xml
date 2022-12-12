@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item
+        android:id="@+id/retourArr"
+        android:title="Retour"
+        android:icon="@drawable/ic_arrow"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/rotate"
+        android:title="Rotation"
+        android:icon="@drawable/ic_rotation"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/holder"
+        android:title=""
+        app:showAsAction="ifRoom"
+        android:enabled="false"/>
+    <item
+        android:id="@+id/btnExport"
+        android:title="Export"
+        android:icon="@drawable/export"
+        app:showAsAction="ifRoom"/>
+    <!-- Faire btnExport pour excel -->
+
+
+    <item
+        android:id="@+id/setting"
+        android:title="Paramètre"
+        android:icon="@drawable/ic_settings"
+        app:showAsAction="ifRoom"/>
+
+
+
+</menu>

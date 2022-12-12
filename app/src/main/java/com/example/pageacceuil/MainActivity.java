@@ -1,12 +1,8 @@
 package com.example.pageacceuil;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -15,8 +11,11 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 
 public class MainActivity extends AppCompatActivity {
+
 
 
     String ChoixESP = "";
@@ -24,20 +23,22 @@ public class MainActivity extends AppCompatActivity {
     Button btnsound;
     ImageButton btncoEtu;
     ImageButton btnCoAdmin;
-    MediaPlayer sn;
+    Button btnGraph;
 
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
 
+
         btnsound = findViewById(R.id.buttonsound);
         sn = MediaPlayer.create(this,R.raw.vege);
+
         btnselect = findViewById(R.id.Boutonsel);
         btncoEtu = findViewById(R.id.imageButton5);
         btnCoAdmin = findViewById(R.id.imageButton4);
+        btnGraph=findViewById(R.id.btnGraph);
 
         btnselect.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
                         ChoixESP = (String) item.getTitle();
                         String[] choixe;
                         choixe = ChoixESP.split(" ");
-                        TextView textView = (TextView) findViewById(R.id.IndiqueESPChoise);
+                        TextView textView = findViewById(R.id.IndiqueESPChoise);
 
                         textView.setText(choixe[1]);
                         return true;
@@ -88,12 +89,20 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent connect;
                 connect = new Intent(MainActivity.this, connectadmin.class);
-
                 startActivity(connect);
             }
         });
-    }
 
+        btnGraph.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent vu;
+                vu = new Intent(MainActivity.this, GraphPage.class);
+
+                startActivity(vu);
+            }
+        });
+    }
 
 }
 
