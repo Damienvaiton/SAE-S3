@@ -1,6 +1,7 @@
 package com.example.pageacceuil;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,10 +20,10 @@ public class MainActivity extends AppCompatActivity {
 
     String ChoixESP = "";
     ImageButton btnselect;
+    Button btnsound;
     ImageButton btncoEtu;
     ImageButton btnCoAdmin;
     Button btnGraph;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +31,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
+
+        btnsound = findViewById(R.id.buttonsound);
+        sn = MediaPlayer.create(this,R.raw.vege);
 
         btnselect = findViewById(R.id.Boutonsel);
         btncoEtu = findViewById(R.id.imageButton5);
@@ -71,6 +75,13 @@ public class MainActivity extends AppCompatActivity {
                 connec = new Intent(MainActivity.this, connectetu.class);
 
                 startActivity(connec);
+            }
+        });
+
+        btnsound.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                    sn.start();
             }
         });
         btnCoAdmin.setOnClickListener(new View.OnClickListener() {
