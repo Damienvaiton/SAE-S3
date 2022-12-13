@@ -24,17 +24,13 @@ public class MainActivity extends AppCompatActivity {
     ImageButton btncoEtu;
     ImageButton btnCoAdmin;
     Button btnGraph;
+    String temp[];
+    static String ChoixEspTransfert;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
-
-        btnsound = findViewById(R.id.buttonsound);
-        sn = MediaPlayer.create(this,R.raw.vege);
-
         btnselect = findViewById(R.id.Boutonsel);
         btncoEtu = findViewById(R.id.imageButton5);
         btnCoAdmin = findViewById(R.id.imageButton4);
@@ -58,6 +54,11 @@ public class MainActivity extends AppCompatActivity {
                         TextView textView = findViewById(R.id.IndiqueESPChoise);
 
                         textView.setText(choixe[1]);
+                        ChoixEspTransfert = choixe[1];
+                        temp = ChoixEspTransfert.split("°");
+                        ChoixEspTransfert = temp[1];
+
+
                         return true;
                     }
                 });
