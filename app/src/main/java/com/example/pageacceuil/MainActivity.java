@@ -79,12 +79,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        btnsound.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                    sn.start();
-            }
-        });
         btnCoAdmin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
