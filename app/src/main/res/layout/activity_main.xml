@@ -68,9 +68,8 @@
         android:layout_marginStart="78dp"
         android:layout_marginTop="58dp"
         android:layout_marginEnd="88dp"
-        android:layout_marginBottom="58dp"
         android:background="@drawable/choisir"
-        app:layout_constraintBottom_toTopOf="@+id/imageButton5"
+        app:layout_constraintBottom_toTopOf="@+id/IndiqueESPChoise"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
@@ -100,5 +99,46 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Boutonsel" />
+
+    <TextView
+        android:id="@+id/IndiqueESPChoise"
+        android:layout_width="102dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="154dp"
+        android:layout_marginEnd="155dp"
+        android:layout_marginBottom="41dp"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintBottom_toTopOf="@+id/imageButton5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Boutonsel" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="157dp"
+        android:layout_height="169dp"
+        android:layout_marginEnd="32dp"
+        android:background="#00FFFFFF"
+        android:text=" "
+        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        app:layout_constraintEnd_toEndOf="@+id/imageView"
+        app:layout_constraintHorizontal_bias="0.765"
+        app:layout_constraintStart_toStartOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="@+id/imageView"
+        app:layout_constraintVertical_bias="0.523" />
+
+    <Button
+        android:id="@+id/btnGraph"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="161dp"
+        android:layout_marginEnd="162dp"
+        android:layout_marginBottom="10dp"
+        android:text="Graph"
+        app:layout_constraintBottom_toTopOf="@+id/Boutonsel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
