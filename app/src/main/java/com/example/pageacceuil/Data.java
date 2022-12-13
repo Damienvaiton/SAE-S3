@@ -1,12 +1,10 @@
 package com.example.pageacceuil;
 
-import java.text.DecimalFormat;
-
 
 public class Data {
 
-    private float humidite;
-    private float temperature;
+    private double humidite;
+    private double temperature;
     private float lux;
     private float O2;
     private float CO2;
@@ -15,7 +13,7 @@ public class Data {
     public Data() {
     }
 
-    public float getHumidite() {
+    public double getHumidite() {
         return humidite;
     }
 
@@ -23,7 +21,7 @@ public class Data {
         this.humidite = humidite;
     }
 
-    public float getTemperature() {
+    public double getTemperature() {
         return temperature;
     }
 

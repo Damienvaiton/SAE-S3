@@ -1,7 +1,7 @@
 package com.example.pageacceuil;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,9 +13,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,18 +20,17 @@ public class MainActivity extends AppCompatActivity {
 
     String ChoixESP = "";
     ImageButton btnselect;
+    Button btnsound;
     ImageButton btncoEtu;
     ImageButton btnCoAdmin;
     Button btnGraph;
     String temp[];
     static String ChoixEspTransfert;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         btnselect = findViewById(R.id.Boutonsel);
         btncoEtu = findViewById(R.id.imageButton5);
         btnCoAdmin = findViewById(R.id.imageButton4);
@@ -55,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
                         ChoixESP = (String) item.getTitle();
                         String[] choixe;
                         choixe = ChoixESP.split(" ");
-                        TextView textView = (TextView) findViewById(R.id.IndiqueESPChoise);
+                        TextView textView = findViewById(R.id.IndiqueESPChoise);
 
                         textView.setText(choixe[1]);
                         ChoixEspTransfert = choixe[1];
@@ -82,12 +78,18 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(connec);
             }
         });
+
+        btnsound.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                    sn.start();
+            }
+        });
         btnCoAdmin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent connect;
                 connect = new Intent(MainActivity.this, connectadmin.class);
-
                 startActivity(connect);
             }
         });
