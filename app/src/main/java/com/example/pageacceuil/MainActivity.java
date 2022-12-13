@@ -35,8 +35,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-
         btnselect = findViewById(R.id.Boutonsel);
         btncoEtu = findViewById(R.id.imageButton5);
         btnCoAdmin = findViewById(R.id.imageButton4);
