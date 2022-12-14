@@ -5,6 +5,7 @@
 
     <item
         android:id="@+id/retourArr"
+        android:iconTint="@color/cardview_shadow_start_color"
         android:title="Retour"
         android:icon="@drawable/ic_arrow"
         app:showAsAction="ifRoom"/>

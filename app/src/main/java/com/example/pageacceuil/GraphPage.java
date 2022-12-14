@@ -38,7 +38,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.core.Path;
 
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -49,45 +48,31 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class GraphPage extends AppCompatActivity implements View.OnClickListener, BottomNavigationView.OnNavigationItemSelectedListener {
 
-    private LineChart graph;
+    private final int valeurTempo = 2000;
+    private final FirebaseDatabase database = FirebaseDatabase.getInstance();
     public int indice = 0;
-
     public ListData listData;
-
-
+    ArrayList<Entry> A_temp = new ArrayList<>();
+    ArrayList<Entry> A_lux = new ArrayList<>();
+    ArrayList<Entry> A_humi = new ArrayList<>();
+    private LineChart graph;
     private TextView val4;
     private TextView val3;
     private TextView val2;
     private TextView val1;
-
     private EditText valTemp;
-
-
     private CheckBox boxTemp;
     private CheckBox boxHumi;
     private CheckBox boxLux;
-
     private Button btnAjout;
-
- 
     private   String choixESP="";
-    private final int valeurTempo = 2000;
-
     private BottomAppBar bottomNav;
     private BottomNavigationView bottomNavigationView;
-    private final FirebaseDatabase database = FirebaseDatabase.getInstance();
-
-
-    ArrayList<Entry> A_temp = new ArrayList<>();
-    ArrayList<Entry> A_lux = new ArrayList<>();
-    ArrayList<Entry> A_humi = new ArrayList<>();
-
     private YAxis leftAxis;
     private YAxis rightAxis;
     private XAxis xl;
@@ -152,7 +137,6 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 System.out.println("Impossible d'accéder au données");
-
             }
         });
 
@@ -171,9 +155,13 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
         //Textview pour affichage données en haut
         val1 = findViewById(R.id.barVu1);
+        val1.setText("T°");
         val2 = findViewById(R.id.barVu2);
+        val2.setText("Heure");
         val3 = findViewById(R.id.barVu3);
+        val3.setText("Humidité");
         val4 = findViewById(R.id.barVu4);
+        val4.setText("T°");
 
         FloatingActionButton btnAdd = findViewById(R.id.btnAdd);
         btnAdd.setOnClickListener(this);
@@ -309,7 +297,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
     void actuValues() {
         DecimalFormat a = new DecimalFormat("##.###");
         int y = (listData.list_size()) - 1;
-        val1.setText(a.format(listData.recup_data(y).getTemperature()) + "°");
+        val1.setText(a.format(listData.recup_data(y).getTemperature()) + "°"); // Test si c'est possible d'y faire avec indice
         val1.setTextSize(18);
         val4.setText(listData.recup_data(y).getTemps());
         val2.setTextSize(18);
@@ -322,6 +310,8 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
 
     void paramGraph() {
+        graph.setNoDataText("Aucune données reçu pour le moment");
+//        graph.setNoDataTextColor(3);
         graph.setDrawGridBackground(false);
         graph.getDescription().setEnabled(false);
         graph.setDrawBorders(false);
@@ -380,7 +370,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         switch (view.getId()) {
             case R.id.btnAdd:
                 Pop_up customPopup = new Pop_up(this);
-                customPopup.build();
+                customPopup.build("Ajout O2","");
                 customPopup.getYesButton().setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -418,7 +408,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
                 break;
             case R.id.retourArr:
                 Pop_up customPopup = new Pop_up(this);
-                customPopup.build("yo");
+                customPopup.build("Sûr?");
                 System.out.println("Retour écran titre ");
                 customPopup.getYesButton().setOnClickListener(new View.OnClickListener() {
                     @Override
