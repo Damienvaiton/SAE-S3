@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,6 +41,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.core.Path;
 
 
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+
+import java.io.File;
+import java.io.FileOutputStream;
 import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -193,13 +202,13 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         graph = findViewById(R.id.lineChart);
         graph.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
-            public void onValueSelected(Entry e, Highlight h) {
-                Toast.makeText(getApplicationContext(),"X "+h.getXPx()+" ou "+h.getX()+" : Y "+h.getYPx()+" ou "+h.getY(),Toast.LENGTH_SHORT);
+            public void onNothingSelected() {
 
             }
 
             @Override
-            public void onNothingSelected() {
+            public void onValueSelected(Entry e, Highlight h) {
+                Toast.makeText(getApplicationContext(),"X "+h.getX()+" : Y "+h.getY(),Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -431,21 +440,60 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
                 startActivity(openSetting);
                 break;
             case R.id.btnExport:
-                System.out.println("dld");
+                try{
+                    Toast.makeText(getApplicationContext(),"Export excel commencé ",Toast.LENGTH_SHORT).show();
+                    exportFile();
+                    System.out.println("Export excel ?");
+
+                }
+                catch(Exception e){
+                    e.printStackTrace();
+                }
+
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + item.getItemId());
         }
         return false;
     }
-  /*  @Override
-    public void onValueSelected(Entry e, Highlight h) {
-        Log.i("VAL SELECTED",
-                "Value: " + e.getY() + ", xIndex: " + e.getX()
-                        + ", DataSet index: " + h.getDataSetIndex());
+    private void exportFile() {
+        File file = new File(Environment.getExternalStorageDirectory()+File.separator+"Download"+File.separator+"SAE MESURES","Mesure.xls");
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        HSSFSheet sheet = workbook.createSheet("Mesures");
+        // Add value in the cell
+        HSSFRow row0 = sheet.createRow(0);
 
+        // Ajout d'une cellule
+        HSSFRow titreRow = sheet.getRow(0);
+        HSSFCell cellTitre0 = titreRow.createCell(0);
+        cellTitre0.setCellValue("Numero mesure");
+
+        HSSFCell cell0 = titreRow.getCell(0);
+        HSSFCellStyle nomCell0 = cell0.getCellStyle();
+        cell0.setCellStyle(nomCell0);
+
+        row0.createCell(1).setCellValue("Humidite");
+        row0.createCell(2).setCellValue("Temperature");
+        row0.createCell(3).setCellValue("Heure");
+
+        HSSFRow row1 = sheet.createRow(1);
+        row1.createCell(0).setCellValue("0");
+        row1.createCell(1).setCellValue("41");
+        row1.createCell(2).setCellValue("21.9");
+        row1.createCell(3).setCellValue("16:20:24");
+        try {
+            if (file.exists()){
+                file.createNewFile();
+            }
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+            workbook.write(fileOutputStream);
+            if (fileOutputStream != null) {
+                fileOutputStream.flush();
+                fileOutputStream.close();
+                Toast.makeText(this, "Export excel dans le fichier telechargements", Toast.LENGTH_SHORT).show();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-    */
-
-
 }
