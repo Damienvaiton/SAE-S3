@@ -1,9 +1,10 @@
 package com.example.pageacceuil;
+
 import static java.lang.Integer.parseInt;
-import static java.lang.Integer.valueOf;
+
 import android.annotation.SuppressLint;
-import android.content.res.Resources;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
@@ -39,7 +40,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -59,13 +59,17 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
     public ListData listData;
     ArrayList<Entry> A_temp = new ArrayList<>();
     ArrayList<Entry> A_lux = new ArrayList<>();
+    ArrayList<Entry> A_CO2 = new ArrayList<>();
     ArrayList<Entry> A_humi = new ArrayList<>();
+    ArrayList<Entry> A_O2 = new ArrayList<>();
     private LineChart graph;
     private TextView val4;
     private TextView val3;
     private TextView val2;
     private TextView val1;
     private EditText valTemp;
+    private CheckBox boxO2;
+    private CheckBox boxCO2;
     private CheckBox boxTemp;
     private CheckBox boxHumi;
     private CheckBox boxLux;
@@ -74,7 +78,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
     private BottomAppBar bottomNav;
     private BottomNavigationView bottomNavigationView;
     private YAxis leftAxis;
-    private YAxis rightAxis;
+    static YAxis rightAxis;
     private XAxis xl;
 
 
@@ -113,7 +117,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                if (snapshot.getChildrenCount() == 3) {
+                if (snapshot.getChildrenCount() == 4) {
                     Data a = snapshot.getValue(Data.class);
                     indice++;
                     listData.list_add_data(a);
@@ -141,12 +145,12 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         });
 
         valTemp = findViewById(R.id.setTime);
+        valTemp.setHint(valeurTempo/1000+"s");
         valTemp.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    Toast.makeText(getApplicationContext(), "Refresh :" + valTemp.getText(), Toast.LENGTH_SHORT).show();
-                    editTemps();
+                    editTemps((valTemp.getText().toString()));
                 }
                 return false;
             }
@@ -161,7 +165,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         val3 = findViewById(R.id.barVu3);
         val3.setText("Humidité");
         val4 = findViewById(R.id.barVu4);
-        val4.setText("T°");
+        val4.setText("CO2");
 
         FloatingActionButton btnAdd = findViewById(R.id.btnAdd);
         btnAdd.setOnClickListener(this);
@@ -180,6 +184,13 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         //boxHumi
         boxHumi = findViewById(R.id.boxHumi);
         boxHumi.setOnClickListener(this);
+
+        boxCO2 = findViewById(R.id.boxCO2);
+        boxCO2.setOnClickListener(this);
+
+        boxO2 = findViewById(R.id.boxO2);
+        boxO2.setOnClickListener(this);
+
 
         //boxLux
         boxLux = findViewById(R.id.boxLux);
@@ -211,8 +222,8 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         //Création Axe Y gauche
         YAxis leftAxis = graph.getAxisLeft();
         leftAxis.setTextColor(Color.BLACK);
-        leftAxis.setAxisMaximum(30f);
-        leftAxis.setAxisMinimum(20f);
+       // leftAxis.setAxisMaximum(30f);
+       // leftAxis.setAxisMinimum(20f);
         leftAxis.setDrawGridLines(true);
         leftAxis.setAxisLineColor(Color.RED);
 
@@ -221,8 +232,8 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         YAxis rightAxis = graph.getAxisRight();
         rightAxis.setEnabled(true);
         rightAxis.setTextColor(Color.BLACK);
-        rightAxis.setAxisMaximum(60f);
-        rightAxis.setAxisMinimum(0f);
+        //rightAxis.setAxisMaximum(60f);
+        //rightAxis.setAxisMinimum(0f);
         rightAxis.setDrawGridLines(true);
 
         //Set paramètre du graph
@@ -233,6 +244,15 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
     void creaGraph() {
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+       /* if (boxCO2.isChecked()) {
+            A_CO2.add(new Entry(indice, (float) listData.recup_data(indice-1).getTemperature()));
+            LineDataSet setCO2 = new LineDataSet(A_CO2, "CO2");
+            setCO2.setAxisDependency(YAxis.AxisDependency.LEFT);
+            paramSet(setCO2);
+            setCO2.setColor(Color.RED);
+            setCO2.setCircleColor(Color.RED);
+            dataSets.add(setCO2);
+        }*/
         if (boxTemp.isChecked()) {
             A_temp.add(new Entry(indice, (float) listData.recup_data(indice-1).getTemperature()));
             LineDataSet setTemp = new LineDataSet(A_temp, "Température");
@@ -242,15 +262,15 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
             setTemp.setCircleColor(Color.BLUE);
             dataSets.add(setTemp);
         }
-        if (boxLux.isChecked()) {
-            A_lux.add(new Entry(indice, (float) listData.recup_data(listData.list_size() - 1).getHumidite()));
+      /*  if (boxLux.isChecked()) {
+            A_CO2.add(new Entry(indice, (float) listData.recup_data(listData.list_size() - 1).getCO2()));
             //       A_lux.add(new Entry(listData.recup_data(listData.list_size() - 1).getHeure(), listData.recup_data(listData.list_size() - 1).getD_humidite()));
-            LineDataSet set02 = new LineDataSet(A_lux, "Lux");
-            paramSet(set02);
-            set02.setColor(Color.YELLOW);
-            set02.setCircleColor(Color.YELLOW);
-            dataSets.add(set02);
-        }
+            LineDataSet setLux = new LineDataSet(A_CO2, "Lux");
+            paramSet(setLux);
+            setLux.setColor(Color.YELLOW);
+            setLux.setCircleColor(Color.YELLOW);
+            dataSets.add(setLux);
+        }*/
 
         if (boxHumi.isChecked()) {
             A_humi.add(new Entry(indice, (float) listData.recup_data(listData.list_size()-1 ).getHumidite()));
@@ -262,6 +282,16 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
             dataSets.add(setHumi);
         }
+      /*  if (boxO2.isChecked()) {
+            A_O2.add(new Entry(indice, (float) listData.recup_data(listData.list_size()-1 ).getHumidite()));
+            LineDataSet setO2 = new LineDataSet(A_O2, "O2");
+            setO2.setAxisDependency(YAxis.AxisDependency.RIGHT);
+            paramSet(setO2);
+            setO2.setColor(Color.BLACK);
+            setO2.setCircleColor(Color.BLACK);
+
+            dataSets.add(setO2);
+        }*/
 
         LineData data = new LineData(dataSets);
         graph.setData(data);
@@ -302,7 +332,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         val4.setText(listData.recup_data(y).getTemps());
         val2.setTextSize(18);
 
-        val3.setText(a.format(listData.recup_data(y).getHumidite()) + "%");
+        val3.setText(a.format(listData.recup_data(y).getCO2()) + "%");
         val3.setTextSize(18);
         val4.setText(a.format(listData.recup_data(y).getHumidite()) + "%");
         val4.setTextSize(18);
@@ -337,7 +367,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
         graph.setDrawGridBackground(true);
         graph.getDescription().setEnabled(true);
-        graph.getDescription().setText("c les ratz");
+        graph.getDescription().setText("UniLyon1");
 
         graph.setDrawBorders(true);
 
@@ -358,9 +388,13 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
     }
 
 
-    public void editTemps() {
+    public void editTemps(String values) {
+        int valuesINT=parseInt(values);
         DatabaseReference varTemps = database.getReference("SAE_S3_BD/ESP32/A8:03:2A:EA:EE:CC");
-        varTemps.child("TauxRafraichissement").setValue(valeurTempo);
+        varTemps.child("TauxRafraichissement").setValue(valuesINT*1000);
+        valTemp.setHint(valuesINT*1000+"s");
+        Toast.makeText(getApplicationContext(), "Refresh : " + valuesINT+"s", Toast.LENGTH_SHORT).show();
+
 
     }
 
@@ -447,7 +481,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         return false;
     }
     private void exportFile() {
-        File file = new File(Environment.getExternalStorageDirectory()+File.separator+"Download"+File.separator+"SAE MESURES","Mesure.xls");
+        File file = new File(Environment.getExternalStorageDirectory()+File.separator+"Download","Mesure.xls");
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheet = workbook.createSheet("Mesures");
         // Add value in the cell

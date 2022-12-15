@@ -50,11 +50,13 @@ public class SettingPage extends AppCompatActivity implements View.OnClickListen
        b_gauche.setOnClickListener(this);
         b_droit.setOnClickListener(this);
 
+
             }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+
             case R.id.delete_bd:
                 Pop_up customPopup=new Pop_up(this);
                 customPopup.build("Sûr?");

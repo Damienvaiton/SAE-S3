@@ -109,6 +109,29 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <CheckBox
+            android:id="@+id/boxO2"
+            android:layout_width="54dp"
+            android:layout_height="21dp"
+            android:layout_marginTop="49dp"
+            android:layout_marginBottom="429dp"
+            android:text="O2"
+            app:layout_constraintBottom_toTopOf="@+id/textView5"
+            app:layout_constraintStart_toEndOf="@+id/boxCO2"
+            app:layout_constraintTop_toBottomOf="@+id/barVu4" />
+
+        <CheckBox
+            android:id="@+id/boxCO2"
+            android:layout_width="54dp"
+            android:layout_height="21dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="49dp"
+            android:layout_marginBottom="509dp"
+            android:text="CO2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/boxHumi"
+            app:layout_constraintTop_toBottomOf="@+id/barVu1" />
+
+        <CheckBox
             android:id="@+id/boxHumi"
             android:layout_width="54dp"
             android:layout_height="21dp"
@@ -143,7 +166,6 @@
             android:layout_marginTop="522dp"
             android:layout_marginEnd="2dp"
             android:layout_marginBottom="16dp"
-            android:hint="2s"
             android:inputType="numberDecimal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

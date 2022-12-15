@@ -1,7 +1,6 @@
 package com.example.pageacceuil;
 
 import android.content.Intent;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
