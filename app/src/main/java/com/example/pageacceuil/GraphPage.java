@@ -447,7 +447,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         return false;
     }
     private void exportFile() {
-        File file = new File(Environment.getExternalStorageDirectory()+File.separator+"Download"+File.separator+"SAE MESURES","Mesure.xls");
+        File file = new File(Environment.getExternalStorageDirectory()+File.separator+"Download","Mesure.xls");
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheet = workbook.createSheet("Mesures");
         // Add value in the cell
