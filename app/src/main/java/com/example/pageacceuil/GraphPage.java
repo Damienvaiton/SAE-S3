@@ -1,9 +1,10 @@
 package com.example.pageacceuil;
+
 import static java.lang.Integer.parseInt;
-import static java.lang.Integer.valueOf;
+
 import android.annotation.SuppressLint;
-import android.content.res.Resources;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
@@ -39,7 +40,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -74,7 +74,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
     private BottomAppBar bottomNav;
     private BottomNavigationView bottomNavigationView;
     private YAxis leftAxis;
-    private YAxis rightAxis;
+    static YAxis rightAxis;
     private XAxis xl;
 
 
@@ -141,12 +141,12 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         });
 
         valTemp = findViewById(R.id.setTime);
+        valTemp.setHint(valeurTempo/1000+"s");
         valTemp.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    Toast.makeText(getApplicationContext(), "Refresh :" + valTemp.getText(), Toast.LENGTH_SHORT).show();
-                    editTemps();
+                    editTemps((valTemp.getText().toString()));
                 }
                 return false;
             }
@@ -358,9 +358,13 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
     }
 
 
-    public void editTemps() {
+    public void editTemps(String values) {
+        int valuesINT=parseInt(values);
         DatabaseReference varTemps = database.getReference("SAE_S3_BD/ESP32/A8:03:2A:EA:EE:CC");
-        varTemps.child("TauxRafraichissement").setValue(valeurTempo);
+        varTemps.child("TauxRafraichissement").setValue(valuesINT*1000);
+        valTemp.setHint(valuesINT*1000+"s");
+        Toast.makeText(getApplicationContext(), "Refresh : " + valuesINT+"s", Toast.LENGTH_SHORT).show();
+
 
     }
 
@@ -447,7 +451,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         return false;
     }
     private void exportFile() {
-        File file = new File(Environment.getExternalStorageDirectory()+File.separator+"Download"+File.separator+"SAE MESURES","Mesure.xls");
+        File file = new File(Environment.getExternalStorageDirectory()+File.separator+"Download","Mesure.xls");
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheet = workbook.createSheet("Mesures");
         // Add value in the cell
