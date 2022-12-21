@@ -31,14 +31,23 @@ Context context;
 
     }
 
+    public void setFirst(@NonNull MyViewHolder holder){
+        holder.temp.setText("Température");
+        holder.humi.setText("Humidité");
+        holder.co2.setText("CO2");
+        holder.o2.setText("02");
+        holder.lux.setText("lux");
+        holder.temps.setText("Heure");
+    }
+
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.temp.setText((listData.recup_data(position).getTemperature())+"°");
-        holder.humi.setText((listData.recup_data(position).getHumidite())+"%");
-        holder.co2.setText((listData.recup_data(position).getCO2())+"%");
-        holder.o2.setText((listData.recup_data(position).getO2())+"%");
-        holder.lux.setText((listData.recup_data(position).getLux())+"lux");
-        holder.temps.setText((listData.recup_data(position).getTemps())+"h");
+            holder.temp.setText((listData.recup_data(position).getTemperature()) + "°");
+            holder.humi.setText((listData.recup_data(position).getHumidite()) + "%");
+            holder.co2.setText((listData.recup_data(position).getCO2()) + "%");
+            holder.o2.setText((listData.recup_data(position).getO2()) + "%");
+            holder.lux.setText((listData.recup_data(position).getLux()) + "lux");
+            holder.temps.setText((listData.recup_data(position).getTemps()) + "h");
     }
 
     @Override

@@ -21,13 +21,14 @@ public class VueData extends AppCompatActivity {
         if (intent != null) {
             if (intent.hasExtra("listData")) {
                 this.listData = (ListData) intent.getSerializableExtra("listData");
-                System.out.println("yes bg");
+                System.out.println("ok");
             } else {
                 System.out.println("erreur");
             }
         }
 
-        listData.list_add_data(new Data(45,23,230,23,73,"15:23:30"));
+
+        listData.list_add_data(new Data(22,23,230,23,73,"15:23:30"));
         listData.list_add_data(new Data(45,23,230,23,73,"15:23:30"));
         listData.list_add_data(new Data(45,23,230,23,73,"15:23:30"));
         listData.list_add_data(new Data(45,23,230,23,73,"15:23:30"));
