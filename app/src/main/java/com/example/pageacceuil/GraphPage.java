@@ -8,13 +8,10 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
-import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +36,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -49,11 +47,12 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class GraphPage extends AppCompatActivity implements View.OnClickListener, BottomNavigationView.OnNavigationItemSelectedListener {
 
-    private final int valeurTempo = 2000;
+
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
     public int indice = 0;
     public ListData listData;
@@ -67,7 +66,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
     private TextView val3;
     private TextView val2;
     private TextView val1;
-    private EditText valTemp;
+    private TextView valTemp;
     private CheckBox boxO2;
     private CheckBox boxCO2;
     private CheckBox boxTemp;
@@ -103,6 +102,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
         temp = "SAE_S3_BD/ESP32/"+test[cho]+"/Mesure";
 
+        SimpleDateFormat sdf=new SimpleDateFormat("hh:mm:ss");
 
 
         DatabaseReference myRef = database.getReference(temp);
@@ -144,17 +144,21 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
             }
         });
 
-        valTemp = findViewById(R.id.setTime);
-        valTemp.setHint(valeurTempo/1000+"s");
-        valTemp.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    editTemps((valTemp.getText().toString()));
-                }
-                return false;
-            }
-        });
+        DatabaseReference varTemps = database.getReference("SAE_S3_BD/ESP32/"+test[cho]+"/TauxRafraichissement");
+varTemps.addListenerForSingleValueEvent(new ValueEventListener() {
+    @Override
+    public void onDataChange(@NonNull DataSnapshot snapshot) {
+        valTemp.setText((int)snapshot.getValue(Integer.class)/1000+"s");
+    }
+
+    @Override
+    public void onCancelled(@NonNull DatabaseError error) {
+
+    }
+});
+        valTemp = findViewById(R.id.viewTime);
+
+
 
 
         //Textview pour affichage données en haut
@@ -213,6 +217,9 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         });
 
         //Création Axe X
+
+      //  XAxisRenderer mXAxisRenderer = new XAxisRenderer(ViewPortHandler, mXAxis, mLeftAxisTransformer);
+
         XAxis xl = graph.getXAxis();
         xl.setTextColor(Color.BLACK);
         xl.setDrawGridLines(true);
@@ -388,15 +395,6 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
     }
 
 
-    public void editTemps(String values) {
-        int valuesINT=parseInt(values);
-        DatabaseReference varTemps = database.getReference("SAE_S3_BD/ESP32/A8:03:2A:EA:EE:CC");
-        varTemps.child("TauxRafraichissement").setValue(valuesINT*1000);
-        valTemp.setHint(valuesINT*1000+"s");
-        Toast.makeText(getApplicationContext(), "Refresh : " + valuesINT+"s", Toast.LENGTH_SHORT).show();
-
-
-    }
 
 
     @Override
@@ -440,22 +438,12 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
                 // s.ROTATION_90:
                 // Surface.
                 break;
-            case R.id.retourArr:
-                Pop_up customPopup = new Pop_up(this);
-                customPopup.build("Sûr?");
-                System.out.println("Retour écran titre ");
-                customPopup.getYesButton().setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        GraphPage.this.finish();
-                    }
-                });
-                customPopup.getNoButton().setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        customPopup.dismiss();
-                    }
-                });
+            case R.id.viewData:
+                Intent openViewData;
+                openViewData = new Intent(GraphPage.this, VueData.class);
+                openViewData.putExtra("listData",listData);
+                startActivity(openViewData);
+
                 break;
             case R.id.setting:
                 System.out.println("Parametre");

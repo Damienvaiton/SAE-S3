@@ -13,6 +13,15 @@ public class Data {
     public Data() {
     }
 
+    public Data(double humidite, double temperature, float lux, float o2, float CO2, String temps) {
+        this.humidite = humidite;
+        this.temperature = temperature;
+        this.lux = lux;
+        this.O2 = o2;
+        this.CO2 = CO2;
+        this.temps = temps;
+    }
+
     public double getHumidite() {
         return humidite;
     }
