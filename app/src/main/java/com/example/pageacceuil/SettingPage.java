@@ -48,6 +48,8 @@ public class SettingPage extends AppCompatActivity implements View.OnClickListen
         max_d = findViewById(R.id.max_droit);
         min_d = findViewById(R.id.min_droit);
         tauxRefresh=findViewById(R.id.refreshRate);
+
+        b_gauche = findViewById(R.id.btn_droit);
         b_droit = findViewById(R.id.btn_droit);
 
         auto_droit=findViewById(R.id.auto_droit);
@@ -55,6 +57,7 @@ public class SettingPage extends AppCompatActivity implements View.OnClickListen
 
        b_gauche.setOnClickListener(this);
         b_droit.setOnClickListener(this);
+        auto_droit.setOnClickListener(this);
 
 
 
@@ -84,17 +87,32 @@ public class SettingPage extends AppCompatActivity implements View.OnClickListen
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.auto_droit:
+                if (auto_droit.isChecked()) {
+                    rightAxis.resetAxisMinimum();
+                    rightAxis.resetAxisMaximum();
+                    Toast.makeText(getApplicationContext(), "Mode auto activé", Toast.LENGTH_SHORT).show();
+                    //Griser case pour le manuel
+                    break;
+                }break;
             case R.id.btn_droit:
                 if (((min_d.getText().toString().trim().length() == 0)||(max_d.getText().toString().trim().length() == 0))||(auto_droit.isChecked())){
                     Toast.makeText(getApplicationContext(),"Un champ est vide",Toast.LENGTH_SHORT).show();    }
-            else{
+            else {
+
                     System.out.println(min_g.getText());
-                System.out.println(min_g.getText());
+                    System.out.println(min_g.getText());
                     // A test
-                rightAxis.setAxisMaximum(Float.valueOf(max_d.getText().toString()));
-                rightAxis.setAxisMinimum(Float.valueOf(min_d.getText().toString()));
-                Toast.makeText(getApplicationContext(),"Fait",Toast.LENGTH_SHORT).show();    }
-                break;
+                    if (Float.valueOf(max_d.getText().toString()) > Float.valueOf(min_d.getText().toString())) {
+                        rightAxis.setAxisMaximum(Float.valueOf(max_d.getText().toString()));
+                        rightAxis.setAxisMinimum(Float.valueOf(min_d.getText().toString()));
+                        Toast.makeText(getApplicationContext(), "Fait", Toast.LENGTH_SHORT).show();
+                    break;
+                    }
+            else{
+                        Toast.makeText(getApplicationContext(), "Valeurs incorrects", Toast.LENGTH_SHORT).show();
+                    }
+                }break;
             case R.id.btn_gauche:
                 if (((min_g.getText().toString().trim().length() == 0)||(max_g.getText().toString().trim().length() == 0))||(auto_gauche.isChecked())){
                     Toast.makeText(getApplicationContext(),"Un champ est vide",Toast.LENGTH_SHORT).show();    }
