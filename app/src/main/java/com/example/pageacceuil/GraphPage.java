@@ -8,6 +8,7 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Parcelable;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -46,6 +47,8 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.Serializable;
+import java.sql.SQLOutput;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -77,7 +80,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
     private BottomAppBar bottomNav;
     private BottomNavigationView bottomNavigationView;
     private YAxis leftAxis;
-    static YAxis rightAxis;
+    private YAxis rightAxis;
     private XAxis xl;
 
 
@@ -101,11 +104,12 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
 
         temp = "SAE_S3_BD/ESP32/"+test[cho]+"/Mesure";
-
+        System.out.println(test[cho]);
+        System.out.println(temp);
         SimpleDateFormat sdf=new SimpleDateFormat("hh:mm:ss");
 
 
-        DatabaseReference myRef = database.getReference(temp);
+        DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32/A8:03:2A:EA:EE:CC/Mesure");
 
 
         listData = new ListData();
@@ -113,11 +117,11 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
             @Override
 
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-            }
+                }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                if (snapshot.getChildrenCount() == 4) {
+                if (snapshot.getChildrenCount() == 3) {
                     Data a = snapshot.getValue(Data.class);
                     indice++;
                     listData.list_add_data(a);
@@ -261,8 +265,9 @@ varTemps.addListenerForSingleValueEvent(new ValueEventListener() {
             dataSets.add(setCO2);
         }*/
         if (boxTemp.isChecked()) {
-            A_temp.add(new Entry(indice, (float) listData.recup_data(indice-1).getTemperature()));
+            A_temp.add(new Entry(indice,(float) listData.recup_data(indice-1).getTemperature()));
             LineDataSet setTemp = new LineDataSet(A_temp, "Température");
+
             setTemp.setAxisDependency(YAxis.AxisDependency.LEFT);
             paramSet(setTemp);
             setTemp.setColor(Color.BLUE);
@@ -441,6 +446,7 @@ varTemps.addListenerForSingleValueEvent(new ValueEventListener() {
             case R.id.viewData:
                 Intent openViewData;
                 openViewData = new Intent(GraphPage.this, VueData.class);
+
                 openViewData.putExtra("listData",listData);
                 startActivity(openViewData);
 
@@ -448,7 +454,9 @@ varTemps.addListenerForSingleValueEvent(new ValueEventListener() {
             case R.id.setting:
                 System.out.println("Parametre");
                 Intent openSetting;
+
                 openSetting = new Intent(GraphPage.this, SettingPage.class);
+                openSetting.putExtra("rightAxis", (Serializable) rightAxis);
                 startActivity(openSetting);
                 break;
             case R.id.btnExport:

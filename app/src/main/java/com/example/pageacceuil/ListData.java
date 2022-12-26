@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class ListData implements Serializable {
 
-    public ArrayList<Data> listData;
+    public transient ArrayList<Data> listData;
 
     public ListData(){
        listData = new ArrayList<Data>(1);

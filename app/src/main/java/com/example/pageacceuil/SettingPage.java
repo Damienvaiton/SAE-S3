@@ -1,9 +1,10 @@
 package com.example.pageacceuil;
 
-import static com.example.pageacceuil.GraphPage.rightAxis;
+
 
 import static java.lang.Integer.parseInt;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.github.mikephil.charting.components.YAxis;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -36,6 +38,8 @@ public class SettingPage extends AppCompatActivity implements View.OnClickListen
     CheckBox auto_droit;
     CheckBox auto_gauche;
 
+    YAxis rightAxis;
+
 
 
     @Override
@@ -49,7 +53,7 @@ public class SettingPage extends AppCompatActivity implements View.OnClickListen
         min_d = findViewById(R.id.min_droit);
         tauxRefresh=findViewById(R.id.refreshRate);
 
-        b_gauche = findViewById(R.id.btn_droit);
+        b_gauche = findViewById(R.id.btn_gauche);
         b_droit = findViewById(R.id.btn_droit);
 
         auto_droit=findViewById(R.id.auto_droit);
@@ -59,6 +63,17 @@ public class SettingPage extends AppCompatActivity implements View.OnClickListen
         b_droit.setOnClickListener(this);
         auto_droit.setOnClickListener(this);
 
+
+        Intent intent = getIntent();
+
+        if (intent != null) {
+            if (intent.hasExtra("listData")) {
+                this.rightAxis = (YAxis) intent.getSerializableExtra("rightAxis");
+                System.out.println("ok");
+            } else {
+                System.out.println("erreur");
+            }
+        }
 
 
 
@@ -89,8 +104,8 @@ public class SettingPage extends AppCompatActivity implements View.OnClickListen
         switch (view.getId()) {
             case R.id.auto_droit:
                 if (auto_droit.isChecked()) {
-                    rightAxis.resetAxisMinimum();
-                    rightAxis.resetAxisMaximum();
+   /*                 rightAxis.resetAxisMinimum();
+                    rightAxis.resetAxisMaximum();*/
                     Toast.makeText(getApplicationContext(), "Mode auto activé", Toast.LENGTH_SHORT).show();
                     //Griser case pour le manuel
                     break;
@@ -120,8 +135,8 @@ public class SettingPage extends AppCompatActivity implements View.OnClickListen
                     System.out.println(min_g.getText());
                 System.out.println(min_g.getText());
                 // A test
-                    rightAxis.setAxisMaximum(Float.valueOf(max_g.getText().toString()));
-                    rightAxis.setAxisMinimum(Float.valueOf(min_g.getText().toString()));
+                 /*   rightAxis.setAxisMaximum(Float.valueOf(max_g.getText().toString()));
+                    rightAxis.setAxisMinimum(Float.valueOf(min_g.getText().toString()));*/
         Toast.makeText(getApplicationContext(),"Fait",Toast.LENGTH_SHORT).show();    }
                 break;
 

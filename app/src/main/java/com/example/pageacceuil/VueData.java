@@ -7,9 +7,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 
-public class VueData extends AppCompatActivity {
+import java.io.Serializable;
 
-    ListData listData;
+public class VueData extends AppCompatActivity implements Serializable {
+
+    private ListData listData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,9 +19,12 @@ public class VueData extends AppCompatActivity {
         setContentView(R.layout.activity_vue_data);
 
 
+
         Intent intent = getIntent();
+
         if (intent != null) {
             if (intent.hasExtra("listData")) {
+
                 this.listData = (ListData) intent.getSerializableExtra("listData");
                 System.out.println("ok");
             } else {
@@ -28,17 +33,6 @@ public class VueData extends AppCompatActivity {
         }
 
 
-        listData.list_add_data(new Data(22,23,230,23,73,"15:23:30"));
-        listData.list_add_data(new Data(45,23,230,23,73,"15:23:30"));
-        listData.list_add_data(new Data(45,23,230,23,73,"15:23:30"));
-        listData.list_add_data(new Data(45,23,230,23,73,"15:23:30"));
-        listData.list_add_data(new Data(45,23,230,23,73,"15:23:30"));
-        listData.list_add_data(new Data(45,23,230,23,73,"15:23:30"));
-        listData.list_add_data(new Data(45,23,230,23,73,"15:23:30"));
-        listData.list_add_data(new Data(45,23,230,23,73,"15:23:30"));
-        listData.list_add_data(new Data(45,23,230,23,73,"15:23:30"));
-        listData.list_add_data(new Data(45,23,230,23,73,"15:23:30"));
-        listData.list_add_data(new Data(45,23,230,23,73,"15:23:30"));
 
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
 
