@@ -57,7 +57,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
 
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
-    public int indice = 0;
+    public static int indice = 0;
     public ListData listData;
     ArrayList<Entry> A_temp = new ArrayList<>();
     ArrayList<Entry> A_lux = new ArrayList<>();
@@ -207,18 +207,6 @@ varTemps.addListenerForSingleValueEvent(new ValueEventListener() {
 
         //Constru graph
         graph = findViewById(R.id.lineChart);
-        graph.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
-            @Override
-            public void onNothingSelected() {
-
-            }
-
-            @Override
-            public void onValueSelected(Entry e, Highlight h) {
-                Toast.makeText(getApplicationContext(),"X "+h.getX()+" : Y "+h.getY(),Toast.LENGTH_SHORT).show();
-
-            }
-        });
 
         //Création Axe X
 
@@ -229,6 +217,8 @@ varTemps.addListenerForSingleValueEvent(new ValueEventListener() {
         xl.setDrawGridLines(true);
         xl.setAvoidFirstLastClipping(true);
         xl.setEnabled(true);
+        xl.setValueFormatter(new XAxisValueFormatter(listData));
+//Nombre max de point xl.setAxisMaximum(7);
 
         //Création Axe Y gauche
         YAxis leftAxis = graph.getAxisLeft();
@@ -249,6 +239,19 @@ varTemps.addListenerForSingleValueEvent(new ValueEventListener() {
 
         //Set paramètre du graph
         paramGraph();
+
+        graph.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onNothingSelected() {
+
+            }
+
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                Toast.makeText(getApplicationContext(),"Heure = "+xl.getFormattedLabel((int) h.getX())+", Y : "+h.getY(),Toast.LENGTH_SHORT).show();
+
+            }
+        });
 
     }
 
@@ -446,8 +449,7 @@ varTemps.addListenerForSingleValueEvent(new ValueEventListener() {
             case R.id.viewData:
                 Intent openViewData;
                 openViewData = new Intent(GraphPage.this, VueData.class);
-
-                openViewData.putExtra("listData",listData);
+                openViewData.putExtra("listData",listData.olistData);
                 startActivity(openViewData);
 
                 break;
@@ -457,13 +459,13 @@ varTemps.addListenerForSingleValueEvent(new ValueEventListener() {
 
                 openSetting = new Intent(GraphPage.this, SettingPage.class);
                 openSetting.putExtra("rightAxis", (Serializable) rightAxis);
+                openSetting.putExtra("rightAxis", (Serializable) leftAxis);
                 startActivity(openSetting);
                 break;
             case R.id.btnExport:
                 try{
                     Toast.makeText(getApplicationContext(),"Export excel commencé ",Toast.LENGTH_SHORT).show();
                     exportFile();
-                    System.out.println("Export excel ?");
 
                 }
                 catch(Exception e){

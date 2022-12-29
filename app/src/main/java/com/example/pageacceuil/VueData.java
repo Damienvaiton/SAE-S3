@@ -8,17 +8,18 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class VueData extends AppCompatActivity implements Serializable {
 
     private ListData listData;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vue_data);
-
-
 
         Intent intent = getIntent();
 
@@ -27,10 +28,13 @@ public class VueData extends AppCompatActivity implements Serializable {
 
                 this.listData = (ListData) intent.getSerializableExtra("listData");
                 System.out.println("ok");
+                new VueData();
             } else {
                 System.out.println("erreur");
             }
         }
+
+
 
 
 

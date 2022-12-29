@@ -6,26 +6,31 @@ import java.util.ArrayList;
 
 public class ListData implements Serializable {
 
-    public transient ArrayList<Data> listData;
+    public transient ArrayList<Data> olistData;
 
     public ListData(){
-       listData = new ArrayList<Data>(1);
+       olistData = new ArrayList<Data>(1);
     }
 
 
     public Data recup_data(int i){
-        return listData.get(i);
+        return olistData.get(i);
     }
 
-    public void list_add_data(Data a){listData.add(a);
+    public void list_add_data(Data a){
+        olistData.add(a);
+    }
+
+    public ArrayList<Data> getOlistData() {
+        return olistData;
     }
 
     public void list_supAll_data(){
-        listData.clear();
+        olistData.clear();
     }
 
     public int list_size() {
-        return listData.size();
+        return olistData.size();
     }
 }
 

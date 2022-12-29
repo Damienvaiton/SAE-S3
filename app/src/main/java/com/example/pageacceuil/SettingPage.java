@@ -25,6 +25,9 @@ public class SettingPage extends AppCompatActivity implements View.OnClickListen
 
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
 
+    YAxis rightAxis;
+    YAxis leftAxis;
+
     EditText max_g;
     EditText min_g;
     EditText max_d;
@@ -38,7 +41,7 @@ public class SettingPage extends AppCompatActivity implements View.OnClickListen
     CheckBox auto_droit;
     CheckBox auto_gauche;
 
-    YAxis rightAxis;
+
 
 
 
@@ -69,6 +72,8 @@ public class SettingPage extends AppCompatActivity implements View.OnClickListen
         if (intent != null) {
             if (intent.hasExtra("listData")) {
                 this.rightAxis = (YAxis) intent.getSerializableExtra("rightAxis");
+                this.leftAxis = (YAxis) intent.getSerializableExtra("leftAxis");
+
                 System.out.println("ok");
             } else {
                 System.out.println("erreur");
