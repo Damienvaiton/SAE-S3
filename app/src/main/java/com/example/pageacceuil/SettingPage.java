@@ -1,7 +1,6 @@
 package com.example.pageacceuil;
 
 
-
 import static java.lang.Integer.parseInt;
 
 import android.content.Intent;
@@ -25,8 +24,6 @@ public class SettingPage extends AppCompatActivity implements View.OnClickListen
 
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-    YAxis rightAxis;
-    YAxis leftAxis;
 
     EditText max_g;
     EditText min_g;
@@ -42,9 +39,6 @@ public class SettingPage extends AppCompatActivity implements View.OnClickListen
     CheckBox auto_gauche;
 
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,18 +48,27 @@ public class SettingPage extends AppCompatActivity implements View.OnClickListen
         min_g = findViewById(R.id.min_gauche);
         max_d = findViewById(R.id.max_droit);
         min_d = findViewById(R.id.min_droit);
-        tauxRefresh=findViewById(R.id.refreshRate);
+        tauxRefresh = findViewById(R.id.refreshRate);
 
         b_gauche = findViewById(R.id.btn_gauche);
         b_droit = findViewById(R.id.btn_droit);
 
-        auto_droit=findViewById(R.id.auto_droit);
-        auto_gauche=findViewById(R.id.auto_gauche);
+        auto_droit = findViewById(R.id.auto_droit);
+        auto_gauche = findViewById(R.id.auto_gauche);
 
-       b_gauche.setOnClickListener(this);
+        b_gauche.setOnClickListener(this);
         b_droit.setOnClickListener(this);
         auto_droit.setOnClickListener(this);
+        auto_gauche.setOnClickListener(this);
 
+        if (GraphPage.rightAxis.isAxisMaxCustom()) {
+            auto_droit.setChecked(false);
+        }
+        if (GraphPage.leftAxis.isAxisMaxCustom()) {
+            auto_gauche.setChecked(false);
+        }
+
+/*
 
         Intent intent = getIntent();
 
@@ -79,8 +82,7 @@ public class SettingPage extends AppCompatActivity implements View.OnClickListen
                 System.out.println("erreur");
             }
         }
-
-
+*/
 
 
         tauxRefresh.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -95,56 +97,67 @@ public class SettingPage extends AppCompatActivity implements View.OnClickListen
         });
     }
 
-        public void editTemps(int values) {
-            DatabaseReference varTemps = database.getReference("SAE_S3_BD/ESP32/A8:03:2A:EA:EE:CC");
-            varTemps.child("TauxRafraichissement").setValue(values);
-            tauxRefresh.setHint(values+" s");
-            Toast.makeText(getApplicationContext(), "Refresh : " + values+"s", Toast.LENGTH_SHORT).show();
+    public void editTemps(int values) {
+        DatabaseReference varTemps = database.getReference("SAE_S3_BD/ESP32/A8:03:2A:EA:EE:CC");
+        varTemps.child("TauxRafraichissement").setValue(values);
+        tauxRefresh.setHint(values + " s");
+        Toast.makeText(getApplicationContext(), "Refresh : " + values + "s", Toast.LENGTH_SHORT).show();
 
 
-        }
+    }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.auto_droit:
                 if (auto_droit.isChecked()) {
-   /*                 rightAxis.resetAxisMinimum();
-                    rightAxis.resetAxisMaximum();*/
+                    GraphPage.rightAxis.resetAxisMinimum();
+                    GraphPage.rightAxis.resetAxisMaximum();
                     Toast.makeText(getApplicationContext(), "Mode auto activé", Toast.LENGTH_SHORT).show();
                     //Griser case pour le manuel
                     break;
-                }break;
+                }
+            case R.id.auto_gauche:
+                if (auto_gauche.isChecked()) {
+                    GraphPage.leftAxis.resetAxisMinimum();
+                    GraphPage.leftAxis.resetAxisMaximum();
+                    Toast.makeText(getApplicationContext(), "Mode auto activé", Toast.LENGTH_SHORT).show();
+                    //Griser case pour le manuel
+                    break;
+                }
+
             case R.id.btn_droit:
-                if (((min_d.getText().toString().trim().length() == 0)||(max_d.getText().toString().trim().length() == 0))||(auto_droit.isChecked())){
-                    Toast.makeText(getApplicationContext(),"Un champ est vide",Toast.LENGTH_SHORT).show();    }
-            else {
+                if (((min_d.getText().toString().trim().length() == 0) || (max_d.getText().toString().trim().length() == 0)) || (auto_droit.isChecked())) {
+                    Toast.makeText(getApplicationContext(), "Un champ est vide", Toast.LENGTH_SHORT).show();
+                } else {
 
                     System.out.println(min_g.getText());
                     System.out.println(min_g.getText());
                     // A test
                     if (Float.valueOf(max_d.getText().toString()) > Float.valueOf(min_d.getText().toString())) {
-                        rightAxis.setAxisMaximum(Float.valueOf(max_d.getText().toString()));
-                        rightAxis.setAxisMinimum(Float.valueOf(min_d.getText().toString()));
+
+                        GraphPage.rightAxis.setAxisMaximum(Float.valueOf(max_d.getText().toString()));
+                        GraphPage.rightAxis.setAxisMinimum(Float.valueOf(min_d.getText().toString()));
                         Toast.makeText(getApplicationContext(), "Fait", Toast.LENGTH_SHORT).show();
-                    break;
-                    }
-            else{
+                        break;
+                    } else {
                         Toast.makeText(getApplicationContext(), "Valeurs incorrects", Toast.LENGTH_SHORT).show();
                     }
-                }break;
-            case R.id.btn_gauche:
-                if (((min_g.getText().toString().trim().length() == 0)||(max_g.getText().toString().trim().length() == 0))||(auto_gauche.isChecked())){
-                    Toast.makeText(getApplicationContext(),"Un champ est vide",Toast.LENGTH_SHORT).show();    }
-                else{
-                    System.out.println(min_g.getText());
-                System.out.println(min_g.getText());
-                // A test
-                 /*   rightAxis.setAxisMaximum(Float.valueOf(max_g.getText().toString()));
-                    rightAxis.setAxisMinimum(Float.valueOf(min_g.getText().toString()));*/
-        Toast.makeText(getApplicationContext(),"Fait",Toast.LENGTH_SHORT).show();    }
+                }
                 break;
-
+            case R.id.btn_gauche:
+                if (((min_g.getText().toString().trim().length() == 0) || (max_g.getText().toString().trim().length() == 0)) || (auto_gauche.isChecked())) {
+                    Toast.makeText(getApplicationContext(), "Un champ est vide", Toast.LENGTH_SHORT).show();
+                } else {
+                    if (Float.valueOf(max_g.getText().toString()) > Float.valueOf(min_g.getText().toString())) {
+                        GraphPage.leftAxis.setAxisMaximum(Float.valueOf(max_g.getText().toString()));
+                        GraphPage.leftAxis.setAxisMinimum(Float.valueOf(min_g.getText().toString()));
+                        Toast.makeText(getApplicationContext(), "Fait", Toast.LENGTH_SHORT).show();
+                        break;
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Valeurs incorrects", Toast.LENGTH_SHORT).show();
+                    }
+                }
         }
     }
 }

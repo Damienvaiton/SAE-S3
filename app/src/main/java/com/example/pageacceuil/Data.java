@@ -30,9 +30,8 @@ public class Data {
         this.humidite = humidite;
     }
 
-    public float getTemperature() {
-        return temperature;
-    }
+    public float getTemperature() { return temperature; }
+
 
     public void setTemperature(float temperature) {
         this.temperature = temperature;
