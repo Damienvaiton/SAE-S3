@@ -1,3 +1,4 @@
+/*
 package com.example.pageacceuil;
 
 import com.google.firebase.database.DatabaseReference;
@@ -7,12 +8,17 @@ public class Database {
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
     private final String idESP;
     private final DatabaseReference tableESP;
+    private final DatabaseReference refMesure;
+    private final DatabaseReference refTauxRefresh;
+   private int tauxRefresh;
 
 
 
-    public Database(String idESP, DatabaseReference tableESP) {
+
+    public Database(String idESP) {
         this.idESP = idESP;
-        this.tableESP = tableESP;
+        refMesure.addChildEventListener()
     }
 
 }
+*/

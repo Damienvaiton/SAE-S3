@@ -56,7 +56,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
     public static int indice = 0;
-    public ListData listData;
+    public static ListData listData;
     ArrayList<Entry> A_temp = new ArrayList<>();
     ArrayList<Entry> A_lux = new ArrayList<>();
     ArrayList<Entry> A_CO2 = new ArrayList<>();
