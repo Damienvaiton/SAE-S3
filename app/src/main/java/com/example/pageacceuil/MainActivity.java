@@ -10,11 +10,23 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity {
 
+
+    private final FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32");
 
 
     String ChoixESP = "";
@@ -24,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
     ImageButton btnCoAdmin;
     Button btnGraph;
     String[] temp;
+    ArrayList<String> ESP;
+
     static String ChoixEspTransfert = "1";
 
     @Override
@@ -33,8 +47,31 @@ public class MainActivity extends AppCompatActivity {
         btnselect = findViewById(R.id.Boutonsel);
         btncoEtu = findViewById(R.id.imageButton5);
         btnCoAdmin = findViewById(R.id.imageButton4);
-        btnGraph=findViewById(R.id.btnGraph);
+        btnGraph = findViewById(R.id.btnGraph);
+ESP=new ArrayList<>();
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
 
+                for (DataSnapshot child : snapshot.getChildren()) {
+                    if (child.child("Nom").exists()) {
+                        ESP.add((String)child.child("Nom").getValue());
+                    } else {
+                        ESP.add(child.getKey());
+                    }
+
+                    }
+                for (int i=0;i<2;i++){
+                    System.out.println(ESP.get(i));
+                }
+            }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         btnselect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
