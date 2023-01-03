@@ -28,6 +28,8 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -46,7 +48,6 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -110,8 +111,21 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
         DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32/A8:03:2A:EA:EE:CC/Mesure");
 
-
         listData = new ListData();
+
+        myRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                DataSnapshot tab = task.getResult();
+                for (int i = 0; i < tab.getChildrenCount(); i++) {
+                    Data a = tab.child(i + "").getValue(Data.class);
+                    indice++;
+                    listData.list_add_data(a);
+                }
+            }
+
+        });
+
         myRef.addChildEventListener(new ChildEventListener() {
             @Override
 
@@ -280,6 +294,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
             LineDataSet setCO2 = new LineDataSet(A_CO2, "CO2");
             setCO2.setAxisDependency(YAxis.AxisDependency.LEFT);
             paramSet(setCO2);
+
             setCO2.setColor(Color.RED);
             setCO2.setCircleColor(Color.RED);
             dataSets.add(setCO2);

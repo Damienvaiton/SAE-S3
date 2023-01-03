@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     ImageButton btnCoAdmin;
     Button btnGraph;
     String[] temp;
-    static String ChoixEspTransfert;
+    static String ChoixEspTransfert = "1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

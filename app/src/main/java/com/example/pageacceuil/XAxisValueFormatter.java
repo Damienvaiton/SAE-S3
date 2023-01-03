@@ -1,7 +1,6 @@
 package com.example.pageacceuil;
 
 
-import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 
 public class XAxisValueFormatter extends IndexAxisValueFormatter {
@@ -13,7 +12,7 @@ public class XAxisValueFormatter extends IndexAxisValueFormatter {
         this.listData = listData;
     }
 
-
+ /*
      @Override
       public String getAxisLabel(float value, AxisBase axis) {
           return listData.recup_data(GraphPage.indice-1).getTemps();
@@ -23,13 +22,12 @@ public class XAxisValueFormatter extends IndexAxisValueFormatter {
 
 
 
-    /*         public String getAxisLabel(float value, AxisBase axis) {
+           public String getAxisLabel(float value, AxisBase axis) {
           return super.getAxisLabel(listData.recup_data(GraphPage.indice-1).getTemps(),1);
       }
-  }@Override
+  }*/@Override
     public String getFormattedValue(float value) {
         return listData.recup_data(GraphPage.indice - 1).getTemps();
-
-    }*/
+    }
 }
 

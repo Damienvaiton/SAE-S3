@@ -1,18 +1,18 @@
 package com.example.pageacceuil;
 
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
-import android.os.Bundle;
-
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class VueData extends AppCompatActivity implements Serializable {
 
     private ListData listData;
+
+
 
 
 
