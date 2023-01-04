@@ -18,10 +18,10 @@ public class VueData extends AppCompatActivity implements Serializable {
 
     private ListData listData;
     private Button btnTriChoix;
+    private Button trid;
     private Switch switchDesc;
     private String ChoixTri = "Choix du Tri";
     private boolean Desc = false;
-
 
 
     @SuppressLint("MissingInflatedId")
@@ -31,6 +31,7 @@ public class VueData extends AppCompatActivity implements Serializable {
         setContentView(R.layout.activity_vue_data);
         btnTriChoix = findViewById(R.id.SortChoise);
         switchDesc = findViewById(R.id.switch1);
+        trid = findViewById(R.id.button8);
         btnTriChoix.setText(ChoixTri);
 /*
 
@@ -48,7 +49,6 @@ public class VueData extends AppCompatActivity implements Serializable {
             }
         }
 */
-
 
 
         btnTriChoix.setOnClickListener(new View.OnClickListener() {
@@ -69,12 +69,11 @@ public class VueData extends AppCompatActivity implements Serializable {
                         } else {
                             Desc = false;
                         }
-                       ChoixTri = (String) item.getTitle();
+                        ChoixTri = (String) item.getTitle();
 
                         btnTriChoix.setText(ChoixTri);
                         return true;
                     }
-
 
 
                 });
@@ -88,54 +87,70 @@ public class VueData extends AppCompatActivity implements Serializable {
         recyclerView.setLayoutManager((new LinearLayoutManager((this))));
 
 
-        if (ChoixTri.equals("Co²")){
-            if (Desc) {
-                GraphPage.listData.listsortCO2Desc();
-                recyclerView.setAdapter(new DataAdapter(getApplicationContext(), GraphPage.listData));
-            } else {
-                GraphPage.listData.listsortCO2();
-                recyclerView.setAdapter(new DataAdapter(getApplicationContext(), GraphPage.listData));
-            }
-        }
-        if (ChoixTri.equals("Température")){
-            if (Desc) {
-                GraphPage.listData.listsortTempDesc();
-                recyclerView.setAdapter(new DataAdapter(getApplicationContext(), GraphPage.listData));
-            } else {
-                GraphPage.listData.listsortTemp();
-                recyclerView.setAdapter(new DataAdapter(getApplicationContext(), GraphPage.listData));
-            }
-        }
-        if (ChoixTri.equals("Humidité")){
-            if (Desc) {
-                GraphPage.listData.listsortHumDesc();
-                recyclerView.setAdapter(new DataAdapter(getApplicationContext(), GraphPage.listData));
-            } else {
-                GraphPage.listData.listsortHum();
-                recyclerView.setAdapter(new DataAdapter(getApplicationContext(), GraphPage.listData));
-            }
-        }
-        if (ChoixTri.equals("Luminosité")){
-            if (Desc) {
-                GraphPage.listData.listsortLuxDesc();
-                recyclerView.setAdapter(new DataAdapter(getApplicationContext(), GraphPage.listData));
-            } else {
-                GraphPage.listData.listsortLux();
-                recyclerView.setAdapter(new DataAdapter(getApplicationContext(), GraphPage.listData));
-            }
-        }
-        if (ChoixTri.equals("O²")){
-            if (Desc) {
-                GraphPage.listData.listsortO2Desc();
-                recyclerView.setAdapter(new DataAdapter(getApplicationContext(), GraphPage.listData));
-            } else {
-                GraphPage.listData.listsortO2();
-                recyclerView.setAdapter(new DataAdapter(getApplicationContext(), GraphPage.listData));
-            }
-        }
+        trid.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                DataAdapter dataAdapter = new DataAdapter(getApplicationContext(), GraphPage.listData);
+                if (ChoixTri.equals("Co²")) {
+                    if (Desc) {
+                        GraphPage.listData.listsortCO2Desc();
+                        dataAdapter.notifyDataSetChanged();
+                        recyclerView.setAdapter(dataAdapter);
+                    } else {
+                        GraphPage.listData.listsortCO2();
+                        dataAdapter.notifyDataSetChanged();
+                        recyclerView.setAdapter(dataAdapter);                    }
+                }
+                if (ChoixTri.equals("Température")) {
+                    if (Desc) {
+                        GraphPage.listData.listsortTempDesc();
+                        dataAdapter.notifyDataSetChanged();
+                        recyclerView.setAdapter(dataAdapter);
+                    } else {
+                        GraphPage.listData.listsortTemp();
+                        dataAdapter.notifyDataSetChanged();
+                        recyclerView.setAdapter(dataAdapter);
+                    }
+                }
+                if (ChoixTri.equals("Humidité")) {
+                    if (Desc) {
+                        GraphPage.listData.listsortHumDesc();
+                        dataAdapter.notifyDataSetChanged();
+                        recyclerView.setAdapter(dataAdapter);
+                    } else {
+                        GraphPage.listData.listsortHum();
+                        dataAdapter.notifyDataSetChanged();
+                        recyclerView.setAdapter(dataAdapter);
+                    }
+                }
+                if (ChoixTri.equals("Luminosité")) {
+                    if (Desc) {
+                        GraphPage.listData.listsortLuxDesc();
+                        dataAdapter.notifyDataSetChanged();
+                        recyclerView.setAdapter(dataAdapter);
+                    } else {
+                        GraphPage.listData.listsortLux();
+                        dataAdapter.notifyDataSetChanged();
+                        recyclerView.setAdapter(dataAdapter);
+                    }
+                }
+                if (ChoixTri.equals("O²")) {
+                    if (Desc) {
+                        GraphPage.listData.listsortO2Desc();
+                        dataAdapter.notifyDataSetChanged();
+                        recyclerView.setAdapter(dataAdapter);
+                    } else {
+                        GraphPage.listData.listsortO2();
+                        dataAdapter.notifyDataSetChanged();
+                        recyclerView.setAdapter(dataAdapter);
+                    }
+                }
 
 
+            }
 
-        recyclerView.setAdapter(new DataAdapter(getApplicationContext(), GraphPage.listData));
+        });
+
     }
 }
