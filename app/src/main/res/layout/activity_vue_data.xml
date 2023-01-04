@@ -24,11 +24,11 @@
             android:layout_height="40dp"
             android:layout_centerVertical="true"
 
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="70dp"
             android:gravity="center"
             android:hint="Date"
             android:textAlignment="center"
-            android:textColorHint="@color/redoblack"
+            android:textColorHint="@color/orange"
             android:textSize="16dp"
             android:textStyle="bold" />
 
@@ -37,9 +37,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="44dp"
             android:layout_toEndOf="@id/heure"
-            android:hint="Température"
+            android:hint="Tempé"
 
             android:textColorHint="@color/redoblack" />
 
@@ -48,9 +48,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginStart="5dp"
+            android:layout_marginStart="10dp"
             android:layout_toEndOf="@id/temp"
-            android:hint="Humiidité"
+            android:hint="Humi"
             android:textColorHint="@color/redoblack"
 
             />
@@ -60,7 +60,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginStart="5dp"
+            android:layout_marginStart="6dp"
             android:layout_toEndOf="@id/humi"
 
             android:hint="CO2"
@@ -73,7 +73,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginStart="5dp"
+            android:layout_marginStart="15dp"
 
             android:layout_toEndOf="@id/co2"
             android:hint="O2"
@@ -86,7 +86,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginStart="5dp"
+            android:layout_marginStart="28dp"
 
             android:layout_toEndOf="@id/o2"
             android:hint="LUX"

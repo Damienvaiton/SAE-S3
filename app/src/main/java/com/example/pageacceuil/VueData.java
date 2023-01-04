@@ -14,13 +14,13 @@ public class VueData extends AppCompatActivity implements Serializable {
 
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vue_data);
 /*
+
+
 
         Intent intent = getIntent();
 
@@ -29,7 +29,6 @@ public class VueData extends AppCompatActivity implements Serializable {
 
                 this.listData = (ListData) intent.getSerializableExtra("listData");
                 System.out.println("ok");
-                new VueData();
             } else {
                 System.out.println("erreur");
             }
@@ -39,10 +38,13 @@ public class VueData extends AppCompatActivity implements Serializable {
 
 
 
-
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
 
         recyclerView.setLayoutManager((new LinearLayoutManager((this))));
+
+
+
+        GraphPage.listData.listsortDateDesc();
         recyclerView.setAdapter(new DataAdapter(getApplicationContext(), GraphPage.listData));
     }
 }
