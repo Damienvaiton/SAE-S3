@@ -246,10 +246,12 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         xl = graph.getXAxis();
         xl.setTextColor(Color.BLACK);
         xl.setDrawGridLines(true);
-        xl.setAvoidFirstLastClipping(true);
         xl.setEnabled(true);
-        xl.setValueFormatter(new XAxisValueFormatter(listData));
-//Nombre max de point xl.setAxisMaximum(7);
+        xl.setLabelCount(5); //Marche pas
+        xl.setAvoidFirstLastClipping(false);
+        xl.setValueFormatter(new XAxisValueFormatter(listData));//Nombre max de poin
+
+
 
         //Création Axe Y gauche
         leftAxis = graph.getAxisLeft();
@@ -279,7 +281,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
             @Override
             public void onValueSelected(Entry e, Highlight h) {
-                Toast.makeText(getApplicationContext(), "Heure = " + xl.getFormattedLabel((int) h.getX()) + ", X : " + h.getY(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Heure = " +listData.recup_data((int)h.getX()-1).getTemps()  + ", X : " + h.getY(), Toast.LENGTH_SHORT).show();
 
             }
         });
