@@ -1,4 +1,4 @@
-/*
+
 package com.example.pageacceuil;
 
 import com.google.firebase.database.DatabaseReference;
@@ -21,4 +21,4 @@ public class Database {
     }
 
 }
-*/
+
