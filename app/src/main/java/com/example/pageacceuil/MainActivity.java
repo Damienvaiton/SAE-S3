@@ -4,9 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,21 +52,37 @@ public class MainActivity extends AppCompatActivity {
         btnCoAdmin = findViewById(R.id.imageButton4);
         btnGraph = findViewById(R.id.btnGraph);
 ESP=new ArrayList<>();
+
+
+        Spinner spinner=findViewById(R.id.spinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item,ESP);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(MainActivity.this,"le "+position,Toast.LENGTH_SHORT).show();
+                ChoixESP= ESP.get(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
+                ESP.clear();
                 for (DataSnapshot child : snapshot.getChildren()) {
-                    if (child.child("Nom").exists()) {
+                    if (child.child("Nom").exists() ) {
                         ESP.add((String)child.child("Nom").getValue());
                     } else {
                         ESP.add(child.getKey());
                     }
-
-                    }
-                for (int i=0;i<2;i++){
-                    System.out.println(ESP.get(i));
                 }
+                adapter.notifyDataSetChanged();
             }
 
 
@@ -72,6 +91,7 @@ ESP=new ArrayList<>();
 
             }
         });
+
         btnselect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -129,7 +149,7 @@ ESP=new ArrayList<>();
             public void onClick(View view) {
                 Intent vu;
                 vu = new Intent(MainActivity.this, GraphPage.class);
-
+                vu.putExtra("ESP", ESP);
                 startActivity(vu);
             }
         });

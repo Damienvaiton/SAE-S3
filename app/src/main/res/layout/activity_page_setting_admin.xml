@@ -26,15 +26,6 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button"
-        android:layout_width="109dp"
-        android:layout_height="55dp"
-        android:text="Ajouter"
-        android:textSize="13dp"
-        tools:layout_editor_absoluteX="331dp"
-        tools:layout_editor_absoluteY="168dp" />
-
-    <Button
         android:id="@+id/button2"
         android:layout_width="113dp"
         android:layout_height="40dp"
