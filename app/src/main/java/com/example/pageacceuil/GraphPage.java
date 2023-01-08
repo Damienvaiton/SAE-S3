@@ -511,13 +511,24 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         row0.createCell(2).setCellValue("Temperature");
         row0.createCell(3).setCellValue("Heure");
 
+        for (int i=0;i<listData.list_size()-1;i++){
+            HSSFRow row = sheet.createRow(i+1);
+            row.createCell(0).setCellValue(i);
+            row.createCell(1).setCellValue(listData.recup_data(i).getHumidite());
+            row.createCell(2).setCellValue(listData.recup_data(i).getTemperature());
+            row.createCell(3).setCellValue(listData.recup_data(i).getTemps());
+        }
+
+        /*
         HSSFRow row1 = sheet.createRow(1);
         row1.createCell(0).setCellValue("0");
-        row1.createCell(1).setCellValue("41");
-        row1.createCell(2).setCellValue("21.9");
-        row1.createCell(3).setCellValue("16:20:24");
+        row1.createCell(1).setCellValue("70.52");
+        row1.createCell(2).setCellValue("25.55");
+        row1.createCell(3).setCellValue("16:37:20");
+        */
         try {
             if (file.exists()) {
+                file.delete();
                 file.createNewFile();
             }
             FileOutputStream fileOutputStream = new FileOutputStream(file);
@@ -529,6 +540,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
             }
         } catch (Exception e) {
             e.printStackTrace();
+            Toast.makeText(this, "Export excel annulé, erreur", Toast.LENGTH_SHORT).show();
         }
     }
 }
