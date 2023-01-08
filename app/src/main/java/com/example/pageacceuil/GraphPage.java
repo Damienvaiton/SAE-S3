@@ -91,6 +91,8 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
         setContentView(R.layout.activity_graph_page);
 
+        listData.listsortDate();
+
         String temp;
         int cho;
 
