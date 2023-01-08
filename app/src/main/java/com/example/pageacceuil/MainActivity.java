@@ -23,6 +23,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -39,7 +42,8 @@ public class MainActivity extends AppCompatActivity {
     ImageButton btnCoAdmin;
     Button btnGraph;
     String[] temp;
-    ArrayList<String> ESP;
+    HashMap<String,String> ESP;
+    ArrayList<String> tabESP;
 
     static String ChoixEspTransfert = "1";
 
@@ -51,19 +55,25 @@ public class MainActivity extends AppCompatActivity {
         btncoEtu = findViewById(R.id.imageButton5);
         btnCoAdmin = findViewById(R.id.imageButton4);
         btnGraph = findViewById(R.id.btnGraph);
-ESP=new ArrayList<>();
+        ESP=new HashMap<>();
+        tabESP=new ArrayList<>();
 
 
         Spinner spinner=findViewById(R.id.spinner);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item,ESP);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item,tabESP);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(MainActivity.this,"le "+position,Toast.LENGTH_SHORT).show();
-                ChoixESP= ESP.get(position);
+                int curseur=0;
+                for (Map.Entry entree : ESP.entrySet()) {
+                    curseur++;
+                    if (curseur==position){
+                        ChoixESP=(String)entree.getKey();
+                    }
+                }
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
@@ -76,12 +86,27 @@ ESP=new ArrayList<>();
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 ESP.clear();
                 for (DataSnapshot child : snapshot.getChildren()) {
-                    if (child.child("Nom").exists() ) {
-                        ESP.add((String)child.child("Nom").getValue());
+                    if (child.child("Nom").exists()) {
+//                        ESP.add((String)child.child("Nom").getValue());
+                        ESP.put(child.getKey(), (String) child.child("Nom").getValue());
                     } else {
-                        ESP.add(child.getKey());
+//                        ESP.add(child.getKey());
+                        ESP.putIfAbsent(child.getKey(), null);
                     }
                 }
+                Iterator iterator = ESP.entrySet().iterator();
+                tabESP.clear();
+                while (iterator.hasNext()) {
+                    Map.Entry mapentry = (Map.Entry) iterator.next();
+//                    System.out.println(mapentry.getValue()+" "+mapentry.getKey());
+                    if(mapentry.getValue()==null) {
+                        tabESP.add((String) mapentry.getKey());
+                    }
+                    else {
+                        tabESP.add((String) mapentry.getValue());
+                    }
+                }
+
                 adapter.notifyDataSetChanged();
             }
 
@@ -92,8 +117,8 @@ ESP=new ArrayList<>();
             }
         });
 
-        btnselect.setOnClickListener(new View.OnClickListener() {
-            @Override
+//        btnselect.setOnClickListener(new View.OnClickListener() {
+        /*    @Override
             public void onClick(View view) {
                 //Creating the instance of PopupMenu
                 PopupMenu popup = new PopupMenu(MainActivity.this, btnselect);
@@ -123,7 +148,7 @@ ESP=new ArrayList<>();
             }
 
         });
-
+*/
 
         btncoEtu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,7 +174,7 @@ ESP=new ArrayList<>();
             public void onClick(View view) {
                 Intent vu;
                 vu = new Intent(MainActivity.this, GraphPage.class);
-                vu.putExtra("ESP", ESP);
+                vu.putExtra("ESP", ChoixESP);
                 startActivity(vu);
             }
         });

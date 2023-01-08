@@ -88,23 +88,28 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_graph_page);
 
+        indice=0;
+
+        Intent intent = getIntent();
+        if (intent != null) {
+            if (intent.hasExtra("ESP")) {
+
+                this.choixESP = (String) intent.getSerializableExtra("ESP");
+                System.out.println("ok");
+            } else {
+                System.out.println("erreur");
+
+            }
+        }
+
+
         String temp;
-        int cho;
-
-        choixESP = MainActivity.ChoixEspTransfert;
-        cho = parseInt(choixESP);
-        cho = cho + 1;
 
 
-        Resources res = getResources();
-        String[] test = res.getStringArray(R.array.ChoixESP);
+        temp = "SAE_S3_BD/ESP32/" + choixESP + "/Mesure";
 
-
-        temp = "SAE_S3_BD/ESP32/" + test[cho] + "/Mesure";
-        System.out.println(test[cho]);
         System.out.println(temp);
         SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
 
@@ -163,7 +168,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
 
         // A terminer
-        DatabaseReference varTemps = database.getReference("SAE_S3_BD/ESP32/" + test[cho] + "/TauxRafraichissement");
+        DatabaseReference varTemps = database.getReference("SAE_S3_BD/ESP32/" + choixESP + "/TauxRafraichissement");
         varTemps.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
