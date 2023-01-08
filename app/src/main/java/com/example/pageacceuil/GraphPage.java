@@ -84,7 +84,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
     private XAxis xl;
 
 
-    @SuppressLint("SuspiciousIndentation")
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,16 +105,8 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         }
 
 
-        String temp;
 
-
-        temp = "SAE_S3_BD/ESP32/" + choixESP + "/Mesure";
-
-        System.out.println(temp);
-        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
-
-
-        DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32/A8:03:2A:EA:EE:CC/Mesure");
+        DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32/"+choixESP+"/Mesure");
 
         listData = new ListData();
 
@@ -172,15 +164,16 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         varTemps.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.getValue(Integer.class) > 36000000) {
-                    valTemp.setText(snapshot.getValue(Integer.class) / 1000 + " h");
-                }
-                if (snapshot.getValue(Integer.class) > 60000) {
-                    valTemp.setText(snapshot.getValue(Integer.class) / 1000 + " m");
-                }
-                if (snapshot.getValue(Integer.class) > 1000) {
-                    valTemp.setText(snapshot.getValue(Integer.class) / 1000 + " s");
-                }
+                String heure="";
+                String minute="";
+                String seconde="";
+                if(snapshot.getValue(Long.class)>=3600000){
+                    heure=(snapshot.getValue(Long.class) / (1000 * 60 * 60) +"h");}
+                if(snapshot.getValue(Long.class)>=60000){
+                    minute=(snapshot.getValue(Long.class) % (1000 * 60 * 60)) / (1000 * 60)+"m";}
+                if(snapshot.getValue(Long.class)>=1000){
+                    seconde=(snapshot.getValue(Long.class) % (1000 * 60)) / 1000+"s";}
+                valTemp.setText(heure+minute+seconde);
 
             }
 
@@ -252,27 +245,21 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         xl.setTextColor(Color.BLACK);
         xl.setDrawGridLines(true);
         xl.setEnabled(true);
-        xl.setLabelCount(5); //Marche pas
         xl.setAvoidFirstLastClipping(false);
-        xl.setValueFormatter(new XAxisValueFormatter(listData));//Nombre max de poin
+        xl.setValueFormatter(new XAxisValueFormatter(listData));
 
 
 
         //Création Axe Y gauche
         leftAxis = graph.getAxisLeft();
         leftAxis.setTextColor(Color.BLACK);
-        // leftAxis.setAxisMaximum(30f);
-        // leftAxis.setAxisMinimum(20f);
         leftAxis.setDrawGridLines(true);
-        // Ajout couleur axe  leftAxis.setAxisLineColor(Color.RED);
 
 
         //Création Axe Y droit
         rightAxis = graph.getAxisRight();
         rightAxis.setEnabled(true);
         rightAxis.setTextColor(Color.BLACK);
-        //rightAxis.setAxisMaximum(60f);
-        //rightAxis.setAxisMinimum(0f);
         rightAxis.setDrawGridLines(true);
 
         //Set paramètre du graph
@@ -299,7 +286,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         if (boxCO2.isChecked()) {
             A_CO2.add(new Entry(indice, listData.recup_data(indice - 1).getCO2()));
             LineDataSet setCO2 = new LineDataSet(A_CO2, "CO2");
-            setCO2.setAxisDependency(YAxis.AxisDependency.LEFT);
+            setCO2.setAxisDependency(YAxis.AxisDependency.LEFT); // Faire un code de choix des axis?
             paramSet(setCO2);
 
             setCO2.setColor(Color.RED);
@@ -310,14 +297,14 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
             A_temp.add(new Entry(indice, listData.recup_data(indice - 1).getTemperature()));
             LineDataSet setTemp = new LineDataSet(A_temp, "Température");
 
-            setTemp.setAxisDependency(YAxis.AxisDependency.LEFT);
+            setTemp.setAxisDependency(YAxis.AxisDependency.RIGHT);
             paramSet(setTemp);
             setTemp.setColor(Color.BLUE);
             setTemp.setCircleColor(Color.BLUE);
             dataSets.add(setTemp);
         }
         if (boxLux.isChecked()) {
-            A_lux.add(new Entry(indice, listData.recup_data(listData.list_size() - 1).getLux()));
+            A_lux.add(new Entry(indice, listData.recup_data(indice - 1).getLux()));
             LineDataSet setLux = new LineDataSet(A_lux, "Lux");
             paramSet(setLux);
             setLux.setColor(Color.YELLOW);
@@ -414,13 +401,6 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         graph.getAxisRight().setDrawAxisLine(true);
         graph.getAxisRight().setDrawGridLines(true);
 
-
-        /* graph.setVisibleYRangeMaximum(120);
-         graph.setVisibleYRange(30, YAxis.AxisDependency.LEFT);
-        graph.getAxisLeft().setSpaceTop(10000000);
-        graph.getAxisRight().setSpaceTop(1000);
-        graph.getAxisLeft().setSpaceBottom(400);
-        Contrôle des échelle */
 
     }
 
