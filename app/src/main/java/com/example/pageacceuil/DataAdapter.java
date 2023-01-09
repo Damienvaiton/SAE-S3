@@ -33,7 +33,7 @@ Context context;
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-            holder.temp.setText((listData.recup_data(position).getTemperature()) + "°");
+            holder.temp.setText((listData.recup_data(position).getTemperature()) + "°C");
             holder.humi.setText((listData.recup_data(position).getHumidite()) + "%");
             holder.co2.setText((listData.recup_data(position).getCO2()) + "%");
             holder.o2.setText((listData.recup_data(position).getO2()) + "%");
