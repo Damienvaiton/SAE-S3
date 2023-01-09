@@ -12,6 +12,17 @@
         android:layout_marginStart="42dp"
         android:layout_marginTop="42dp"
         android:text="Choix de l'ESP "
+        android:backgroundTint="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/DeleteOneEsp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Supprimer données ESP"
+        android:backgroundTintMode="screen"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="168dp"
+        tools:ignore="MissingConstraints" />
 </androidx.constraintlayout.widget.ConstraintLayout>

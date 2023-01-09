@@ -1,5 +1,6 @@
 package com.example.pageacceuil;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -30,24 +31,24 @@ public class MainActivity extends AppCompatActivity {
 
 
     String ChoixESP = "";
-    ImageButton btnselect;
+    Button btnselect;
     Button btnsound;
-    ImageButton btncoEtu;
-    ImageButton btnCoAdmin;
+    Button btncoEtu;
+    Button btnCoAdmin;
     Button btnGraph;
     String[] temp;
     ArrayList<String> ESP;
 
     static String ChoixEspTransfert = "1";
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        btnselect = findViewById(R.id.Boutonsel);
-        btncoEtu = findViewById(R.id.imageButton5);
-        btnCoAdmin = findViewById(R.id.imageButton4);
-        btnGraph = findViewById(R.id.btnGraph);
+        btnselect = findViewById(R.id.Spinnerid);
+        btnCoAdmin = findViewById(R.id.adminbtnmain);
+        btnGraph = findViewById(R.id.Gobtn);
 ESP=new ArrayList<>();
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -124,15 +125,6 @@ ESP=new ArrayList<>();
             }
         });
 
-        btnGraph.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent vu;
-                vu = new Intent(MainActivity.this, GraphPage.class);
-
-                startActivity(vu);
-            }
-        });
     }
 
 }
