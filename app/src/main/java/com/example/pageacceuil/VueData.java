@@ -33,6 +33,13 @@ public class VueData extends AppCompatActivity implements Serializable {
         switchDesc = findViewById(R.id.switch1);
         trid = findViewById(R.id.button8);
         btnTriChoix.setText(ChoixTri);
+        DataAdapter dataAdapter = new DataAdapter(getApplicationContext(), GraphPage.listData);
+        dataAdapter.notifyDataSetChanged();
+        RecyclerView recyclerView = findViewById(R.id.recyclerview);
+        recyclerView.setAdapter(dataAdapter);
+
+
+
 /*
 
 
@@ -82,16 +89,16 @@ public class VueData extends AppCompatActivity implements Serializable {
         });
 
 
-        RecyclerView recyclerView = findViewById(R.id.recyclerview);
+
 
         recyclerView.setLayoutManager((new LinearLayoutManager((this))));
 
 
         trid.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onClick(View v) {
 
-                DataAdapter dataAdapter = new DataAdapter(getApplicationContext(), GraphPage.listData);
                 if (ChoixTri.equals("Co²")) {
                     if (Desc) {
                         GraphPage.listData.listsortCO2Desc();
@@ -151,6 +158,10 @@ public class VueData extends AppCompatActivity implements Serializable {
             }
 
         });
+
+
+
+
 
     }
 }

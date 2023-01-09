@@ -109,7 +109,7 @@ ESP=new ArrayList<>();
             @Override
             public void onClick(View view) {
                 Intent connec;
-                connec = new Intent(MainActivity.this, connectetu.class);
+                connec = new Intent(MainActivity.this, GraphPage.class);
 
                 startActivity(connec);
             }

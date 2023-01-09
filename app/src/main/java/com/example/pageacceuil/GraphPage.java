@@ -91,7 +91,6 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
         setContentView(R.layout.activity_graph_page);
 
-        listData.listsortDate();
 
         String temp;
         int cho;
@@ -143,6 +142,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
                     creaGraph();
                     actuValues();
 
+
                 }
             }
 
@@ -169,6 +169,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         varTemps.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+
                 if (snapshot.getValue(Integer.class) > 36000000) {
                     valTemp.setText(snapshot.getValue(Integer.class) / 1000 + " h");
                 }
