@@ -2,16 +2,12 @@ package com.example.pageacceuil;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.PopupMenu;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -101,7 +97,6 @@ public class MainActivity extends AppCompatActivity {
                         tabESP.add((String) entry.getValue());
                     }
                 }
-
                 adapter.notifyDataSetChanged();
             }
 

@@ -1,10 +1,6 @@
 package com.example.pageacceuil;
 
-import static java.lang.Integer.parseInt;
-
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
@@ -49,7 +45,6 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class GraphPage extends AppCompatActivity implements View.OnClickListener, BottomNavigationView.OnNavigationItemSelectedListener {
@@ -103,6 +98,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
             }
         }
+
 
 
 
