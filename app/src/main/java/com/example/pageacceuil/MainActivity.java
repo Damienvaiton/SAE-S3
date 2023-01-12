@@ -88,9 +88,8 @@ ESP=new ArrayList<>();
                         ChoixESP = (String) item.getTitle();
                         String[] choixe;
                         choixe = ChoixESP.split(" ");
-                        TextView textView = findViewById(R.id.IndiqueESPChoise);
 
-                        textView.setText(choixe[1]);
+
                         ChoixEspTransfert = choixe[1];
                         temp = ChoixEspTransfert.split("°");
                         ChoixEspTransfert = temp[1];
