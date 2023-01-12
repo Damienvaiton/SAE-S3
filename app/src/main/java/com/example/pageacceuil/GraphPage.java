@@ -79,13 +79,12 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
     private XAxis xl;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph_page);
 
-        indice=0;
+        indice = 0;
 
         Intent intent = getIntent();
         if (intent != null) {
@@ -100,9 +99,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         }
 
 
-
-
-        DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32/"+choixESP+"/Mesure");
+        DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32/" + choixESP + "/Mesure");
 
         listData = new ListData();
 
@@ -118,6 +115,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
             }
 
         });
+
 
         myRef.addChildEventListener(new ChildEventListener() {
             @Override
@@ -160,16 +158,19 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         varTemps.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String heure="";
-                String minute="";
-                String seconde="";
-                if(snapshot.getValue(Long.class)>=3600000){
-                    heure=(snapshot.getValue(Long.class) / (1000 * 60 * 60) +"h");}
-                if(snapshot.getValue(Long.class)>=60000){
-                    minute=(snapshot.getValue(Long.class) % (1000 * 60 * 60)) / (1000 * 60)+"m";}
-                if(snapshot.getValue(Long.class)>=1000){
-                    seconde=(snapshot.getValue(Long.class) % (1000 * 60)) / 1000+"s";}
-                valTemp.setText(heure+minute+seconde);
+                String heure = "";
+                String minute = "";
+                String seconde = "";
+                if (snapshot.getValue(Long.class) >= 3600000) {
+                    heure = (snapshot.getValue(Long.class) / (1000 * 60 * 60) + "h");
+                }
+                if (snapshot.getValue(Long.class) >= 60000) {
+                    minute = (snapshot.getValue(Long.class) % (1000 * 60 * 60)) / (1000 * 60) + "m";
+                }
+                if (snapshot.getValue(Long.class) >= 1000) {
+                    seconde = (snapshot.getValue(Long.class) % (1000 * 60)) / 1000 + "s";
+                }
+                valTemp.setText(heure + minute + seconde);
 
             }
 
@@ -194,11 +195,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         viewHumi.setText("Humi");
 
 
-        viewHumi.setTextSize(20);
-        viewTemp.setTextSize(20);
-        viewLux.setTextSize(20);
-        viewCO2.setTextSize(20);
-        viewO2.setTextSize(20);
+
 
         FloatingActionButton btnAdd = findViewById(R.id.btnAdd);
         btnAdd.setOnClickListener(this);
@@ -245,7 +242,6 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         xl.setValueFormatter(new XAxisValueFormatter(listData));
 
 
-
         //Création Axe Y gauche
         leftAxis = graph.getAxisLeft();
         leftAxis.setTextColor(Color.BLACK);
@@ -260,6 +256,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
         //Set paramètre du graph
         paramGraph();
+        chargerDonner();
 
         graph.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
@@ -269,13 +266,19 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
             @Override
             public void onValueSelected(Entry e, Highlight h) {
-                Toast.makeText(getApplicationContext(), "Heure = " +listData.recup_data((int)h.getX()-1).getTemps()  + ", X : " + h.getY(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Heure = " + listData.recup_data((int) h.getX() - 1).getTemps() + ", X : " + h.getY(), Toast.LENGTH_SHORT).show();
 
             }
+
         });
 
     }
 
+    void chargerDonner() {
+        for (int i = 0; i < listData.list_size(); i++) {
+            A_CO2.add(new Entry(indice, listData.recup_data(i ).getCO2()));
+        }
+    }
 
     void creaGraph() {
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();

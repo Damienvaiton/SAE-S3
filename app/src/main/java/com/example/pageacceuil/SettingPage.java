@@ -3,7 +3,6 @@ package com.example.pageacceuil;
 
 import static java.lang.Integer.parseInt;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -16,7 +15,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.github.mikephil.charting.components.YAxis;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -33,6 +31,7 @@ public class SettingPage extends AppCompatActivity implements View.OnClickListen
 
     Button b_droit;
     Button b_gauche;
+    Button b_refresh;
 
 
     CheckBox auto_droit;
@@ -50,6 +49,7 @@ public class SettingPage extends AppCompatActivity implements View.OnClickListen
         min_d = findViewById(R.id.min_droit);
         tauxRefresh = findViewById(R.id.refreshRate);
 
+        b_refresh=findViewById(R.id.btn_refresh);
         b_gauche = findViewById(R.id.btn_gauche);
         b_droit = findViewById(R.id.btn_droit);
 
