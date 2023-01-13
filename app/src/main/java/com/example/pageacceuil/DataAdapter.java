@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class DataAdapter extends RecyclerView.Adapter<MyViewHolder>{
@@ -33,6 +34,7 @@ Context context;
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+            DecimalFormat a = new DecimalFormat("##.###");
             holder.temp.setText((listData.recup_data(position).getTemperature()) + "°");
             holder.humi.setText((listData.recup_data(position).getHumidite()) + "%");
             holder.co2.setText((listData.recup_data(position).getCO2()) + "%");
