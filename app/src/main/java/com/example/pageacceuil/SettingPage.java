@@ -68,22 +68,6 @@ public class SettingPage extends AppCompatActivity implements View.OnClickListen
             auto_gauche.setChecked(false);
         }
 
-/*
-
-        Intent intent = getIntent();
-
-        if (intent != null) {
-            if (intent.hasExtra("listData")) {
-                this.rightAxis = (YAxis) intent.getSerializableExtra("rightAxis");
-                this.leftAxis = (YAxis) intent.getSerializableExtra("leftAxis");
-
-                System.out.println("ok");
-            } else {
-                System.out.println("erreur");
-            }
-        }
-*/
-
 
         tauxRefresh.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override

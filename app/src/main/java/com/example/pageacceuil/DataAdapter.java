@@ -1,17 +1,13 @@
 package com.example.pageacceuil;
 
-import android.content.ClipData;
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.List;
+import java.text.DecimalFormat;
 
 public class DataAdapter extends RecyclerView.Adapter<MyViewHolder>{
 
@@ -33,12 +29,13 @@ Context context;
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-            holder.temp.setText((listData.recup_data(position).getTemperature()) + "°");
-            holder.humi.setText((listData.recup_data(position).getHumidite()) + "%");
-            holder.co2.setText((listData.recup_data(position).getCO2()) + "%");
-            holder.o2.setText((listData.recup_data(position).getO2()) + "%");
-            holder.lux.setText((listData.recup_data(position).getLux()) + "lux");
-            holder.temps.setText((listData.recup_data(position).getTemps()) + "h");
+        DecimalFormat a = new DecimalFormat("##.###");
+            holder.temp.setText(a.format(listData.recup_data(position).getTemperature()) + "°");
+            holder.humi.setText(a.format(listData.recup_data(position).getHumidite()) + "%");
+            holder.co2.setText(a.format(listData.recup_data(position).getCO2()) + "%");
+            holder.o2.setText(a.format(listData.recup_data(position).getO2()) + "%");
+            holder.lux.setText(a.format(listData.recup_data(position).getLux()) + "lux");
+            holder.temps.setText(a.format(listData.recup_data(position).getTemps()) + "h");
     }
 
     @Override

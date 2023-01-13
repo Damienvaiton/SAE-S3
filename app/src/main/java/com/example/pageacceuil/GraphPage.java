@@ -94,7 +94,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
                 System.out.println("ok");
             } else {
                 System.out.println("erreur");
-
+                System.out.println((String) intent.getSerializableExtra("ESP"));
             }
         }
 
@@ -276,7 +276,8 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
     void chargerDonner() {
         for (int i = 0; i < listData.list_size(); i++) {
-            A_CO2.add(new Entry(indice, listData.recup_data(i ).getCO2()));
+            System.out.println(listData.recup_data(i).getTemperature());
+            A_CO2.add(new Entry(indice, listData.recup_data(i).getCO2()));
         }
     }
 

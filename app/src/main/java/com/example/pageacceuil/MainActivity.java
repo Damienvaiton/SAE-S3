@@ -1,12 +1,12 @@
 package com.example.pageacceuil;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
@@ -31,31 +31,30 @@ public class MainActivity extends AppCompatActivity {
     DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32");
 
 
-    String ChoixESP;
-    ImageButton btnselect;
-    ImageButton btncoEtu;
-    ImageButton btnCoAdmin;
-    Button btnGraph;
+    String ChoixESP ="";
+    Spinner spinner;
+    Button btncoEtu;
+    Button btnCoAdmin;
     HashMap<String,String> ESP;
     ArrayList<String> tabESP;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
-        btnselect = findViewById(R.id.Boutonsel);
-        btncoEtu = findViewById(R.id.imageButton5);
-        btnCoAdmin = findViewById(R.id.imageButton4);
-        btnGraph = findViewById(R.id.btnGraph);
-        ESP=new HashMap<>();
+        spinner = findViewById(R.id.SpinnerID);
+        btncoEtu = findViewById(R.id.Gobtn);
+        btnCoAdmin = findViewById(R.id.adminbtnmain);
+        ESP = new HashMap<>();
         tabESP=new ArrayList<>();
 
 
-        Spinner spinner=findViewById(R.id.spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item,tabESP);
         spinner.setAdapter(adapter);
+
+
+
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -74,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -85,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
                     } else {
                         ESP.putIfAbsent(child.getKey(), null);
                     }
+
                 }
                 Iterator iterator = ESP.entrySet().iterator();
                 tabESP.clear();
@@ -101,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
 
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
@@ -108,12 +108,13 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+
         btncoEtu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent connec;
-                connec = new Intent(MainActivity.this, connectetu.class);
-
+                connec = new Intent(MainActivity.this, GraphPage.class);
+                connec.putExtra("ESP",ChoixESP);
                 startActivity(connec);
             }
         });
@@ -123,21 +124,13 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent connect;
                 connect = new Intent(MainActivity.this, connectadmin.class);
+                connect.putExtra("listeESP",tabESP);
+                connect.putExtra("hashmapEsp",ESP);
                 startActivity(connect);
+
             }
         });
 
-        btnGraph.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent vu;
-                vu = new Intent(MainActivity.this, GraphPage.class);
-                vu.putExtra("ESP", ChoixESP);
-                startActivity(vu);
-            }
-        });
     }
 
 }
-
-
