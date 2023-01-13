@@ -28,7 +28,8 @@
             android:gravity="center"
             android:hint="Date"
             android:textAlignment="center"
-            android:textColorHint="@color/orange"
+            android:textColorHint="@color/green"
+            android:textColor="@color/black"
             android:textSize="16dp"
             android:textStyle="bold" />
 
@@ -40,8 +41,9 @@
             android:layout_marginStart="44dp"
             android:layout_toEndOf="@id/heure"
             android:hint="Tempé"
+            android:textColor="@color/green"
 
-            android:textColorHint="@color/redoblack" />
+            android:textColorHint="@color/grays" />
 
         <TextView
             android:id="@+id/humi"
@@ -51,7 +53,7 @@
             android:layout_marginStart="10dp"
             android:layout_toEndOf="@id/temp"
             android:hint="Humi"
-            android:textColorHint="@color/redoblack"
+            android:textColorHint="@color/green"
 
             />
 
@@ -64,7 +66,7 @@
             android:layout_toEndOf="@id/humi"
 
             android:hint="CO2"
-            android:textColorHint="@color/redoblack"
+            android:textColorHint="@color/grays"
 
             />
 
@@ -77,7 +79,7 @@
 
             android:layout_toEndOf="@id/co2"
             android:hint="O2"
-            android:textColorHint="@color/redoblack"
+            android:textColorHint="@color/green"
 
             />
 
@@ -90,7 +92,7 @@
 
             android:layout_toEndOf="@id/o2"
             android:hint="LUX"
-            android:textColorHint="@color/redoblack"
+            android:textColorHint="@color/grays"
 
             />
 
