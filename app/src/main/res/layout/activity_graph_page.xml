@@ -45,43 +45,78 @@
 
 
         <TextView
-            android:id="@+id/barVu3"
-            android:layout_width="61dp"
-            android:layout_height="38dp"
-            android:layout_marginStart="79dp"
-            android:layout_marginTop="46dp"
-            android:layout_marginBottom="38dp"
+            android:id="@+id/viewTemp"
+            android:layout_width="70dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="69dp"
+            android:layout_marginBottom="36dp"
             android:text="TextView"
             app:layout_constraintBottom_toTopOf="@+id/boxTemp"
-            app:layout_constraintEnd_toStartOf="@+id/barVu2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
 
         <TextView
-            android:id="@+id/barVu2"
-            android:layout_width="61dp"
-            android:layout_height="38dp"
-            android:layout_marginTop="46dp"
-            android:layout_marginEnd="1dp"
-            android:layout_marginBottom="38dp"
+            android:id="@+id/viewLux"
+            android:layout_width="70dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="7dp"
+            android:layout_marginTop="69dp"
+            android:layout_marginBottom="36dp"
             android:text="TextView"
             app:layout_constraintBottom_toTopOf="@+id/boxLux"
-            app:layout_constraintEnd_toStartOf="@+id/barVu1"
-            app:layout_constraintStart_toEndOf="@+id/barVu3"
+            app:layout_constraintStart_toEndOf="@+id/viewTemp"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/barVu4"
-            android:layout_width="61dp"
-            android:layout_height="38dp"
-            android:layout_marginStart="2dp"
-            android:layout_marginTop="58dp"
-            android:layout_marginEnd="86dp"
+            android:id="@+id/viewCO2"
+            android:layout_width="70dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="69dp"
+            android:layout_marginBottom="36dp"
             android:text="TextView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/barVu1"
+            app:layout_constraintBottom_toTopOf="@+id/boxO2"
+            app:layout_constraintStart_toEndOf="@+id/viewHumi"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/viewO2"
+            android:layout_width="70dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="7dp"
+            android:layout_marginTop="69dp"
+            android:layout_marginBottom="499dp"
+            android:text="TextView"
+            app:layout_constraintBottom_toTopOf="@+id/textView5"
+            app:layout_constraintStart_toEndOf="@+id/viewCO2"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/viewHumi"
+            android:layout_width="70dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="7dp"
+            android:layout_marginTop="69dp"
+            android:layout_marginBottom="36dp"
+            android:text="TextView"
+            app:layout_constraintBottom_toTopOf="@+id/boxCO2"
+            app:layout_constraintStart_toEndOf="@+id/viewLux"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+
+            android:layout_marginTop="7dp"
+            android:layout_marginBottom="27dp"
+            android:background="@color/black"
+            app:layout_constraintBottom_toTopOf="@+id/boxTemp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/viewTemp" />
 
         <CheckBox
             android:id="@+id/boxTemp"
@@ -112,24 +147,24 @@
             android:id="@+id/boxO2"
             android:layout_width="54dp"
             android:layout_height="21dp"
-            android:layout_marginTop="49dp"
-            android:layout_marginBottom="429dp"
+            android:layout_marginTop="36dp"
+            android:layout_marginEnd="101dp"
             android:text="O2"
-            app:layout_constraintBottom_toTopOf="@+id/textView5"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/boxCO2"
-            app:layout_constraintTop_toBottomOf="@+id/barVu4" />
+            app:layout_constraintTop_toBottomOf="@+id/viewCO2" />
 
         <CheckBox
             android:id="@+id/boxCO2"
             android:layout_width="54dp"
             android:layout_height="21dp"
-            android:layout_marginStart="1dp"
-            android:layout_marginTop="49dp"
+            android:layout_marginTop="36dp"
             android:layout_marginBottom="509dp"
             android:text="CO2"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/boxHumi"
-            app:layout_constraintTop_toBottomOf="@+id/barVu1" />
+            app:layout_constraintTop_toBottomOf="@+id/viewCO2" />
+
 
         <CheckBox
             android:id="@+id/boxHumi"
@@ -145,22 +180,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/barVu1"
-            android:layout_width="61dp"
-            android:layout_height="38dp"
-            android:layout_marginStart="1dp"
-            android:layout_marginTop="46dp"
-            android:layout_marginEnd="2dp"
-            android:layout_marginBottom="545dp"
-            android:text="TextView"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/barVu4"
-            app:layout_constraintStart_toEndOf="@+id/barVu2"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.26" />
-
-        <EditText
-            android:id="@+id/setTime"
+            android:id="@+id/viewTime"
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_marginTop="522dp"
@@ -169,7 +189,7 @@
             android:inputType="numberDecimal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/barVu4" />
+            app:layout_constraintTop_toBottomOf="@+id/viewO2" />
 
         <TextView
             android:id="@+id/textView5"
@@ -181,7 +201,9 @@
             android:text="Refresh rate :"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/barVu4" />
+            app:layout_constraintTop_toBottomOf="@+id/viewO2" />
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
     <com.github.mikephil.charting.charts.LineChart

@@ -3,8 +3,8 @@ package com.example.pageacceuil;
 
 public class Data {
 
-    private double humidite;
-    private double temperature;
+    private float humidite;
+    private float temperature;
     private float lux;
     private float O2;
     private float CO2;
@@ -13,7 +13,16 @@ public class Data {
     public Data() {
     }
 
-    public double getHumidite() {
+    public Data(float humidite, float temperature, float lux, float o2, float CO2, String temps) {
+        this.humidite = humidite;
+        this.temperature = temperature;
+        this.lux = lux;
+        this.O2 = o2;
+        this.CO2 = CO2;
+        this.temps = temps;
+    }
+
+    public float getHumidite() {
         return humidite;
     }
 
@@ -21,9 +30,8 @@ public class Data {
         this.humidite = humidite;
     }
 
-    public double getTemperature() {
-        return temperature;
-    }
+    public float getTemperature() { return temperature; }
+
 
     public void setTemperature(float temperature) {
         this.temperature = temperature;
