@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
                 ESP.clear();
                 for (DataSnapshot child : snapshot.getChildren()) {
                     if (child.child("Nom").exists()) {
-                        ESP.put(child.getKey(), (String) child.child("Nom").getValue());
+                        ESP.put(child.getKey(), String.valueOf(child.child("Nom").getValue()));
                     } else {
                         ESP.putIfAbsent(child.getKey(), null);
                     }
@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent connect;
-                connect = new Intent(MainActivity.this, connectadmin.class);
+                connect = new Intent(getApplicationContext(), connectadmin.class);
                 connect.putExtra("listeESP",tabESP);
                 connect.putExtra("hashmapEsp",ESP);
                 startActivity(connect);

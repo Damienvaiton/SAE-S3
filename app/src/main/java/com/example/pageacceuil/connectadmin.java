@@ -55,6 +55,8 @@ public class connectadmin extends AppCompatActivity {
                 System.out.println("erreur");
             }
         }
+
+
         editMdp=findViewById(R.id.coMdp);
         editUser=findViewById(R.id.coUsername);
         coBtn=findViewById(R.id.coBtn);
@@ -62,12 +64,6 @@ butnback=findViewById(R.id.imageButton3);
         coBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println(editUser.getText().toString());
-                System.out.println(editMdp.getText().toString());
-                System.out.println("yo");
-                System.out.println(user+"  e");
-                System.out.println(mdp+"   e");
-                if(Objects.equals(user, editUser.getText().toString()) && Objects.equals(mdp, editMdp.getText().toString())){
                     Intent ac;
                     ac = new Intent(connectadmin.this, pageSettingAdmin.class);
                     System.out.println("hein");
@@ -75,7 +71,14 @@ butnback=findViewById(R.id.imageButton3);
                     ac.putExtra("hashmapEsp",ESP);
                     startActivity(ac);
                 }
-            }
+
+            /* if(Objects.equals(user, editUser.getText().toString()) && Objects.equals(mdp, editMdp.getText().toString())){
+                Intent ac;
+                ac = new Intent(connectadmin.this, pageSettingAdmin.class);
+                ac.putExtra("listeESP",tabESP);
+                ac.putExtra("hashmapEsp",ESP);
+                startActivity(ac);}*/
+
         });
         myRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override

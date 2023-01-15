@@ -64,11 +64,7 @@ public class VueData extends AppCompatActivity implements Serializable {
                     public boolean onMenuItemClick(MenuItem item) {
 
 
-                        if (switchDesc.isChecked()) {
-                            Desc = true;
-                        } else {
-                            Desc = false;
-                        }
+                        Desc = switchDesc.isChecked();
                        ChoixTri = (String) item.getTitle();
 
                         btnTriChoix.setText(ChoixTri);

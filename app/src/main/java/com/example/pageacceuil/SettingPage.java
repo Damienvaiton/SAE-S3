@@ -3,6 +3,7 @@ package com.example.pageacceuil;
 
 import static java.lang.Integer.parseInt;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -18,11 +19,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class SettingPage extends AppCompatActivity implements View.OnClickListener {
 
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-
+String ESP;
     EditText max_g;
     EditText min_g;
     EditText max_d;
@@ -33,7 +37,7 @@ public class SettingPage extends AppCompatActivity implements View.OnClickListen
     Button b_gauche;
     Button b_refresh;
 
-
+TextView nomEsp;
     CheckBox auto_droit;
     CheckBox auto_gauche;
 
@@ -56,10 +60,24 @@ public class SettingPage extends AppCompatActivity implements View.OnClickListen
         auto_droit = findViewById(R.id.auto_droit);
         auto_gauche = findViewById(R.id.auto_gauche);
 
+        nomEsp=findViewById(R.id.nomEsp);
+
         b_gauche.setOnClickListener(this);
         b_droit.setOnClickListener(this);
         auto_droit.setOnClickListener(this);
         auto_gauche.setOnClickListener(this);
+
+        Intent intent=getIntent();
+        if (intent != null) {
+            if (intent.hasExtra("ESP")) {
+                this.ESP = (String) intent.getSerializableExtra("ESP");
+                System.out.println("ok");
+            } else {
+                System.out.println("erreur");
+            }
+        }
+
+        nomEsp.setText(ESP);
 
         if (GraphPage.rightAxis.isAxisMaxCustom()) {
             auto_droit.setChecked(false);

@@ -410,7 +410,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         switch (view.getId()) {
             case R.id.btnAdd:
                 Pop_up customPopup = new Pop_up(this);
-                customPopup.build("Ajout O2", "");
+                customPopup.build("Ajout O2", "",0);
                 customPopup.getYesButton().setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -456,8 +456,8 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
             case R.id.setting:
                 System.out.println("Parametre");
                 Intent openSetting;
-
                 openSetting = new Intent(GraphPage.this, SettingPage.class);
+                openSetting.putExtra("ESP",choixESP);
                 startActivity(openSetting);
                 break;
             case R.id.btnExport:
