@@ -41,6 +41,11 @@ import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.ConditionalFormattingRule;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.PatternFormatting;
+import org.apache.poi.ss.usermodel.SheetConditionalFormatting;
+import org.apache.poi.ss.util.CellRangeAddress;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -478,32 +483,94 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
     }
 
     private void exportFile() {
+        int cptLignes=listData.list_size()-1;
+        if(!isDataValid(cptLignes)){
+            cptLignes--;
+        }
         File file = new File(Environment.getExternalStorageDirectory() + File.separator + "Download", "Mesure.xls");
         HSSFWorkbook workbook = new HSSFWorkbook();
+
+        // Style border
+        //HSSFCellStyle styleBorderTop=workbook.createCellStyle();
+        //HSSFCellStyle styleBorderBottom=workbook.createCellStyle();
+        //HSSFCellStyle styleBorderLeft=workbook.createCellStyle();
+        //HSSFCellStyle styleBorderRight=workbook.createCellStyle();
+
+        //styleBorderTop.setBorderTop(BorderStyle.THICK);
+        //styleBorderBottom.setBorderBottom(BorderStyle.THICK);
+        //styleBorderLeft.setBorderLeft(BorderStyle.THICK);
+        //styleBorderRight.setBorderRight(BorderStyle.THICK);
+
+        // Création de la feuille de calcul
         HSSFSheet sheet = workbook.createSheet("Mesures");
-        // Add value in the cell
+
+        // Création de la condition pour l'affichage en couleurs alternées
+        SheetConditionalFormatting sheetCF = sheet.getSheetConditionalFormatting();
+        ConditionalFormattingRule rule1 = sheetCF.createConditionalFormattingRule("MOD(ROW(),2)");
+        PatternFormatting fill1 = rule1.createPatternFormatting();
+        fill1.setFillBackgroundColor(IndexedColors.GREY_25_PERCENT.index);
+        fill1.setFillPattern(PatternFormatting.SOLID_FOREGROUND);
+        // Plage des cellules affectées par la condition
+        CellRangeAddress[] regions = {
+                CellRangeAddress.valueOf("A1:D"+cptLignes)
+        };
+        sheetCF.addConditionalFormatting(regions, rule1);
+
+        // Ajout de la 1ère ligne de titre
         HSSFRow row0 = sheet.createRow(0);
+        // Cellule Numero
+        HSSFCell cellNumero = row0.createCell(0);
+        //cellNumero.setCellStyle(cellStyle);
+        cellNumero.setCellValue("Numero mesure");
+        /*
+        cellNumero.setCellStyle(styleBorderTop);
+        cellNumero.setCellStyle(styleBorderBottom);
+        cellNumero.setCellStyle(styleBorderLeft);
+        cellNumero.setCellStyle(styleBorderRight);
+        */
+        // Cellule Humidite
+        HSSFCell cellHum = row0.createCell(1);
+        cellHum.setCellValue("Humidite");
+        /*
+        cellHum.setCellStyle(styleBorderTop);
+        cellHum.setCellStyle(styleBorderBottom);
+        cellHum.setCellStyle(styleBorderLeft);
+        cellHum.setCellStyle(styleBorderRight);
+         */
+        // Cellule Humidite
+        HSSFCell cellTemp = row0.createCell(2);
+        cellTemp.setCellValue("Temperature");
+        /*
+        cellTemp.setCellStyle(styleBorderTop);
+        cellTemp.setCellStyle(styleBorderBottom);
+        cellTemp.setCellStyle(styleBorderLeft);
+        cellTemp.setCellStyle(styleBorderRight);
+         */
+        // Cellule Humidite
+        HSSFCell cellHeure = row0.createCell(3);
+        cellHeure.setCellValue("Heure");
+        /*
+        cellHeure.setCellStyle(styleBorderTop);
+        cellHeure.setCellStyle(styleBorderBottom);
+        cellHeure.setCellStyle(styleBorderLeft);
+        cellHeure.setCellStyle(styleBorderRight);
+         */
 
-        // Ajout d'une cellule
-        HSSFRow titreRow = sheet.getRow(0);
-        HSSFCell cellTitre0 = titreRow.createCell(0);
-        cellTitre0.setCellValue("Numero mesure");
+        // Ajout des lignes de mesures
+        for (int i=0;i<cptLignes;i++){
+            HSSFRow row = sheet.createRow(i+1);
+            row.createCell(0).setCellValue(i);
+            //row.getCell(0).setCellStyle(styleBorderLeft);
+            row.createCell(1).setCellValue(listData.recup_data(i).getHumidite());
+            row.createCell(2).setCellValue(listData.recup_data(i).getTemperature());
+            row.createCell(3).setCellValue(listData.recup_data(i).getTemps());
+            //row.getCell(3).setCellStyle(styleBorderRight);
+        }
 
-        HSSFCell cell0 = titreRow.getCell(0);
-        HSSFCellStyle nomCell0 = cell0.getCellStyle();
-        cell0.setCellStyle(nomCell0);
-
-        row0.createCell(1).setCellValue("Humidite");
-        row0.createCell(2).setCellValue("Temperature");
-        row0.createCell(3).setCellValue("Heure");
-
-        HSSFRow row1 = sheet.createRow(1);
-        row1.createCell(0).setCellValue("0");
-        row1.createCell(1).setCellValue("41");
-        row1.createCell(2).setCellValue("21.9");
-        row1.createCell(3).setCellValue("16:20:24");
+        // Création du fichier
         try {
             if (file.exists()) {
+                file.delete();
                 file.createNewFile();
             }
             FileOutputStream fileOutputStream = new FileOutputStream(file);
@@ -511,10 +578,26 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
             if (fileOutputStream != null) {
                 fileOutputStream.flush();
                 fileOutputStream.close();
-                Toast.makeText(this, "Export excel dans le fichier telechargements", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Export de "+cptLignes+" mesures dans le dossier téléchargements", Toast.LENGTH_SHORT).show();
             }
         } catch (Exception e) {
             e.printStackTrace();
+            Toast.makeText(this, "Export excel annulé, erreur", Toast.LENGTH_SHORT).show();
         }
+    }
+    private boolean isDataValid(int cptLignes){
+        if (listData.recup_data(cptLignes).getCO2()==0){
+            return false;
+        }
+        if (listData.recup_data(cptLignes).getTemperature()==0){
+            return false;
+        }
+        if(listData.recup_data(cptLignes).getHumidite()==0){
+            return false;
+        }
+        if(listData.recup_data(cptLignes).getTemps()==""){
+            return false;
+        }
+        return true;
     }
 }
