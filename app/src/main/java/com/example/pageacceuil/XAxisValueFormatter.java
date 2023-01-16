@@ -27,7 +27,7 @@ public class XAxisValueFormatter extends IndexAxisValueFormatter {
       }
   }*/@Override
     public String getFormattedValue(float value) {
-        return listData.recup_data(GraphPage.indice - 1).getTemps();
+      return listData.recup_data((int) value-1).getTemps();
     }
 }
 

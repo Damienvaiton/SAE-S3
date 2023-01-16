@@ -3,16 +3,11 @@ package com.example.pageacceuil;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.PopupMenu;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -43,8 +38,6 @@ public class MainActivity extends AppCompatActivity {
     Button btnCoAdmin;
     HashMap<String,String> ESP;
     ArrayList<String> tabESP;
-
-    static String ChoixEspTransfert = "1";
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -77,17 +70,17 @@ public class MainActivity extends AppCompatActivity {
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-            /*ILOVEYOUDAMIEN*/
+
             }
         });
 
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-            ESP.clear();
+                ESP.clear();
                 for (DataSnapshot child : snapshot.getChildren()) {
                     if (child.child("Nom").exists()) {
-                        ESP.put(child.getKey(), (String) child.child("Nom").getValue());
+                        ESP.put(child.getKey(), String.valueOf(child.child("Nom").getValue()));
                     } else {
                         ESP.putIfAbsent(child.getKey(), null);
                     }
@@ -122,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent connec;
                 connec = new Intent(MainActivity.this, GraphPage.class);
-
+                connec.putExtra("ESP",ChoixESP);
                 startActivity(connec);
             }
         });
@@ -131,13 +124,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent connect;
-                connect = new Intent(MainActivity.this, connectadmin.class);
+                connect = new Intent(getApplicationContext(), connectadmin.class);
+                connect.putExtra("listeESP",tabESP);
+                connect.putExtra("hashmapEsp",ESP);
                 startActivity(connect);
+
             }
         });
 
     }
 
 }
-
-

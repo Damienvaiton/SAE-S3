@@ -2,11 +2,11 @@ package com.example.pageacceuil;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -46,14 +46,24 @@ public class Pop_up  extends Dialog{ //implements View.OnClickListener
         return Float.valueOf(valeur.getText().toString());
     }
 
+    public String getString() {
+        return valeur.getText().toString();
+    }
+
 
     public void build() {
         show();
     }
 
-    public void build(String title,String txt) {
+    public void build(String title,String txt,int choix) {
+if(choix==0){
+    valeur.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+}
+else{
+    valeur.setInputType( InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
+}
         titre.setText(title);
-        valeur.setText(txt);
+        valeur.setHint(txt);
         show();
     }
     public void build(String txt) {

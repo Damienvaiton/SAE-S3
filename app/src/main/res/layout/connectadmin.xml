@@ -56,13 +56,13 @@
         android:layout_marginBottom="59dp"
         android:text="Connexion Admin"
         android:textSize="27sp"
-        app:layout_constraintBottom_toTopOf="@+id/editTextTextEmailAddress"
+        app:layout_constraintBottom_toTopOf="@+id/coUsername"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
     <EditText
-        android:id="@+id/editTextTextEmailAddress"
+        android:id="@+id/coUsername"
         android:layout_width="275dp"
         android:layout_height="54dp"
         android:layout_marginStart="68dp"
@@ -71,24 +71,22 @@
         android:ems="10"
         android:inputType="textEmailAddress"
         android:singleLine="true"
-        app:layout_constraintBottom_toTopOf="@+id/editTextTextPassword"
+        app:layout_constraintBottom_toTopOf="@+id/coMdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <EditText
-        android:id="@+id/editTextTextPassword"
+        android:id="@+id/coMdp"
         android:layout_width="275sp"
         android:layout_height="54sp"
         android:layout_marginStart="68dp"
         android:layout_marginEnd="68dp"
-        android:layout_marginBottom="100dp"
         android:ems="10"
         android:inputType="textPassword"
-        app:layout_constraintBottom_toTopOf="@+id/Boutonconnexionadmin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextEmailAddress" />
+        app:layout_constraintTop_toBottomOf="@+id/coUsername" />
 
     <ImageButton
         android:id="@+id/imageButton3"
@@ -98,26 +96,25 @@
         android:layout_marginEnd="168dp"
         android:layout_marginBottom="32dp"
         android:backgroundTint="#009E9999"
-        app:tint="#000000"
+        android:tint="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Boutonconnexionadmin"
         app:srcCompat="@drawable/back" />
 
-    <ImageButton
-        android:id="@+id/Boutonconnexionadmin"
-        android:layout_width="180dp"
-        android:layout_height="72dp"
-        android:layout_marginStart="115dp"
-        android:layout_marginEnd="116dp"
-        android:layout_marginBottom="16dp"
-        android:backgroundTint="#00FFFFFF"
+    <Button
+        android:id="@+id/coBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="158dp"
+        android:layout_marginTop="103dp"
+        android:layout_marginEnd="159dp"
+        android:layout_marginBottom="42dp"
+        android:text="Button"
         app:layout_constraintBottom_toTopOf="@+id/imageButton3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword"
-        app:srcCompat="@drawable/connexion" />
+        app:layout_constraintTop_toBottomOf="@+id/coMdp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

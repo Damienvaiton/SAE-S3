@@ -1,10 +1,6 @@
 package com.example.pageacceuil;
 
-import static java.lang.Integer.parseInt;
-
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
@@ -49,7 +45,6 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class GraphPage extends AppCompatActivity implements View.OnClickListener, BottomNavigationView.OnNavigationItemSelectedListener {
@@ -84,33 +79,27 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
     private XAxis xl;
 
 
-    @SuppressLint("SuspiciousIndentation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_graph_page);
 
+        indice = 0;
 
-        String temp;
-        int cho;
+        Intent intent = getIntent();
+        if (intent != null) {
+            if (intent.hasExtra("ESP")) {
 
-        choixESP = MainActivity.ChoixEspTransfert;
-        cho = parseInt(choixESP);
-        cho = cho + 1;
-
-
-        Resources res = getResources();
-        String[] test = res.getStringArray(R.array.ChoixESP);
-
-
-        temp = "SAE_S3_BD/ESP32/" + test[cho] + "/Mesure";
-        System.out.println(test[cho]);
-        System.out.println(temp);
-        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
+                this.choixESP = (String) intent.getSerializableExtra("ESP");
+                System.out.println("ok");
+            } else {
+                System.out.println("erreur");
+                System.out.println((String) intent.getSerializableExtra("ESP"));
+            }
+        }
 
 
-        DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32/A8:03:2A:EA:EE:CC/Mesure");
+        DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32/" + choixESP + "/Mesure");
 
         listData = new ListData();
 
@@ -126,6 +115,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
             }
 
         });
+
 
         myRef.addChildEventListener(new ChildEventListener() {
             @Override
@@ -165,20 +155,23 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
 
         // A terminer
-        DatabaseReference varTemps = database.getReference("SAE_S3_BD/ESP32/" + test[cho] + "/TauxRafraichissement");
+        DatabaseReference varTemps = database.getReference("SAE_S3_BD/ESP32/" + choixESP + "/TauxRafraichissement");
         varTemps.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                if (snapshot.getValue(Integer.class) > 36000000) {
-                    valTemp.setText(snapshot.getValue(Integer.class) / 1000 + " h");
+                String heure = "";
+                String minute = "";
+                String seconde = "";
+                if (snapshot.getValue(Long.class) >= 3600000) {
+                    heure = (snapshot.getValue(Long.class) / (1000 * 60 * 60) + "h");
                 }
-                if (snapshot.getValue(Integer.class) > 60000) {
-                    valTemp.setText(snapshot.getValue(Integer.class) / 1000 + " m");
+                if (snapshot.getValue(Long.class) >= 60000) {
+                    minute = (snapshot.getValue(Long.class) % (1000 * 60 * 60)) / (1000 * 60) + "m";
                 }
-                if (snapshot.getValue(Integer.class) > 1000) {
-                    valTemp.setText(snapshot.getValue(Integer.class) / 1000 + " s");
+                if (snapshot.getValue(Long.class) >= 1000) {
+                    seconde = (snapshot.getValue(Long.class) % (1000 * 60)) / 1000 + "s";
                 }
+                valTemp.setText(heure + minute + seconde);
 
             }
 
@@ -203,11 +196,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         viewHumi.setText("Humi");
 
 
-        viewHumi.setTextSize(20);
-        viewTemp.setTextSize(20);
-        viewLux.setTextSize(20);
-        viewCO2.setTextSize(20);
-        viewO2.setTextSize(20);
+
 
         FloatingActionButton btnAdd = findViewById(R.id.btnAdd);
         btnAdd.setOnClickListener(this);
@@ -249,30 +238,26 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         xl = graph.getXAxis();
         xl.setTextColor(Color.BLACK);
         xl.setDrawGridLines(true);
-        xl.setAvoidFirstLastClipping(true);
         xl.setEnabled(true);
+        xl.setAvoidFirstLastClipping(false);
         xl.setValueFormatter(new XAxisValueFormatter(listData));
-//Nombre max de point xl.setAxisMaximum(7);
+
 
         //Création Axe Y gauche
         leftAxis = graph.getAxisLeft();
         leftAxis.setTextColor(Color.BLACK);
-        // leftAxis.setAxisMaximum(30f);
-        // leftAxis.setAxisMinimum(20f);
         leftAxis.setDrawGridLines(true);
-        // Ajout couleur axe  leftAxis.setAxisLineColor(Color.RED);
 
 
         //Création Axe Y droit
         rightAxis = graph.getAxisRight();
         rightAxis.setEnabled(true);
         rightAxis.setTextColor(Color.BLACK);
-        //rightAxis.setAxisMaximum(60f);
-        //rightAxis.setAxisMinimum(0f);
         rightAxis.setDrawGridLines(true);
 
         //Set paramètre du graph
         paramGraph();
+        chargerDonner();
 
         graph.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
@@ -282,20 +267,27 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
             @Override
             public void onValueSelected(Entry e, Highlight h) {
-                Toast.makeText(getApplicationContext(), "Heure = " + xl.getFormattedLabel((int) h.getX()) + ", X : " + h.getY(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Heure = " + listData.recup_data((int) h.getX() - 1).getTemps() + ", X : " + h.getY(), Toast.LENGTH_SHORT).show();
 
             }
+
         });
 
     }
 
+    void chargerDonner() {
+        for (int i = 0; i < listData.list_size(); i++) {
+            System.out.println(listData.recup_data(i).getTemperature());
+            A_CO2.add(new Entry(indice, listData.recup_data(i).getCO2()));
+        }
+    }
 
     void creaGraph() {
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
         if (boxCO2.isChecked()) {
             A_CO2.add(new Entry(indice, listData.recup_data(indice - 1).getCO2()));
             LineDataSet setCO2 = new LineDataSet(A_CO2, "CO2");
-            setCO2.setAxisDependency(YAxis.AxisDependency.LEFT);
+            setCO2.setAxisDependency(YAxis.AxisDependency.LEFT); // Faire un code de choix des axis?
             paramSet(setCO2);
 
             setCO2.setColor(Color.RED);
@@ -306,14 +298,14 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
             A_temp.add(new Entry(indice, listData.recup_data(indice - 1).getTemperature()));
             LineDataSet setTemp = new LineDataSet(A_temp, "Température");
 
-            setTemp.setAxisDependency(YAxis.AxisDependency.LEFT);
+            setTemp.setAxisDependency(YAxis.AxisDependency.RIGHT);
             paramSet(setTemp);
             setTemp.setColor(Color.BLUE);
             setTemp.setCircleColor(Color.BLUE);
             dataSets.add(setTemp);
         }
         if (boxLux.isChecked()) {
-            A_lux.add(new Entry(indice, listData.recup_data(listData.list_size() - 1).getLux()));
+            A_lux.add(new Entry(indice, listData.recup_data(indice - 1).getLux()));
             LineDataSet setLux = new LineDataSet(A_lux, "Lux");
             paramSet(setLux);
             setLux.setColor(Color.YELLOW);
@@ -411,13 +403,6 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         graph.getAxisRight().setDrawGridLines(true);
 
 
-        /* graph.setVisibleYRangeMaximum(120);
-         graph.setVisibleYRange(30, YAxis.AxisDependency.LEFT);
-        graph.getAxisLeft().setSpaceTop(10000000);
-        graph.getAxisRight().setSpaceTop(1000);
-        graph.getAxisLeft().setSpaceBottom(400);
-        Contrôle des échelle */
-
     }
 
 
@@ -426,7 +411,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         switch (view.getId()) {
             case R.id.btnAdd:
                 Pop_up customPopup = new Pop_up(this);
-                customPopup.build("Ajout O2", "");
+                customPopup.build("Ajout O2", "",0);
                 customPopup.getYesButton().setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -472,8 +457,8 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
             case R.id.setting:
                 System.out.println("Parametre");
                 Intent openSetting;
-
                 openSetting = new Intent(GraphPage.this, SettingPage.class);
+                openSetting.putExtra("ESP",choixESP);
                 startActivity(openSetting);
                 break;
             case R.id.btnExport:

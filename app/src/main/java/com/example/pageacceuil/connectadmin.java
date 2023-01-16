@@ -1,27 +1,99 @@
 package com.example.pageacceuil;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Objects;
 
 public class connectadmin extends AppCompatActivity {
 
-    ImageButton butnback;
-    ImageButton butnnext;
+    EditText editUser;
+    EditText editMdp;
+    Button coBtn;
 
-    @SuppressLint("MissingInflatedId")
+    String user;
+    String mdp;
+
+    ImageButton butnback;
+
+    HashMap<String,String> ESP;
+    ArrayList<String> tabESP;
+
+    private final FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef = database.getReference("SAE_S3_BD/Admin");
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.connectadmin);
 
-        butnback = findViewById(R.id.imageButton3);
-        butnnext = findViewById(R.id.Boutonconnexionadmin);
+        Intent intent = getIntent();
+
+        if (intent != null) {
+            if (intent.hasExtra("ESP")) {
+                this.ESP = (HashMap<String, String>) intent.getSerializableExtra("listeESP");
+                this.tabESP = (ArrayList<String>) intent.getSerializableExtra("hashmapEsp");
+
+                System.out.println("ok");
+            } else {
+                System.out.println("erreur");
+            }
+        }
+
+
+        editMdp=findViewById(R.id.coMdp);
+        editUser=findViewById(R.id.coUsername);
+        coBtn=findViewById(R.id.coBtn);
+butnback=findViewById(R.id.imageButton3);
+        coBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    Intent ac;
+                    ac = new Intent(connectadmin.this, pageSettingAdmin.class);
+                    System.out.println("hein");
+                    ac.putExtra("listeESP",tabESP);
+                    ac.putExtra("hashmapEsp",ESP);
+                    startActivity(ac);
+                }
+
+            /* if(Objects.equals(user, editUser.getText().toString()) && Objects.equals(mdp, editMdp.getText().toString())){
+                Intent ac;
+                ac = new Intent(connectadmin.this, pageSettingAdmin.class);
+                ac.putExtra("listeESP",tabESP);
+                ac.putExtra("hashmapEsp",ESP);
+                startActivity(ac);}*/
+
+        });
+        myRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                DataSnapshot tab= task.getResult();
+                System.out.println(tab);
+                user=tab.child("Admin").getValue(String.class);
+                mdp=tab.child("mdp").getValue(String.class);
+                System.out.println(tab.child("Admin").getValue(String.class));
+
+
+                System.out.println(user);
+                System.out.println(mdp);
+            }
+        });
 
         butnback.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -30,15 +102,6 @@ public class connectadmin extends AppCompatActivity {
                 back = new Intent(connectadmin.this, MainActivity.class);
 
                 startActivity(back);
-            }
-        });
-        butnnext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent next;
-                next = new Intent(connectadmin.this, AdminPage.class);
-
-                startActivity(next);
             }
         });
     }
