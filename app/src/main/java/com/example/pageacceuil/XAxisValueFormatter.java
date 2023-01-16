@@ -11,21 +11,7 @@ public class XAxisValueFormatter extends IndexAxisValueFormatter {
     public XAxisValueFormatter(ListData listData) {
         this.listData = listData;
     }
-
- /*
-     @Override
-      public String getAxisLabel(float value, AxisBase axis) {
-          return listData.recup_data(GraphPage.indice-1).getTemps();
-      }
-
-
-
-
-
-           public String getAxisLabel(float value, AxisBase axis) {
-          return super.getAxisLabel(listData.recup_data(GraphPage.indice-1).getTemps(),1);
-      }
-  }*/@Override
+@Override
     public String getFormattedValue(float value) {
       return listData.recup_data((int) value-1).getTemps();
     }

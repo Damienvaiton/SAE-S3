@@ -55,6 +55,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="26dp"
         android:layout_marginTop="152dp"
+        android:inputType="number"
         app:layout_constraintStart_toEndOf="@+id/reiniA"
         app:layout_constraintTop_toBottomOf="@+id/rennoméA" />
 
@@ -120,7 +121,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="152dp"
         android:layout_marginBottom="332dp"
-        android:text="Button"
+        android:text="ok"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/refreshA"

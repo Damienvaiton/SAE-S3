@@ -93,9 +93,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
                 this.choixESP = (String) intent.getSerializableExtra("ESP");
                 System.out.println("ok");
             } else {
-                System.out.println("erreur");
-                System.out.println((String) intent.getSerializableExtra("ESP"));
-            }
+                System.out.println("erreur");}
         }
 
 
@@ -241,7 +239,6 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         xl.setEnabled(true);
         xl.setAvoidFirstLastClipping(false);
         xl.setValueFormatter(new XAxisValueFormatter(listData));
-
 
         //Création Axe Y gauche
         leftAxis = graph.getAxisLeft();
@@ -417,9 +414,6 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
                     public void onClick(View view) {
                         Toast.makeText(getApplicationContext(), "Valeur ajoutée", Toast.LENGTH_SHORT).show();
                         DatabaseReference AjoutO2 = database.getReference("SAE_S3_BD/ESP32/A8:03:2A:EA:EE:CC/Mesure");
-                        //     AjoutO2.child("humidite").equalTo(0).on("child", functon(snapshot){
-                        //  System.out.println("yo"););
-
                         AjoutO2.child("333").child("humidite").setValue(customPopup.getValue());
                         customPopup.dismiss();
                     }
