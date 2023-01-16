@@ -512,7 +512,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         fill1.setFillPattern(PatternFormatting.SOLID_FOREGROUND);
         // Plage des cellules affectées par la condition
         CellRangeAddress[] regions = {
-                CellRangeAddress.valueOf("A1:D"+cptLignes)
+                CellRangeAddress.valueOf("A1:D"+cptLignes+1)
         };
         sheetCF.addConditionalFormatting(regions, rule1);
 
@@ -537,7 +537,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         cellHum.setCellStyle(styleBorderLeft);
         cellHum.setCellStyle(styleBorderRight);
          */
-        // Cellule Humidite
+        // Cellule Temperature
         HSSFCell cellTemp = row0.createCell(2);
         cellTemp.setCellValue("Temperature");
         /*
@@ -546,8 +546,26 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         cellTemp.setCellStyle(styleBorderLeft);
         cellTemp.setCellStyle(styleBorderRight);
          */
-        // Cellule Humidite
-        HSSFCell cellHeure = row0.createCell(3);
+        // Cellule CO2
+        HSSFCell cellCO2 = row0.createCell(3);
+        cellCO2.setCellValue("CO2");
+        /*
+        cellCO2.setCellStyle(styleBorderTop);
+        cellCO2.setCellStyle(styleBorderBottom);
+        cellCO2.setCellStyle(styleBorderLeft);
+        cellCO2.setCellStyle(styleBorderRight);
+         */
+        // Cellule O2
+        HSSFCell cellO2 = row0.createCell(4);
+        cellO2.setCellValue("O2");
+        /*
+        cellO2.setCellStyle(styleBorderTop);
+        cellO2.setCellStyle(styleBorderBottom);
+        cellO2.setCellStyle(styleBorderLeft);
+        cellO2.setCellStyle(styleBorderRight);
+         */
+        // Cellule Heure
+        HSSFCell cellHeure = row0.createCell(5);
         cellHeure.setCellValue("Heure");
         /*
         cellHeure.setCellStyle(styleBorderTop);
@@ -555,7 +573,6 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         cellHeure.setCellStyle(styleBorderLeft);
         cellHeure.setCellStyle(styleBorderRight);
          */
-
         // Ajout des lignes de mesures
         for (int i=0;i<cptLignes;i++){
             HSSFRow row = sheet.createRow(i+1);
@@ -563,6 +580,8 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
             //row.getCell(0).setCellStyle(styleBorderLeft);
             row.createCell(1).setCellValue(listData.recup_data(i).getHumidite());
             row.createCell(2).setCellValue(listData.recup_data(i).getTemperature());
+            row.createCell(2).setCellValue(listData.recup_data(i).getCO2());
+            row.createCell(2).setCellValue(listData.recup_data(i).getO2());
             row.createCell(3).setCellValue(listData.recup_data(i).getTemps());
             //row.getCell(3).setCellStyle(styleBorderRight);
         }
