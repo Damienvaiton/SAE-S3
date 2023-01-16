@@ -51,12 +51,10 @@
 
     <EditText
         android:id="@+id/refreshA"
-        android:layout_width="56dp"
-        android:layout_height="41dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="156dp"
-        android:layout_marginEnd="18dp"
-        app:layout_constraintEnd_toStartOf="@+id/idEsp"
+        android:layout_width="138dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="26dp"
+        android:layout_marginTop="152dp"
         app:layout_constraintStart_toEndOf="@+id/reiniA"
         app:layout_constraintTop_toBottomOf="@+id/rennoméA" />
 
@@ -84,26 +82,6 @@
         app:layout_constraintEnd_toStartOf="@+id/refreshA"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/suppA" />
-
-    <Button
-        android:id="@+id/button6"
-        android:layout_width="37dp"
-        android:layout_height="27dp"
-        android:background="@drawable/ic_arrow_forward"
-        android:text="Button"
-        tools:layout_editor_absoluteX="358dp"
-        tools:layout_editor_absoluteY="330dp" />
-
-    <TextView
-        android:id="@+id/idEsp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="168dp"
-        android:text="TextView"
-        android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@+id/refreshA"
-        app:layout_constraintTop_toBottomOf="@+id/rennoméA" />
 
     <TextView
         android:id="@+id/textView8"
@@ -134,5 +112,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+    <Button
+        android:id="@+id/valiRefresh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="152dp"
+        android:layout_marginBottom="332dp"
+        android:text="Button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/refreshA"
+        app:layout_constraintTop_toBottomOf="@+id/rennoméA" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

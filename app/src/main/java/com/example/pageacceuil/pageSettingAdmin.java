@@ -1,6 +1,5 @@
 package com.example.pageacceuil;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -9,7 +8,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,6 +38,7 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
     TextView idEsp;
     String choixESP;
     HashMap<String, String> ESP;
+    ArrayAdapter<String> adapter;
     ArrayList<String> tabESP;
 
     @Override
@@ -62,7 +61,7 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
         ESP = new HashMap<>();
         tabESP=new ArrayList<>();
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item,tabESP);
+        adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item,tabESP);
         spinner.setAdapter(adapter);
 
 
@@ -77,7 +76,9 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
                         choixESP = (String) entree.getKey();
                         System.out.println((String)entree.getKey());
                         idEsp.setText(choixESP);
+                        actu();
                         break;
+
                     } curseur++;
                 }
             }
@@ -86,6 +87,7 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
 
             }
         });
+
 
         myRef.addValueEventListener(new ValueEventListener() {
                                         @Override
@@ -169,7 +171,32 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
         Toast.makeText(getApplicationContext(), "Refresh : " + values + "s", Toast.LENGTH_SHORT).show();
 */}
 
+    void actu() {
+        myRef.child(choixESP).child("TauxRafraichissement").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String heure = "";
+                String minute = "";
+                String seconde = "";
+                if (snapshot.getValue(Long.class) >= 3600000) {
+                    heure = (snapshot.getValue(Long.class) / (1000 * 60 * 60) + "h");
+                }
+                if (snapshot.getValue(Long.class) >= 60000) {
+                    minute = (snapshot.getValue(Long.class) % (1000 * 60 * 60)) / (1000 * 60) + "m";
+                }
+                if (snapshot.getValue(Long.class) >= 1000) {
+                    seconde = (snapshot.getValue(Long.class) % (1000 * 60)) / 1000 + "s";
+                }
+                refresh.setHint(heure + minute + seconde);
 
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
 
     @Override
         public void onClick(View v) {
@@ -182,7 +209,7 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
                         @Override
                         public void onClick(View view) {
                             myRef.child(choixESP).child("Nom").setValue(customPopup.getString());
-
+                            adapter.notifyDataSetChanged();
                             customPopup.dismiss();}});
                     customPopup.getNoButton().setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -200,6 +227,7 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
                         @Override
                         public void onClick(View view) {
                             myRef.child(choixESP).removeValue();
+//                            spinner.getAdapter().notify();
                             deletePopup.dismiss();}});
                     deletePopup.getNoButton().setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -222,8 +250,8 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
                     popReini.getYesButton().setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            myRef.child("ESP").child("Mesure").removeValue();
-                            myRef.child("ESP").child("MesureNumber").removeValue();
+                            myRef.child(choixESP).child("Mesure").removeValue();
+                            myRef.child(choixESP).child("MesureNumber").removeValue();
                             popReini.dismiss();}});
                     popReini.getNoButton().setOnClickListener(new View.OnClickListener() {
                         @Override
