@@ -34,6 +34,7 @@ public class ListData implements Serializable {
     }
 
     public void listsortCO2 () {
+
         for (int i = 0; i < olistData.size(); i++) {
             for (int j = 0; j < olistData.size(); j++) {
                 if (olistData.get(i).getCO2() < olistData.get(j).getCO2()) {

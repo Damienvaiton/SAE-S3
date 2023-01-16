@@ -15,7 +15,6 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
 
     public MyViewHolder(@NonNull View itemView) {
         super(itemView);
-        myButton=itemView.findViewById(R.id.btn);
         temp=itemView.findViewById(R.id.temp);
         lux=itemView.findViewById(R.id.lux);
         humi=itemView.findViewById(R.id.humi);
