@@ -51,7 +51,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="69dp"
             android:layout_marginBottom="36dp"
-            android:textSize="20dp"
+            android:textSize="17sp"
             android:gravity="center_horizontal"
             app:layout_constraintBottom_toTopOf="@+id/boxTemp"
             app:layout_constraintStart_toStartOf="parent"
@@ -206,21 +206,20 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/viewO2" />
 
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/lineChart"
+            android:layout_width="331dp"
+            android:layout_height="400dp"
+            android:layout_gravity="center"
+            tools:ignore="MissingClass"
+            tools:layout_editor_absoluteX="103dp"
+            tools:layout_editor_absoluteY="38dp">
+
+
+        </com.github.mikephil.charting.charts.LineChart>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-    <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/lineChart"
-        android:layout_width="331dp"
-        android:layout_height="400dp"
-        android:layout_gravity="center"
-        tools:ignore="MissingClass">
-
-
-
-
-
-    </com.github.mikephil.charting.charts.LineChart>
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

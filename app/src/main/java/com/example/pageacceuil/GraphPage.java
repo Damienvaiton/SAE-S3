@@ -110,6 +110,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
                     indice++;
                     listData.list_add_data(a);
                 }
+                chargerDonner();
             }
 
         });
@@ -123,7 +124,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                if (snapshot.getChildrenCount() == 3) {
+                if (snapshot.getChildrenCount() == 6) {
                     Data a = snapshot.getValue(Data.class);
                     indice++;
                     listData.list_add_data(a);
@@ -240,10 +241,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         xl.setAvoidFirstLastClipping(false);
         xl.setValueFormatter(new XAxisValueFormatter(listData));
 
-        //Création Axe Y gauche
-        leftAxis = graph.getAxisLeft();
-        leftAxis.setTextColor(Color.BLACK);
-        leftAxis.setDrawGridLines(true);
+
 
 
         //Création Axe Y droit
@@ -254,7 +252,6 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
         //Set paramètre du graph
         paramGraph();
-        chargerDonner();
 
         graph.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
@@ -269,13 +266,18 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
             }
 
         });
-
+        creaGraph();
     }
 
     void chargerDonner() {
         for (int i = 0; i < listData.list_size(); i++) {
             System.out.println(listData.recup_data(i).getTemperature());
             A_CO2.add(new Entry(indice, listData.recup_data(i).getCO2()));
+            A_lux.add(new Entry(indice, listData.recup_data(i).getLight()));
+            A_O2.add(new Entry(indice, listData.recup_data(i).getO2()));
+            A_temp.add(new Entry(indice, listData.recup_data(i).getTemperature()));
+            A_humi.add(new Entry(indice, listData.recup_data(i).getHumidite()));
+            creaGraph();
         }
     }
 
@@ -284,25 +286,26 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         if (boxCO2.isChecked()) {
             A_CO2.add(new Entry(indice, listData.recup_data(indice - 1).getCO2()));
             LineDataSet setCO2 = new LineDataSet(A_CO2, "CO2");
-            setCO2.setAxisDependency(YAxis.AxisDependency.LEFT); // Faire un code de choix des axis?
+           // setCO2.setAxisDependency(YAxis.AxisDependency.LEFT); // Faire un code de choix des axis?
             paramSet(setCO2);
 
             setCO2.setColor(Color.RED);
             setCO2.setCircleColor(Color.RED);
             dataSets.add(setCO2);
         }
+
         if (boxTemp.isChecked()) {
             A_temp.add(new Entry(indice, listData.recup_data(indice - 1).getTemperature()));
             LineDataSet setTemp = new LineDataSet(A_temp, "Température");
 
-            setTemp.setAxisDependency(YAxis.AxisDependency.RIGHT);
+            //setTemp.setAxisDependency(YAxis.AxisDependency.RIGHT);
             paramSet(setTemp);
             setTemp.setColor(Color.BLUE);
             setTemp.setCircleColor(Color.BLUE);
             dataSets.add(setTemp);
         }
         if (boxLux.isChecked()) {
-            A_lux.add(new Entry(indice, listData.recup_data(indice - 1).getLux()));
+            A_lux.add(new Entry(indice, listData.recup_data(indice - 1).getLight()));
             LineDataSet setLux = new LineDataSet(A_lux, "Lux");
             paramSet(setLux);
             setLux.setColor(Color.YELLOW);
@@ -314,7 +317,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
             LineDataSet setHumi = new LineDataSet(A_humi, "Humidité");
             setHumi.setAxisDependency(YAxis.AxisDependency.RIGHT);
             paramSet(setHumi);
-            setHumi.setColor(Color.RED);
+            setHumi.setColor(Color.MAGENTA);
             setHumi.setCircleColor(Color.RED);
 
             dataSets.add(setHumi);
@@ -361,12 +364,12 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
     }
 
     void actuValues() {
-        DecimalFormat a = new DecimalFormat("##.###");
+        DecimalFormat a = new DecimalFormat("##.##");
         if (listData.recup_data(indice - 1).getTemperature() != 0) {
             viewTemp.setText(a.format(listData.recup_data(indice - 1).getTemperature()) + "°");
         }
-        if (listData.recup_data(indice - 1).getLux() != 0) {
-            viewLux.setText(a.format(listData.recup_data(indice - 1).getLux()) + "Lux");
+        if (listData.recup_data(indice - 1).getLight() != 0) {
+            viewLux.setText(a.format(listData.recup_data(indice - 1).getLight()) + "Lux");
         }
         if (listData.recup_data(indice - 1).getCO2() != 0) {
             viewCO2.setText(a.format(listData.recup_data(indice - 1).getCO2()) + "%");
