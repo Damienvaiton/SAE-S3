@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -70,7 +69,6 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
     private CheckBox boxTemp;
     private CheckBox boxHumi;
     private CheckBox boxLux;
-    private Button btnAjout;
     private String choixESP = "";
     private BottomAppBar bottomNav;
     private BottomNavigationView bottomNavigationView;
@@ -98,10 +96,13 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
 
         DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32/" + choixESP + "/Mesure");
+      //  DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32/" + choixESP );
+
 
         listData = new ListData();
 
-        myRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+        myRef.child("Mesure").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            //   myRef.child("Mesure").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 DataSnapshot tab = task.getResult();
@@ -116,6 +117,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         });
 
 
+      //  myRef.child("Mesure").addChildEventListener(new ChildEventListener() {
         myRef.addChildEventListener(new ChildEventListener() {
             @Override
 
@@ -155,6 +157,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
         // A terminer
         DatabaseReference varTemps = database.getReference("SAE_S3_BD/ESP32/" + choixESP + "/TauxRafraichissement");
+        //myRef.child("TauxRafraichissement").addListenerForSingleValueEvent(new ValueEventListener() {
         varTemps.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -184,15 +187,10 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
         //Textview pour affichage données en haut
         viewTemp = findViewById(R.id.viewTemp);
-        viewTemp.setText("T°");
         viewLux = findViewById(R.id.viewLux);
-        viewLux.setText("Lux");
         viewCO2 = findViewById(R.id.viewCO2);
-        viewCO2.setText("CO2");
         viewO2 = findViewById(R.id.viewO2);
-        viewO2.setText("O2");
         viewHumi = findViewById(R.id.viewHumi);
-        viewHumi.setText("Humi");
 
 
 
@@ -232,7 +230,6 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
         //Création Axe X
 
-        //  XAxisRenderer mXAxisRenderer = new XAxisRenderer(ViewPortHandler, mXAxis, mLeftAxisTransformer);
 
         xl = graph.getXAxis();
         xl.setTextColor(Color.BLACK);
