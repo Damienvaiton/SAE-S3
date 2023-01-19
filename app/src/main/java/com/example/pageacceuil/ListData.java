@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 
-public class ListData implements Serializable {
+public class ListData  {
 
     public ArrayList<Data> listData;
 

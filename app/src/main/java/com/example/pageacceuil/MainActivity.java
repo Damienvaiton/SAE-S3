@@ -18,7 +18,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -32,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32");
 
 
-    String ChoixESP ="";
+    String choixESP ="";
     Spinner spinner;
     Button btncoEtu;
     Button btnCoAdmin;
@@ -63,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
                 for (Map.Entry entree : ESP.entrySet()) {
 
                     if (curseur==position){
-                        ChoixESP=(String)entree.getKey();
+                        choixESP =(String)entree.getKey();
                         System.out.println((String)entree.getKey());
                     } curseur++;
                 }
@@ -115,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent connec;
                 connec = new Intent(MainActivity.this, GraphPage.class);
-                connec.putExtra("ESP",ChoixESP);
+                connec.putExtra("ESP", choixESP);
                 startActivity(connec);
             }
         });

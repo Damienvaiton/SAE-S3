@@ -12,6 +12,7 @@ public class XAxisValueFormatter extends IndexAxisValueFormatter {
         this.listData = listData;
     }
 @Override
+
     public String getFormattedValue(float value) {
       return listData.recup_data((int) value-1).getTemps();
     }
