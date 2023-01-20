@@ -60,7 +60,6 @@ public class connectadmin extends AppCompatActivity {
         editMdp=findViewById(R.id.coMdp);
         editUser=findViewById(R.id.coUsername);
         coBtn=findViewById(R.id.coBtn);
-butnback=findViewById(R.id.imageButton3);
         coBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,14 +94,6 @@ butnback=findViewById(R.id.imageButton3);
             }
         });
 
-        butnback.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent back;
-                back = new Intent(connectadmin.this, MainActivity.class);
 
-                startActivity(back);
-            }
-        });
     }
 }

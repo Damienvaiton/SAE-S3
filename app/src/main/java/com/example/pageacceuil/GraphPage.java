@@ -135,7 +135,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
                     Data a = snapshot.getValue(Data.class);
                     indice++;
                     listData.list_add_data(a);
-                    creaGraph();
+                    creaGraph(null);
                     actuValues();
 
                 }
@@ -199,9 +199,6 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
 
 
-
-        FloatingActionButton btnAdd = findViewById(R.id.btnAdd);
-        btnAdd.setOnClickListener(this);
 
         bottomNav = findViewById(R.id.bottomNav);
         setSupportActionBar(bottomNav);
@@ -282,18 +279,21 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
             A_O2.add(new Entry(listData.list_size(), listData.recup_data(listData.list_size()-1).getO2()));
             A_temp.add(new Entry(listData.list_size(), listData.recup_data(listData.list_size()-1).getTemperature()));
             A_humi.add(new Entry(listData.list_size(), listData.recup_data(listData.list_size()-1).getHumidite()));
-            creaGraph();
+        LineDataSet setCO2 = new LineDataSet(A_CO2, "CO2");
+        creaGraph(setCO2);
         }
 
 
-    void creaGraph() {
+    void creaGraph(LineDataSet setCO2) {
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-        if (boxCO2.isChecked()){
-            LineDataSet setCO2 = new LineDataSet(A_CO2, "CO2");
+
             paramSet(setCO2);
             setCO2.setColor(Color.RED);
             setCO2.setCircleColor(Color.RED);
-            dataSets.add(setCO2);
+            if (boxCO2.isChecked()){
+               setCO2.setVisible(true);
+               graph.notifyDataSetChanged();;
+
         }
         if (boxTemp.isChecked()){
             LineDataSet setTemp = new LineDataSet(A_temp, "Température");
@@ -331,7 +331,6 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
 
 
-            LineDataSet setTemp = new LineDataSet(A_temp, "Température");
 
             //setTemp.setAxisDependency(YAxis.AxisDependency.RIGHT);
 
@@ -339,22 +338,6 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
 
 
-            LineDataSet setHumi = new LineDataSet(A_humi, "Humidité");
-            setHumi.setAxisDependency(YAxis.AxisDependency.RIGHT);
-            paramSet(setHumi);
-            setHumi.setColor(Color.MAGENTA);
-            setHumi.setCircleColor(Color.RED);
-
-            dataSets.add(setHumi);
-
-
-            LineDataSet setO2 = new LineDataSet(A_O2, "O2");
-            setO2.setAxisDependency(YAxis.AxisDependency.RIGHT);
-            paramSet(setO2);
-            setO2.setColor(Color.BLACK);
-            setO2.setCircleColor(Color.BLACK);
-
-            dataSets.add(setO2);
 
 
         LineData data = new LineData(dataSets);
@@ -430,44 +413,11 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
     }
 
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.btnAdd:
-                Pop_up customPopup = new Pop_up(this);
-                customPopup.build("Ajout O2", "",0);
-                customPopup.getYesButton().setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Toast.makeText(getApplicationContext(), "Valeur ajoutée", Toast.LENGTH_SHORT).show();
-                        DatabaseReference AjoutO2 = database.getReference("SAE_S3_BD/ESP32/A8:03:2A:EA:EE:CC/Mesure");
-                        AjoutO2.child("333").child("humidite").setValue(customPopup.getValue());
-                        customPopup.dismiss();
-                    }
-                });
-                customPopup.getNoButton().setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        customPopup.dismiss();
-                    }
-                });
-                break;
 
-            default:
-                break;
-
-        }
-    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.rotate:
-                System.out.println("Rotation écran paysage");
-                // Surface s=new Surface();
-                // s.ROTATION_90:
-                // Surface.
-                break;
             case R.id.viewData:
                 Intent openViewData;
                 openViewData = new Intent(GraphPage.this, VueData.class);
@@ -537,5 +487,10 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+
     }
 }
