@@ -101,7 +101,7 @@ TextView nomEsp;
 
     public void editTemps(int values) {
         DatabaseReference varTemps = database.getReference("SAE_S3_BD/ESP32/A8:03:2A:EA:EE:CC");
-        varTemps.child("TauxRafraichissement").setValue(values);
+        varTemps.child("TauxRafraichissement").setValue(values*1000);
         tauxRefresh.setHint(values + " s");
         Toast.makeText(getApplicationContext(), "Refresh : " + values + "s", Toast.LENGTH_SHORT).show();
 
