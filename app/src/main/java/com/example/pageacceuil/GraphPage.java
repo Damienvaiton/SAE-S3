@@ -36,16 +36,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.ConditionalFormattingRule;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.PatternFormatting;
 import org.apache.poi.ss.usermodel.SheetConditionalFormatting;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -487,14 +486,14 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         if(!isDataValid(cptLignes)){
             cptLignes--;
         }
-        File file = new File(Environment.getExternalStorageDirectory() + File.separator + "Download", "Mesure.xls");
-        HSSFWorkbook workbook = new HSSFWorkbook();
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Mesure.xlsx");
+        XSSFWorkbook workbook = new XSSFWorkbook();
 
         // Style border
-        //HSSFCellStyle styleBorderTop=workbook.createCellStyle();
-        //HSSFCellStyle styleBorderBottom=workbook.createCellStyle();
-        //HSSFCellStyle styleBorderLeft=workbook.createCellStyle();
-        //HSSFCellStyle styleBorderRight=workbook.createCellStyle();
+        //XSSFCellStyle styleBorderTop=workbook.createCellStyle();
+        //XSSFCellStyle styleBorderBottom=workbook.createCellStyle();
+        //XSSFCellStyle styleBorderLeft=workbook.createCellStyle();
+        //XSSFCellStyle styleBorderRight=workbook.createCellStyle();
 
         //styleBorderTop.setBorderTop(BorderStyle.THICK);
         //styleBorderBottom.setBorderBottom(BorderStyle.THICK);
@@ -502,7 +501,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         //styleBorderRight.setBorderRight(BorderStyle.THICK);
 
         // Création de la feuille de calcul
-        HSSFSheet sheet = workbook.createSheet("Mesures");
+        XSSFSheet sheet = workbook.createSheet("Mesures");
 
         // Création de la condition pour l'affichage en couleurs alternées
         SheetConditionalFormatting sheetCF = sheet.getSheetConditionalFormatting();
@@ -512,14 +511,14 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         fill1.setFillPattern(PatternFormatting.SOLID_FOREGROUND);
         // Plage des cellules affectées par la condition
         CellRangeAddress[] regions = {
-                CellRangeAddress.valueOf("A1:D"+cptLignes+1)
+                CellRangeAddress.valueOf("A1:G"+(cptLignes+1))
         };
         sheetCF.addConditionalFormatting(regions, rule1);
 
         // Ajout de la 1ère ligne de titre
-        HSSFRow row0 = sheet.createRow(0);
+        XSSFRow row0 = sheet.createRow(0);
         // Cellule Numero
-        HSSFCell cellNumero = row0.createCell(0);
+        XSSFCell cellNumero = row0.createCell(0);
         //cellNumero.setCellStyle(cellStyle);
         cellNumero.setCellValue("Numero mesure");
         /*
@@ -529,7 +528,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         cellNumero.setCellStyle(styleBorderRight);
         */
         // Cellule Humidite
-        HSSFCell cellHum = row0.createCell(1);
+        XSSFCell cellHum = row0.createCell(1);
         cellHum.setCellValue("Humidite");
         /*
         cellHum.setCellStyle(styleBorderTop);
@@ -538,7 +537,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         cellHum.setCellStyle(styleBorderRight);
          */
         // Cellule Temperature
-        HSSFCell cellTemp = row0.createCell(2);
+        XSSFCell cellTemp = row0.createCell(2);
         cellTemp.setCellValue("Temperature");
         /*
         cellTemp.setCellStyle(styleBorderTop);
@@ -547,7 +546,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         cellTemp.setCellStyle(styleBorderRight);
          */
         // Cellule CO2
-        HSSFCell cellCO2 = row0.createCell(3);
+        XSSFCell cellCO2 = row0.createCell(3);
         cellCO2.setCellValue("CO2");
         /*
         cellCO2.setCellStyle(styleBorderTop);
@@ -556,7 +555,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         cellCO2.setCellStyle(styleBorderRight);
          */
         // Cellule O2
-        HSSFCell cellO2 = row0.createCell(4);
+        XSSFCell cellO2 = row0.createCell(4);
         cellO2.setCellValue("O2");
         /*
         cellO2.setCellStyle(styleBorderTop);
@@ -565,7 +564,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         cellO2.setCellStyle(styleBorderRight);
          */
         // Cellule Lux
-        HSSFCell cellLux = row0.createCell(5);
+        XSSFCell cellLux = row0.createCell(5);
         cellLux.setCellValue("Lux");
         /*
         cellLux.setCellStyle(styleBorderTop);
@@ -574,7 +573,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         cellLux.setCellStyle(styleBorderRight);
          */
         // Cellule Heure
-        HSSFCell cellHeure = row0.createCell(6);
+        XSSFCell cellHeure = row0.createCell(6);
         cellHeure.setCellValue("Heure");
         /*
         cellHeure.setCellStyle(styleBorderTop);
@@ -584,7 +583,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
          */
         // Ajout des lignes de mesures
         for (int i=0;i<cptLignes;i++){
-            HSSFRow row = sheet.createRow(i+1);
+            XSSFRow row = sheet.createRow(i+1);
             row.createCell(0).setCellValue(i);
             //row.getCell(0).setCellStyle(styleBorderLeft);
             row.createCell(1).setCellValue(listData.recup_data(i).getHumidite());
@@ -600,8 +599,8 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         try {
             if (file.exists()) {
                 file.delete();
-                file.createNewFile();
             }
+            file.createNewFile();
             FileOutputStream fileOutputStream = new FileOutputStream(file);
             workbook.write(fileOutputStream);
             if (fileOutputStream != null) {
