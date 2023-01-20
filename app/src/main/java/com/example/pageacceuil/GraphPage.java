@@ -564,8 +564,17 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         cellO2.setCellStyle(styleBorderLeft);
         cellO2.setCellStyle(styleBorderRight);
          */
+        // Cellule Lux
+        HSSFCell cellLux = row0.createCell(5);
+        cellLux.setCellValue("Lux");
+        /*
+        cellLux.setCellStyle(styleBorderTop);
+        cellLux.setCellStyle(styleBorderBottom);
+        cellLux.setCellStyle(styleBorderLeft);
+        cellLux.setCellStyle(styleBorderRight);
+         */
         // Cellule Heure
-        HSSFCell cellHeure = row0.createCell(5);
+        HSSFCell cellHeure = row0.createCell(6);
         cellHeure.setCellValue("Heure");
         /*
         cellHeure.setCellStyle(styleBorderTop);
@@ -580,10 +589,11 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
             //row.getCell(0).setCellStyle(styleBorderLeft);
             row.createCell(1).setCellValue(listData.recup_data(i).getHumidite());
             row.createCell(2).setCellValue(listData.recup_data(i).getTemperature());
-            row.createCell(2).setCellValue(listData.recup_data(i).getCO2());
-            row.createCell(2).setCellValue(listData.recup_data(i).getO2());
-            row.createCell(3).setCellValue(listData.recup_data(i).getTemps());
-            //row.getCell(3).setCellStyle(styleBorderRight);
+            row.createCell(3).setCellValue(listData.recup_data(i).getCO2());
+            row.createCell(4).setCellValue(listData.recup_data(i).getO2());
+            row.createCell(5).setCellValue(listData.recup_data(i).getLux());
+            row.createCell(6).setCellValue(listData.recup_data(i).getTemps());
+            //row.getCell(6).setCellStyle(styleBorderRight);
         }
 
         // Création du fichier
@@ -612,6 +622,12 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
             return false;
         }
         if(listData.recup_data(cptLignes).getHumidite()==0){
+            return false;
+        }
+        if(listData.recup_data(cptLignes).getO2()==0){
+            return false;
+        }
+        if(listData.recup_data(cptLignes).getLux()==0){
             return false;
         }
         if(listData.recup_data(cptLignes).getTemps()==""){
