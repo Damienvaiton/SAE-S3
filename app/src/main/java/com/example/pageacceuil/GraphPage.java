@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
@@ -50,7 +51,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
 
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
-    public static int indice = 0;
+    public int indice = 0;
     public static ListData listData;
     ArrayList<Entry> A_temp = new ArrayList<>();
     ArrayList<Entry> A_lux = new ArrayList<>();
@@ -93,18 +94,19 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
                 System.out.println("ok");
             } else {
-                System.out.println("erreur");}
+                System.out.println("erreur");
+                }
         }
 
 
-        DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32/" + choixESP + "/Mesure");
-      //  DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32/" + choixESP );
+        // DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32/" + choixESP + "/Mesure");
+        DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32/" + choixESP );
 
 
         listData = new ListData();
 
-        myRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            //   myRef.child("Mesure").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+        //  myRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+             myRef.child("Mesure").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 DataSnapshot tab = task.getResult();
@@ -120,8 +122,8 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         });
 
 
-      //  myRef.child("Mesure").addChildEventListener(new ChildEventListener() {
-        myRef.addChildEventListener(new ChildEventListener() {
+       myRef.child("Mesure").addChildEventListener(new ChildEventListener() {
+        // myRef.addChildEventListener(new ChildEventListener() {
             @Override
 
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
@@ -135,7 +137,6 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
                     listData.list_add_data(a);
                     creaGraph();
                     actuValues();
-
 
                 }
             }
@@ -159,9 +160,9 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
 
         // A terminer
-        DatabaseReference varTemps = database.getReference("SAE_S3_BD/ESP32/" + choixESP + "/TauxRafraichissement");
-        //myRef.child("TauxRafraichissement").addListenerForSingleValueEvent(new ValueEventListener() {
-        varTemps.addListenerForSingleValueEvent(new ValueEventListener() {
+        // DatabaseReference varTemps = database.getReference("SAE_S3_BD/ESP32/" + choixESP + "/TauxRafraichissement");
+       myRef.child("TauxRafraichissement").addListenerForSingleValueEvent(new ValueEventListener() {
+       // varTemps.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String heure = "";
@@ -251,6 +252,11 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         rightAxis.setTextColor(Color.BLACK);
         rightAxis.setDrawGridLines(true);
 
+        leftAxis = graph.getAxisRight();
+        leftAxis.setEnabled(true);
+        leftAxis.setTextColor(Color.BLACK);
+        leftAxis.setDrawGridLines(true);
+
         //Set paramètre du graph
         paramGraph();
 
@@ -271,20 +277,19 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
     }
 
     void chargerDonner() {
-            A_CO2.add(new Entry(indice, listData.recup_data(indice-1).getCO2()));
-            A_lux.add(new Entry(indice, listData.recup_data(indice-1).getLight()));
-            A_O2.add(new Entry(indice, listData.recup_data(indice-1).getO2()));
-            A_temp.add(new Entry(indice, listData.recup_data(indice-1).getTemperature()));
-            A_humi.add(new Entry(indice, listData.recup_data(indice-1).getHumidite()));
+            A_CO2.add(new Entry(listData.list_size(), listData.recup_data(listData.list_size()-1).getCO2()));
+            A_lux.add(new Entry(listData.list_size(), listData.recup_data(listData.list_size()-1).getLight()));
+            A_O2.add(new Entry(listData.list_size(), listData.recup_data(listData.list_size()-1).getO2()));
+            A_temp.add(new Entry(listData.list_size(), listData.recup_data(listData.list_size()-1).getTemperature()));
+            A_humi.add(new Entry(listData.list_size(), listData.recup_data(listData.list_size()-1).getHumidite()));
             creaGraph();
         }
 
 
     void creaGraph() {
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-
             LineDataSet setCO2 = new LineDataSet(A_CO2, "CO2");
-           // setCO2.setAxisDependency(YAxis.AxisDependency.LEFT); // Faire un code de choix des axis?
+            // setCO2.setAxisDependency(YAxis.AxisDependency.LEFT); // Faire un code de choix des axis?
             paramSet(setCO2);
 
             setCO2.setColor(Color.RED);
@@ -292,8 +297,6 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
             dataSets.add(setCO2);
 
 
-        if (boxTemp.isChecked()) {
-            A_temp.add(new Entry(indice, listData.recup_data(listData.list_size()-1).getTemperature()));
             LineDataSet setTemp = new LineDataSet(A_temp, "Température");
 
             //setTemp.setAxisDependency(YAxis.AxisDependency.RIGHT);
@@ -301,17 +304,15 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
             setTemp.setColor(Color.BLUE);
             setTemp.setCircleColor(Color.BLUE);
             dataSets.add(setTemp);
-        }
-        if (boxLux.isChecked()) {
-            A_lux.add(new Entry(indice, listData.recup_data(listData.list_size()-1).getLight()));
+
+
             LineDataSet setLux = new LineDataSet(A_lux, "Lux");
             paramSet(setLux);
             setLux.setColor(Color.YELLOW);
             setLux.setCircleColor(Color.YELLOW);
             dataSets.add(setLux);
-        }
-        if (boxHumi.isChecked()) {
-            A_humi.add(new Entry(indice, listData.recup_data(listData.list_size()-1).getHumidite()));
+
+
             LineDataSet setHumi = new LineDataSet(A_humi, "Humidité");
             setHumi.setAxisDependency(YAxis.AxisDependency.RIGHT);
             paramSet(setHumi);
@@ -319,9 +320,8 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
             setHumi.setCircleColor(Color.RED);
 
             dataSets.add(setHumi);
-        }
-        if (boxO2.isChecked()) {
-            A_O2.add(new Entry(indice, listData.recup_data(listData.list_size() - 1).getO2()));
+
+
             LineDataSet setO2 = new LineDataSet(A_O2, "O2");
             setO2.setAxisDependency(YAxis.AxisDependency.RIGHT);
             paramSet(setO2);
@@ -329,7 +329,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
             setO2.setCircleColor(Color.BLACK);
 
             dataSets.add(setO2);
-        }
+
 
         LineData data = new LineData(dataSets);
         graph.setData(data);
@@ -367,7 +367,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
             viewTemp.setText(a.format(listData.recup_data(indice - 1).getTemperature()) + "°");
         }
         if (listData.recup_data(indice - 1).getLight() != 0) {
-            viewLux.setText(a.format(listData.recup_data(indice - 1).getLight()) + "Lux");
+            viewLux.setText(a.format(listData.recup_data(indice - 1).getLight()) + "l");
         }
         if (listData.recup_data(indice - 1).getCO2() != 0) {
             viewCO2.setText(a.format(listData.recup_data(indice - 1).getCO2()) + "%");

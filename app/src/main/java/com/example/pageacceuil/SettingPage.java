@@ -148,10 +148,12 @@ TextView nomEsp;
                 }
                 break;
             case R.id.btn_gauche:
+
                 if (((min_g.getText().toString().trim().length() == 0) || (max_g.getText().toString().trim().length() == 0)) || (auto_gauche.isChecked())) {
                     Toast.makeText(getApplicationContext(), "Un champ est vide", Toast.LENGTH_SHORT).show();
                 } else {
                     if (Float.valueOf(max_g.getText().toString()) > Float.valueOf(min_g.getText().toString())) {
+
                         GraphPage.leftAxis.setAxisMaximum(Float.valueOf(max_g.getText().toString()));
                         GraphPage.leftAxis.setAxisMinimum(Float.valueOf(min_g.getText().toString()));
                         Toast.makeText(getApplicationContext(), "Fait", Toast.LENGTH_SHORT).show();

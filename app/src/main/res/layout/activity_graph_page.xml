@@ -65,8 +65,8 @@
             android:layout_marginStart="7dp"
             android:layout_marginTop="69dp"
             android:layout_marginBottom="36dp"
-            android:textSize="20dp"
             android:gravity="center_horizontal"
+            android:textSize="17sp"
             app:layout_constraintBottom_toTopOf="@+id/boxLux"
             app:layout_constraintStart_toEndOf="@+id/viewTemp"
             app:layout_constraintTop_toTopOf="parent" />
@@ -77,9 +77,8 @@
             android:layout_height="40dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="69dp"
-            android:layout_marginBottom="36dp"
-            android:textSize="20dp"
             android:gravity="center_horizontal"
+            android:textSize="17sp"
             app:layout_constraintStart_toEndOf="@+id/viewHumi"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -89,9 +88,8 @@
             android:layout_height="40dp"
             android:layout_marginStart="7dp"
             android:layout_marginTop="69dp"
-            android:layout_marginBottom="499dp"
-            android:textSize="20dp"
             android:gravity="center_horizontal"
+            android:textSize="17sp"
             app:layout_constraintStart_toEndOf="@+id/viewCO2"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -101,9 +99,8 @@
             android:layout_height="40dp"
             android:layout_marginStart="7dp"
             android:layout_marginTop="69dp"
-            android:layout_marginBottom="36dp"
-            android:textSize="20dp"
             android:gravity="center_horizontal"
+            android:textSize="17sp"
             app:layout_constraintStart_toEndOf="@+id/viewLux"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -128,6 +125,8 @@
             android:layout_marginTop="100dp"
             android:layout_marginBottom="464dp"
             android:text="T°"
+            android:textSize="17sp"
+
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/boxLux"
             app:layout_constraintStart_toStartOf="parent"
