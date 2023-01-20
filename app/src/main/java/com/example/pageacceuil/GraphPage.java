@@ -36,12 +36,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.ConditionalFormattingRule;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.PatternFormatting;
 import org.apache.poi.ss.usermodel.SheetConditionalFormatting;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -490,15 +492,17 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         XSSFWorkbook workbook = new XSSFWorkbook();
 
         // Style border
-        //XSSFCellStyle styleBorderTop=workbook.createCellStyle();
-        //XSSFCellStyle styleBorderBottom=workbook.createCellStyle();
-        //XSSFCellStyle styleBorderLeft=workbook.createCellStyle();
-        //XSSFCellStyle styleBorderRight=workbook.createCellStyle();
+        XSSFCellStyle styleBorderThick=workbook.createCellStyle();
+        styleBorderThick.setBorderTop(BorderStyle.THICK);
+        styleBorderThick.setBorderBottom(BorderStyle.THICK);
+        styleBorderThick.setBorderLeft(BorderStyle.THICK);
+        styleBorderThick.setBorderRight(BorderStyle.THICK);
 
-        //styleBorderTop.setBorderTop(BorderStyle.THICK);
-        //styleBorderBottom.setBorderBottom(BorderStyle.THICK);
-        //styleBorderLeft.setBorderLeft(BorderStyle.THICK);
-        //styleBorderRight.setBorderRight(BorderStyle.THICK);
+        XSSFCellStyle styleBorderThin=workbook.createCellStyle();
+        styleBorderThin.setBorderTop(BorderStyle.THIN);
+        styleBorderThin.setBorderBottom(BorderStyle.THIN);
+        styleBorderThin.setBorderLeft(BorderStyle.THIN);
+        styleBorderThin.setBorderRight(BorderStyle.THIN);
 
         // Création de la feuille de calcul
         XSSFSheet sheet = workbook.createSheet("Mesures");
@@ -517,75 +521,34 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
         // Ajout de la 1ère ligne de titre
         XSSFRow row0 = sheet.createRow(0);
+        row0.setRowStyle(styleBorderThick);
         // Cellule Numero
         XSSFCell cellNumero = row0.createCell(0);
-        //cellNumero.setCellStyle(cellStyle);
         cellNumero.setCellValue("Numero mesure");
-        /*
-        cellNumero.setCellStyle(styleBorderTop);
-        cellNumero.setCellStyle(styleBorderBottom);
-        cellNumero.setCellStyle(styleBorderLeft);
-        cellNumero.setCellStyle(styleBorderRight);
-        */
         // Cellule Humidite
         XSSFCell cellHum = row0.createCell(1);
         cellHum.setCellValue("Humidite");
-        /*
-        cellHum.setCellStyle(styleBorderTop);
-        cellHum.setCellStyle(styleBorderBottom);
-        cellHum.setCellStyle(styleBorderLeft);
-        cellHum.setCellStyle(styleBorderRight);
-         */
         // Cellule Temperature
         XSSFCell cellTemp = row0.createCell(2);
         cellTemp.setCellValue("Temperature");
-        /*
-        cellTemp.setCellStyle(styleBorderTop);
-        cellTemp.setCellStyle(styleBorderBottom);
-        cellTemp.setCellStyle(styleBorderLeft);
-        cellTemp.setCellStyle(styleBorderRight);
-         */
         // Cellule CO2
         XSSFCell cellCO2 = row0.createCell(3);
         cellCO2.setCellValue("CO2");
-        /*
-        cellCO2.setCellStyle(styleBorderTop);
-        cellCO2.setCellStyle(styleBorderBottom);
-        cellCO2.setCellStyle(styleBorderLeft);
-        cellCO2.setCellStyle(styleBorderRight);
-         */
         // Cellule O2
         XSSFCell cellO2 = row0.createCell(4);
         cellO2.setCellValue("O2");
-        /*
-        cellO2.setCellStyle(styleBorderTop);
-        cellO2.setCellStyle(styleBorderBottom);
-        cellO2.setCellStyle(styleBorderLeft);
-        cellO2.setCellStyle(styleBorderRight);
-         */
         // Cellule Lux
         XSSFCell cellLux = row0.createCell(5);
         cellLux.setCellValue("Lux");
-        /*
-        cellLux.setCellStyle(styleBorderTop);
-        cellLux.setCellStyle(styleBorderBottom);
-        cellLux.setCellStyle(styleBorderLeft);
-        cellLux.setCellStyle(styleBorderRight);
-         */
         // Cellule Heure
         XSSFCell cellHeure = row0.createCell(6);
         cellHeure.setCellValue("Heure");
-        /*
-        cellHeure.setCellStyle(styleBorderTop);
-        cellHeure.setCellStyle(styleBorderBottom);
-        cellHeure.setCellStyle(styleBorderLeft);
-        cellHeure.setCellStyle(styleBorderRight);
-         */
+
         // Ajout des lignes de mesures
         for (int i=0;i<cptLignes;i++){
             XSSFRow row = sheet.createRow(i+1);
             row.createCell(0).setCellValue(i);
-            //row.getCell(0).setCellStyle(styleBorderLeft);
+            row.getCell(0).setCellStyle(styleBorderThin);
             row.createCell(1).setCellValue(listData.recup_data(i).getHumidite());
             row.createCell(2).setCellValue(listData.recup_data(i).getTemperature());
             row.createCell(3).setCellValue(listData.recup_data(i).getCO2());
@@ -600,7 +563,11 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
             if (file.exists()) {
                 file.delete();
             }
-            file.createNewFile();
+            try {
+                file.createNewFile();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
             FileOutputStream fileOutputStream = new FileOutputStream(file);
             workbook.write(fileOutputStream);
             if (fileOutputStream != null) {
