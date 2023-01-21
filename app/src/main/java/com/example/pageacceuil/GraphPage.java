@@ -120,7 +120,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
                 if (snapshot.getChildrenCount() == 6) {
                     Data a = snapshot.getValue(Data.class);
                     listData.list_add_data(a);
-                    creaGraph(null);
+                    creaGraph();
                     actuValues();
 
                 }
@@ -262,24 +262,20 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
             A_O2.add(new Entry(listData.list_size(), listData.recup_data(listData.list_size()-1).getO2()));
             A_temp.add(new Entry(listData.list_size(), listData.recup_data(listData.list_size()-1).getTemperature()));
             A_humi.add(new Entry(listData.list_size(), listData.recup_data(listData.list_size()-1).getHumidite()));
-        LineDataSet setCO2 = new LineDataSet(A_CO2, "CO2");
-        creaGraph(setCO2);
+            creaGraph();
 
         }
 
 
-    void creaGraph(LineDataSet setCO2) {
+    void creaGraph() {
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-
+        if (boxCO2.isChecked()){
+            LineDataSet setCO2 = new LineDataSet(A_CO2, "CO2");
             paramSet(setCO2);
             setCO2.setColor(Color.RED);
             setCO2.setCircleColor(Color.RED);
-        dataSets.add(setCO2);
-setCO2.setVisible(false);
-
-            if (boxCO2.isChecked()){        graph.notifyDataSetChanged();}
-               setCO2.setVisible(true);
-
+            dataSets.add(setCO2);
+           }
 
         if (boxTemp.isChecked()){
             LineDataSet setTemp = new LineDataSet(A_temp, "Température");
@@ -291,18 +287,16 @@ setCO2.setVisible(false);
         }
         if (boxHumi.isChecked()){
             LineDataSet setHumi = new LineDataSet(A_humi, "Humidité");
-            setHumi.setAxisDependency(YAxis.AxisDependency.RIGHT);
             paramSet(setHumi);
             setHumi.setColor(Color.MAGENTA);
             setHumi.setCircleColor(Color.RED);
+            dataSets.add(setHumi);
         }
         if (boxO2.isChecked()){
             LineDataSet setO2 = new LineDataSet(A_O2, "O2");
-            setO2.setAxisDependency(YAxis.AxisDependency.RIGHT);
             paramSet(setO2);
             setO2.setColor(Color.BLACK);
             setO2.setCircleColor(Color.BLACK);
-
             dataSets.add(setO2);
         }
         if (boxLux.isChecked()){
@@ -446,6 +440,14 @@ void setEchelle(int i){
 
     @Override
     public void onClick(View v) {
-
+switch (v.getId()){
+    case R.id.boxCO2:
+    case R.id.boxTemp:
+    case R.id.boxO2:
+    case R.id.boxHumi:
+    case R.id.boxLux:
+        creaGraph();
+        System.out.println("re");
+}
     }
 }

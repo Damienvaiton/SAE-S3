@@ -14,17 +14,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 
 public class SettingPage extends AppCompatActivity implements View.OnClickListener {
 
@@ -86,9 +79,15 @@ TextView nomEsp;
 
         if (GraphPage.rightAxis.isAxisMaxCustom()) {
             auto_droit.setChecked(false);
+            min_d.setHint(GraphPage.rightAxis.getAxisMinimum()+"");
+            max_d.setHint(GraphPage.rightAxis.getAxisMaximum()+"");
+
         }
         if (GraphPage.leftAxis.isAxisMaxCustom()) {
             auto_gauche.setChecked(false);
+            min_g.setHint(GraphPage.leftAxis.getAxisMinimum()+"");
+            max_g.setHint(GraphPage.leftAxis.getAxisMaximum()+"");
+
         }
 
      /*   myRef.child(choixESP).child("TauxRafraichissement").addValueEventListener(new ValueEventListener() {
