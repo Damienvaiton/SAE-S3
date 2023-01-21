@@ -31,6 +31,8 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32");
 
+
+    RecyclerView recyclerView;
     Spinner spinner;
     Button valiRefresh;
     Button rename;
@@ -58,6 +60,7 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
         reini = findViewById(R.id.reiniA);
         spinner = findViewById(R.id.spinnerAdmin);
         valiRefresh = findViewById(R.id.valiRefresh);
+        RecyclerView recyclerView = findViewById(R.id.recyclerViewAdmin);
 
 
         valiRefresh.setOnClickListener(this);
@@ -137,7 +140,10 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
                         if (snapshot.getChildrenCount() == 6) {
                             Data a = snapshot.getValue(Data.class);
                             dataESP.list_add_data(a);
-
+                            DataAdapter dataAdapter = new DataAdapter(getApplicationContext(), dataESP);
+                            dataAdapter.notifyDataSetChanged();
+                            recyclerView.setAdapter(dataAdapter);
+                            adapter.notifyDataSetChanged();
                         }
 
                     }
@@ -147,12 +153,7 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
 
                     }
                 });
-                System.out.println(dataESP.listData.get(1) + "yo");
-                DataAdapter dataAdapter = new DataAdapter(getApplicationContext(), dataESP);
-                dataAdapter.notifyDataSetChanged();
-                RecyclerView recyclerView = findViewById(R.id.recyclerViewAdmin);
-                recyclerView.setAdapter(dataAdapter);
-                adapter.notifyDataSetChanged();
+
 
                 myRef.child(choixESP).child("TauxRafraichissement").addValueEventListener(new ValueEventListener() {
                     @Override
@@ -210,7 +211,8 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
                     @Override
                     public void onClick(View view) {
                         myRef.child(choixESP).removeValue();
-//                            spinner.getAdapter().notify();
+                            spinner.getAdapter().notify();
+                        //  choixESP=spinner.g
                         deletePopup.dismiss();
                     }
                 });
