@@ -57,7 +57,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
     ArrayList<Entry> A_CO2 = new ArrayList<>();
     ArrayList<Entry> A_humi = new ArrayList<>();
     ArrayList<Entry> A_O2 = new ArrayList<>();
-    private LineChart graph;
+    public static LineChart graph;
     private TextView viewO2;
     private TextView viewCO2;
     private TextView viewLux;
@@ -351,7 +351,9 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         }
     }
 
+void setEchelle(int i){
 
+}
     void paramGraph() {
         graph.setNoDataText("Aucune données reçu pour le moment");
         graph.setNoDataTextColor(Color.BLACK);

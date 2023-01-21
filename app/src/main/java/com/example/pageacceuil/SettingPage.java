@@ -14,10 +14,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,6 +50,7 @@ TextView nomEsp;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting_page);
+
 
         max_g = findViewById(R.id.max_gauche);
         min_g = findViewById(R.id.min_gauche);
@@ -86,7 +91,31 @@ TextView nomEsp;
             auto_gauche.setChecked(false);
         }
 
+     /*   myRef.child(choixESP).child("TauxRafraichissement").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String heure = "";
+                String minute = "";
+                String seconde = "";
+                if (snapshot.getValue(Long.class) >= 3600000) {
+                    heure = (snapshot.getValue(Long.class) / (1000 * 60 * 60) + "h");
+                }
+                if (snapshot.getValue(Long.class) >= 60000) {
+                    minute = (snapshot.getValue(Long.class) % (1000 * 60 * 60)) / (1000 * 60) + "m";
+                }
+                if (snapshot.getValue(Long.class) >= 1000) {
+                    seconde = (snapshot.getValue(Long.class) % (1000 * 60)) / 1000 + "s";
+                }
+                refresh.setHint(heure + minute + seconde);
 
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }*/
         tauxRefresh.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -102,7 +131,7 @@ TextView nomEsp;
     public void editTemps(int values) {
         DatabaseReference varTemps = database.getReference("SAE_S3_BD/ESP32/A8:03:2A:EA:EE:CC");
         varTemps.child("TauxRafraichissement").setValue(values*1000);
-        tauxRefresh.setHint(values + " s");
+        tauxRefresh.setText("");
         Toast.makeText(getApplicationContext(), "Refresh : " + values + "s", Toast.LENGTH_SHORT).show();
 
 
@@ -141,6 +170,8 @@ TextView nomEsp;
                         GraphPage.rightAxis.setAxisMaximum(Float.valueOf(max_d.getText().toString()));
                         GraphPage.rightAxis.setAxisMinimum(Float.valueOf(min_d.getText().toString()));
                         Toast.makeText(getApplicationContext(), "Fait", Toast.LENGTH_SHORT).show();
+                        GraphPage.graph.notifyDataSetChanged();
+                        GraphPage.graph.invalidate();
                         break;
                     } else {
                         Toast.makeText(getApplicationContext(), "Valeurs incorrects", Toast.LENGTH_SHORT).show();
@@ -156,6 +187,8 @@ TextView nomEsp;
 
                         GraphPage.leftAxis.setAxisMaximum(Float.valueOf(max_g.getText().toString()));
                         GraphPage.leftAxis.setAxisMinimum(Float.valueOf(min_g.getText().toString()));
+                        GraphPage.graph.notifyDataSetChanged();
+                        GraphPage.graph.invalidate();
                         Toast.makeText(getApplicationContext(), "Fait", Toast.LENGTH_SHORT).show();
                         break;
                     } else {
