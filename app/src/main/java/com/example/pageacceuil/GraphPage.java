@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
@@ -28,7 +27,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -146,8 +144,6 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         });
 
 
-        // A terminer
-        // DatabaseReference varTemps = database.getReference("SAE_S3_BD/ESP32/" + choixESP + "/TauxRafraichissement");
        myRef.child("TauxRafraichissement").addListenerForSingleValueEvent(new ValueEventListener() {
        // varTemps.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -236,7 +232,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         rightAxis.setTextColor(Color.BLACK);
         rightAxis.setDrawGridLines(true);
 
-        leftAxis = graph.getAxisRight();
+        leftAxis = graph.getAxisLeft();
         leftAxis.setEnabled(true);
         leftAxis.setTextColor(Color.BLACK);
         leftAxis.setDrawGridLines(true);
@@ -252,7 +248,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
             @Override
             public void onValueSelected(Entry e, Highlight h) {
-                Toast.makeText(getApplicationContext(), "Heure = " + listData.recup_data((int) h.getX() - 1).getTemps() + ", X : " + h.getY(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Heure = " + listData.recup_data((int) h.getX() - 1).getTemps() + ", X : " + h.getY()   , Toast.LENGTH_SHORT).show();
 
             }
 
@@ -268,6 +264,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
             A_humi.add(new Entry(listData.list_size(), listData.recup_data(listData.list_size()-1).getHumidite()));
         LineDataSet setCO2 = new LineDataSet(A_CO2, "CO2");
         creaGraph(setCO2);
+
         }
 
 
@@ -278,9 +275,10 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
             setCO2.setColor(Color.RED);
             setCO2.setCircleColor(Color.RED);
         dataSets.add(setCO2);
-         /*   if (boxCO2.isChecked()){
+setCO2.setVisible(false);
+
+            if (boxCO2.isChecked()){        graph.notifyDataSetChanged();}
                setCO2.setVisible(true);
-               graph.notifyDataSetChanged();; }*/
 
 
         if (boxTemp.isChecked()){

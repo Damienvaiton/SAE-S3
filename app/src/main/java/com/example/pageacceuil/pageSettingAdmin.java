@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -38,6 +39,7 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
     Button grouper;
     Button reini;
     TextView idEsp;
+    ListData dataESP;
     String choixESP;
     HashMap<String, String> ESP;
     ArrayAdapter<String> adapter;
@@ -57,6 +59,7 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
         spinner = findViewById(R.id.spinnerAdmin);
         valiRefresh = findViewById(R.id.valiRefresh);
 
+
         valiRefresh.setOnClickListener(this);
         rename.setOnClickListener(this);
         delete.setOnClickListener(this);
@@ -67,6 +70,8 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
 
         adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, tabESP);
         spinner.setAdapter(adapter);
+
+        ListData dataESP = new ListData();
 
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -115,93 +120,66 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
                         tabESP.add((String) entry.getValue());
                     }
                 }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+
+            void actu() {
+                myRef.child(choixESP + "").child("Mesure").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.getChildrenCount() == 6) {
+                            Data a = snapshot.getValue(Data.class);
+                            dataESP.list_add_data(a);
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+                System.out.println(dataESP.listData.get(1) + "yo");
+                DataAdapter dataAdapter = new DataAdapter(getApplicationContext(), dataESP);
+                dataAdapter.notifyDataSetChanged();
+                RecyclerView recyclerView = findViewById(R.id.recyclerViewAdmin);
+                recyclerView.setAdapter(dataAdapter);
                 adapter.notifyDataSetChanged();
+
+                myRef.child(choixESP).child("TauxRafraichissement").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        String heure = "";
+                        String minute = "";
+                        String seconde = "";
+                        if (snapshot.getValue(Long.class) >= 3600000) {
+                            heure = (snapshot.getValue(Long.class) / (1000 * 60 * 60) + "h");
+                        }
+                        if (snapshot.getValue(Long.class) >= 60000) {
+                            minute = (snapshot.getValue(Long.class) % (1000 * 60 * 60)) / (1000 * 60) + "m";
+                        }
+                        if (snapshot.getValue(Long.class) >= 1000) {
+                            seconde = (snapshot.getValue(Long.class) % (1000 * 60)) / 1000 + "s";
+                        }
+                        refresh.setHint(heure + minute + seconde);
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
             }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-
-
-
-    /*        Intent intent = getIntent();
-        if (intent != null) {
-
-
-            tabESP = (ArrayList<String>) intent.getSerializableExtra("listeESP");
-            ESP = (HashMap<String, String>) intent.getSerializableExtra("hashmapEsp");
-
-            System.out.println("ok");
-        } else {
-            System.out.println("erreudsvr");
-
-        }*/
-/*for(String it : tabESP){
-    System.out.println(it);
-        }
-
-         idEsp.setText(nameESP+"");
-
-        spinner=findViewById(R.id.spinnerAdmin);
-        ArrayAdapter<String> adapterA = new ArrayAdapter<>(pageSettingAdmin.this, android.R.layout.simple_spinner_dropdown_item,tabESP);
-        spinner.setAdapter(adapterA);
-       spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                int curseur=0;
-                for (Map.Entry entree : ESP.entrySet()) {
-
-                    /*if (curseur==position){
-                        ChoixESP=(String)entree.getKey();
-                        System.out.println((String)entree.getKey());
-                    } curseur++;
-                }
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-         }
-
-
-        });
-
-    public void editTemps(int values) {
-        DatabaseReference varTemps = database.getReference("SAE_S3_BD/ESP32/A8:03:2A:EA:EE:CC");
-        varTemps.child("TauxRafraichissement").setValue(values);
-        tauxRefresh.setHint(values + " s");
-        Toast.makeText(getApplicationContext(), "Refresh : " + values + "s", Toast.LENGTH_SHORT).show();
-*/
-    }
-
-    void actu() {
-        myRef.child(choixESP).child("TauxRafraichissement").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String heure = "";
-                String minute = "";
-                String seconde = "";
-                if (snapshot.getValue(Long.class) >= 3600000) {
-                    heure = (snapshot.getValue(Long.class) / (1000 * 60 * 60) + "h");
-                }
-                if (snapshot.getValue(Long.class) >= 60000) {
-                    minute = (snapshot.getValue(Long.class) % (1000 * 60 * 60)) / (1000 * 60) + "m";
-                }
-                if (snapshot.getValue(Long.class) >= 1000) {
-                    seconde = (snapshot.getValue(Long.class) % (1000 * 60)) / 1000 + "s";
-                }
-                refresh.setHint(heure + minute + seconde);
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
 
     @Override
     public void onClick(View v) {
@@ -274,3 +252,4 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
         }
     }
 }
+
