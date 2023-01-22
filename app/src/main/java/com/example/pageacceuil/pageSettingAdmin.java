@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -47,6 +48,7 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
     ArrayAdapter<String> adapter;
     ArrayList<String> tabESP;
 
+    DataAdapter dataAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +62,7 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
         reini = findViewById(R.id.reiniA);
         spinner = findViewById(R.id.spinnerAdmin);
         valiRefresh = findViewById(R.id.valiRefresh);
-        RecyclerView recyclerView = findViewById(R.id.recyclerViewAdmin);
+        recyclerView = findViewById(R.id.recyclerViewAdmin);
 
 
         valiRefresh.setOnClickListener(this);
@@ -74,7 +76,12 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
         adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, tabESP);
         spinner.setAdapter(adapter);
 
-        ListData dataESP = new ListData();
+        dataESP = new ListData();
+
+        dataAdapter = new DataAdapter(getApplicationContext(), dataESP);
+        recyclerView.setAdapter(dataAdapter);
+        recyclerView.setLayoutManager((new LinearLayoutManager((this))));
+
 
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -123,6 +130,7 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
                         tabESP.add((String) entry.getValue());
                     }
                 }
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -137,15 +145,12 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
                 myRef.child(choixESP + "").child("Mesure").addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.getChildrenCount() == 6) {
-                            Data a = snapshot.getValue(Data.class);
+                        for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                            Data a = dataSnapshot.getValue(Data.class);
                             dataESP.list_add_data(a);
-                            DataAdapter dataAdapter = new DataAdapter(getApplicationContext(), dataESP);
-                            dataAdapter.notifyDataSetChanged();
-                            recyclerView.setAdapter(dataAdapter);
-                            adapter.notifyDataSetChanged();
                         }
-
+                        dataAdapter.notifyDataSetChanged();
+                        recyclerView.invalidate();
                     }
 
                     @Override
@@ -224,7 +229,6 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
                 });
                 break;
             case R.id.grouperA:
-                System.out.println("grouper");
                 break;
             case R.id.valiRefresh:
                 myRef.child(choixESP).child("TauxRafraichissement").setValue((Integer.parseInt(refresh.getText().toString()) * 1000));

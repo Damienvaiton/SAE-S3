@@ -62,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
                 for (Map.Entry entree : ESP.entrySet()) {
                     if (curseur==position){
                         choixESP =(String)entree.getKey();
-                        System.out.println((String)entree.getKey());
                         break;
                     } curseur++;
                 }

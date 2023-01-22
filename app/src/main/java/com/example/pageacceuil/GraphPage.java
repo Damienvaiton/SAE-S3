@@ -85,10 +85,8 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         if (intent != null) {
             if (intent.hasExtra("ESP")) {
                 this.choixESP = (String) intent.getSerializableExtra("ESP");
-
-                System.out.println("ok");
             } else {
-                System.out.println("erreur");
+                System.out.println("Impossible de récup num ESP");
                 }
         }
         DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32/" + choixESP );
@@ -377,7 +375,6 @@ void setEchelle(int i){
                 startActivity(openViewData);
                 break;
             case R.id.setting:
-                System.out.println("Parametre");
                 Intent openSetting;
                 openSetting = new Intent(GraphPage.this, SettingPage.class);
                 openSetting.putExtra("ESP",choixESP);
@@ -447,7 +444,7 @@ switch (v.getId()){
     case R.id.boxHumi:
     case R.id.boxLux:
         creaGraph();
-        System.out.println("re");
+        break;
 }
     }
 }

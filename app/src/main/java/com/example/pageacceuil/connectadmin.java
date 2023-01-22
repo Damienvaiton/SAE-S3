@@ -29,8 +29,6 @@ public class connectadmin extends AppCompatActivity {
     String user;
     String mdp;
 
-    ImageButton butnback;
-
     HashMap<String,String> ESP;
     ArrayList<String> tabESP;
 
@@ -43,20 +41,6 @@ public class connectadmin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.connectadmin);
 
-        Intent intent = getIntent();
-
-        if (intent != null) {
-            if (intent.hasExtra("ESP")) {
-                this.ESP = (HashMap<String, String>) intent.getSerializableExtra("listeESP");
-                this.tabESP = (ArrayList<String>) intent.getSerializableExtra("hashmapEsp");
-
-                System.out.println("ok");
-            } else {
-                System.out.println("erreur");
-            }
-        }
-
-
         editMdp=findViewById(R.id.coMdp);
         editUser=findViewById(R.id.coUsername);
         coBtn=findViewById(R.id.coBtn);
@@ -65,7 +49,6 @@ public class connectadmin extends AppCompatActivity {
             public void onClick(View v) {
                     Intent ac;
                     ac = new Intent(connectadmin.this, pageSettingAdmin.class);
-                    System.out.println("hein");
                     ac.putExtra("listeESP",tabESP);
                     ac.putExtra("hashmapEsp",ESP);
                     startActivity(ac);
@@ -83,14 +66,9 @@ public class connectadmin extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 DataSnapshot tab= task.getResult();
-                System.out.println(tab);
                 user=tab.child("Admin").getValue(String.class);
                 mdp=tab.child("mdp").getValue(String.class);
-                System.out.println(tab.child("Admin").getValue(String.class));
 
-
-                System.out.println(user);
-                System.out.println(mdp);
             }
         });
 

@@ -69,9 +69,8 @@ TextView nomEsp;
         if (intent != null) {
             if (intent.hasExtra("ESP")) {
                 this.ESP = (String) intent.getSerializableExtra("ESP");
-                System.out.println("ok");
             } else {
-                System.out.println("erreur");
+                System.out.println("impossible récup ESP");
             }
         }
 
@@ -160,10 +159,6 @@ TextView nomEsp;
                 if (((min_d.getText().toString().trim().length() == 0) || (max_d.getText().toString().trim().length() == 0)) || (auto_droit.isChecked())) {
                     Toast.makeText(getApplicationContext(), "Un champ est vide", Toast.LENGTH_SHORT).show();
                 } else {
-
-                    System.out.println(min_g.getText());
-                    System.out.println(min_g.getText());
-                    // A test
                     if (Float.valueOf(max_d.getText().toString()) > Float.valueOf(min_d.getText().toString())) {
 
                         GraphPage.rightAxis.setAxisMaximum(Float.valueOf(max_d.getText().toString()));
