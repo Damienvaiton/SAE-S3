@@ -36,14 +36,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.ConditionalFormattingRule;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.PatternFormatting;
 import org.apache.poi.ss.usermodel.SheetConditionalFormatting;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -485,24 +483,15 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
     private void exportFile() {
         int cptLignes=listData.list_size()-1;
+        if (cptLignes<1){
+            Toast.makeText(this, "Export excel annulé, pas de valeurs", Toast.LENGTH_SHORT).show();
+            return;
+        }
         if(!isDataValid(cptLignes)){
             cptLignes--;
         }
         File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Mesure.xlsx");
         XSSFWorkbook workbook = new XSSFWorkbook();
-
-        // Style border
-        XSSFCellStyle styleBorderThick=workbook.createCellStyle();
-        styleBorderThick.setBorderTop(BorderStyle.THICK);
-        styleBorderThick.setBorderBottom(BorderStyle.THICK);
-        styleBorderThick.setBorderLeft(BorderStyle.THICK);
-        styleBorderThick.setBorderRight(BorderStyle.THICK);
-
-        XSSFCellStyle styleBorderThin=workbook.createCellStyle();
-        styleBorderThin.setBorderTop(BorderStyle.THIN);
-        styleBorderThin.setBorderBottom(BorderStyle.THIN);
-        styleBorderThin.setBorderLeft(BorderStyle.THIN);
-        styleBorderThin.setBorderRight(BorderStyle.THIN);
 
         // Création de la feuille de calcul
         XSSFSheet sheet = workbook.createSheet("Mesures");
@@ -521,7 +510,6 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
         // Ajout de la 1ère ligne de titre
         XSSFRow row0 = sheet.createRow(0);
-        row0.setRowStyle(styleBorderThick);
         // Cellule Numero
         XSSFCell cellNumero = row0.createCell(0);
         cellNumero.setCellValue("Numero mesure");
@@ -548,14 +536,12 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         for (int i=0;i<cptLignes;i++){
             XSSFRow row = sheet.createRow(i+1);
             row.createCell(0).setCellValue(i);
-            row.getCell(0).setCellStyle(styleBorderThin);
             row.createCell(1).setCellValue(listData.recup_data(i).getHumidite());
             row.createCell(2).setCellValue(listData.recup_data(i).getTemperature());
             row.createCell(3).setCellValue(listData.recup_data(i).getCO2());
             row.createCell(4).setCellValue(listData.recup_data(i).getO2());
             row.createCell(5).setCellValue(listData.recup_data(i).getLux());
             row.createCell(6).setCellValue(listData.recup_data(i).getTemps());
-            //row.getCell(6).setCellStyle(styleBorderRight);
         }
 
         // Création du fichier
