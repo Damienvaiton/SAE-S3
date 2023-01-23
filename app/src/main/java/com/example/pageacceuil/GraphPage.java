@@ -457,7 +457,7 @@ void setEchelle(int i){
             row.createCell(2).setCellValue(listData.recup_data(i).getTemperature());
             row.createCell(3).setCellValue(listData.recup_data(i).getCO2());
             row.createCell(4).setCellValue(listData.recup_data(i).getO2());
-            row.createCell(5).setCellValue(listData.recup_data(i).getLux());
+            row.createCell(5).setCellValue(listData.recup_data(i).getLight());
             row.createCell(6).setCellValue(listData.recup_data(i).getTemps());
         }
 
@@ -496,7 +496,7 @@ void setEchelle(int i){
         if(listData.recup_data(cptLignes).getO2()==0){
             return false;
         }
-        if(listData.recup_data(cptLignes).getLux()==0){
+        if(listData.recup_data(cptLignes).getLight()==0){
             return false;
         }
         if(listData.recup_data(cptLignes).getTemps()==""){
