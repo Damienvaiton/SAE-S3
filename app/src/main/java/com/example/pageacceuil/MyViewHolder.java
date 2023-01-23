@@ -7,7 +7,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -22,9 +21,9 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
         myButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int position= getAdapterPosition();
-                System.out.println("yo"+position +" ");
-                Pop_up deletePopup = new Pop_up(MyViewHolder.this);
+                int position = getAdapterPosition();
+             /*   System.out.println("yo"+position +" ");
+                Pop_up deletePopup = new Pop_up(this.);
                 deletePopup.build("Supprimer l'entrée? " + position);
                 deletePopup.getYesButton().setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -43,6 +42,7 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
                     }
                 });
                 break;
+            }*/
             }
         });
         temp=itemView.findViewById(R.id.temp);
