@@ -12,7 +12,6 @@ public class ListData implements Serializable  {
        listData = new ArrayList<Data>(1);
     }
 
-
     public Data recup_data(int i){
         return listData.get(i);
     }
@@ -55,10 +54,6 @@ public class ListData implements Serializable  {
                 }
             }
         }
-
-
-
-
     }
 
     public void listsortHum () {
@@ -180,10 +175,4 @@ public class ListData implements Serializable  {
             }
         }
     }
-
-
-
-
-
 }
-

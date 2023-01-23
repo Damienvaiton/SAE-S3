@@ -34,11 +34,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.ConditionalFormattingRule;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.PatternFormatting;
+import org.apache.poi.ss.usermodel.SheetConditionalFormatting;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -395,44 +399,110 @@ void setEchelle(int i){
     }
 
     private void exportFile() {
-        File file = new File(Environment.getExternalStorageDirectory() + File.separator + "Download", "Mesure.xls");
-        HSSFWorkbook workbook = new HSSFWorkbook();
-        HSSFSheet sheet = workbook.createSheet("Mesures");
-        // Add value in the cell
-        HSSFRow row0 = sheet.createRow(0);
+        int cptLignes=listData.list_size()-1;
+        if (cptLignes<1){
+            Toast.makeText(this, "Export excel annulé, pas de valeurs", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(!isDataValid(cptLignes)){
+            cptLignes--;
+        }
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Mesure.xlsx");
+        XSSFWorkbook workbook = new XSSFWorkbook();
 
-        // Ajout d'une cellule
-        HSSFRow titreRow = sheet.getRow(0);
-        HSSFCell cellTitre0 = titreRow.createCell(0);
-        cellTitre0.setCellValue("Numero mesure");
+        // Création de la feuille de calcul
+        XSSFSheet sheet = workbook.createSheet("Mesures");
 
-        HSSFCell cell0 = titreRow.getCell(0);
-        HSSFCellStyle nomCell0 = cell0.getCellStyle();
-        cell0.setCellStyle(nomCell0);
+        // Création de la condition pour l'affichage en couleurs alternées
+        SheetConditionalFormatting sheetCF = sheet.getSheetConditionalFormatting();
+        ConditionalFormattingRule rule1 = sheetCF.createConditionalFormattingRule("MOD(ROW(),2)");
+        PatternFormatting fill1 = rule1.createPatternFormatting();
+        fill1.setFillBackgroundColor(IndexedColors.GREY_25_PERCENT.index);
+        fill1.setFillPattern(PatternFormatting.SOLID_FOREGROUND);
+        // Plage des cellules affectées par la condition
+        CellRangeAddress[] regions = {
+                CellRangeAddress.valueOf("A1:G"+(cptLignes+1))
+        };
+        sheetCF.addConditionalFormatting(regions, rule1);
 
-        row0.createCell(1).setCellValue("Humidite");
-        row0.createCell(2).setCellValue("Temperature");
-        row0.createCell(3).setCellValue("Heure");
+        // Ajout de la 1ère ligne de titre
+        XSSFRow row0 = sheet.createRow(0);
+        // Cellule Numero
+        XSSFCell cellNumero = row0.createCell(0);
+        cellNumero.setCellValue("Numero mesure");
+        // Cellule Humidite
+        XSSFCell cellHum = row0.createCell(1);
+        cellHum.setCellValue("Humidite");
+        // Cellule Temperature
+        XSSFCell cellTemp = row0.createCell(2);
+        cellTemp.setCellValue("Temperature");
+        // Cellule CO2
+        XSSFCell cellCO2 = row0.createCell(3);
+        cellCO2.setCellValue("CO2");
+        // Cellule O2
+        XSSFCell cellO2 = row0.createCell(4);
+        cellO2.setCellValue("O2");
+        // Cellule Lux
+        XSSFCell cellLux = row0.createCell(5);
+        cellLux.setCellValue("Lux");
+        // Cellule Heure
+        XSSFCell cellHeure = row0.createCell(6);
+        cellHeure.setCellValue("Heure");
 
-        HSSFRow row1 = sheet.createRow(1);
-        row1.createCell(0).setCellValue("0");
-        row1.createCell(1).setCellValue("41");
-        row1.createCell(2).setCellValue("21.9");
-        row1.createCell(3).setCellValue("16:20:24");
+        // Ajout des lignes de mesures
+        for (int i=0;i<cptLignes;i++){
+            XSSFRow row = sheet.createRow(i+1);
+            row.createCell(0).setCellValue(i);
+            row.createCell(1).setCellValue(listData.recup_data(i).getHumidite());
+            row.createCell(2).setCellValue(listData.recup_data(i).getTemperature());
+            row.createCell(3).setCellValue(listData.recup_data(i).getCO2());
+            row.createCell(4).setCellValue(listData.recup_data(i).getO2());
+            row.createCell(5).setCellValue(listData.recup_data(i).getLux());
+            row.createCell(6).setCellValue(listData.recup_data(i).getTemps());
+        }
+
+        // Création du fichier
         try {
             if (file.exists()) {
+                file.delete();
+            }
+            try {
                 file.createNewFile();
+            }catch(Exception e){
+                e.printStackTrace();
             }
             FileOutputStream fileOutputStream = new FileOutputStream(file);
             workbook.write(fileOutputStream);
             if (fileOutputStream != null) {
                 fileOutputStream.flush();
                 fileOutputStream.close();
-                Toast.makeText(this, "Export excel dans le fichier telechargements", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Export de "+cptLignes+" mesures dans le dossier téléchargements", Toast.LENGTH_SHORT).show();
             }
         } catch (Exception e) {
             e.printStackTrace();
+            Toast.makeText(this, "Export excel annulé, erreur", Toast.LENGTH_SHORT).show();
         }
+    }
+    private boolean isDataValid(int cptLignes){
+        if (listData.recup_data(cptLignes).getCO2()==0){
+            return false;
+        }
+        if (listData.recup_data(cptLignes).getTemperature()==0){
+            return false;
+        }
+        if(listData.recup_data(cptLignes).getHumidite()==0){
+            return false;
+        }
+        if(listData.recup_data(cptLignes).getO2()==0){
+            return false;
+        }
+        if(listData.recup_data(cptLignes).getLux()==0){
+            return false;
+        }
+        if(listData.recup_data(cptLignes).getTemps()==""){
+            return false;
+        }
+        return true;
     }
 
     @Override

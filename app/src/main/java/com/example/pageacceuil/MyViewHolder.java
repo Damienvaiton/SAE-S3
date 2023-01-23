@@ -45,13 +45,6 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
                 break;
             }
         });
-        temp=itemView.findViewById(R.id.temp);
-        lux=itemView.findViewById(R.id.lux);
-        humi=itemView.findViewById(R.id.humi);
-        o2=itemView.findViewById(R.id.o2);
-        co2=itemView.findViewById(R.id.co2);
-        temps=itemView.findViewById(R.id.heure);
-    }
 
   //  public MyViewHolder(Context applicationContext, ListData listData) {
        // super();
