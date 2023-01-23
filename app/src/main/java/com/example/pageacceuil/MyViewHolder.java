@@ -17,7 +17,7 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
 
     public MyViewHolder(@NonNull View itemView) {
         super(itemView);
-        myButton=itemView.findViewById(R.id.btn);
+        myButton = itemView.findViewById(R.id.btn);
         myButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -46,7 +46,8 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
             }
         });
 
-  //  public MyViewHolder(Context applicationContext, ListData listData) {
-       // super();
-    //}
+        //  public MyViewHolder(Context applicationContext, ListData listData) {
+        // super();
+        //}
+    }
 }
