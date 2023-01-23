@@ -116,30 +116,34 @@
 
     <Button
         android:id="@+id/btn_gauche"
-        android:layout_width="92dp"
+        android:layout_width="wrap_content"
         android:layout_height="41dp"
         android:layout_marginStart="36dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="28dp"
         android:layout_marginBottom="23dp"
-        android:backgroundTint="@color/yellowgreen"
 
+        android:backgroundTint="@color/yellowgreen"
         android:text="ok"
         app:layout_constraintBottom_toTopOf="@+id/textView4"
+        app:layout_constraintEnd_toStartOf="@+id/auto_gauche"
         app:layout_constraintStart_toEndOf="@+id/max_gauche"
         app:layout_constraintTop_toBottomOf="@+id/textView3"
         app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/btn_droit"
-        android:layout_width="92dp"
+        android:layout_width="wrap_content"
         android:layout_height="41dp"
         android:layout_marginStart="36dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="28dp"
         android:layout_marginBottom="42dp"
-        android:backgroundTint="@color/yellowgreen"
 
+        android:backgroundTint="@color/yellowgreen"
         android:text="ok"
         app:layout_constraintBottom_toTopOf="@+id/textView7"
+        app:layout_constraintEnd_toStartOf="@+id/auto_droit"
         app:layout_constraintStart_toEndOf="@+id/max_droit"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
@@ -191,14 +195,16 @@
 
     <EditText
         android:id="@+id/refreshRate"
-        android:layout_width="117dp"
+        android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_marginStart="41dp"
         android:layout_marginTop="15dp"
+        android:layout_marginEnd="27dp"
         android:layout_marginBottom="225dp"
-        android:hint="Refreseh rate"
+        android:hint="Refresh"
         android:inputType="number"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_refresh"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
