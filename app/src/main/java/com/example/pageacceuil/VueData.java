@@ -1,6 +1,7 @@
 package com.example.pageacceuil;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,7 +41,7 @@ public class VueData extends AppCompatActivity implements Serializable {
 
 
 
-/*
+
 
 
 
@@ -55,7 +56,7 @@ public class VueData extends AppCompatActivity implements Serializable {
                 System.out.println("erreur");
             }
         }
-*/
+
 
 
         btnTriChoix.setOnClickListener(new View.OnClickListener() {
@@ -71,11 +72,7 @@ public class VueData extends AppCompatActivity implements Serializable {
                     public boolean onMenuItemClick(MenuItem item) {
 
 
-                        if (switchDesc.isChecked()) {
-                            Desc = true;
-                        } else {
-                            Desc = false;
-                        }
+                        Desc = switchDesc.isChecked();
                         ChoixTri = (String) item.getTitle();
 
                         btnTriChoix.setText(ChoixTri);

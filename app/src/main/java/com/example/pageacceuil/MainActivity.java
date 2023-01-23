@@ -18,7 +18,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -32,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32");
 
 
-    String ChoixESP ="";
+    String choixESP ="";
     Spinner spinner;
     Button btncoEtu;
     Button btnCoAdmin;
@@ -61,10 +60,9 @@ public class MainActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 int curseur=0;
                 for (Map.Entry entree : ESP.entrySet()) {
-
                     if (curseur==position){
-                        ChoixESP=(String)entree.getKey();
-                        System.out.println((String)entree.getKey());
+                        choixESP =(String)entree.getKey();
+                        break;
                     } curseur++;
                 }
             }
@@ -113,21 +111,19 @@ public class MainActivity extends AppCompatActivity {
         btncoEtu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent connec;
-                connec = new Intent(MainActivity.this, GraphPage.class);
-                connec.putExtra("ESP",ChoixESP);
-                startActivity(connec);
+                Intent graph;
+                graph = new Intent(MainActivity.this, GraphPage.class);
+                graph.putExtra("ESP", choixESP);
+                startActivity(graph);
             }
         });
 
         btnCoAdmin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent connect;
-                connect = new Intent(getApplicationContext(), connectadmin.class);
-                connect.putExtra("listeESP",tabESP);
-                connect.putExtra("hashmapEsp",ESP);
-                startActivity(connect);
+                Intent admin;
+                admin = new Intent(getApplicationContext(), connectadmin.class);
+                startActivity(admin);
 
             }
         });

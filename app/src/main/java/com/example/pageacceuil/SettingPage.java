@@ -19,9 +19,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 public class SettingPage extends AppCompatActivity implements View.OnClickListener {
 
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -47,6 +44,7 @@ TextView nomEsp;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting_page);
 
+
         max_g = findViewById(R.id.max_gauche);
         min_g = findViewById(R.id.min_gauche);
         max_d = findViewById(R.id.max_droit);
@@ -71,9 +69,8 @@ TextView nomEsp;
         if (intent != null) {
             if (intent.hasExtra("ESP")) {
                 this.ESP = (String) intent.getSerializableExtra("ESP");
-                System.out.println("ok");
             } else {
-                System.out.println("erreur");
+                System.out.println("impossible récup ESP");
             }
         }
 
@@ -81,12 +78,42 @@ TextView nomEsp;
 
         if (GraphPage.rightAxis.isAxisMaxCustom()) {
             auto_droit.setChecked(false);
+            min_d.setHint(GraphPage.rightAxis.getAxisMinimum()+"");
+            max_d.setHint(GraphPage.rightAxis.getAxisMaximum()+"");
+
         }
         if (GraphPage.leftAxis.isAxisMaxCustom()) {
             auto_gauche.setChecked(false);
+            min_g.setHint(GraphPage.leftAxis.getAxisMinimum()+"");
+            max_g.setHint(GraphPage.leftAxis.getAxisMaximum()+"");
+
         }
 
+     /*   myRef.child(choixESP).child("TauxRafraichissement").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String heure = "";
+                String minute = "";
+                String seconde = "";
+                if (snapshot.getValue(Long.class) >= 3600000) {
+                    heure = (snapshot.getValue(Long.class) / (1000 * 60 * 60) + "h");
+                }
+                if (snapshot.getValue(Long.class) >= 60000) {
+                    minute = (snapshot.getValue(Long.class) % (1000 * 60 * 60)) / (1000 * 60) + "m";
+                }
+                if (snapshot.getValue(Long.class) >= 1000) {
+                    seconde = (snapshot.getValue(Long.class) % (1000 * 60)) / 1000 + "s";
+                }
+                refresh.setHint(heure + minute + seconde);
 
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }*/
         tauxRefresh.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -101,8 +128,8 @@ TextView nomEsp;
 
     public void editTemps(int values) {
         DatabaseReference varTemps = database.getReference("SAE_S3_BD/ESP32/A8:03:2A:EA:EE:CC");
-        varTemps.child("TauxRafraichissement").setValue(values);
-        tauxRefresh.setHint(values + " s");
+        varTemps.child("TauxRafraichissement").setValue(values*1000);
+        tauxRefresh.setText("");
         Toast.makeText(getApplicationContext(), "Refresh : " + values + "s", Toast.LENGTH_SHORT).show();
 
 
@@ -132,15 +159,13 @@ TextView nomEsp;
                 if (((min_d.getText().toString().trim().length() == 0) || (max_d.getText().toString().trim().length() == 0)) || (auto_droit.isChecked())) {
                     Toast.makeText(getApplicationContext(), "Un champ est vide", Toast.LENGTH_SHORT).show();
                 } else {
-
-                    System.out.println(min_g.getText());
-                    System.out.println(min_g.getText());
-                    // A test
                     if (Float.valueOf(max_d.getText().toString()) > Float.valueOf(min_d.getText().toString())) {
 
                         GraphPage.rightAxis.setAxisMaximum(Float.valueOf(max_d.getText().toString()));
                         GraphPage.rightAxis.setAxisMinimum(Float.valueOf(min_d.getText().toString()));
                         Toast.makeText(getApplicationContext(), "Fait", Toast.LENGTH_SHORT).show();
+                        GraphPage.graph.notifyDataSetChanged();
+                        GraphPage.graph.invalidate();
                         break;
                     } else {
                         Toast.makeText(getApplicationContext(), "Valeurs incorrects", Toast.LENGTH_SHORT).show();
@@ -148,12 +173,16 @@ TextView nomEsp;
                 }
                 break;
             case R.id.btn_gauche:
+
                 if (((min_g.getText().toString().trim().length() == 0) || (max_g.getText().toString().trim().length() == 0)) || (auto_gauche.isChecked())) {
                     Toast.makeText(getApplicationContext(), "Un champ est vide", Toast.LENGTH_SHORT).show();
                 } else {
                     if (Float.valueOf(max_g.getText().toString()) > Float.valueOf(min_g.getText().toString())) {
+
                         GraphPage.leftAxis.setAxisMaximum(Float.valueOf(max_g.getText().toString()));
                         GraphPage.leftAxis.setAxisMinimum(Float.valueOf(min_g.getText().toString()));
+                        GraphPage.graph.notifyDataSetChanged();
+                        GraphPage.graph.invalidate();
                         Toast.makeText(getApplicationContext(), "Fait", Toast.LENGTH_SHORT).show();
                         break;
                     } else {
