@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,7 +27,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -51,26 +49,26 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
 
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
-    public static int indice = 0;
     public static ListData listData;
     ArrayList<Entry> A_temp = new ArrayList<>();
     ArrayList<Entry> A_lux = new ArrayList<>();
     ArrayList<Entry> A_CO2 = new ArrayList<>();
     ArrayList<Entry> A_humi = new ArrayList<>();
     ArrayList<Entry> A_O2 = new ArrayList<>();
-    private LineChart graph;
+    public static LineChart graph;
     private TextView viewO2;
     private TextView viewCO2;
     private TextView viewLux;
     private TextView viewTemp;
     private TextView viewHumi;
     private TextView valTemp;
+
     private CheckBox boxO2;
     private CheckBox boxCO2;
     private CheckBox boxTemp;
     private CheckBox boxHumi;
     private CheckBox boxLux;
-    private Button btnAjout;
+
     private String choixESP = "";
     private BottomAppBar bottomNav;
     private BottomNavigationView bottomNavigationView;
@@ -83,55 +81,45 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph_page);
-
-        indice = 0;
-
         Intent intent = getIntent();
         if (intent != null) {
             if (intent.hasExtra("ESP")) {
-
                 this.choixESP = (String) intent.getSerializableExtra("ESP");
-                System.out.println("ok");
             } else {
-                System.out.println("erreur");
-                System.out.println((String) intent.getSerializableExtra("ESP"));
-            }
+                System.out.println("Impossible de récup num ESP");
+                }
         }
+        DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32/" + choixESP );
 
-
-        DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32/" + choixESP + "/Mesure");
 
         listData = new ListData();
-
-        myRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+         myRef.child("Mesure").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 DataSnapshot tab = task.getResult();
                 for (int i = 0; i < tab.getChildrenCount(); i++) {
                     Data a = tab.child(i + "").getValue(Data.class);
-                    indice++;
                     listData.list_add_data(a);
+                    chargerDonner();
                 }
+
             }
 
         });
 
 
-        myRef.addChildEventListener(new ChildEventListener() {
+       myRef.child("Mesure").addChildEventListener(new ChildEventListener() {
             @Override
-
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                if (snapshot.getChildrenCount() == 3) {
+                if (snapshot.getChildrenCount() == 6) {
                     Data a = snapshot.getValue(Data.class);
-                    indice++;
                     listData.list_add_data(a);
                     creaGraph();
                     actuValues();
-
 
                 }
             }
@@ -154,9 +142,8 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         });
 
 
-        // A terminer
-        DatabaseReference varTemps = database.getReference("SAE_S3_BD/ESP32/" + choixESP + "/TauxRafraichissement");
-        varTemps.addListenerForSingleValueEvent(new ValueEventListener() {
+       myRef.child("TauxRafraichissement").addListenerForSingleValueEvent(new ValueEventListener() {
+       // varTemps.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String heure = "";
@@ -171,6 +158,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
                 if (snapshot.getValue(Long.class) >= 1000) {
                     seconde = (snapshot.getValue(Long.class) % (1000 * 60)) / 1000 + "s";
                 }
+
                 valTemp.setText(heure + minute + seconde);
 
             }
@@ -185,21 +173,13 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
         //Textview pour affichage données en haut
         viewTemp = findViewById(R.id.viewTemp);
-        viewTemp.setText("T°");
         viewLux = findViewById(R.id.viewLux);
-        viewLux.setText("Lux");
         viewCO2 = findViewById(R.id.viewCO2);
-        viewCO2.setText("CO2");
         viewO2 = findViewById(R.id.viewO2);
-        viewO2.setText("O2");
         viewHumi = findViewById(R.id.viewHumi);
-        viewHumi.setText("Humi");
 
 
 
-
-        FloatingActionButton btnAdd = findViewById(R.id.btnAdd);
-        btnAdd.setOnClickListener(this);
 
         bottomNav = findViewById(R.id.bottomNav);
         setSupportActionBar(bottomNav);
@@ -233,7 +213,6 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
         //Création Axe X
 
-        //  XAxisRenderer mXAxisRenderer = new XAxisRenderer(ViewPortHandler, mXAxis, mLeftAxisTransformer);
 
         xl = graph.getXAxis();
         xl.setTextColor(Color.BLACK);
@@ -243,10 +222,6 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         xl.setValueFormatter(new XAxisValueFormatter(listData));
 
 
-        //Création Axe Y gauche
-        leftAxis = graph.getAxisLeft();
-        leftAxis.setTextColor(Color.BLACK);
-        leftAxis.setDrawGridLines(true);
 
 
         //Création Axe Y droit
@@ -255,9 +230,13 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         rightAxis.setTextColor(Color.BLACK);
         rightAxis.setDrawGridLines(true);
 
+        leftAxis = graph.getAxisLeft();
+        leftAxis.setEnabled(true);
+        leftAxis.setTextColor(Color.BLACK);
+        leftAxis.setDrawGridLines(true);
+
         //Set paramètre du graph
         paramGraph();
-        chargerDonner();
 
         graph.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
@@ -267,7 +246,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
             @Override
             public void onValueSelected(Entry e, Highlight h) {
-                Toast.makeText(getApplicationContext(), "Heure = " + listData.recup_data((int) h.getX() - 1).getTemps() + ", X : " + h.getY(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Heure = " + listData.recup_data((int) h.getX() - 1).getTemps() + ", X : " + h.getY()   , Toast.LENGTH_SHORT).show();
 
             }
 
@@ -276,115 +255,95 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
     }
 
     void chargerDonner() {
-        for (int i = 0; i < listData.list_size(); i++) {
-            System.out.println(listData.recup_data(i).getTemperature());
-            A_CO2.add(new Entry(indice, listData.recup_data(i).getCO2()));
+            A_CO2.add(new Entry(listData.list_size(), listData.recup_data(listData.list_size()-1).getCO2()));
+            A_lux.add(new Entry(listData.list_size(), listData.recup_data(listData.list_size()-1).getLight()));
+            A_O2.add(new Entry(listData.list_size(), listData.recup_data(listData.list_size()-1).getO2()));
+            A_temp.add(new Entry(listData.list_size(), listData.recup_data(listData.list_size()-1).getTemperature()));
+            A_humi.add(new Entry(listData.list_size(), listData.recup_data(listData.list_size()-1).getHumidite()));
+            creaGraph();
+
         }
-    }
+
 
     void creaGraph() {
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-        if (boxCO2.isChecked()) {
-            A_CO2.add(new Entry(indice, listData.recup_data(indice - 1).getCO2()));
+        if (boxCO2.isChecked()){
             LineDataSet setCO2 = new LineDataSet(A_CO2, "CO2");
-            setCO2.setAxisDependency(YAxis.AxisDependency.LEFT); // Faire un code de choix des axis?
             paramSet(setCO2);
-
             setCO2.setColor(Color.RED);
             setCO2.setCircleColor(Color.RED);
             dataSets.add(setCO2);
-        }
-        if (boxTemp.isChecked()) {
-            A_temp.add(new Entry(indice, listData.recup_data(indice - 1).getTemperature()));
-            LineDataSet setTemp = new LineDataSet(A_temp, "Température");
+           }
 
-            setTemp.setAxisDependency(YAxis.AxisDependency.RIGHT);
+        if (boxTemp.isChecked()){
+            LineDataSet setTemp = new LineDataSet(A_temp, "Température");
             paramSet(setTemp);
             setTemp.setColor(Color.BLUE);
             setTemp.setCircleColor(Color.BLUE);
             dataSets.add(setTemp);
+
         }
-        if (boxLux.isChecked()) {
-            A_lux.add(new Entry(indice, listData.recup_data(indice - 1).getLux()));
+        if (boxHumi.isChecked()){
+            LineDataSet setHumi = new LineDataSet(A_humi, "Humidité");
+            paramSet(setHumi);
+            setHumi.setColor(Color.MAGENTA);
+            setHumi.setCircleColor(Color.RED);
+            dataSets.add(setHumi);
+        }
+        if (boxO2.isChecked()){
+            LineDataSet setO2 = new LineDataSet(A_O2, "O2");
+            paramSet(setO2);
+            setO2.setColor(Color.BLACK);
+            setO2.setCircleColor(Color.BLACK);
+            dataSets.add(setO2);
+        }
+        if (boxLux.isChecked()){
             LineDataSet setLux = new LineDataSet(A_lux, "Lux");
             paramSet(setLux);
             setLux.setColor(Color.YELLOW);
             setLux.setCircleColor(Color.YELLOW);
             dataSets.add(setLux);
-        }
-        if (boxHumi.isChecked()) {
-            A_humi.add(new Entry(indice, listData.recup_data(indice - 1).getHumidite()));
-            LineDataSet setHumi = new LineDataSet(A_humi, "Humidité");
-            setHumi.setAxisDependency(YAxis.AxisDependency.RIGHT);
-            paramSet(setHumi);
-            setHumi.setColor(Color.RED);
-            setHumi.setCircleColor(Color.RED);
 
-            dataSets.add(setHumi);
         }
-        if (boxO2.isChecked()) {
-            A_O2.add(new Entry(indice, listData.recup_data(listData.list_size() - 1).getO2()));
-            LineDataSet setO2 = new LineDataSet(A_O2, "O2");
-            setO2.setAxisDependency(YAxis.AxisDependency.RIGHT);
-            paramSet(setO2);
-            setO2.setColor(Color.BLACK);
-            setO2.setCircleColor(Color.BLACK);
-
-            dataSets.add(setO2);
-        }
-
         LineData data = new LineData(dataSets);
         graph.setData(data);
         data.notifyDataChanged();
         graph.notifyDataSetChanged();
-//        graph.moveViewTo(2,2,xl); Défilement
         graph.invalidate();
-
-    }
-
-    private void checkchkBox() {
-        /*int checkActive=0;
-        for (CheckBox vb: ){ //Faire un tab de checkbox pour voir coombien sont check
-            if (vb.isChecked() && checkActive>2){
-                Toast.makeText(getApplicationContext(),"Il ne peut y avoir plus de 2 valeurs dans le graphique", Toast.LENGTH_SHORT).show();
-            }
-        }*/
     }
 
     private void paramSet(LineDataSet set) {
-
         set.setFillAlpha(120);
         set.setLineWidth(2.5f);
         set.setCircleRadius(3.5f);
         set.setCircleHoleRadius(1f);
         set.setValueTextColor(Color.BLACK);
-        // set.setValueTextSize(10f); Oui ou non?
         set.setDrawValues(false);
-
     }
 
     void actuValues() {
+        int pos= listData.list_size()-1;
         DecimalFormat a = new DecimalFormat("##.###");
-        if (listData.recup_data(indice - 1).getTemperature() != 0) {
-            viewTemp.setText(a.format(listData.recup_data(indice - 1).getTemperature()) + "°");
+        if (listData.recup_data(pos).getTemperature() != 0) {
+            viewTemp.setText(a.format(listData.recup_data(pos).getTemperature()) + "°");
         }
-        if (listData.recup_data(indice - 1).getLux() != 0) {
-            viewLux.setText(a.format(listData.recup_data(indice - 1).getLux()) + "Lux");
+        if (listData.recup_data(pos).getLight() != 0) {
+            viewLux.setText(a.format(listData.recup_data(pos).getLight()) + "l");
         }
-        if (listData.recup_data(indice - 1).getCO2() != 0) {
-            viewCO2.setText(a.format(listData.recup_data(indice - 1).getCO2()) + "%");
+        if (listData.recup_data(pos).getCO2() != 0) {
+            viewCO2.setText(a.format(listData.recup_data(pos).getCO2()) + "%");
         }
-        if (listData.recup_data(indice - 1).getO2() != 0) {
-            viewO2.setText(a.format(listData.recup_data(indice - 1).getO2()) + "%");
+        if (listData.recup_data(pos).getO2() != 0) {
+            viewO2.setText(a.format(listData.recup_data(pos).getO2()) + "%");
         }
-        if (listData.recup_data(indice - 1).getHumidite() != 0) {
-            viewHumi.setText(a.format(listData.recup_data(indice - 1).getHumidite()) + "%");
+        if (listData.recup_data(pos).getHumidite() != 0) {
+            viewHumi.setText(a.format(listData.recup_data(pos).getHumidite()) + "%");
         }
-
-
     }
 
+void setEchelle(int i){
 
+}
     void paramGraph() {
         graph.setNoDataText("Aucune données reçu pour le moment");
         graph.setNoDataTextColor(Color.BLACK);
@@ -401,61 +360,21 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         graph.getXAxis().setDrawGridLines(true);
         graph.getAxisRight().setDrawAxisLine(true);
         graph.getAxisRight().setDrawGridLines(true);
-
-
     }
 
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.btnAdd:
-                Pop_up customPopup = new Pop_up(this);
-                customPopup.build("Ajout O2", "",0);
-                customPopup.getYesButton().setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Toast.makeText(getApplicationContext(), "Valeur ajoutée", Toast.LENGTH_SHORT).show();
-                        DatabaseReference AjoutO2 = database.getReference("SAE_S3_BD/ESP32/A8:03:2A:EA:EE:CC/Mesure");
-                        //     AjoutO2.child("humidite").equalTo(0).on("child", functon(snapshot){
-                        //  System.out.println("yo"););
 
-                        AjoutO2.child("333").child("humidite").setValue(customPopup.getValue());
-                        customPopup.dismiss();
-                    }
-                });
-                customPopup.getNoButton().setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        customPopup.dismiss();
-                    }
-                });
-                break;
-
-            default:
-                break;
-
-        }
-    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.rotate:
-                System.out.println("Rotation écran paysage");
-                // Surface s=new Surface();
-                // s.ROTATION_90:
-                // Surface.
-                break;
             case R.id.viewData:
                 Intent openViewData;
                 openViewData = new Intent(GraphPage.this, VueData.class);
                 openViewData.putExtra("listData", listData);
                 startActivity(openViewData);
-
                 break;
             case R.id.setting:
-                System.out.println("Parametre");
                 Intent openSetting;
                 openSetting = new Intent(GraphPage.this, SettingPage.class);
                 openSetting.putExtra("ESP",choixESP);
@@ -465,11 +384,9 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
                 try {
                     Toast.makeText(getApplicationContext(), "Export excel commencé ", Toast.LENGTH_SHORT).show();
                     exportFile();
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + item.getItemId());
@@ -516,5 +433,18 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+switch (v.getId()){
+    case R.id.boxCO2:
+    case R.id.boxTemp:
+    case R.id.boxO2:
+    case R.id.boxHumi:
+    case R.id.boxLux:
+        creaGraph();
+        break;
+}
     }
 }

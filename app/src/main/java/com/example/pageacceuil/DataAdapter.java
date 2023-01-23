@@ -1,18 +1,13 @@
 package com.example.pageacceuil;
 
-import android.content.ClipData;
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.DecimalFormat;
-import java.util.List;
 
 public class DataAdapter extends RecyclerView.Adapter<MyViewHolder>{
 
@@ -39,7 +34,7 @@ Context context;
             holder.humi.setText((listData.recup_data(position).getHumidite()) + "%");
             holder.co2.setText((listData.recup_data(position).getCO2()) + "%");
             holder.o2.setText((listData.recup_data(position).getO2()) + "%");
-            holder.lux.setText((listData.recup_data(position).getLux()) + "lux");
+            holder.lux.setText((listData.recup_data(position).getLight()) + "lux");
             holder.temps.setText((listData.recup_data(position).getTemps()) + "h");
     }
 
