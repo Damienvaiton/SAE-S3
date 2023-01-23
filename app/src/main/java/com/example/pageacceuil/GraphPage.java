@@ -73,6 +73,8 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
     private CheckBox boxHumi;
     private CheckBox boxLux;
 
+    private boolean leftAxisUsed=false;
+    private boolean rightAxisUsed=false;
     private String choixESP = "";
     private BottomAppBar bottomNav;
     private BottomNavigationView bottomNavigationView;
@@ -273,15 +275,20 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
         if (boxCO2.isChecked()){
             LineDataSet setCO2 = new LineDataSet(A_CO2, "CO2");
+
             paramSet(setCO2);
+            choixAxe(setCO2);
             setCO2.setColor(Color.RED);
             setCO2.setCircleColor(Color.RED);
+            setCO2.setAxisDependency(YAxis.AxisDependency.LEFT);
             dataSets.add(setCO2);
            }
 
         if (boxTemp.isChecked()){
             LineDataSet setTemp = new LineDataSet(A_temp, "Température");
+
             paramSet(setTemp);
+            choixAxe(setTemp);
             setTemp.setColor(Color.BLUE);
             setTemp.setCircleColor(Color.BLUE);
             dataSets.add(setTemp);
@@ -289,14 +296,17 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         }
         if (boxHumi.isChecked()){
             LineDataSet setHumi = new LineDataSet(A_humi, "Humidité");
+
             paramSet(setHumi);
+            choixAxe(setHumi);
             setHumi.setColor(Color.MAGENTA);
-            setHumi.setCircleColor(Color.RED);
+            setHumi.setCircleColor(Color.MAGENTA);
             dataSets.add(setHumi);
         }
         if (boxO2.isChecked()){
             LineDataSet setO2 = new LineDataSet(A_O2, "O2");
             paramSet(setO2);
+            choixAxe(setO2);
             setO2.setColor(Color.BLACK);
             setO2.setCircleColor(Color.BLACK);
             dataSets.add(setO2);
@@ -304,17 +314,37 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         if (boxLux.isChecked()){
             LineDataSet setLux = new LineDataSet(A_lux, "Lux");
             paramSet(setLux);
+            choixAxe(setLux);
             setLux.setColor(Color.YELLOW);
             setLux.setCircleColor(Color.YELLOW);
             dataSets.add(setLux);
 
         }
+
+
+
         LineData data = new LineData(dataSets);
         graph.setData(data);
         data.notifyDataChanged();
         graph.notifyDataSetChanged();
         graph.invalidate();
     }
+
+    void choixAxe(LineDataSet data){
+            if (!leftAxisUsed){
+                data.setAxisDependency(YAxis.AxisDependency.LEFT);
+                leftAxisUsed = true;
+            }
+            else if (!rightAxisUsed){
+                data.setAxisDependency(YAxis.AxisDependency.RIGHT);
+                rightAxisUsed=true;
+            }
+            else{
+                data.setDrawValues(true);
+                data.setValueTextSize(80);
+            }
+        }
+
 
     private void paramSet(LineDataSet set) {
         set.setFillAlpha(120);
