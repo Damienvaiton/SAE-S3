@@ -30,18 +30,20 @@ Context context;
     }
 
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         DecimalFormat a = new DecimalFormat("##.###");
-        holder.temp.setText((listData.recup_data(position).getTemperature()) + "°C");
-        holder.humi.setText((listData.recup_data(position).getHumidite()) + "%");
-        holder.co2.setText((listData.recup_data(position).getCO2()) + "%");
-        holder.o2.setText((listData.recup_data(position).getO2()) + "%");
-        holder.lux.setText((listData.recup_data(position).getLight()) + "lux");
-        holder.temps.setText((listData.recup_data(position).getTemps()));
+        holder.temp.setText(a.format(listData.recup_data(position).getTemperature()) + "°C");
+        holder.humi.setText(a.format(listData.recup_data(position).getHumidite()) + "%");
+        holder.co2.setText(a.format(listData.recup_data(position).getCO2()) + "%");
+        holder.o2.setText(a.format(listData.recup_data(position).getO2()) + "%");
+        holder.lux.setText(a.format(listData.recup_data(position).getLight()) + "lux");
+        holder.temps.setText(listData.recup_data(position).getTemps());
     }
 
     @Override
+
     public int getItemCount() {
         return listData.list_size();
     }

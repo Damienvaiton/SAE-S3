@@ -8,7 +8,7 @@ android {
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.pageacceuil"
+        applicationId 'com.example.pageacceuil'
         minSdk 26
         targetSdk 32
         versionCode 1
