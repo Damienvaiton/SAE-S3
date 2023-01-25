@@ -1,5 +1,7 @@
 package com.example.pageacceuil;
 
+import static java.lang.Integer.parseInt;
+
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
@@ -85,7 +87,17 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
         recyclerView.setAdapter(dataAdapter);
         recyclerView.setLayoutManager((new LinearLayoutManager((this))));
 
+        AlertDialog.Builder pop= new AlertDialog.Builder(pageSettingAdmin.this);
+        pop.setMessage("Assurez-vous qu'avant toute modification l'ESP est éteint.");
+        pop.setPositiveButton("Compris", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getApplicationContext(),"Prêt",Toast.LENGTH_SHORT).show();
+                dialog.cancel();
 
+            }
+        });
+        pop.show();
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -135,19 +147,8 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
                 adapter.notifyDataSetChanged();
 
 
-               /* AlertDialog.Builder pop= new AlertDialog.Builder(pageSettingAdmin.this);
-                pop.setMessage("Assurez-vous qu'avant toute modification l'ESP sont éteint.");
-                pop.setPositiveButton("Compris", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-Toast.makeText(getApplicationContext(),"d",Toast.LENGTH_SHORT).show();
-dialog.dismiss();
-dialog.cancel();
 
-                    }
-                });
-                pop.show();
-           */
+
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -213,9 +214,14 @@ dialog.cancel();
                 customPopup.getYesButton().setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        myRef.child(choixESP).child("Nom").setValue(customPopup.getString());
-                        //  adapter.notifyDataSetChanged();
-                        customPopup.dismiss();
+                        if (!customPopup.getString().equals("")) {
+                            myRef.child(choixESP).child("Nom").setValue(customPopup.getString());
+                            //  adapter.notifyDataSetChanged();
+                            customPopup.dismiss();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Merci d'entrer un nom", Toast.LENGTH_SHORT).show();
+
+                        }
                     }
                 });
                 customPopup.getNoButton().setOnClickListener(new View.OnClickListener() {
@@ -233,7 +239,7 @@ dialog.cancel();
                     @Override
                     public void onClick(View view) {
                         myRef.child(choixESP).removeValue();
-                            spinner.getAdapter().notify();
+                        //    spinner.getAdapter().notify();
                         //  choixESP=spinner.g
                         deletePopup.dismiss();
                     }
@@ -248,10 +254,14 @@ dialog.cancel();
             case R.id.grouperA:
                 break;
             case R.id.valiRefresh:
-                myRef.child(choixESP).child("TauxRafraichissement").setValue((Integer.parseInt(refresh.getText().toString()) * 1000));
-                Toast.makeText(getApplicationContext(), "Refresh : " + refresh.getText() + "s", Toast.LENGTH_SHORT).show();
+                if(refresh.getText().toString().equals("")){
+                    Toast.makeText(getApplicationContext(),"Merci d'entrer' une valeur", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                myRef.child(choixESP).child("TauxRafraichissement").setValue((Double.valueOf(refresh.getText().toString()) * 1000));
+                Toast.makeText(getApplicationContext(), "Refresh : " + refresh.getText() + "s,\r\nVous pouvez redémarrer l'ESP", Toast.LENGTH_LONG).show();
                 refresh.setText("");
-                break;
+                }break;
             case R.id.reiniA:
                 Pop_up popReini = new Pop_up(this);
                 popReini.build("En êtes vous sûr?");
@@ -262,7 +272,8 @@ dialog.cancel();
                         myRef.child(choixESP).child("MesureNumber").removeValue();
                         popReini.dismiss();
                     }
-                });
+
+                }); spinner.getAdapter().notify();
                 popReini.getNoButton().setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

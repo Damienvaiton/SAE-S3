@@ -14,16 +14,20 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class SettingPage extends AppCompatActivity implements View.OnClickListener {
 
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
-
-String ESP;
+    DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32");
+String choixESP;
 String nameEsp="";
     EditText max_g;
     EditText min_g;
@@ -63,13 +67,14 @@ TextView nomEsp;
 
         b_gauche.setOnClickListener(this);
         b_droit.setOnClickListener(this);
+        b_refresh.setOnClickListener(this);
         auto_droit.setOnClickListener(this);
         auto_gauche.setOnClickListener(this);
 
         Intent intent=getIntent();
         if (intent != null) {
             if (intent.hasExtra("choixESP")) {
-                this.ESP = (String) intent.getSerializableExtra("choixESP");
+                this.choixESP = (String) intent.getSerializableExtra("choixESP");
             }
             if (intent.hasExtra("nomESP")) {
                 this.nameEsp = (String) intent.getSerializableExtra("nomESP");
@@ -82,7 +87,7 @@ TextView nomEsp;
             nomEsp.setText(nameEsp);
         }
         else{
-            nomEsp.setText(ESP);
+            nomEsp.setText(choixESP);
         }
 
         if (GraphPage.rightAxis.isAxisMaxCustom()) {
@@ -98,7 +103,7 @@ TextView nomEsp;
 
         }
 
-     /*   myRef.child(choixESP).child("TauxRafraichissement").addValueEventListener(new ValueEventListener() {
+        myRef.child(choixESP).child("TauxRafraichissement").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String heure = "";
@@ -113,7 +118,7 @@ TextView nomEsp;
                 if (snapshot.getValue(Long.class) >= 1000) {
                     seconde = (snapshot.getValue(Long.class) % (1000 * 60)) / 1000 + "s";
                 }
-                refresh.setHint(heure + minute + seconde);
+                tauxRefresh.setHint(heure + minute + seconde);
 
             }
 
@@ -122,12 +127,14 @@ TextView nomEsp;
 
             }
         });
-    }*/
         tauxRefresh.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                if (actionId == EditorInfo.IME_ACTION_DONE && !tauxRefresh.getText().toString().equals("")) {
                     editTemps((parseInt(tauxRefresh.getText().toString())));
+                }
+                else{
+                    Toast.makeText(getApplicationContext(),"Merci d'entrer une valeur", Toast.LENGTH_SHORT).show();
                 }
                 return false;
             }
@@ -136,11 +143,9 @@ TextView nomEsp;
     }
 
     public void editTemps(int values) {
-        DatabaseReference varTemps = database.getReference("SAE_S3_BD/ESP32/A8:03:2A:EA:EE:CC");
-        varTemps.child("TauxRafraichissement").setValue(values*1000);
+        myRef.child(choixESP).child("TauxRafraichissement").setValue(values*1000);
+        Toast.makeText(getApplicationContext(), "Refresh : " + values + "s,\r\nVous pouvez redémarrer l'ESP", Toast.LENGTH_LONG).show();
         tauxRefresh.setText("");
-        Toast.makeText(getApplicationContext(), "Refresh : " + values + "s", Toast.LENGTH_SHORT).show();
-
 
     }
 
@@ -197,6 +202,13 @@ TextView nomEsp;
                     } else {
                         Toast.makeText(getApplicationContext(), "Valeurs incorrects", Toast.LENGTH_SHORT).show();
                     }
+                }
+            case R.id.btn_refresh:
+                if (!tauxRefresh.getText().toString().equals("")) {
+                    editTemps((parseInt(tauxRefresh.getText().toString())));
+                }
+                else{
+                    Toast.makeText(getApplicationContext(),"Merci d'entrer une valeur", Toast.LENGTH_SHORT).show();
                 }
         }
     }
