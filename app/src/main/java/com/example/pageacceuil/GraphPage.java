@@ -225,8 +225,9 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
         //Constru graph
         graph = findViewById(R.id.lineChart);
-
+        graph.clear();
         //Création Axe X
+
 
 
         xl = graph.getXAxis();
@@ -235,6 +236,9 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         xl.setEnabled(true);
         xl.setAvoidFirstLastClipping(false);
         xl.setValueFormatter(new XAxisValueFormatter(listData));
+        System.out.println(xl.mEntries.length);
+        xl.mEntryCount=0;
+
 
 
         //Création Axe Y droit
