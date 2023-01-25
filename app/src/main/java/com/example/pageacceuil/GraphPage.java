@@ -254,7 +254,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
             @Override
             public void onValueSelected(Entry e, Highlight h) {
-                Toast.makeText(getApplicationContext(), "Heure = " + listData.recup_data((int) h.getX() - 1).getTemps() + ", X : " + h.getY(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Heure = " + listData.recup_data((int) h.getX() - 1).getTemps() + ", X : " + e.getY(), Toast.LENGTH_SHORT).show();
 
             }
 
@@ -336,10 +336,11 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
             leftAxisUsed = true;
         } else if (!rightAxisUsed) {
             data.setAxisDependency(YAxis.AxisDependency.RIGHT);
+            System.out.println("nouveau" +data.getLabel()+" "+data.getAxisDependency());
             rightAxisUsed = true;
         } else {
             data.setDrawValues(true);
-            data.setValueTextSize(80);
+            data.setValueTextSize(10);
         }
     }
 
@@ -534,10 +535,17 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
     }
 
     void desacAxe(YAxis.AxisDependency axisDependency){
-        if (axisDependency.equals("RIGHT")){
+        System.out.println("le right"+axisDependency.name().equals("RIGHT"));
+        System.out.println("le left"+axisDependency.name().equals("LEFT"));
+        System.out.println(axisDependency.name());
+        if (axisDependency.name().equals("RIGHT")){
+
+            System.out.println("libere"+axisDependency.name());
             rightAxisUsed=false;
         }
-        if (axisDependency.equals("LEFT")){
+        if (axisDependency.name().equals("LEFT")){
+            System.out.println("libere"+axisDependency.name());
+
             leftAxisUsed=false;
         }
 
@@ -549,27 +557,32 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
                 if(setCO2.getAxisDependency()!=null){ //Géré le fait qu'il y en ai plus de 2, genre boolean qui compte
                     System.out.println("yoc02");
                     desacAxe(setCO2.getAxisDependency());
-                    setCO2.setAxisDependency(null);}
+                    setCO2.setAxisDependency(null);
+                graph.invalidate();}
             case R.id.boxTemp:
                 if(setTemp.getAxisDependency()!=null){
                     desacAxe(setTemp.getAxisDependency());
                     System.out.println("yotemp");
-                    setTemp.setAxisDependency(null);}
+                    setTemp.setAxisDependency(null);
+                    graph.invalidate();}
             case R.id.boxO2:
                 if(setO2.getAxisDependency()!=null){
                     desacAxe(setO2.getAxisDependency());
                     System.out.println("yo02");
-                    setO2.setAxisDependency(null);}
+                    setO2.setAxisDependency(null);
+                    graph.invalidate();}
             case R.id.boxHumi:
                 if(setHumi.getAxisDependency()!=null){
                     desacAxe(setHumi.getAxisDependency());
                     System.out.println("yohumi");
-                    setHumi.setAxisDependency(null);}
+                    setHumi.setAxisDependency(null);
+                    graph.invalidate();}
             case R.id.boxLux:
                 if(setLux.getAxisDependency()!=null){
                     desacAxe(setLux.getAxisDependency());
                     System.out.println("yolux");
-                    setLux.setAxisDependency(null);}
+                    setLux.setAxisDependency(null);
+                    graph.invalidate();}
                 creaGraph();
                 break;
         }

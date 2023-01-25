@@ -216,8 +216,6 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
                     @Override
                     public void onClick(View view) {
                         myRef.child(choixESP).removeValue();
-                            spinner.getAdapter().notify();
-                        //  choixESP=spinner.g
                         deletePopup.dismiss();
                     }
                 });
