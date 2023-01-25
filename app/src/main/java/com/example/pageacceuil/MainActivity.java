@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     String choixESP ="";
+    String nomESP="";
     Spinner spinner;
     Button btncoEtu;
     Button btnCoAdmin;
@@ -62,8 +63,12 @@ public class MainActivity extends AppCompatActivity {
                 for (Map.Entry entree : ESP.entrySet()) {
                     if (curseur==position){
                         choixESP =(String)entree.getKey();
+                        if(entree.getValue().toString()!=null) {
+                            nomESP = (String) entree.getValue();
+                        }
                         break;
-                    } curseur++;
+                    }
+                    curseur++;
                 }
             }
             @Override
@@ -113,7 +118,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent graph;
                 graph = new Intent(MainActivity.this, GraphPage.class);
-                graph.putExtra("ESP", choixESP);
+                graph.putExtra("choixESP", choixESP);
+                if (!nomESP.equals("")){
+                    graph.putExtra("nomESP", nomESP);
+                }
                 startActivity(graph);
             }
         });

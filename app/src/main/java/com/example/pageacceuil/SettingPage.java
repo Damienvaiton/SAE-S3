@@ -24,6 +24,7 @@ public class SettingPage extends AppCompatActivity implements View.OnClickListen
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
 
 String ESP;
+String nameEsp="";
     EditText max_g;
     EditText min_g;
     EditText max_d;
@@ -67,14 +68,22 @@ TextView nomEsp;
 
         Intent intent=getIntent();
         if (intent != null) {
-            if (intent.hasExtra("ESP")) {
-                this.ESP = (String) intent.getSerializableExtra("ESP");
-            } else {
+            if (intent.hasExtra("choixESP")) {
+                this.ESP = (String) intent.getSerializableExtra("choixESP");
+            }
+            if (intent.hasExtra("nomESP")) {
+                this.nameEsp = (String) intent.getSerializableExtra("nomESP");
+            }
+                    else {
                 System.out.println("impossible récup ESP");
             }
         }
-
-        nomEsp.setText(ESP);
+        if(!nameEsp.equals("")) {
+            nomEsp.setText(nameEsp);
+        }
+        else{
+            nomEsp.setText(ESP);
+        }
 
         if (GraphPage.rightAxis.isAxisMaxCustom()) {
             auto_droit.setChecked(false);

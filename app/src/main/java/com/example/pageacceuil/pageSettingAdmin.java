@@ -1,5 +1,6 @@
 package com.example.pageacceuil;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -48,6 +50,7 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
     ArrayAdapter<String> adapter;
     ArrayList<String> tabESP;
 
+
     DataAdapter dataAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +84,6 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
         dataAdapter = new DataAdapter(getApplicationContext(), dataESP);
         recyclerView.setAdapter(dataAdapter);
         recyclerView.setLayoutManager((new LinearLayoutManager((this))));
-
 
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -131,13 +133,28 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
                     }
                 }
                 adapter.notifyDataSetChanged();
-            }
 
+
+               /* AlertDialog.Builder pop= new AlertDialog.Builder(pageSettingAdmin.this);
+                pop.setMessage("Assurez-vous qu'avant toute modification l'ESP sont éteint.");
+                pop.setPositiveButton("Compris", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+Toast.makeText(getApplicationContext(),"d",Toast.LENGTH_SHORT).show();
+dialog.dismiss();
+dialog.cancel();
+
+                    }
+                });
+                pop.show();
+           */
+            }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
+
     }
 
 
