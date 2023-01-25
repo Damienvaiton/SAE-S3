@@ -42,6 +42,7 @@ Context context;
     }
 
     @Override
+
     public int getItemCount() {
         return listData.list_size();
     }
