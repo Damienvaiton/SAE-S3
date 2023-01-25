@@ -23,6 +23,7 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.utils.Utils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomappbar.BottomAppBar;
@@ -103,7 +104,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         }
         DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32/" + choixESP);
 
-
+        Utils.init(getApplicationContext());
         listData = new ListData();
         myRef.child("Mesure").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
@@ -130,7 +131,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
                 if (snapshot.getChildrenCount() == 6) {
                     Data a = snapshot.getValue(Data.class);
                     listData.list_add_data(a);
-                    creaGraph();
+                    chargerDonner();
                     actuValues();
 
                 }
@@ -155,7 +156,6 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
 
         myRef.child("TauxRafraichissement").addListenerForSingleValueEvent(new ValueEventListener() {
-            // varTemps.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String heure = "";
@@ -275,17 +275,24 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
     void creaGraph() {
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-        if (boxCO2.isChecked()) {
+
             setCO2 = new LineDataSet(A_CO2, "CO2");
             paramSet(setCO2);
-            choixAxe(setCO2);
+        System.out.println(setCO2.getAxisDependency());
+            if (setCO2.getAxisDependency()==null) {
+                choixAxe(setCO2);
+            }
             setCO2.setColor(Color.RED);
             setCO2.setCircleColor(Color.RED);
             dataSets.add(setCO2);
-        }
 
-        if (boxTemp.isChecked()) {
+
+        System.out.println(setTemp.getAxisDependency());
             setTemp = new LineDataSet(A_temp, "Température");
+
+        if (setTemp.getAxisDependency()==null) {
+            choixAxe(setTemp);
+        }
 
             paramSet(setTemp);
             choixAxe(setTemp);
@@ -293,12 +300,14 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
             setTemp.setCircleColor(Color.BLUE);
             dataSets.add(setTemp);
 
-        }
+
         if (boxHumi.isChecked()) {
             setHumi = new LineDataSet(A_humi, "Humidité");
 
             paramSet(setHumi);
-            choixAxe(setHumi);
+            if (setHumi.getAxisDependency()==null) {
+                choixAxe(setHumi);
+            }
             setHumi.setColor(Color.MAGENTA);
             setHumi.setCircleColor(Color.MAGENTA);
             dataSets.add(setHumi);
@@ -334,12 +343,16 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
             data.setAxisDependency(YAxis.AxisDependency.LEFT);
             System.out.println("nouveau" +data.getLabel()+" "+data.getAxisDependency());
             leftAxisUsed = true;
+            return;
         } else if (!rightAxisUsed) {
             data.setAxisDependency(YAxis.AxisDependency.RIGHT);
+            System.out.println("nouveau" +data.getLabel()+" "+data.getAxisDependency());
+
             rightAxisUsed = true;
+            return;
         } else {
             data.setDrawValues(true);
-            data.setValueTextSize(80);
+            data.setValueTextSize(5);
         }
     }
 
@@ -534,10 +547,10 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
     }
 
     void desacAxe(YAxis.AxisDependency axisDependency){
-        if (axisDependency.equals("RIGHT")){
+        if (axisDependency.name().equals("RIGHT")){
             rightAxisUsed=false;
         }
-        if (axisDependency.equals("LEFT")){
+        if (axisDependency.name().equals("LEFT")){
             leftAxisUsed=false;
         }
 
@@ -546,7 +559,8 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.boxCO2:
-                if(setCO2.getAxisDependency()!=null){ //Géré le fait qu'il y en ai plus de 2, genre boolean qui compte
+                if(setCO2.getAxisDependency()!=null){
+                    //Géré le fait qu'il y en ai plus de 2, genre boolean qui compte
                     System.out.println("yoc02");
                     desacAxe(setCO2.getAxisDependency());
                     setCO2.setAxisDependency(null);}
