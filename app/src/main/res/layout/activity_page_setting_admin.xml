@@ -46,10 +46,12 @@
         android:backgroundTint="#6c14c7"
         android:text="Supprimer"
         android:textSize="13dp"
+        app:iconTint="@color/green"
         app:layout_constraintBottom_toTopOf="@+id/reiniA"
         app:layout_constraintEnd_toStartOf="@+id/rennoméA"
         app:layout_constraintStart_toEndOf="@+id/grouperA"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerAdmin" />
+        app:layout_constraintTop_toBottomOf="@+id/spinnerAdmin"
+        app:strokeColor="#E40909" />
 
     <EditText
         android:id="@+id/refreshA"
@@ -237,10 +239,12 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewAdmin"
-        android:layout_width="413dp"
-        android:layout_height="323dp"
+        android:layout_width="405dp"
+        android:layout_height="294dp"
+        android:layout_marginTop="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/reiniA" />
 
