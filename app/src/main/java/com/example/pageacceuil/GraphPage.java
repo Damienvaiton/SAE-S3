@@ -277,6 +277,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
         if (boxCO2.isChecked()) {
             setCO2 = new LineDataSet(A_CO2, "CO2");
+            setCO2 = new LineDataSet(A_CO2, "CO2");
             paramSet(setCO2);
             choixAxe(setCO2);
             setCO2.setColor(Color.RED);

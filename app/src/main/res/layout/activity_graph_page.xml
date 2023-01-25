@@ -12,18 +12,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:backgroundTint="@color/yellowgreen">
+        android:backgroundTint="#4edb12">
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNavMenuView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
-            app:menu="@menu/export"
-            app:labelVisibilityMode="labeled"
+            app:itemIconTint="@color/grey"
             app:itemTextColor="@color/grey"
-            app:itemIconTint="@color/grey"/>
-
+            app:labelVisibilityMode="labeled"
+            app:menu="@menu/export" />
 
 
     </com.google.android.material.bottomappbar.BottomAppBar>
