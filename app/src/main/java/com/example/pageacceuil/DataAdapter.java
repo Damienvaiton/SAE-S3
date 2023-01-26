@@ -30,6 +30,7 @@ Context context;
     }
 
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         DecimalFormat a = new DecimalFormat("##.###");
@@ -38,10 +39,11 @@ Context context;
         holder.co2.setText(a.format(listData.recup_data(position).getCO2()) + "%");
         holder.o2.setText(a.format(listData.recup_data(position).getO2()) + "%");
         holder.lux.setText(a.format(listData.recup_data(position).getLight()) + "lux");
-        holder.temps.setText((listData.recup_data(position).getTemps()));
+        holder.temps.setText(listData.recup_data(position).getTemps());
     }
 
     @Override
+
     public int getItemCount() {
         return listData.list_size();
     }

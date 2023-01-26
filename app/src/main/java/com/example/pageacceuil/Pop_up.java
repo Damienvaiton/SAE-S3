@@ -10,9 +10,7 @@ import android.widget.TextView;
 
 import com.google.firebase.database.FirebaseDatabase;
 
-public class Pop_up  extends Dialog{ //implements View.OnClickListener
-
-    private final FirebaseDatabase database = FirebaseDatabase.getInstance();
+public class Pop_up  extends Dialog{
 
     private final TextView titre;
     private final EditText valeur;
@@ -72,23 +70,6 @@ else{
         valeur.setVisibility(View.GONE);
         show();
     }
-
-/*    @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.yesButton:
-                System.out.println("mo");
-                Toast.makeText(getOwnerActivity(),"ok", Toast.LENGTH_SHORT).show();
-                //Requete bd
-                break;
-            case R.id.noButton:
-
-                //Faire quitter la popup;
-                break;
-
-        }
-
-    }*/
 
 
 }

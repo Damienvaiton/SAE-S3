@@ -23,6 +23,7 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.utils.Utils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomappbar.BottomAppBar;
@@ -60,11 +61,11 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
     ArrayList<Entry> A_humi = new ArrayList<>();
     ArrayList<Entry> A_O2 = new ArrayList<>();
 
-    LineDataSet setHumi=new LineDataSet(A_humi, "Humidité");
-    LineDataSet setCO2=new LineDataSet(A_CO2, "CO2");
-    LineDataSet setO2=new LineDataSet(A_O2, "O2");
-    LineDataSet setTemp=new LineDataSet(A_temp, "Température");
-    LineDataSet setLux=new LineDataSet(A_lux, "Lux");
+    LineDataSet setHumi = new LineDataSet(A_humi, "Humidité");
+    LineDataSet setCO2 = new LineDataSet(A_CO2, "CO2");
+    LineDataSet setO2 = new LineDataSet(A_O2, "O2");
+    LineDataSet setTemp = new LineDataSet(A_temp, "Température");
+    LineDataSet setLux = new LineDataSet(A_lux, "Lux");
     public static LineChart graph;
     private TextView viewO2;
     private TextView viewCO2;
@@ -72,6 +73,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
     private TextView viewTemp;
     private TextView viewHumi;
     private TextView valTemp;
+
 
     private CheckBox boxO2;
     private CheckBox boxCO2;
@@ -82,6 +84,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
     private boolean leftAxisUsed = false;
     private boolean rightAxisUsed = false;
     private String choixESP = "";
+    private String nomESP = "";
     private BottomAppBar bottomNav;
     private BottomNavigationView bottomNavigationView;
     public static YAxis leftAxis;
@@ -95,9 +98,12 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         setContentView(R.layout.activity_graph_page);
         Intent intent = getIntent();
         if (intent != null) {
-            if (intent.hasExtra("ESP")) {
-                this.choixESP = (String) intent.getSerializableExtra("ESP");
-            } else {
+            if (intent.hasExtra("choixESP")) {
+                this.choixESP = (String) intent.getSerializableExtra("choixESP");}
+            if (intent.hasExtra("nomESP")) {
+                this.nomESP = (String) intent.getSerializableExtra("nomESP");
+            }
+             else {
                 System.out.println("Impossible de récup num ESP");
             }
         }
@@ -130,7 +136,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
                 if (snapshot.getChildrenCount() == 6) {
                     Data a = snapshot.getValue(Data.class);
                     listData.list_add_data(a);
-                    creaGraph();
+                    chargerDonner();
                     actuValues();
 
                 }
@@ -155,7 +161,6 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
 
         myRef.child("TauxRafraichissement").addListenerForSingleValueEvent(new ValueEventListener() {
-            // varTemps.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String heure = "";
@@ -220,8 +225,9 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
         //Constru graph
         graph = findViewById(R.id.lineChart);
-
+        graph.clear();
         //Création Axe X
+
 
 
         xl = graph.getXAxis();
@@ -230,6 +236,9 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         xl.setEnabled(true);
         xl.setAvoidFirstLastClipping(false);
         xl.setValueFormatter(new XAxisValueFormatter(listData));
+        System.out.println(xl.mEntries.length);
+        xl.mEntryCount=0;
+
 
 
         //Création Axe Y droit
@@ -254,7 +263,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
             @Override
             public void onValueSelected(Entry e, Highlight h) {
-                Toast.makeText(getApplicationContext(), "Heure = " + listData.recup_data((int) h.getX() - 1).getTemps() + ", X : " + e.getY(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Heure = " + listData.recup_data((int) h.getX() - 1).getTemps() + ", X : " + h.getY(), Toast.LENGTH_SHORT).show();
 
             }
 
@@ -275,6 +284,8 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
     void creaGraph() {
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+
+
         if (boxCO2.isChecked()) {
             setCO2 = new LineDataSet(A_CO2, "CO2");
             paramSet(setCO2);
@@ -283,22 +294,19 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
             setCO2.setCircleColor(Color.RED);
             dataSets.add(setCO2);
         }
-
         if (boxTemp.isChecked()) {
             setTemp = new LineDataSet(A_temp, "Température");
-
             paramSet(setTemp);
             choixAxe(setTemp);
             setTemp.setColor(Color.BLUE);
             setTemp.setCircleColor(Color.BLUE);
             dataSets.add(setTemp);
-
         }
+
         if (boxHumi.isChecked()) {
             setHumi = new LineDataSet(A_humi, "Humidité");
-
-            paramSet(setHumi);
-            choixAxe(setHumi);
+            paramSet(setLux);
+            choixAxe(setLux);
             setHumi.setColor(Color.MAGENTA);
             setHumi.setCircleColor(Color.MAGENTA);
             dataSets.add(setHumi);
@@ -327,20 +335,25 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         data.notifyDataChanged();
         graph.notifyDataSetChanged();
         graph.invalidate();
+        leftAxisUsed=false;
+        rightAxisUsed=false;
     }
 
     void choixAxe(LineDataSet data) {
         if (!leftAxisUsed) {
             data.setAxisDependency(YAxis.AxisDependency.LEFT);
-            System.out.println("nouveau" +data.getLabel()+" "+data.getAxisDependency());
+            System.out.println("nouveau" + data.getLabel() + " " + data.getAxisDependency());
             leftAxisUsed = true;
+            return;
         } else if (!rightAxisUsed) {
             data.setAxisDependency(YAxis.AxisDependency.RIGHT);
-            System.out.println("nouveau" +data.getLabel()+" "+data.getAxisDependency());
+            System.out.println("nouveau" + data.getLabel() + " " + data.getAxisDependency());
+
             rightAxisUsed = true;
+            return;
         } else {
             data.setDrawValues(true);
-            data.setValueTextSize(10);
+            data.setValueTextSize(5);
         }
     }
 
@@ -374,9 +387,6 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         }
     }
 
-    void setEchelle(int i) {
-
-    }
 
     void paramGraph() {
         graph.setNoDataText("Aucune données reçu pour le moment");
@@ -409,7 +419,11 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
             case R.id.setting:
                 Intent openSetting;
                 openSetting = new Intent(GraphPage.this, SettingPage.class);
-                openSetting.putExtra("ESP", choixESP);
+                openSetting.putExtra("choixESP", choixESP);
+                if(!nomESP.equals("")) {
+                    openSetting.putExtra("nomESP", nomESP);
+                }
+
                 startActivity(openSetting);
                 break;
             case R.id.btnExport:
@@ -534,55 +548,50 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         return true;
     }
 
-    void desacAxe(YAxis.AxisDependency axisDependency){
-        System.out.println("le right"+axisDependency.name().equals("RIGHT"));
-        System.out.println("le left"+axisDependency.name().equals("LEFT"));
-        System.out.println(axisDependency.name());
-        if (axisDependency.name().equals("RIGHT")){
-
-            System.out.println("libere"+axisDependency.name());
-            rightAxisUsed=false;
+    void desacAxe(YAxis.AxisDependency axisDependency) {
+        if (axisDependency.name().equals("RIGHT")) {
+            rightAxisUsed = false;
         }
-        if (axisDependency.name().equals("LEFT")){
-            System.out.println("libere"+axisDependency.name());
-
-            leftAxisUsed=false;
+        if (axisDependency.name().equals("LEFT")) {
+            leftAxisUsed = false;
         }
 
     }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.boxCO2:
-                if(setCO2.getAxisDependency()!=null){ //Géré le fait qu'il y en ai plus de 2, genre boolean qui compte
+               /* if (setCO2.getAxisDependency() != null) {
+                    //Géré le fait qu'il y en ai plus de 2, genre boolean qui compte
                     System.out.println("yoc02");
                     desacAxe(setCO2.getAxisDependency());
                     setCO2.setAxisDependency(null);
-                graph.invalidate();}
+                }*/
             case R.id.boxTemp:
-                if(setTemp.getAxisDependency()!=null){
+               /* if (setTemp.getAxisDependency() != null) {
                     desacAxe(setTemp.getAxisDependency());
                     System.out.println("yotemp");
                     setTemp.setAxisDependency(null);
-                    graph.invalidate();}
+                }*/
             case R.id.boxO2:
-                if(setO2.getAxisDependency()!=null){
+               /* if (setO2.getAxisDependency() != null) {
                     desacAxe(setO2.getAxisDependency());
                     System.out.println("yo02");
                     setO2.setAxisDependency(null);
-                    graph.invalidate();}
+                }*/
             case R.id.boxHumi:
-                if(setHumi.getAxisDependency()!=null){
+               /* if (setHumi.getAxisDependency() != null) {
                     desacAxe(setHumi.getAxisDependency());
                     System.out.println("yohumi");
                     setHumi.setAxisDependency(null);
-                    graph.invalidate();}
+                }*/
             case R.id.boxLux:
-                if(setLux.getAxisDependency()!=null){
+               /* if (setLux.getAxisDependency() != null) {
                     desacAxe(setLux.getAxisDependency());
                     System.out.println("yolux");
                     setLux.setAxisDependency(null);
-                    graph.invalidate();}
+                }*/
                 creaGraph();
                 break;
         }

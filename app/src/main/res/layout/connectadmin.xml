@@ -78,6 +78,7 @@
         android:layout_marginTop="46dp"
         android:layout_marginEnd="159dp"
         android:layout_marginBottom="176dp"
+        android:backgroundTint="#6c14c7"
         android:text="Connexion"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
