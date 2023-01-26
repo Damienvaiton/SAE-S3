@@ -131,6 +131,9 @@ public class SettingPage extends AppCompatActivity implements View.OnClickListen
                 String heure = "";
                 String minute = "";
                 String seconde = "";
+                if(snapshot.exists()) {
+
+
                 if (snapshot.getValue(Long.class) >= 3600000) {
                     heure = (snapshot.getValue(Long.class) / (1000 * 60 * 60) + "h");
                 }
@@ -141,8 +144,9 @@ public class SettingPage extends AppCompatActivity implements View.OnClickListen
                     seconde = (snapshot.getValue(Long.class) % (1000 * 60)) / 1000 + "s";
                 }
                 tauxRefresh.setHint(heure + minute + seconde);
-
+        }
             }
+
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {

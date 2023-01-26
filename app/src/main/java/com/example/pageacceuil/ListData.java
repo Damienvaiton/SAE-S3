@@ -15,6 +15,7 @@ public class ListData implements Serializable {
     public Data recup_data(int i) {
         return listData.get(i);
     }
+    public void deleteAllData(){ listData.clear();}
 
     public void list_add_data(Data a) {
         listData.add(a);

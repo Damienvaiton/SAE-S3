@@ -313,8 +313,8 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
         if (boxHumi.isChecked()) {
             setHumi = new LineDataSet(A_humi, "Humidité");
-            paramSet(setLux);
-            choixAxe(setLux);
+            paramSet(setHumi);
+            choixAxe(setHumi);
             setHumi.setColor(Color.MAGENTA);
             setHumi.setCircleColor(Color.MAGENTA);
             dataSets.add(setHumi);
@@ -556,16 +556,6 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
             return false;
         }
         return listData.recup_data(cptLignes).getTemps() != "";
-    }
-
-    void desacAxe(YAxis.AxisDependency axisDependency) {
-        if (axisDependency.name().equals("RIGHT")) {
-            rightAxisUsed = false;
-        }
-        if (axisDependency.name().equals("LEFT")) {
-            leftAxisUsed = false;
-        }
-
     }
 
     @Override

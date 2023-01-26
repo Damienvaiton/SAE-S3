@@ -36,9 +36,14 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
 
 
     RecyclerView recyclerView;
+
+    ValueEventListener valueEventListenerTemps;
+
+    ValueEventListener valueEventListenerDate;
     Spinner spinner;
     Button valiRefresh;
     Button rename;
+
     Button delete;
     EditText refresh;
     Button grouper;
@@ -46,6 +51,8 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
     TextView idEsp;
     ListData dataESP;
     String choixESP;
+
+    String oldChoixESP = "";
     HashMap<String, String> ESP;
     ArrayAdapter<String> adapter;
     ArrayList<String> tabESP;
@@ -104,6 +111,11 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
                 for (Map.Entry entree : ESP.entrySet()) {
 
                     if (curseur == position) {
+                        if (choixESP != null) {
+                            if (!choixESP.equals("")) {
+                                oldChoixESP = choixESP;
+                            }
+                        }
                         choixESP = (String) entree.getKey();
                         idEsp.setText(choixESP);
                         actu();
@@ -158,7 +170,16 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
 
 
     void actu() {
-        myRef.child(choixESP + "").child("Mesure").addValueEventListener(new ValueEventListener() {
+
+        if (valueEventListenerDate != null) {
+            myRef.child(oldChoixESP).child("TauxRafraichissement").removeEventListener(valueEventListenerTemps);
+        }
+        if (valueEventListenerTemps != null) {
+            dataESP.deleteAllData();
+            myRef.child(oldChoixESP).child("Mesure").removeEventListener(valueEventListenerDate);
+        }
+
+        valueEventListenerDate = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
@@ -167,39 +188,46 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
                 }
                 dataAdapter.notifyDataSetChanged();
                 recyclerView.invalidate();
+
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        });
+        };
+        myRef.child(choixESP).child("Mesure").addValueEventListener(valueEventListenerDate);
 
 
-        myRef.child(choixESP).child("TauxRafraichissement").addValueEventListener(new ValueEventListener() {
+        ;
+
+
+        valueEventListenerTemps = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String heure = "";
                 String minute = "";
                 String seconde = "";
-                if (snapshot.getValue(Long.class) >= 3600000) {
-                    heure = (snapshot.getValue(Long.class) / (1000 * 60 * 60) + "h");
+                if (snapshot.exists()) {
+                    if (snapshot.getValue(Long.class) >= 3600000) {
+                        heure = (snapshot.getValue(Long.class) / (1000 * 60 * 60) + "h");
+                    }
+                    if (snapshot.getValue(Long.class) >= 60000) {
+                        minute = (snapshot.getValue(Long.class) % (1000 * 60 * 60)) / (1000 * 60) + "m";
+                    }
+                    if (snapshot.getValue(Long.class) >= 1000) {
+                        seconde = (snapshot.getValue(Long.class) % (1000 * 60)) / 1000 + "s";
+                    }
+                    refresh.setHint(heure + minute + seconde);
                 }
-                if (snapshot.getValue(Long.class) >= 60000) {
-                    minute = (snapshot.getValue(Long.class) % (1000 * 60 * 60)) / (1000 * 60) + "m";
-                }
-                if (snapshot.getValue(Long.class) >= 1000) {
-                    seconde = (snapshot.getValue(Long.class) % (1000 * 60)) / 1000 + "s";
-                }
-                refresh.setHint(heure + minute + seconde);
-
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        });
+        };
+        myRef.child(choixESP).child("TauxRafraichissement").addValueEventListener(valueEventListenerTemps);
     }
 
 
@@ -237,9 +265,8 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
                     @Override
                     public void onClick(View view) {
                         myRef.child(choixESP).removeValue();
-                        //    spinner.getAdapter().notify();
-                        //  choixESP=spinner.g
                         deletePopup.dismiss();
+
                     }
                 });
                 deletePopup.getNoButton().setOnClickListener(new View.OnClickListener() {
@@ -269,10 +296,14 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
                         myRef.child(choixESP).child("Mesure").removeValue();
                         myRef.child(choixESP).child("MesureNumber").removeValue();
                         popReini.dismiss();
+                        actu();
+                        dataAdapter.notifyDataSetChanged();
+                        recyclerView.invalidate();
                     }
 
+
                 });
-                spinner.getAdapter().notify();
+                //spinner.getAdapter().notify();
                 popReini.getNoButton().setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -283,6 +314,7 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
                 break;
 
         }
+
     }
 }
 
