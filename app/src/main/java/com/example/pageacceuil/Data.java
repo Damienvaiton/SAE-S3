@@ -32,7 +32,9 @@ public class Data implements Serializable {
         this.humidite = humidite;
     }
 
-    public float getTemperature() { return temperature; }
+    public float getTemperature() {
+        return temperature;
+    }
 
 
     public void setTemperature(float temperature) {

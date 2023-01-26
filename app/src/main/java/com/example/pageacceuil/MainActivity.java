@@ -31,12 +31,12 @@ public class MainActivity extends AppCompatActivity {
     DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32");
 
 
-    String choixESP ="";
-    String nomESP="";
+    String choixESP = "";
+    String nomESP = "";
     Spinner spinner;
     Button btncoEtu;
     Button btnCoAdmin;
-    HashMap<String,String> ESP;
+    HashMap<String, String> ESP;
     ArrayList<String> tabESP;
 
     @SuppressLint("MissingInflatedId")
@@ -48,22 +48,21 @@ public class MainActivity extends AppCompatActivity {
         btncoEtu = findViewById(R.id.Gobtn);
         btnCoAdmin = findViewById(R.id.adminbtnmain);
         ESP = new HashMap<>();
-        tabESP=new ArrayList<>();
+        tabESP = new ArrayList<>();
 
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item,tabESP);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, tabESP);
         spinner.setAdapter(adapter);
-
 
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                int curseur=0;
+                int curseur = 0;
                 for (Map.Entry entree : ESP.entrySet()) {
-                    if (curseur==position){
-                        choixESP =(String)entree.getKey();
-                        if(entree.getValue().toString()!=null) {
+                    if (curseur == position) {
+                        choixESP = (String) entree.getKey();
+                        if (entree.getValue().toString() != null) {
                             nomESP = (String) entree.getValue();
                         }
                         break;
@@ -71,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
                     curseur++;
                 }
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
@@ -88,21 +88,19 @@ public class MainActivity extends AppCompatActivity {
                         ESP.putIfAbsent(child.getKey(), null);
                     }
 
-                    }
+                }
                 Iterator iterator = ESP.entrySet().iterator();
                 tabESP.clear();
                 while (iterator.hasNext()) {
                     Map.Entry entry = (Map.Entry) iterator.next();
-                    if(entry.getValue()==null) {
+                    if (entry.getValue() == null) {
                         tabESP.add((String) entry.getKey());
-                    }
-                    else {
+                    } else {
                         tabESP.add((String) entry.getValue());
                     }
                 }
                 adapter.notifyDataSetChanged();
-                }
-
+            }
 
 
             @Override
@@ -112,14 +110,13 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
         btncoEtu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent graph;
                 graph = new Intent(MainActivity.this, GraphPage.class);
                 graph.putExtra("choixESP", choixESP);
-                if (!nomESP.equals("")){
+                if (!nomESP.equals("")) {
                     graph.putExtra("nomESP", nomESP);
                 }
                 startActivity(graph);

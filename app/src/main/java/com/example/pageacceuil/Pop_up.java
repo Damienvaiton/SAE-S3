@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.google.firebase.database.FirebaseDatabase;
 
-public class Pop_up  extends Dialog{
+public class Pop_up extends Dialog {
 
     private final TextView titre;
     private final EditText valeur;
@@ -39,7 +39,6 @@ public class Pop_up  extends Dialog{
     }
 
 
-
     public float getValue() {
         return Float.valueOf(valeur.getText().toString());
     }
@@ -53,17 +52,17 @@ public class Pop_up  extends Dialog{
         show();
     }
 
-    public void build(String title,String txt,int choix) {
-if(choix==0){
-    valeur.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-}
-else{
-    valeur.setInputType( InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
-}
+    public void build(String title, String txt, int choix) {
+        if (choix == 0) {
+            valeur.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        } else {
+            valeur.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
+        }
         titre.setText(title);
         valeur.setHint(txt);
         show();
     }
+
     public void build(String txt) {
         titre.setText(txt);
         titre.setTextSize(16);

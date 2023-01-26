@@ -40,11 +40,6 @@ public class VueData extends AppCompatActivity implements Serializable {
         recyclerView.setAdapter(dataAdapter);
 
 
-
-
-
-
-
         Intent intent = getIntent();
 
         if (intent != null) {
@@ -56,7 +51,6 @@ public class VueData extends AppCompatActivity implements Serializable {
                 System.out.println("erreur");
             }
         }
-
 
 
         btnTriChoix.setOnClickListener(new View.OnClickListener() {
@@ -86,8 +80,6 @@ public class VueData extends AppCompatActivity implements Serializable {
         });
 
 
-
-
         recyclerView.setLayoutManager((new LinearLayoutManager((this))));
 
 
@@ -104,7 +96,8 @@ public class VueData extends AppCompatActivity implements Serializable {
                     } else {
                         GraphPage.listData.listsortCO2();
                         dataAdapter.notifyDataSetChanged();
-                        recyclerView.setAdapter(dataAdapter);                    }
+                        recyclerView.setAdapter(dataAdapter);
+                    }
                 }
                 if (ChoixTri.equals("Température")) {
                     if (Desc) {
@@ -155,9 +148,6 @@ public class VueData extends AppCompatActivity implements Serializable {
             }
 
         });
-
-
-
 
 
     }

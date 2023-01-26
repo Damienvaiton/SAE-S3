@@ -23,7 +23,6 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.github.mikephil.charting.utils.Utils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomappbar.BottomAppBar;
@@ -83,6 +82,9 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
     private boolean leftAxisUsed = false;
     private boolean rightAxisUsed = false;
+
+    private String leftAxisName = "";
+    private String rightAxisName = "";
     private String choixESP = "";
     private String nomESP = "";
     private BottomAppBar bottomNav;
@@ -99,11 +101,11 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         Intent intent = getIntent();
         if (intent != null) {
             if (intent.hasExtra("choixESP")) {
-                this.choixESP = (String) intent.getSerializableExtra("choixESP");}
+                this.choixESP = (String) intent.getSerializableExtra("choixESP");
+            }
             if (intent.hasExtra("nomESP")) {
                 this.nomESP = (String) intent.getSerializableExtra("nomESP");
-            }
-             else {
+            } else {
                 System.out.println("Impossible de récup num ESP");
             }
         }
@@ -229,7 +231,6 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         //Création Axe X
 
 
-
         xl = graph.getXAxis();
         xl.setTextColor(Color.BLACK);
         xl.setDrawGridLines(true);
@@ -237,8 +238,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         xl.setAvoidFirstLastClipping(false);
         xl.setValueFormatter(new XAxisValueFormatter(listData));
         System.out.println(xl.mEntries.length);
-        xl.mEntryCount=0;
-
+        xl.mEntryCount = 0;
 
 
         //Création Axe Y droit
@@ -263,7 +263,15 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
             @Override
             public void onValueSelected(Entry e, Highlight h) {
-                Toast.makeText(getApplicationContext(), "Heure = " + listData.recup_data((int) h.getX() - 1).getTemps() + ", X : " + h.getY(), Toast.LENGTH_SHORT).show();
+                String label;
+                if (h.getAxis().name().equals("LEFT")) {
+                    label = leftAxisName + " = ";
+                } else if (h.getAxis().name().equals("RIGHT")) {
+                    label = rightAxisName + " = ";
+                } else {
+                    label = "X =";
+                }
+                Toast.makeText(getApplicationContext(), "Heure = " + listData.recup_data((int) h.getX() - 1).getTemps() + ", " + label + h.getY(), Toast.LENGTH_SHORT).show();
 
             }
 
@@ -335,25 +343,24 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         data.notifyDataChanged();
         graph.notifyDataSetChanged();
         graph.invalidate();
-        leftAxisUsed=false;
-        rightAxisUsed=false;
+        leftAxisUsed = false;
+        rightAxisUsed = false;
     }
 
     void choixAxe(LineDataSet data) {
         if (!leftAxisUsed) {
             data.setAxisDependency(YAxis.AxisDependency.LEFT);
-            System.out.println("nouveau" + data.getLabel() + " " + data.getAxisDependency());
+            leftAxisName = data.getLabel();
             leftAxisUsed = true;
             return;
         } else if (!rightAxisUsed) {
             data.setAxisDependency(YAxis.AxisDependency.RIGHT);
-            System.out.println("nouveau" + data.getLabel() + " " + data.getAxisDependency());
-
+            rightAxisName = data.getLabel();
             rightAxisUsed = true;
             return;
         } else {
             data.setDrawValues(true);
-            data.setValueTextSize(5);
+            data.setValueTextSize(10);
         }
     }
 
@@ -420,8 +427,14 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
                 Intent openSetting;
                 openSetting = new Intent(GraphPage.this, SettingPage.class);
                 openSetting.putExtra("choixESP", choixESP);
-                if(!nomESP.equals("")) {
+                if (!nomESP.equals("")) {
                     openSetting.putExtra("nomESP", nomESP);
+                }
+                if (!leftAxisName.equals("")) {
+                    openSetting.putExtra("leftAxisName", leftAxisName);
+                }
+                if (!rightAxisName.equals("")) {
+                    openSetting.putExtra("rightAxisName", rightAxisName);
                 }
 
                 startActivity(openSetting);
@@ -542,10 +555,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         if (listData.recup_data(cptLignes).getLight() == 0) {
             return false;
         }
-        if (listData.recup_data(cptLignes).getTemps() == "") {
-            return false;
-        }
-        return true;
+        return listData.recup_data(cptLignes).getTemps() != "";
     }
 
     void desacAxe(YAxis.AxisDependency axisDependency) {

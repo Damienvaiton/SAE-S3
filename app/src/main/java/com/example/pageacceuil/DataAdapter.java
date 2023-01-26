@@ -1,7 +1,6 @@
 package com.example.pageacceuil;
 
 import android.annotation.SuppressLint;
-import android.content.ClipData;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -11,21 +10,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.DecimalFormat;
 
-public class DataAdapter extends RecyclerView.Adapter<MyViewHolder>{
+public class DataAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
-Context context;
+    Context context;
 
     private final ListData listData;
 
-    public DataAdapter(Context context,ListData listData) {
+    public DataAdapter(Context context, ListData listData) {
         this.context = context;
-        this.listData=listData;
+        this.listData = listData;
     }
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new MyViewHolder(LayoutInflater.from(context).inflate(R.layout.blocdata,parent,false));
+        return new MyViewHolder(LayoutInflater.from(context).inflate(R.layout.blocdata, parent, false));
 
     }
 
