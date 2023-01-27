@@ -1,5 +1,6 @@
 package com.example.pageacceuil;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -113,17 +115,38 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
 
         listData = new ListData();
+
+//        if(myRef.child("Mesure").
+
         myRef.child("Mesure").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 DataSnapshot tab = task.getResult();
-                for (int i = 0; i < tab.getChildrenCount(); i++) {
-                    Data a = tab.child(i + "").getValue(Data.class);
-                    listData.list_add_data(a);
-                    chargerDonner();
-                }
+                if (tab.exists()) {
+                    for (int i = 0; i < tab.getChildrenCount(); i++) {
+                        Data a = tab.child(i + "").getValue(Data.class);
+                        listData.list_add_data(a);
+                        chargerDonner();
+                    }
 
+                } else {
+                    AlertDialog.Builder pop = new AlertDialog.Builder(GraphPage.this);
+                    pop.setMessage("ESP hors tension, merci de le brancher");
+                    pop.setPositiveButton("ESP brancher", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(getApplicationContext(), "Prêt", Toast.LENGTH_SHORT).show();
+                            dialog.cancel();
+
+                        }
+                    });
+
+                    pop.show();
+
+                }
             }
+
+
 
         });
 
