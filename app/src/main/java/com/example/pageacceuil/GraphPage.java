@@ -145,9 +145,6 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
                 }
             }
-
-
-
         });
 
 
