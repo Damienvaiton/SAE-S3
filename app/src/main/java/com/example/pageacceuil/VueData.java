@@ -1,6 +1,7 @@
 package com.example.pageacceuil;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,11 +40,6 @@ public class VueData extends AppCompatActivity implements Serializable {
         recyclerView.setAdapter(dataAdapter);
 
 
-
-/*
-
-
-
         Intent intent = getIntent();
 
         if (intent != null) {
@@ -55,7 +51,6 @@ public class VueData extends AppCompatActivity implements Serializable {
                 System.out.println("erreur");
             }
         }
-*/
 
 
         btnTriChoix.setOnClickListener(new View.OnClickListener() {
@@ -71,11 +66,7 @@ public class VueData extends AppCompatActivity implements Serializable {
                     public boolean onMenuItemClick(MenuItem item) {
 
 
-                        if (switchDesc.isChecked()) {
-                            Desc = true;
-                        } else {
-                            Desc = false;
-                        }
+                        Desc = switchDesc.isChecked();
                         ChoixTri = (String) item.getTitle();
 
                         btnTriChoix.setText(ChoixTri);
@@ -87,8 +78,6 @@ public class VueData extends AppCompatActivity implements Serializable {
                 popupMenu.show();
             }
         });
-
-
 
 
         recyclerView.setLayoutManager((new LinearLayoutManager((this))));
@@ -107,7 +96,8 @@ public class VueData extends AppCompatActivity implements Serializable {
                     } else {
                         GraphPage.listData.listsortCO2();
                         dataAdapter.notifyDataSetChanged();
-                        recyclerView.setAdapter(dataAdapter);                    }
+                        recyclerView.setAdapter(dataAdapter);
+                    }
                 }
                 if (ChoixTri.equals("Température")) {
                     if (Desc) {
@@ -158,9 +148,6 @@ public class VueData extends AppCompatActivity implements Serializable {
             }
 
         });
-
-
-
 
 
     }

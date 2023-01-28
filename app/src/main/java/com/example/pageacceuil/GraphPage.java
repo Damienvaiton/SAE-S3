@@ -1,18 +1,19 @@
 package com.example.pageacceuil;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -28,7 +29,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -36,11 +36,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.ConditionalFormattingRule;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.PatternFormatting;
+import org.apache.poi.ss.usermodel.SheetConditionalFormatting;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -51,27 +55,40 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
 
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
-    public static int indice = 0;
     public static ListData listData;
     ArrayList<Entry> A_temp = new ArrayList<>();
     ArrayList<Entry> A_lux = new ArrayList<>();
     ArrayList<Entry> A_CO2 = new ArrayList<>();
     ArrayList<Entry> A_humi = new ArrayList<>();
     ArrayList<Entry> A_O2 = new ArrayList<>();
-    private LineChart graph;
+
+    LineDataSet setHumi = new LineDataSet(A_humi, "Humidité");
+    LineDataSet setCO2 = new LineDataSet(A_CO2, "CO2");
+    LineDataSet setO2 = new LineDataSet(A_O2, "O2");
+    LineDataSet setTemp = new LineDataSet(A_temp, "Température");
+    LineDataSet setLux = new LineDataSet(A_lux, "Lux");
+    public static LineChart graph;
     private TextView viewO2;
     private TextView viewCO2;
     private TextView viewLux;
     private TextView viewTemp;
     private TextView viewHumi;
     private TextView valTemp;
+
+
     private CheckBox boxO2;
     private CheckBox boxCO2;
     private CheckBox boxTemp;
     private CheckBox boxHumi;
     private CheckBox boxLux;
-    private Button btnAjout;
+
+    private boolean leftAxisUsed = false;
+    private boolean rightAxisUsed = false;
+
+    private String leftAxisName = "";
+    private String rightAxisName = "";
     private String choixESP = "";
+    private String nomESP = "";
     private BottomAppBar bottomNav;
     private BottomNavigationView bottomNavigationView;
     public static YAxis leftAxis;
@@ -83,55 +100,66 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph_page);
-
-        indice = 0;
-
         Intent intent = getIntent();
         if (intent != null) {
-            if (intent.hasExtra("ESP")) {
-
-                this.choixESP = (String) intent.getSerializableExtra("ESP");
-                System.out.println("ok");
+            if (intent.hasExtra("choixESP")) {
+                this.choixESP = (String) intent.getSerializableExtra("choixESP");
+            }
+            if (intent.hasExtra("nomESP")) {
+                this.nomESP = (String) intent.getSerializableExtra("nomESP");
             } else {
-                System.out.println("erreur");
-                System.out.println((String) intent.getSerializableExtra("ESP"));
+                System.out.println("Impossible de récup num ESP");
             }
         }
+        DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32/" + choixESP);
 
-
-        DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32/" + choixESP + "/Mesure");
 
         listData = new ListData();
 
-        myRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+//        if(myRef.child("Mesure").
+
+        myRef.child("Mesure").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 DataSnapshot tab = task.getResult();
-                for (int i = 0; i < tab.getChildrenCount(); i++) {
-                    Data a = tab.child(i + "").getValue(Data.class);
-                    indice++;
-                    listData.list_add_data(a);
+                if (tab.exists()) {
+                    for (int i = 0; i < tab.getChildrenCount(); i++) {
+                        Data a = tab.child(i + "").getValue(Data.class);
+                        listData.list_add_data(a);
+                        chargerDonner();
+                    }
+
+                } else {
+                    AlertDialog.Builder pop = new AlertDialog.Builder(GraphPage.this);
+                    pop.setMessage("ESP hors tension, merci de le brancher");
+                    pop.setPositiveButton("ESP brancher", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(getApplicationContext(), "Prêt", Toast.LENGTH_SHORT).show();
+                            dialog.cancel();
+
+                        }
+                    });
+
+                    pop.show();
+
                 }
             }
-
         });
 
 
-        myRef.addChildEventListener(new ChildEventListener() {
+        myRef.child("Mesure").addChildEventListener(new ChildEventListener() {
             @Override
-
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                if (snapshot.getChildrenCount() == 3) {
+                if (snapshot.getChildrenCount() == 6) {
                     Data a = snapshot.getValue(Data.class);
-                    indice++;
                     listData.list_add_data(a);
-                    creaGraph();
+                    chargerDonner();
                     actuValues();
-
 
                 }
             }
@@ -154,9 +182,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         });
 
 
-        // A terminer
-        DatabaseReference varTemps = database.getReference("SAE_S3_BD/ESP32/" + choixESP + "/TauxRafraichissement");
-        varTemps.addListenerForSingleValueEvent(new ValueEventListener() {
+        myRef.child("TauxRafraichissement").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String heure = "";
@@ -171,6 +197,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
                 if (snapshot.getValue(Long.class) >= 1000) {
                     seconde = (snapshot.getValue(Long.class) % (1000 * 60)) / 1000 + "s";
                 }
+
                 valTemp.setText(heure + minute + seconde);
 
             }
@@ -185,21 +212,11 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
         //Textview pour affichage données en haut
         viewTemp = findViewById(R.id.viewTemp);
-        viewTemp.setText("T°");
         viewLux = findViewById(R.id.viewLux);
-        viewLux.setText("Lux");
         viewCO2 = findViewById(R.id.viewCO2);
-        viewCO2.setText("CO2");
         viewO2 = findViewById(R.id.viewO2);
-        viewO2.setText("O2");
         viewHumi = findViewById(R.id.viewHumi);
-        viewHumi.setText("Humi");
 
-
-
-
-        FloatingActionButton btnAdd = findViewById(R.id.btnAdd);
-        btnAdd.setOnClickListener(this);
 
         bottomNav = findViewById(R.id.bottomNav);
         setSupportActionBar(bottomNav);
@@ -230,10 +247,9 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
         //Constru graph
         graph = findViewById(R.id.lineChart);
-
+        graph.clear();
         //Création Axe X
 
-        //  XAxisRenderer mXAxisRenderer = new XAxisRenderer(ViewPortHandler, mXAxis, mLeftAxisTransformer);
 
         xl = graph.getXAxis();
         xl.setTextColor(Color.BLACK);
@@ -241,12 +257,8 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         xl.setEnabled(true);
         xl.setAvoidFirstLastClipping(false);
         xl.setValueFormatter(new XAxisValueFormatter(listData));
-
-
-        //Création Axe Y gauche
-        leftAxis = graph.getAxisLeft();
-        leftAxis.setTextColor(Color.BLACK);
-        leftAxis.setDrawGridLines(true);
+        System.out.println(xl.mEntries.length);
+        xl.mEntryCount = 0;
 
 
         //Création Axe Y droit
@@ -255,9 +267,13 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         rightAxis.setTextColor(Color.BLACK);
         rightAxis.setDrawGridLines(true);
 
+        leftAxis = graph.getAxisLeft();
+        leftAxis.setEnabled(true);
+        leftAxis.setTextColor(Color.BLACK);
+        leftAxis.setDrawGridLines(true);
+
         //Set paramètre du graph
         paramGraph();
-        chargerDonner();
 
         graph.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
@@ -267,7 +283,15 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
             @Override
             public void onValueSelected(Entry e, Highlight h) {
-                Toast.makeText(getApplicationContext(), "Heure = " + listData.recup_data((int) h.getX() - 1).getTemps() + ", X : " + h.getY(), Toast.LENGTH_SHORT).show();
+                String label;
+                if (h.getAxis().name().equals("LEFT")) {
+                    label = leftAxisName + " = ";
+                } else if (h.getAxis().name().equals("RIGHT")) {
+                    label = rightAxisName + " = ";
+                } else {
+                    label = "X =";
+                }
+                Toast.makeText(getApplicationContext(), "Heure = " + listData.recup_data((int) h.getX() - 1).getTemps() + ", " + label + h.getY(), Toast.LENGTH_SHORT).show();
 
             }
 
@@ -276,112 +300,118 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
     }
 
     void chargerDonner() {
-        for (int i = 0; i < listData.list_size(); i++) {
-            System.out.println(listData.recup_data(i).getTemperature());
-            A_CO2.add(new Entry(indice, listData.recup_data(i).getCO2()));
-        }
+        A_CO2.add(new Entry(listData.list_size(), listData.recup_data(listData.list_size() - 1).getCO2()));
+        A_lux.add(new Entry(listData.list_size(), listData.recup_data(listData.list_size() - 1).getLight()));
+        A_O2.add(new Entry(listData.list_size(), listData.recup_data(listData.list_size() - 1).getO2()));
+        A_temp.add(new Entry(listData.list_size(), listData.recup_data(listData.list_size() - 1).getTemperature()));
+        A_humi.add(new Entry(listData.list_size(), listData.recup_data(listData.list_size() - 1).getHumidite()));
+        creaGraph();
+
     }
+
 
     void creaGraph() {
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-        if (boxCO2.isChecked()) {
-            A_CO2.add(new Entry(indice, listData.recup_data(indice - 1).getCO2()));
-            LineDataSet setCO2 = new LineDataSet(A_CO2, "CO2");
-            setCO2.setAxisDependency(YAxis.AxisDependency.LEFT); // Faire un code de choix des axis?
-            paramSet(setCO2);
 
+
+        if (boxCO2.isChecked()) {
+            setCO2 = new LineDataSet(A_CO2, "CO2");
+            paramSet(setCO2);
+            choixAxe(setCO2);
             setCO2.setColor(Color.RED);
             setCO2.setCircleColor(Color.RED);
             dataSets.add(setCO2);
         }
         if (boxTemp.isChecked()) {
-            A_temp.add(new Entry(indice, listData.recup_data(indice - 1).getTemperature()));
-            LineDataSet setTemp = new LineDataSet(A_temp, "Température");
-
-            setTemp.setAxisDependency(YAxis.AxisDependency.RIGHT);
+            setTemp = new LineDataSet(A_temp, "Température");
             paramSet(setTemp);
+            choixAxe(setTemp);
             setTemp.setColor(Color.BLUE);
             setTemp.setCircleColor(Color.BLUE);
             dataSets.add(setTemp);
         }
-        if (boxLux.isChecked()) {
-            A_lux.add(new Entry(indice, listData.recup_data(indice - 1).getLux()));
-            LineDataSet setLux = new LineDataSet(A_lux, "Lux");
-            paramSet(setLux);
-            setLux.setColor(Color.YELLOW);
-            setLux.setCircleColor(Color.YELLOW);
-            dataSets.add(setLux);
-        }
-        if (boxHumi.isChecked()) {
-            A_humi.add(new Entry(indice, listData.recup_data(indice - 1).getHumidite()));
-            LineDataSet setHumi = new LineDataSet(A_humi, "Humidité");
-            setHumi.setAxisDependency(YAxis.AxisDependency.RIGHT);
-            paramSet(setHumi);
-            setHumi.setColor(Color.RED);
-            setHumi.setCircleColor(Color.RED);
 
+        if (boxHumi.isChecked()) {
+            setHumi = new LineDataSet(A_humi, "Humidité");
+            paramSet(setHumi);
+            choixAxe(setHumi);
+            setHumi.setColor(Color.MAGENTA);
+            setHumi.setCircleColor(Color.MAGENTA);
             dataSets.add(setHumi);
         }
         if (boxO2.isChecked()) {
-            A_O2.add(new Entry(indice, listData.recup_data(listData.list_size() - 1).getO2()));
-            LineDataSet setO2 = new LineDataSet(A_O2, "O2");
-            setO2.setAxisDependency(YAxis.AxisDependency.RIGHT);
+            setO2 = new LineDataSet(A_O2, "O2");
             paramSet(setO2);
+            choixAxe(setO2);
             setO2.setColor(Color.BLACK);
             setO2.setCircleColor(Color.BLACK);
-
             dataSets.add(setO2);
         }
+        if (boxLux.isChecked()) {
+            setLux = new LineDataSet(A_lux, "Lux");
+            paramSet(setLux);
+            choixAxe(setLux);
+            setLux.setColor(Color.YELLOW);
+            setLux.setCircleColor(Color.YELLOW);
+            dataSets.add(setLux);
+
+        }
+
 
         LineData data = new LineData(dataSets);
         graph.setData(data);
         data.notifyDataChanged();
         graph.notifyDataSetChanged();
-//        graph.moveViewTo(2,2,xl); Défilement
         graph.invalidate();
-
+        leftAxisUsed = false;
+        rightAxisUsed = false;
     }
 
-    private void checkchkBox() {
-        /*int checkActive=0;
-        for (CheckBox vb: ){ //Faire un tab de checkbox pour voir coombien sont check
-            if (vb.isChecked() && checkActive>2){
-                Toast.makeText(getApplicationContext(),"Il ne peut y avoir plus de 2 valeurs dans le graphique", Toast.LENGTH_SHORT).show();
-            }
-        }*/
+    void choixAxe(LineDataSet data) {
+        if (!leftAxisUsed) {
+            data.setAxisDependency(YAxis.AxisDependency.LEFT);
+            leftAxisName = data.getLabel();
+            leftAxisUsed = true;
+            return;
+        } else if (!rightAxisUsed) {
+            data.setAxisDependency(YAxis.AxisDependency.RIGHT);
+            rightAxisName = data.getLabel();
+            rightAxisUsed = true;
+            return;
+        } else {
+            data.setDrawValues(true);
+            data.setValueTextSize(10);
+        }
     }
+
 
     private void paramSet(LineDataSet set) {
-
         set.setFillAlpha(120);
         set.setLineWidth(2.5f);
         set.setCircleRadius(3.5f);
         set.setCircleHoleRadius(1f);
         set.setValueTextColor(Color.BLACK);
-        // set.setValueTextSize(10f); Oui ou non?
         set.setDrawValues(false);
-
     }
 
     void actuValues() {
+        int pos = listData.list_size() - 1;
         DecimalFormat a = new DecimalFormat("##.###");
-        if (listData.recup_data(indice - 1).getTemperature() != 0) {
-            viewTemp.setText(a.format(listData.recup_data(indice - 1).getTemperature()) + "°");
+        if (listData.recup_data(pos).getTemperature() != 0) {
+            viewTemp.setText(a.format(listData.recup_data(pos).getTemperature()) + "°");
         }
-        if (listData.recup_data(indice - 1).getLux() != 0) {
-            viewLux.setText(a.format(listData.recup_data(indice - 1).getLux()) + "Lux");
+        if (listData.recup_data(pos).getLight() != 0) {
+            viewLux.setText(a.format(listData.recup_data(pos).getLight()) + "l");
         }
-        if (listData.recup_data(indice - 1).getCO2() != 0) {
-            viewCO2.setText(a.format(listData.recup_data(indice - 1).getCO2()) + "%");
+        if (listData.recup_data(pos).getCO2() != 0) {
+            viewCO2.setText(a.format(listData.recup_data(pos).getCO2()) + "%");
         }
-        if (listData.recup_data(indice - 1).getO2() != 0) {
-            viewO2.setText(a.format(listData.recup_data(indice - 1).getO2()) + "%");
+        if (listData.recup_data(pos).getO2() != 0) {
+            viewO2.setText(a.format(listData.recup_data(pos).getO2()) + "%");
         }
-        if (listData.recup_data(indice - 1).getHumidite() != 0) {
-            viewHumi.setText(a.format(listData.recup_data(indice - 1).getHumidite()) + "%");
+        if (listData.recup_data(pos).getHumidite() != 0) {
+            viewHumi.setText(a.format(listData.recup_data(pos).getHumidite()) + "%");
         }
-
-
     }
 
 
@@ -401,75 +431,41 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         graph.getXAxis().setDrawGridLines(true);
         graph.getAxisRight().setDrawAxisLine(true);
         graph.getAxisRight().setDrawGridLines(true);
-
-
     }
 
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.btnAdd:
-                Pop_up customPopup = new Pop_up(this);
-                customPopup.build("Ajout O2", "",0);
-                customPopup.getYesButton().setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Toast.makeText(getApplicationContext(), "Valeur ajoutée", Toast.LENGTH_SHORT).show();
-                        DatabaseReference AjoutO2 = database.getReference("SAE_S3_BD/ESP32/A8:03:2A:EA:EE:CC/Mesure");
-                        //     AjoutO2.child("humidite").equalTo(0).on("child", functon(snapshot){
-                        //  System.out.println("yo"););
-
-                        AjoutO2.child("333").child("humidite").setValue(customPopup.getValue());
-                        customPopup.dismiss();
-                    }
-                });
-                customPopup.getNoButton().setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        customPopup.dismiss();
-                    }
-                });
-                break;
-
-            default:
-                break;
-
-        }
-    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.rotate:
-                System.out.println("Rotation écran paysage");
-                // Surface s=new Surface();
-                // s.ROTATION_90:
-                // Surface.
-                break;
             case R.id.viewData:
                 Intent openViewData;
                 openViewData = new Intent(GraphPage.this, VueData.class);
                 openViewData.putExtra("listData", listData);
                 startActivity(openViewData);
-
                 break;
             case R.id.setting:
-                System.out.println("Parametre");
                 Intent openSetting;
                 openSetting = new Intent(GraphPage.this, SettingPage.class);
-                openSetting.putExtra("ESP",choixESP);
+                openSetting.putExtra("choixESP", choixESP);
+                if (!nomESP.equals("")) {
+                    openSetting.putExtra("nomESP", nomESP);
+                }
+                if (!leftAxisName.equals("")) {
+                    openSetting.putExtra("leftAxisName", leftAxisName);
+                }
+                if (!rightAxisName.equals("")) {
+                    openSetting.putExtra("rightAxisName", rightAxisName);
+                }
+
                 startActivity(openSetting);
                 break;
             case R.id.btnExport:
                 try {
                     Toast.makeText(getApplicationContext(), "Export excel commencé ", Toast.LENGTH_SHORT).show();
                     exportFile();
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + item.getItemId());
@@ -478,43 +474,146 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
     }
 
     private void exportFile() {
-        File file = new File(Environment.getExternalStorageDirectory() + File.separator + "Download", "Mesure.xls");
-        HSSFWorkbook workbook = new HSSFWorkbook();
-        HSSFSheet sheet = workbook.createSheet("Mesures");
-        // Add value in the cell
-        HSSFRow row0 = sheet.createRow(0);
+        int cptLignes = listData.list_size() - 1;
+        if (cptLignes < 1) {
+            Toast.makeText(this, "Export excel annulé, pas de valeurs", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (!isDataValid(cptLignes)) {
+            cptLignes--;
+        }
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Mesure.xlsx");
+        XSSFWorkbook workbook = new XSSFWorkbook();
 
-        // Ajout d'une cellule
-        HSSFRow titreRow = sheet.getRow(0);
-        HSSFCell cellTitre0 = titreRow.createCell(0);
-        cellTitre0.setCellValue("Numero mesure");
+        // Création de la feuille de calcul
+        XSSFSheet sheet = workbook.createSheet("Mesures");
 
-        HSSFCell cell0 = titreRow.getCell(0);
-        HSSFCellStyle nomCell0 = cell0.getCellStyle();
-        cell0.setCellStyle(nomCell0);
+        // Création de la condition pour l'affichage en couleurs alternées
+        SheetConditionalFormatting sheetCF = sheet.getSheetConditionalFormatting();
+        ConditionalFormattingRule rule1 = sheetCF.createConditionalFormattingRule("MOD(ROW(),2)");
+        PatternFormatting fill1 = rule1.createPatternFormatting();
+        fill1.setFillBackgroundColor(IndexedColors.GREY_25_PERCENT.index);
+        fill1.setFillPattern(PatternFormatting.SOLID_FOREGROUND);
+        // Plage des cellules affectées par la condition
+        CellRangeAddress[] regions = {
+                CellRangeAddress.valueOf("A1:G" + (cptLignes + 1))
+        };
+        sheetCF.addConditionalFormatting(regions, rule1);
 
-        row0.createCell(1).setCellValue("Humidite");
-        row0.createCell(2).setCellValue("Temperature");
-        row0.createCell(3).setCellValue("Heure");
+        // Ajout de la 1ère ligne de titre
+        XSSFRow row0 = sheet.createRow(0);
+        // Cellule Numero
+        XSSFCell cellNumero = row0.createCell(0);
+        cellNumero.setCellValue("Numero mesure");
+        // Cellule Humidite
+        XSSFCell cellHum = row0.createCell(1);
+        cellHum.setCellValue("Humidite");
+        // Cellule Temperature
+        XSSFCell cellTemp = row0.createCell(2);
+        cellTemp.setCellValue("Temperature");
+        // Cellule CO2
+        XSSFCell cellCO2 = row0.createCell(3);
+        cellCO2.setCellValue("CO2");
+        // Cellule O2
+        XSSFCell cellO2 = row0.createCell(4);
+        cellO2.setCellValue("O2");
+        // Cellule Lux
+        XSSFCell cellLux = row0.createCell(5);
+        cellLux.setCellValue("Lux");
+        // Cellule Heure
+        XSSFCell cellHeure = row0.createCell(6);
+        cellHeure.setCellValue("Heure");
 
-        HSSFRow row1 = sheet.createRow(1);
-        row1.createCell(0).setCellValue("0");
-        row1.createCell(1).setCellValue("41");
-        row1.createCell(2).setCellValue("21.9");
-        row1.createCell(3).setCellValue("16:20:24");
+        // Ajout des lignes de mesures
+        for (int i = 0; i < cptLignes; i++) {
+            XSSFRow row = sheet.createRow(i + 1);
+            row.createCell(0).setCellValue(i);
+            row.createCell(1).setCellValue(listData.recup_data(i).getHumidite());
+            row.createCell(2).setCellValue(listData.recup_data(i).getTemperature());
+            row.createCell(3).setCellValue(listData.recup_data(i).getCO2());
+            row.createCell(4).setCellValue(listData.recup_data(i).getO2());
+            row.createCell(5).setCellValue(listData.recup_data(i).getLight());
+            row.createCell(6).setCellValue(listData.recup_data(i).getTemps());
+        }
+
+        // Création du fichier
         try {
             if (file.exists()) {
+                file.delete();
+            }
+            try {
                 file.createNewFile();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
             FileOutputStream fileOutputStream = new FileOutputStream(file);
             workbook.write(fileOutputStream);
             if (fileOutputStream != null) {
                 fileOutputStream.flush();
                 fileOutputStream.close();
-                Toast.makeText(this, "Export excel dans le fichier telechargements", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Export de " + cptLignes + " mesures dans le dossier téléchargements", Toast.LENGTH_SHORT).show();
             }
         } catch (Exception e) {
             e.printStackTrace();
+            Toast.makeText(this, "Export excel annulé, erreur", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private boolean isDataValid(int cptLignes) {
+        if (listData.recup_data(cptLignes).getCO2() == 0) {
+            return false;
+        }
+        if (listData.recup_data(cptLignes).getTemperature() == 0) {
+            return false;
+        }
+        if (listData.recup_data(cptLignes).getHumidite() == 0) {
+            return false;
+        }
+        if (listData.recup_data(cptLignes).getO2() == 0) {
+            return false;
+        }
+        if (listData.recup_data(cptLignes).getLight() == 0) {
+            return false;
+        }
+        return listData.recup_data(cptLignes).getTemps() != "";
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.boxCO2:
+               /* if (setCO2.getAxisDependency() != null) {
+                    //Géré le fait qu'il y en ai plus de 2, genre boolean qui compte
+                    System.out.println("yoc02");
+                    desacAxe(setCO2.getAxisDependency());
+                    setCO2.setAxisDependency(null);
+                }*/
+            case R.id.boxTemp:
+               /* if (setTemp.getAxisDependency() != null) {
+                    desacAxe(setTemp.getAxisDependency());
+                    System.out.println("yotemp");
+                    setTemp.setAxisDependency(null);
+                }*/
+            case R.id.boxO2:
+               /* if (setO2.getAxisDependency() != null) {
+                    desacAxe(setO2.getAxisDependency());
+                    System.out.println("yo02");
+                    setO2.setAxisDependency(null);
+                }*/
+            case R.id.boxHumi:
+               /* if (setHumi.getAxisDependency() != null) {
+                    desacAxe(setHumi.getAxisDependency());
+                    System.out.println("yohumi");
+                    setHumi.setAxisDependency(null);
+                }*/
+            case R.id.boxLux:
+               /* if (setLux.getAxisDependency() != null) {
+                    desacAxe(setLux.getAxisDependency());
+                    System.out.println("yolux");
+                    setLux.setAxisDependency(null);
+                }*/
+                creaGraph();
+                break;
         }
     }
 }

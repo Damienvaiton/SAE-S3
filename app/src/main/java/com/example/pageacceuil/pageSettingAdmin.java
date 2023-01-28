@@ -1,6 +1,6 @@
 package com.example.pageacceuil;
 
-import android.content.Intent;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -12,7 +12,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,209 +34,287 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32");
 
+
+    RecyclerView recyclerView;
+
+    ValueEventListener valueEventListenerTemps;
+
+    ValueEventListener valueEventListenerDate;
     Spinner spinner;
+    Button valiRefresh;
     Button rename;
+
     Button delete;
     EditText refresh;
     Button grouper;
     Button reini;
     TextView idEsp;
+    ListData dataESP;
     String choixESP;
+
+    String oldChoixESP = "";
     HashMap<String, String> ESP;
+    ArrayAdapter<String> adapter;
     ArrayList<String> tabESP;
+
+
+    DataAdapter dataAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_page_setting_admin);
 
-        idEsp=findViewById(R.id.selectedEsp);
+        idEsp = findViewById(R.id.selectedEsp);
         rename = findViewById(R.id.rennoméA);
         delete = findViewById(R.id.suppA);
         refresh = findViewById(R.id.refreshA);
         grouper = findViewById(R.id.grouperA);
         reini = findViewById(R.id.reiniA);
-        spinner=findViewById(R.id.spinnerAdmin);
+        spinner = findViewById(R.id.spinnerAdmin);
+        valiRefresh = findViewById(R.id.valiRefresh);
+        recyclerView = findViewById(R.id.recyclerViewAdmin);
 
+
+        valiRefresh.setOnClickListener(this);
         rename.setOnClickListener(this);
         delete.setOnClickListener(this);
         grouper.setOnClickListener(this);
         reini.setOnClickListener(this);
         ESP = new HashMap<>();
-        tabESP=new ArrayList<>();
+        tabESP = new ArrayList<>();
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item,tabESP);
+        adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, tabESP);
         spinner.setAdapter(adapter);
 
+        dataESP = new ListData();
 
+        dataAdapter = new DataAdapter(getApplicationContext(), dataESP);
+        recyclerView.setAdapter(dataAdapter);
+        recyclerView.setLayoutManager((new LinearLayoutManager((this))));
 
+        AlertDialog.Builder pop = new AlertDialog.Builder(pageSettingAdmin.this);
+        pop.setMessage("Assurez-vous qu'avant toute modification l'ESP est éteint.");
+        pop.setPositiveButton("Compris", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getApplicationContext(), "Prêt", Toast.LENGTH_SHORT).show();
+                dialog.cancel();
+
+            }
+        });
+        pop.show();
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                int curseur=0;
+                int curseur = 0;
                 for (Map.Entry entree : ESP.entrySet()) {
 
-                    if (curseur==position){
+                    if (curseur == position) {
+                        if (choixESP != null) {
+                            if (!choixESP.equals("")) {
+                                oldChoixESP = choixESP;
+                            }
+                        }
                         choixESP = (String) entree.getKey();
-                        System.out.println((String)entree.getKey());
                         idEsp.setText(choixESP);
+                        actu();
                         break;
-                    } curseur++;
+
+                    }
+                    curseur++;
                 }
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
+
 
         myRef.addValueEventListener(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                            ESP.clear();
-                                            for (DataSnapshot child : snapshot.getChildren()) {
-                                                if (child.child("Nom").exists()) {
-                                                    ESP.put(child.getKey(), String.valueOf(child.child("Nom").getValue()));
-                                                } else {
-                                                    ESP.putIfAbsent(child.getKey(), null);
-                                                }
-
-                                            }
-                                            Iterator iterator = ESP.entrySet().iterator();
-                                            tabESP.clear();
-                                            while (iterator.hasNext()) {
-                                                Map.Entry entry = (Map.Entry) iterator.next();
-                                                if (entry.getValue() == null) {
-                                                    tabESP.add((String) entry.getKey());
-                                                } else {
-                                                    tabESP.add((String) entry.getValue());
-                                                }
-                                            }
-                                            adapter.notifyDataSetChanged();
-                                        }
-
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError error) {
-
-                                        }
-                                    });
-
-
-
-
-    /*        Intent intent = getIntent();
-        if (intent != null) {
-
-
-            tabESP = (ArrayList<String>) intent.getSerializableExtra("listeESP");
-            ESP = (HashMap<String, String>) intent.getSerializableExtra("hashmapEsp");
-
-            System.out.println("ok");
-        } else {
-            System.out.println("erreudsvr");
-
-        }*/
-/*for(String it : tabESP){
-    System.out.println(it);
-        }
-
-         idEsp.setText(nameESP+"");
-
-        spinner=findViewById(R.id.spinnerAdmin);
-        ArrayAdapter<String> adapterA = new ArrayAdapter<>(pageSettingAdmin.this, android.R.layout.simple_spinner_dropdown_item,tabESP);
-        spinner.setAdapter(adapterA);
-       spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                int curseur=0;
-                for (Map.Entry entree : ESP.entrySet()) {
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ESP.clear();
+                for (DataSnapshot child : snapshot.getChildren()) {
+                    if (child.child("Nom").exists()) {
+                        ESP.put(child.getKey(), String.valueOf(child.child("Nom").getValue()));
+                    } else {
+                        ESP.putIfAbsent(child.getKey(), null);
+                    }
 
-                    /*if (curseur==position){
-                        ChoixESP=(String)entree.getKey();
-                        System.out.println((String)entree.getKey());
-                    } curseur++;
                 }
+                Iterator iterator = ESP.entrySet().iterator();
+                tabESP.clear();
+                while (iterator.hasNext()) {
+                    Map.Entry entry = (Map.Entry) iterator.next();
+                    if (entry.getValue() == null) {
+                        tabESP.add((String) entry.getKey());
+                    } else {
+                        tabESP.add((String) entry.getValue());
+                    }
+                }
+                adapter.notifyDataSetChanged();
+
+
             }
+
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+            public void onCancelled(@NonNull DatabaseError error) {
 
-         }
-
-
+            }
         });
 
-    public void editTemps(int values) {
-        DatabaseReference varTemps = database.getReference("SAE_S3_BD/ESP32/A8:03:2A:EA:EE:CC");
-        varTemps.child("TauxRafraichissement").setValue(values);
-        tauxRefresh.setHint(values + " s");
-        Toast.makeText(getApplicationContext(), "Refresh : " + values + "s", Toast.LENGTH_SHORT).show();
-*/}
+    }
 
+
+    void actu() {
+
+        if (valueEventListenerDate != null) {
+            myRef.child(oldChoixESP).child("TauxRafraichissement").removeEventListener(valueEventListenerTemps);
+        }
+        if (valueEventListenerTemps != null) {
+            dataESP.deleteAllData();
+            myRef.child(oldChoixESP).child("Mesure").removeEventListener(valueEventListenerDate);
+        }
+
+        valueEventListenerDate = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Data a = dataSnapshot.getValue(Data.class);
+                    dataESP.list_add_data(a);
+                }
+                dataAdapter.notifyDataSetChanged();
+                recyclerView.invalidate();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+        myRef.child(choixESP).child("Mesure").addValueEventListener(valueEventListenerDate);
+
+
+        ;
+
+
+        valueEventListenerTemps = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String heure = "";
+                String minute = "";
+                String seconde = "";
+                if (snapshot.exists()) {
+                    if (snapshot.getValue(Long.class) >= 3600000) {
+                        heure = (snapshot.getValue(Long.class) / (1000 * 60 * 60) + "h");
+                    }
+                    if (snapshot.getValue(Long.class) >= 60000) {
+                        minute = (snapshot.getValue(Long.class) % (1000 * 60 * 60)) / (1000 * 60) + "m";
+                    }
+                    if (snapshot.getValue(Long.class) >= 1000) {
+                        seconde = (snapshot.getValue(Long.class) % (1000 * 60)) / 1000 + "s";
+                    }
+                    refresh.setHint(heure + minute + seconde);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+        myRef.child(choixESP).child("TauxRafraichissement").addValueEventListener(valueEventListenerTemps);
+    }
 
 
     @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.rennoméA:
-                    System.out.println("rename");
-                    Pop_up customPopup=new Pop_up(this);
-                    customPopup.build("Rennomé l'esp","Nom",1);
-                    customPopup.getYesButton().setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.rennoméA:
+                Pop_up customPopup = new Pop_up(this);
+                customPopup.build("Rennomé l'esp", "Nom", 1);
+                customPopup.getYesButton().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (!customPopup.getString().equals("")) {
                             myRef.child(choixESP).child("Nom").setValue(customPopup.getString());
-
-                            customPopup.dismiss();}});
-                    customPopup.getNoButton().setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
+                            //  adapter.notifyDataSetChanged();
                             customPopup.dismiss();
-                        }
-                    });
-                    //Faire dans pop up
-                    break;
-                case R.id.suppA:
-                    System.out.println("rename");
-                    Pop_up deletePopup=new Pop_up(this);
-                    deletePopup.build("Supprimer l'esp "+choixESP);
-                    deletePopup.getYesButton().setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            myRef.child(choixESP).removeValue();
-                            deletePopup.dismiss();}});
-                    deletePopup.getNoButton().setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            deletePopup.dismiss();
-                        }
-                    });
-                    break;
-                case R.id.refreshA:
-                    System.out.println("refresh");
-                    //Faire pop up
-                    break;
-                case R.id.grouperA:
-                    System.out.println("grouper");
-                    break;
-                case R.id.reiniA:
-                    System.out.println("reini");
-                    Pop_up popReini=new Pop_up(this);
-                    popReini.build("En êtes vous sûr?");
-                    popReini.getYesButton().setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            myRef.child("ESP").child("Mesure").removeValue();
-                            myRef.child("ESP").child("MesureNumber").removeValue();
-                            popReini.dismiss();}});
-                    popReini.getNoButton().setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            popReini.dismiss();
-                        }
-                    });
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Merci d'entrer un nom", Toast.LENGTH_SHORT).show();
 
-                    break;
+                        }
+                    }
+                });
+                customPopup.getNoButton().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        customPopup.dismiss();
+                    }
+                });
+                //Faire dans pop up
+                break;
+            case R.id.suppA:
+                Pop_up deletePopup = new Pop_up(this);
+                deletePopup.build("Supprimer l'esp " + choixESP);
+                deletePopup.getYesButton().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        myRef.child(choixESP).removeValue();
+                        deletePopup.dismiss();
 
-            }
+                    }
+                });
+                deletePopup.getNoButton().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        deletePopup.dismiss();
+                    }
+                });
+                break;
+            case R.id.grouperA:
+                break;
+            case R.id.valiRefresh:
+                if (refresh.getText().toString().equals("")) {
+                    Toast.makeText(getApplicationContext(), "Merci d'entrer' une valeur", Toast.LENGTH_SHORT).show();
+                } else {
+                    myRef.child(choixESP).child("TauxRafraichissement").setValue((Double.valueOf(refresh.getText().toString()) * 1000));
+                    Toast.makeText(getApplicationContext(), "Refresh : " + refresh.getText() + "s,\r\nVous pouvez redémarrer l'ESP", Toast.LENGTH_LONG).show();
+                    refresh.setText("");
+                }
+                break;
+            case R.id.reiniA:
+                Pop_up popReini = new Pop_up(this);
+                popReini.build("En êtes vous sûr?");
+                popReini.getYesButton().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        myRef.child(choixESP).child("Mesure").removeValue();
+                        myRef.child(choixESP).child("MesureNumber").removeValue();
+                        popReini.dismiss();
+                        actu();
+                        dataAdapter.notifyDataSetChanged();
+                        recyclerView.invalidate();
+                    }
+
+
+                });
+                //spinner.getAdapter().notify();
+                popReini.getNoButton().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        popReini.dismiss();
+                    }
+                });
+
+                break;
+
         }
+
+    }
 }
+

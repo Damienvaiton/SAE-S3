@@ -31,23 +31,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/yesButton"
-        android:text="Valider"
-        android:backgroundTint="@color/yellowgreen"
-        android:layout_margin="5dp"
-        />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/noButton"
+            android:text="Retour"
+            android:backgroundTint="@color/yellowgreen"
+            android:layout_margin="5dp"/>
+        <Button
+            android:id="@+id/yesButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:backgroundTint="@color/yellowgreen"
+            android:text="Valider" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/noButton"
-        android:text="Retour"
-        android:backgroundTint="@color/yellowgreen"
-        android:layout_margin="5dp"
-        />
+
+
      </LinearLayout>
 
 </LinearLayout>

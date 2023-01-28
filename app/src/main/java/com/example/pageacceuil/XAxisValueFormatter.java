@@ -12,22 +12,13 @@ public class XAxisValueFormatter extends IndexAxisValueFormatter {
         this.listData = listData;
     }
 
- /*
-     @Override
-      public String getAxisLabel(float value, AxisBase axis) {
-          return listData.recup_data(GraphPage.indice-1).getTemps();
-      }
+    @Override
 
-
-
-
-
-           public String getAxisLabel(float value, AxisBase axis) {
-          return super.getAxisLabel(listData.recup_data(GraphPage.indice-1).getTemps(),1);
-      }
-  }*/@Override
     public String getFormattedValue(float value) {
-      return listData.recup_data((int) value-1).getTemps();
+        if ((int) value == 0) {
+            return "";
+        }
+        return listData.recup_data((int) value - 1).getTemps();
     }
 }
 

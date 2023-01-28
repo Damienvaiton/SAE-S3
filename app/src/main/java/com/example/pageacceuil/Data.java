@@ -1,11 +1,13 @@
 package com.example.pageacceuil;
 
 
-public class Data {
+import java.io.Serializable;
+
+public class Data implements Serializable {
 
     private float humidite;
     private float temperature;
-    private float lux;
+    private float light;
     private float O2;
     private float CO2;
     private String temps;
@@ -13,10 +15,10 @@ public class Data {
     public Data() {
     }
 
-    public Data(float humidite, float temperature, float lux, float o2, float CO2, String temps) {
+    public Data(float humidite, float temperature, float light, float o2, float CO2, String temps) {
         this.humidite = humidite;
         this.temperature = temperature;
-        this.lux = lux;
+        this.light = light;
         this.O2 = o2;
         this.CO2 = CO2;
         this.temps = temps;
@@ -30,19 +32,21 @@ public class Data {
         this.humidite = humidite;
     }
 
-    public float getTemperature() { return temperature; }
+    public float getTemperature() {
+        return temperature;
+    }
 
 
     public void setTemperature(float temperature) {
         this.temperature = temperature;
     }
 
-    public float getLux() {
-        return lux;
+    public float getLight() {
+        return light;
     }
 
-    public void setLux(float lux) {
-        this.lux = lux;
+    public void setLight(float light) {
+        this.light = light;
     }
 
     public float getO2() {
