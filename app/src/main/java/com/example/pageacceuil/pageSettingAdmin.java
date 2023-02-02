@@ -122,7 +122,6 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
                         idEsp.setText(choixESP);
                         actu();
                         break;
-
                     }
                     curseur++;
                 }
@@ -134,60 +133,75 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
             }
         });
 
-myRef.child("Groupe").addValueEventListener(new ValueEventListener() {
-    @Override
-    public void onDataChange(@NonNull DataSnapshot snapshot) {
-        if(snapshot.exists()){
-        for(DataSnapshot child: snapshot.getChildren()){
-            String nomTemp=child.getValue(String.class);
-            Groupe.add(child.getValue(String.class));
-            for(DataSnapshot enfant: child.getChildren()){
-                enfant.add(enfant.getChildren()) {
-                }
-                }
-            }
-        }}
-    }
-
-    @Override
-    public void onCancelled(@NonNull DatabaseError error) {
-
-    }
-})
-        myRef.child("ESP32").addValueEventListener(new ValueEventListener() {
+      /*  myRef.child("Groupe").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                ESP.clear();
-                for (DataSnapshot child : snapshot.getChildren()) {
-                    if (child.child("Nom").exists()) {
-                        ESP.put(child.getKey(), String.valueOf(child.child("Nom").getValue()));
-                    } else {
-                        ESP.putIfAbsent(child.getKey(), null);
-                    }
-
-                }
-                Iterator iterator = ESP.entrySet().iterator();
-                tabESP.clear();
-                while (iterator.hasNext()) {
-                    Map.Entry entry = (Map.Entry) iterator.next();
-                    if (entry.getValue() == null) {
-                        tabESP.add((String) entry.getKey());
-                    } else {
-                        tabESP.add((String) entry.getValue());
+                if (snapshot.exists()) {
+                    for (DataSnapshot child : snapshot.getChildren()) {
+                        String nomTemp = child.getValue(String.class);
+                        Groupe.add(child.getValue(String.class));
+                        for (DataSnapshot enfant : child.getChildren()) {
+                            enfant.add(enfant.getChildren()) {
+                            }
+                        }
                     }
                 }
-                adapter.notifyDataSetChanged();
-
-
             }
+        }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+        @Override
+        public void onCancelled (@NonNull DatabaseError error){
 
-            }
-        });
+        }
+    })*/
+            myRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    ESP.clear();
+                    if (snapshot.child("ESP32").exists() && snapshot.child("ESP32") != null) {
+                        for (DataSnapshot child : snapshot.child("ESP32").getChildren()) {
+                            if (child.child("Nom").exists()) {
+                                ESP.put(child.getKey(), String.valueOf(child.child("Nom").getValue()));
+                            } else {
+                                ESP.putIfAbsent(child.getKey(), null);
+                            }
+                        }
+                    }
+                    Iterator iterator = ESP.entrySet().iterator();
+                    tabESP.clear();
+                    while (iterator.hasNext()) {
+                        Map.Entry entry = (Map.Entry) iterator.next();
+                        if (entry.getValue() == null) {
+                            tabESP.add((String) entry.getKey());
+                        } else {
+                            tabESP.add((String) entry.getValue());
+                        }
+                    }
+                    if (snapshot.child("Groupe").exists() && snapshot.child("Groupe") != null) {
+                        for (DataSnapshot childgroupe : snapshot.child("Groupe").getChildren()) {
+                        ESP.put(childgroupe.child("nom").getValue().toString(),childgroupe.child("nom").getValue().toString());
+                        tabESP.add("Groupe : "+childgroupe.child("nom").getValue().toString());
+                        }
 
-    }
+                            adapter.notifyDataSetChanged();
+                       /* int v=0;
+                        Iterator iteraor = ESP.entrySet().iterator();
+                            while(iteraor.hasNext()){
+                                Map.Entry entryd = (Map.Entry) iterator.next();
+    v++;
+    System.out.println("tab"+tabESP.get(v));
+    System.out.println(ESP.get(entryd));
+}*/
+                        }
+                    }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError error) {
+
+        }
+    });
+
+}
 
 
     void actu() {
@@ -218,11 +232,6 @@ myRef.child("Groupe").addValueEventListener(new ValueEventListener() {
             }
         };
         myRef.child("ESP32").child(choixESP).child("Mesure").addValueEventListener(valueEventListenerDate);
-
-
-        ;
-
-
         valueEventListenerTemps = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -338,4 +347,3 @@ myRef.child("Groupe").addValueEventListener(new ValueEventListener() {
 
     }
 }
-
