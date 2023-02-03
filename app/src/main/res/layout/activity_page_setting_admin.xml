@@ -62,7 +62,7 @@
         android:backgroundTint="#6c14c7"
         android:text="Grouper"
         android:textSize="14sp"
-        android:visibility="visible"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/guideline6"
         app:layout_constraintEnd_toStartOf="@+id/suppA"
         app:layout_constraintStart_toStartOf="parent"

@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Vegetabilis Auditor</string>
-
+    <string name="go_button">GO</string>
+    <string name="admin_button">ADMIN</string>
+    <string name="choix_carte">Choix de votre carte :</string>
+    <string name="img_desc">Icone Vegetabilis Auditor</string>
     <string-array name="setTime">
         <item>1s</item>
         <item>5s</item>
