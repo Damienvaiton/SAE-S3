@@ -34,24 +34,11 @@ public class VueData extends AppCompatActivity implements Serializable {
         switchDesc = findViewById(R.id.switch1);
         trid = findViewById(R.id.button8);
         btnTriChoix.setText(ChoixTri);
-        DataAdapter dataAdapter = new DataAdapter(getApplicationContext(), GraphPage.listData);
+        DataAdapter dataAdapter = new DataAdapter(getApplicationContext());
         dataAdapter.notifyDataSetChanged();
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
         recyclerView.setAdapter(dataAdapter);
-
-
-        Intent intent = getIntent();
-
-        if (intent != null) {
-            if (intent.hasExtra("listData")) {
-
-                this.listData = (ListData) intent.getSerializableExtra("listData");
-                System.out.println("ok");
-            } else {
-                System.out.println("erreur");
-            }
-        }
-
+        listData=ListData.getInstance();
 
         btnTriChoix.setOnClickListener(new View.OnClickListener() {
 
@@ -90,55 +77,55 @@ public class VueData extends AppCompatActivity implements Serializable {
 
                 if (ChoixTri.equals("Co²")) {
                     if (Desc) {
-                        GraphPage.listData.listsortCO2Desc();
+                        listData.listsortCO2Desc();
                         dataAdapter.notifyDataSetChanged();
                         recyclerView.setAdapter(dataAdapter);
                     } else {
-                        GraphPage.listData.listsortCO2();
+                        listData.listsortCO2();
                         dataAdapter.notifyDataSetChanged();
                         recyclerView.setAdapter(dataAdapter);
                     }
                 }
                 if (ChoixTri.equals("Température")) {
                     if (Desc) {
-                        GraphPage.listData.listsortTempDesc();
+                        listData.listsortTempDesc();
                         dataAdapter.notifyDataSetChanged();
                         recyclerView.setAdapter(dataAdapter);
                     } else {
-                        GraphPage.listData.listsortTemp();
+                        listData.listsortTemp();
                         dataAdapter.notifyDataSetChanged();
                         recyclerView.setAdapter(dataAdapter);
                     }
                 }
                 if (ChoixTri.equals("Humidité")) {
                     if (Desc) {
-                        GraphPage.listData.listsortHumDesc();
+                        listData.listsortHumDesc();
                         dataAdapter.notifyDataSetChanged();
                         recyclerView.setAdapter(dataAdapter);
                     } else {
-                        GraphPage.listData.listsortHum();
+                        listData.listsortHum();
                         dataAdapter.notifyDataSetChanged();
                         recyclerView.setAdapter(dataAdapter);
                     }
                 }
                 if (ChoixTri.equals("Luminosité")) {
                     if (Desc) {
-                        GraphPage.listData.listsortLuxDesc();
+                        listData.listsortLuxDesc();
                         dataAdapter.notifyDataSetChanged();
                         recyclerView.setAdapter(dataAdapter);
                     } else {
-                        GraphPage.listData.listsortLux();
+                        listData.listsortLux();
                         dataAdapter.notifyDataSetChanged();
                         recyclerView.setAdapter(dataAdapter);
                     }
                 }
                 if (ChoixTri.equals("O²")) {
                     if (Desc) {
-                        GraphPage.listData.listsortO2Desc();
+                        listData.listsortO2Desc();
                         dataAdapter.notifyDataSetChanged();
                         recyclerView.setAdapter(dataAdapter);
                     } else {
-                        GraphPage.listData.listsortO2();
+                        listData.listsortO2();
                         dataAdapter.notifyDataSetChanged();
                         recyclerView.setAdapter(dataAdapter);
                     }

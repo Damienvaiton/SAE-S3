@@ -89,9 +89,9 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
         adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, tabESP);
         spinner.setAdapter(adapter);
 
-        dataESP = new ListData();
+        dataESP = ListData.getInstance();
 
-        dataAdapter = new DataAdapter(getApplicationContext(), dataESP);
+        dataAdapter = new DataAdapter(getApplicationContext());
         recyclerView.setAdapter(dataAdapter);
         recyclerView.setLayoutManager((new LinearLayoutManager((this))));
 
@@ -109,6 +109,7 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                dataESP.deleteAllData();
                 if (position <= ESP.size()) {
                     int curseur = 0;
                     for (Map.Entry entree : ESP.entrySet()) {
@@ -138,6 +139,7 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
                             for (String a : Groupe) {
                                 System.out.println(a+"eeEEEEEe");
                             }
+
                         }
 
                         @Override

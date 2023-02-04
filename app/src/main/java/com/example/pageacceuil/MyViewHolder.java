@@ -10,7 +10,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class MyViewHolder extends RecyclerView.ViewHolder {
 
-    private final FirebaseDatabase database = FirebaseDatabase.getInstance();
+    //private final FirebaseDatabase database = FirebaseDatabase.getInstance();
     //Button myButton;
     TextView temp, lux, co2, o2, humi, temps;
 

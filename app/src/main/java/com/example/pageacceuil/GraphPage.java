@@ -55,7 +55,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
 
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
-    public static ListData listData;
+    private ListData listData;
     ArrayList<Entry> A_temp = new ArrayList<>();
     ArrayList<Entry> A_lux = new ArrayList<>();
     ArrayList<Entry> A_CO2 = new ArrayList<>();
@@ -114,7 +114,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32/" + choixESP);
 
 
-        listData = new ListData();
+        listData = ListData.getInstance();
 
 //        if(myRef.child("Mesure").
 
@@ -440,7 +440,6 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
             case R.id.viewData:
                 Intent openViewData;
                 openViewData = new Intent(GraphPage.this, VueData.class);
-                openViewData.putExtra("listData", listData);
                 startActivity(openViewData);
                 break;
             case R.id.setting:
