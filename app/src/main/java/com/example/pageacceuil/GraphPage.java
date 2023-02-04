@@ -115,10 +115,10 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
 
         listData = ListData.getInstance();
-
+FirebaseAcces bd= FirebaseAcces.getInstance();
+bd.prechargebd(choixESP);
 //        if(myRef.child("Mesure").
-
-        myRef.child("Mesure").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+/*        myRef.child("Mesure").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 DataSnapshot tab = task.getResult();
@@ -145,7 +145,8 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
                 }
             }
-        });
+        });*/
+
 
 
         myRef.child("Mesure").addChildEventListener(new ChildEventListener() {

@@ -25,7 +25,7 @@ public class ListData {
 
 
     public ListData() {
-        listData = new ArrayList<Data>(1);
+        listData = new ArrayList<Data>(0);
     }
 
     public Data recup_data(int i) {

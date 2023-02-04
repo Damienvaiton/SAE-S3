@@ -61,10 +61,13 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
 
     DataAdapter dataAdapter;
 
+    FirebaseAcces databas;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_page_setting_admin);
+
+        databas= FirebaseAcces.getInstance();
 
         idEsp = findViewById(R.id.selectedEsp);
         rename = findViewById(R.id.rennoméA);
@@ -355,7 +358,8 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
                 if (refresh.getText().toString().equals("")) {
                     Toast.makeText(getApplicationContext(), "Merci d'entrer' une valeur", Toast.LENGTH_SHORT).show();
                 } else {
-                    myRef.child("ESP32").child(choixESP).child("TauxRafraichissement").setValue((Double.valueOf(refresh.getText().toString()) * 1000));
+                    boolean ture=databas.editTemps(choixESP,(Integer.valueOf(refresh.getText().toString())));
+                    System.out.println("yo"+ture);  // myRef.child("ESP32").child(choixESP).child("TauxRafraichissement").setValue((Double.valueOf(refresh.getText().toString()) * 1000));
                     Toast.makeText(getApplicationContext(), "Refresh : " + refresh.getText() + "s,\r\nVous pouvez redémarrer l'ESP", Toast.LENGTH_LONG).show();
                     refresh.setText("");
                 }

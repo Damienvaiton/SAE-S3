@@ -35,7 +35,6 @@ public class VueData extends AppCompatActivity implements Serializable {
         trid = findViewById(R.id.button8);
         btnTriChoix.setText(ChoixTri);
         DataAdapter dataAdapter = new DataAdapter(getApplicationContext());
-        dataAdapter.notifyDataSetChanged();
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
         recyclerView.setAdapter(dataAdapter);
         listData=ListData.getInstance();

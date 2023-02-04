@@ -50,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
         ESP = new HashMap<>();
         tabESP = new ArrayList<>();
 
-
         ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, tabESP);
         spinner.setAdapter(adapter);
 
