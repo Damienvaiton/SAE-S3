@@ -184,33 +184,10 @@ nomESP=a.nomEsp;
         });
 
 
-        myRef.child("TauxRafraichissement").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String heure = "";
-                String minute = "";
-                String seconde = "";
-                if (snapshot.getValue(Long.class) >= 3600000) {
-                    heure = (snapshot.getValue(Long.class) / (1000 * 60 * 60) + "h");
-                }
-                if (snapshot.getValue(Long.class) >= 60000) {
-                    minute = (snapshot.getValue(Long.class) % (1000 * 60 * 60)) / (1000 * 60) + "m";
-                }
-                if (snapshot.getValue(Long.class) >= 1000) {
-                    seconde = (snapshot.getValue(Long.class) % (1000 * 60)) / 1000 + "s";
-                }
 
-                valTemp.setText(heure + minute + seconde);
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
         valTemp = findViewById(R.id.viewTime);
-
+valTemp.setText(a.getTauxRafrai());
+        System.out.println(a.getTauxRafrai()+"e");
 
         //Textview pour affichage données en haut
         viewTemp = findViewById(R.id.viewTemp);

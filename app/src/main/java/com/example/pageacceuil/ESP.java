@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class ESP {
     String macEsp;
     String nomEsp;
-    Long tauxRafrai;
+    String tauxRafrai;
     FirebaseAcces databas=FirebaseAcces.getInstance();
 
     private static volatile ESP instance;
@@ -25,11 +25,10 @@ public class ESP {
         }
         return null;
     }
-
     public ESP(String macEsp, String nomEsp) {
         this.macEsp = macEsp;
         this.nomEsp = nomEsp;
-        this.tauxRafrai = databas.getTimeListener(macEsp) ;
+        databas.getTimeListener(this) ;
         instance=this;
     }
 
@@ -49,11 +48,11 @@ public class ESP {
         this.nomEsp = nomEsp;
     }
 
-    public Long getTauxRafrai() {
+    public String getTauxRafrai() {
         return tauxRafrai;
     }
 
-    public void setTauxRafrai(Long tauxRafrai) {
+    public void setTauxRafrai(String tauxRafrai) {
         this.tauxRafrai = tauxRafrai;
     }
 

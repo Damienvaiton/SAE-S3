@@ -1,9 +1,15 @@
 package com.example.pageacceuil;
 
+import android.util.Log;
+import android.view.View;
+
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,8 +38,21 @@ public class FirebaseAcces {
 
 
     public boolean editTemps(String choixESP, int values) {
-        if (myRef.child("ESP32").child(choixESP).child("TauxRafraichissement").setValue(values * 1000).isSuccessful()) {
-            return true;
+        myRef.child("ESP32").child(choixESP).child("TauxRafraichissement").setValue(values * 1000)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("Firebase", "Données enregistrées avec succès");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                     //   Snackbar.make(pageSettingAdmin.,"Erreur lors de l'enregistrement des données",Snackbar.LENGTH_SHORT).setBackgroundTint(R.color.white).show();
+                        Log.e("Firebase", "Erreur lors de l'enregistrement des données", e);
+                    }
+                });{
+
         }
         return false;
     } //test isSucessfull marche pas
@@ -69,30 +88,27 @@ public class FirebaseAcces {
         return false;
     }
 
-    public Long getTimeListener(String choixESP) {
-        Long time = Long.valueOf(0);
-        myRef.child(choixESP).child("TauxRafraichissement").addValueEventListener(new ValueEventListener() {
-Long time= Long.valueOf(0);
+    public void getTimeListener(ESP currentESP) {
+        myRef.child(currentESP.macEsp).child("TauxRafraichissement").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Long heure = Long.valueOf(0);
-                Long minute = Long.valueOf(0);
-                Long seconde = Long.valueOf(0);
+                String heure = "";
+                String minute = "";
+                String seconde = "";
                 if (snapshot.exists()) {
 
 
                     if (snapshot.getValue(Long.class) >= 3600000) {
-                        heure = (snapshot.getValue(Long.class) / (1000 * 60 * 60) );
+                        heure = (snapshot.getValue(Long.class) / (1000 * 60 * 60)) + "h";
                     }
                     if (snapshot.getValue(Long.class) >= 60000) {
-                        minute = (snapshot.getValue(Long.class) % (1000 * 60 * 60)) / (1000 * 60) ;
+                        minute = (snapshot.getValue(Long.class) % (1000 * 60 * 60) / (1000 * 60))+"m";
                     }
                     if (snapshot.getValue(Long.class) >= 1000) {
-                        seconde = (snapshot.getValue(Long.class) % (1000 * 60)) / 1000 ;
+                        seconde = (snapshot.getValue(Long.class) % (1000 * 60)) / 1000 +"s" ;
                     }
-                    time = heure + minute + seconde;
-//                    ESP.set
-
+                    currentESP.tauxRafrai= heure + minute + seconde;
+                    return;
                 }
             }
 
@@ -102,8 +118,7 @@ Long time= Long.valueOf(0);
 
             }
         });
-
-        return time;
+        return;
     }
 //    public boolean deleteListener(String choixESP, String champs) {
 //        myRef.child("ESP32").child(choixESP).child(champs).removeEventListener(valueEventListenerDate);
