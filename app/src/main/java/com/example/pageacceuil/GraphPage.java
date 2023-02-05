@@ -98,9 +98,6 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         setContentView(R.layout.activity_graph_page);
         Intent intent = getIntent();
         if (intent != null) {
-            ESP a=(ESP)(intent.getParcelableExtra("yo"));
-            a.getMacEsp();
-            a.getNomEsp();
             if (intent.hasExtra("choixESP")) {
                 this.choixESP = (String) intent.getSerializableExtra("choixESP");
             }
@@ -110,12 +107,18 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
                 System.out.println("Impossible de récup num ESP");
             }
         }
-        DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32/" + choixESP);
 
 
         listData = ListData.getInstance();
 FirebaseAcces bd= FirebaseAcces.getInstance();
 bd.prechargebd(choixESP);
+ESP a=ESP.getInstance();
+choixESP=a.macEsp;
+nomESP=a.nomEsp;
+        DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32/" + a.macEsp);
+
+        System.out.println(choixESP);
+        System.out.println(nomESP);
 //        if(myRef.child("Mesure").
 /*        myRef.child("Mesure").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
@@ -156,8 +159,7 @@ bd.prechargebd(choixESP);
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 if (snapshot.getChildrenCount() == 6) {
-                    Data a = snapshot.getValue(Data.class);
-                    listData.list_add_data(a);
+                    listData.list_add_data(snapshot.getValue(Data.class));
                     chargerDonner();
                     actuValues();
 
