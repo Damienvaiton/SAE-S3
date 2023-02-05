@@ -1,18 +1,11 @@
 package com.example.pageacceuil;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import androidx.annotation.NonNull;
-
-import java.util.ArrayList;
-
 
 public class ESP {
     String macEsp;
     String nomEsp;
     String tauxRafrai;
-    FirebaseAcces databas=FirebaseAcces.getInstance();
+    FirebaseAccess database = FirebaseAccess.getInstance();
 
     private static volatile ESP instance;
 
@@ -28,7 +21,7 @@ public class ESP {
     public ESP(String macEsp, String nomEsp) {
         this.macEsp = macEsp;
         this.nomEsp = nomEsp;
-        databas.getTimeListener(this) ;
+        database.getTimeListener(this) ;
         instance=this;
     }
 
@@ -59,6 +52,7 @@ public class ESP {
     @Override
     protected void finalize() throws Throwable {
         super.finalize();
+
         //remove listener
     }
 }

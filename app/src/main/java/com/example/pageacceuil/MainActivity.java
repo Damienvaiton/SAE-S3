@@ -114,12 +114,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent graph;
                 graph = new Intent(MainActivity.this, GraphPage.class);
-//                ESP a=new ESP(choixESP,nomESP);
-                ESP esp=new ESP(choixESP,nomESP);
-             /*   graph.putExtra("choixESP", choixESP);
-                if (!nomESP.equals("")) {
-                    graph.putExtra("nomESP", nomESP);
-                }*/
                 startActivity(graph);
             }
         });

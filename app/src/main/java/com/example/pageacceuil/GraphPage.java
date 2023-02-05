@@ -30,7 +30,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import org.apache.poi.ss.usermodel.ConditionalFormattingRule;
 import org.apache.poi.ss.usermodel.IndexedColors;
@@ -110,7 +109,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
 
         listData = ListData.getInstance();
-FirebaseAcces bd= FirebaseAcces.getInstance();
+FirebaseAccess bd= FirebaseAccess.getInstance();
 bd.prechargebd(choixESP);
 ESP a=ESP.getInstance();
 choixESP=a.macEsp;
@@ -186,6 +185,7 @@ nomESP=a.nomEsp;
 
 
         valTemp = findViewById(R.id.viewTime);
+        System.out.println(a.getTauxRafrai()+"o");
 valTemp.setText(a.getTauxRafrai());
         System.out.println(a.getTauxRafrai()+"e");
 

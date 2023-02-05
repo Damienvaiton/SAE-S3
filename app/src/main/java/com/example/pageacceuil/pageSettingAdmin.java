@@ -37,6 +37,7 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
 
     RecyclerView recyclerView;
 
+
     ValueEventListener valueEventListenerTemps;
 
     ValueEventListener valueEventListenerDate;
@@ -61,13 +62,13 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
 
     DataAdapter dataAdapter;
 
-    FirebaseAcces databas;
+    FirebaseAccess databas;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_page_setting_admin);
 
-        databas= FirebaseAcces.getInstance();
+        databas= FirebaseAccess.getInstance();
 
         idEsp = findViewById(R.id.selectedEsp);
         rename = findViewById(R.id.rennoméA);
@@ -358,9 +359,7 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
                 if (refresh.getText().toString().equals("")) {
                     Toast.makeText(getApplicationContext(), "Merci d'entrer' une valeur", Toast.LENGTH_SHORT).show();
                 } else {
-                    boolean ture=databas.editTemps(choixESP,(Integer.valueOf(refresh.getText().toString())));
-                    System.out.println("yo"+ture);  // myRef.child("ESP32").child(choixESP).child("TauxRafraichissement").setValue((Double.valueOf(refresh.getText().toString()) * 1000));
-                    Toast.makeText(getApplicationContext(), "Refresh : " + refresh.getText() + "s,\r\nVous pouvez redémarrer l'ESP", Toast.LENGTH_LONG).show();
+                    databas.editTemps(choixESP,(Integer.valueOf(refresh.getText().toString())),getApplicationContext());
                     refresh.setText("");
                 }
                 break;
@@ -370,8 +369,7 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
                 popReini.getYesButton().setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        myRef.child("ESP32").child(choixESP).child("Mesure").removeValue();
-                        myRef.child("ESP32").child(choixESP).child("MesureNumber").removeValue();
+                        databas.resetValueDb(choixESP);
                         popReini.dismiss();
                         actu();
                         dataAdapter.notifyDataSetChanged();
