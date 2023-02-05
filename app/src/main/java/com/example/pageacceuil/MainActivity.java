@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     String nomESP = "";
     Spinner spinner;
     Button btncoEtu;
+    ESP a;
     Button btnCoAdmin;
     HashMap<String, String> ESP;
     ArrayList<String> tabESP;
@@ -63,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
                         choixESP = (String) entree.getKey();
                         if (entree.getValue().toString() != null) {
                             nomESP = (String) entree.getValue();
+                            a=new ESP("yo","yi");
                         }
                         break;
                     }
@@ -115,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent graph;
                 graph = new Intent(MainActivity.this, GraphPage.class);
                 graph.putExtra("choixESP", choixESP);
+                graph.putExtra("classe", a);
                 if (!nomESP.equals("")) {
                     graph.putExtra("nomESP", nomESP);
                 }

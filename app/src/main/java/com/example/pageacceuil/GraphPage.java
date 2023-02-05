@@ -1,6 +1,5 @@
 package com.example.pageacceuil;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -13,7 +12,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -25,8 +23,6 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.ChildEventListener;
@@ -102,6 +98,9 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         setContentView(R.layout.activity_graph_page);
         Intent intent = getIntent();
         if (intent != null) {
+            ESP a=(ESP)(intent.getParcelableExtra("yo"));
+            a.getMacEsp();
+            a.getNomEsp();
             if (intent.hasExtra("choixESP")) {
                 this.choixESP = (String) intent.getSerializableExtra("choixESP");
             }
