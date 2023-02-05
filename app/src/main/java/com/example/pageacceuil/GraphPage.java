@@ -48,9 +48,8 @@ import java.util.ArrayList;
 
 public class GraphPage extends AppCompatActivity implements View.OnClickListener, BottomNavigationView.OnNavigationItemSelectedListener {
 
-
-    private final FirebaseDatabase database = FirebaseDatabase.getInstance();
     private ListData listData;
+
     ArrayList<Entry> A_temp = new ArrayList<>();
     ArrayList<Entry> A_lux = new ArrayList<>();
     ArrayList<Entry> A_CO2 = new ArrayList<>();
@@ -95,7 +94,8 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph_page);
-        Intent intent = getIntent();
+
+       /* Intent intent = getIntent();
         if (intent != null) {
             if (intent.hasExtra("choixESP")) {
                 this.choixESP = (String) intent.getSerializableExtra("choixESP");
@@ -105,89 +105,20 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
             } else {
                 System.out.println("Impossible de récup num ESP");
             }
-        }
+        }*/
 
 
-        listData = ListData.getInstance();
-FirebaseAccess bd= FirebaseAccess.getInstance();
-bd.prechargebd(choixESP);
-ESP a=ESP.getInstance();
-choixESP=a.macEsp;
-nomESP=a.nomEsp;
-        DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32/" + a.macEsp);
-
-        System.out.println(choixESP);
-        System.out.println(nomESP);
-//        if(myRef.child("Mesure").
-/*        myRef.child("Mesure").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                DataSnapshot tab = task.getResult();
-                if (tab.exists()) {
-                    for (int i = 0; i < tab.getChildrenCount(); i++) {
-                        Data a = tab.child(i + "").getValue(Data.class);
-                        listData.list_add_data(a);
-                        chargerDonner();
-                    }
-
-                } else {
-                    AlertDialog.Builder pop = new AlertDialog.Builder(GraphPage.this);
-                    pop.setMessage("ESP hors tension, merci de le brancher");
-                    pop.setPositiveButton("ESP brancher", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Toast.makeText(getApplicationContext(), "Prêt", Toast.LENGTH_SHORT).show();
-                            dialog.cancel();
-
-                        }
-                    });
-
-                    pop.show();
-
-                }
-            }
-        });*/
+        ListData listData = ListData.getInstance();
+        FirebaseAccess database = FirebaseAccess.getInstance();
+        ESP currentESP = ESP.getInstance();
 
 
-
-        myRef.child("Mesure").addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                if (snapshot.getChildrenCount() == 6) {
-                    listData.list_add_data(snapshot.getValue(Data.class));
-                    chargerDonner();
-                    actuValues();
-
-                }
-            }
-
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                System.out.println("Impossible d'accéder au données");
-            }
-        });
-
+        database.prechargebd(currentESP.getMacEsp());
+        database.setRealtimeDataListener();
 
 
         valTemp = findViewById(R.id.viewTime);
-        System.out.println(a.getTauxRafrai()+"o");
-valTemp.setText(a.getTauxRafrai());
-        System.out.println(a.getTauxRafrai()+"e");
+        valTemp.setText(currentESP.getTauxRafrai());
 
         //Textview pour affichage données en haut
         viewTemp = findViewById(R.id.viewTemp);

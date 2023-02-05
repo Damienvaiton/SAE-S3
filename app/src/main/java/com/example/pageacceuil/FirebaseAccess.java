@@ -5,11 +5,13 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,6 +25,9 @@ public class FirebaseAccess {
     ValueEventListener valueEventListenerTemps;
 
     ValueEventListener valueEventListenerData;
+
+    ChildEventListener RealtimeDataListener;
+
 
     private static volatile FirebaseAccess instance;
 
@@ -41,23 +46,24 @@ public class FirebaseAccess {
     }
 
 
-    public boolean editTemps(String choixESP, int values , Context context) {// context passé en param
+    public boolean editTemps(String choixESP, int values, Context context) {// context passé en param
         myRef.child("ESP32").child(choixESP).child("TauxRafraichissement").setValue(values * 1000)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Toast.makeText(context, "Refresh : " + values + "s,\r\nVous pouvez redémarrer l'ESP", Toast.LENGTH_SHORT).show();
-                      //  Snackbar.make(, "yo",Snackbar.LENGTH_SHORT).show();
+                        //  Snackbar.make(, "yo",Snackbar.LENGTH_SHORT).show();
                         Log.d("Firebase", "Données enregistrées avec succès");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(context, "Erreur : " +e, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Erreur : " + e, Toast.LENGTH_SHORT).show();
                         Log.e("Firebase", "Erreur lors de l'enregistrement des données", e);
                     }
-                });{
+                });
+        {
 
         }
         return false;
@@ -71,16 +77,15 @@ public class FirebaseAccess {
     }
 
     public boolean prechargebd(String choixESP) {
+        ESP a = ESP.getInstance();
         ListData listData = ListData.getInstance();
         myRef.child("ESP32").child(choixESP).child("Mesure").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 DataSnapshot tab = task.getResult();
                 if (tab.exists()) {
-
                     for (int i = 0; i < tab.getChildrenCount(); i++) {
-                        Data a = tab.child(i + "").getValue(Data.class);
-                        listData.list_add_data(a);
+                        listData.list_add_data(tab.child(i + "").getValue(Data.class));
                     }
                     //Faire toute mes requetes ici et listener
                 }
@@ -128,7 +133,7 @@ public class FirebaseAccess {
         return;
     }
 
-    public void getDataListener(ESP currentESP,ListData list){
+    public void getDataListener(ESP currentESP, ListData list) {
         valueEventListenerData = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -146,6 +151,44 @@ public class FirebaseAccess {
             }
         };
         myRef.child("ESP32").child(currentESP.getMacEsp()).child("Mesure").addValueEventListener(valueEventListenerData);
+    }
+
+    public void setRealtimeDataListener() {
+        ESP currentESP=ESP.getInstance();
+        RealtimeDataListener = new ChildEventListener() {
+            ListData listData = ListData.getInstance();
+
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                if (snapshot.getChildrenCount() == 6) {
+                    listData.list_add_data(snapshot.getValue(Data.class));
+                    //chargerDonner();
+                    //actuValues();
+
+                }
+            }
+
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                System.out.println("Impossible d'accéder au données");
+            }
+        };
+        myRef.child("ESP32").child(currentESP.getMacEsp()).child("Mesure").addChildEventListener(RealtimeDataListener);
     }
 //    public boolean deleteListener(String choixESP, String champs) {
 //        myRef.child("ESP32").child(choixESP).child(champs).removeEventListener(valueEventListenerDate);
