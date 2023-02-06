@@ -369,7 +369,7 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
                 popReini.getYesButton().setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        databas.resetValueDb(choixESP);
+                        databas.resetValueDb(choixESP,getApplicationContext());
                         popReini.dismiss();
                         actu();
                         dataAdapter.notifyDataSetChanged();
