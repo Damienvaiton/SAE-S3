@@ -1,6 +1,5 @@
 package com.example.pageacceuil;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -13,7 +12,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -25,8 +23,6 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.ChildEventListener;
@@ -55,7 +51,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
 
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
-    public static ListData listData;
+    private ListData listData;
     ArrayList<Entry> A_temp = new ArrayList<>();
     ArrayList<Entry> A_lux = new ArrayList<>();
     ArrayList<Entry> A_CO2 = new ArrayList<>();
@@ -111,14 +107,20 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
                 System.out.println("Impossible de récup num ESP");
             }
         }
-        DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32/" + choixESP);
 
 
-        listData = new ListData();
+        listData = ListData.getInstance();
+FirebaseAcces bd= FirebaseAcces.getInstance();
+bd.prechargebd(choixESP);
+ESP a=ESP.getInstance();
+choixESP=a.macEsp;
+nomESP=a.nomEsp;
+        DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32/" + a.macEsp);
 
+        System.out.println(choixESP);
+        System.out.println(nomESP);
 //        if(myRef.child("Mesure").
-
-        myRef.child("Mesure").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+/*        myRef.child("Mesure").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 DataSnapshot tab = task.getResult();
@@ -145,7 +147,8 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
                 }
             }
-        });
+        });*/
+
 
 
         myRef.child("Mesure").addChildEventListener(new ChildEventListener() {
@@ -156,8 +159,7 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 if (snapshot.getChildrenCount() == 6) {
-                    Data a = snapshot.getValue(Data.class);
-                    listData.list_add_data(a);
+                    listData.list_add_data(snapshot.getValue(Data.class));
                     chargerDonner();
                     actuValues();
 
@@ -440,7 +442,6 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
             case R.id.viewData:
                 Intent openViewData;
                 openViewData = new Intent(GraphPage.this, VueData.class);
-                openViewData.putExtra("listData", listData);
                 startActivity(openViewData);
                 break;
             case R.id.setting:

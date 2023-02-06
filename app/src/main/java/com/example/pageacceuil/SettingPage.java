@@ -27,7 +27,7 @@ public class SettingPage extends AppCompatActivity implements View.OnClickListen
 
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32");
-
+FirebaseAcces databas=FirebaseAcces.getInstance();
     TextView textAxeLeft;
     TextView textAxeRight;
     String choixESP = "";
@@ -54,6 +54,7 @@ public class SettingPage extends AppCompatActivity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting_page);
+
 
 
         max_g = findViewById(R.id.max_gauche);
@@ -168,7 +169,7 @@ public class SettingPage extends AppCompatActivity implements View.OnClickListen
     }
 
     public void editTemps(int values) {
-        myRef.child(choixESP).child("TauxRafraichissement").setValue(values * 1000);
+        databas.editTemps(choixESP,values);
         Toast.makeText(getApplicationContext(), "Refresh : " + values + "s,\r\nVous pouvez redémarrer l'ESP", Toast.LENGTH_LONG).show();
         tauxRefresh.setText("");
 

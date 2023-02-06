@@ -4,25 +4,40 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 
-public class ListData implements Serializable {
+public class ListData {
+    private static volatile ListData instance;
+    private ArrayList<Data> listData;
 
-    public ArrayList<Data> listData;
+
+    public static ListData getInstance() {
+
+        ListData result = instance;
+        if (result != null) {
+            return result;
+        }
+        synchronized (ListData.class) {
+            if (instance == null) {
+                instance = new ListData();
+            }
+            return instance;
+        }
+    }
+
 
     public ListData() {
-        listData = new ArrayList<Data>(1);
+        listData = new ArrayList<Data>(0);
     }
 
     public Data recup_data(int i) {
         return listData.get(i);
     }
-    public void deleteAllData(){ listData.clear();}
+
+    public void deleteAllData() {
+        listData.clear();
+    }
 
     public void list_add_data(Data a) {
         listData.add(a);
-    }
-
-    public ArrayList<Data> getListData() {
-        return listData;
     }
 
     public void list_supAll_data() {

@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     String nomESP = "";
     Spinner spinner;
     Button btncoEtu;
+    ESP a;
     Button btnCoAdmin;
     HashMap<String, String> ESP;
     ArrayList<String> tabESP;
@@ -50,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
         ESP = new HashMap<>();
         tabESP = new ArrayList<>();
 
-
         ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, tabESP);
         spinner.setAdapter(adapter);
 
@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
                         choixESP = (String) entree.getKey();
                         if (entree.getValue().toString() != null) {
                             nomESP = (String) entree.getValue();
+                            a=new ESP("yo","yi");
                         }
                         break;
                     }
@@ -115,10 +116,12 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent graph;
                 graph = new Intent(MainActivity.this, GraphPage.class);
-                graph.putExtra("choixESP", choixESP);
+//                ESP a=new ESP(choixESP,nomESP);
+                ESP esp=new ESP(choixESP,nomESP);
+             /*   graph.putExtra("choixESP", choixESP);
                 if (!nomESP.equals("")) {
                     graph.putExtra("nomESP", nomESP);
-                }
+                }*/
                 startActivity(graph);
             }
         });

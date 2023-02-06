@@ -16,9 +16,9 @@ public class DataAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
     private final ListData listData;
 
-    public DataAdapter(Context context, ListData listData) {
+    public DataAdapter(Context context) {
         this.context = context;
-        this.listData = listData;
+        this.listData = ListData.getInstance();
     }
 
     @NonNull

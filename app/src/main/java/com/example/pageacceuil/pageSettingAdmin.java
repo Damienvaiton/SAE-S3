@@ -32,7 +32,7 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
 
 
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32");
+    DatabaseReference myRef = database.getReference("SAE_S3_BD");
 
 
     RecyclerView recyclerView;
@@ -56,14 +56,18 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
     HashMap<String, String> ESP;
     ArrayAdapter<String> adapter;
     ArrayList<String> tabESP;
+    ArrayList<String> Groupe;
 
 
     DataAdapter dataAdapter;
 
+    FirebaseAcces databas;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_page_setting_admin);
+
+        databas= FirebaseAcces.getInstance();
 
         idEsp = findViewById(R.id.selectedEsp);
         rename = findViewById(R.id.rennoméA);
@@ -83,13 +87,14 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
         reini.setOnClickListener(this);
         ESP = new HashMap<>();
         tabESP = new ArrayList<>();
+        Groupe = new ArrayList<>();
 
         adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, tabESP);
         spinner.setAdapter(adapter);
 
-        dataESP = new ListData();
+        dataESP = ListData.getInstance();
 
-        dataAdapter = new DataAdapter(getApplicationContext(), dataESP);
+        dataAdapter = new DataAdapter(getApplicationContext());
         recyclerView.setAdapter(dataAdapter);
         recyclerView.setLayoutManager((new LinearLayoutManager((this))));
 
@@ -107,22 +112,56 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                int curseur = 0;
-                for (Map.Entry entree : ESP.entrySet()) {
+                dataESP.deleteAllData();
+                if (position <= ESP.size()) {
+                    int curseur = 0;
+                    for (Map.Entry entree : ESP.entrySet()) {
 
-                    if (curseur == position) {
-                        if (choixESP != null) {
-                            if (!choixESP.equals("")) {
-                                oldChoixESP = choixESP;
+                        if (curseur == position) {
+                            if (choixESP != null) {
+                                if (!choixESP.equals("")) {
+                                    oldChoixESP = choixESP;
+                                }
                             }
+                            choixESP = (String) entree.getKey();
+                            idEsp.setText(choixESP);
+                            actu();
+                            break;
                         }
-                        choixESP = (String) entree.getKey();
-                        idEsp.setText(choixESP);
-                        actu();
-                        break;
-
+                        curseur++;
                     }
-                    curseur++;
+                } else {
+                    choixESP = tabESP.get(position);
+                    idEsp.setText("Groupe : " + choixESP);
+                    System.out.println(choixESP);
+                    myRef.child(choixESP).child("ESP").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            Groupe.add(snapshot.getValue(String.class));
+                            System.out.println(snapshot.getValue(String.class)+"yofreot");
+                            for (String a : Groupe) {
+                                System.out.println(a+"eeEEEEEe");
+                            }
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+                    myRef.child(choixESP).child("ESP").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            Groupe.add(snapshot.getValue(String.class));
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+
                 }
             }
 
@@ -133,17 +172,42 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
         });
 
 
+
+
+      /*  myRef.child("Groupe").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    for (DataSnapshot child : snapshot.getChildren()) {
+                        String nomTemp = child.getValue(String.class);
+                        Groupe.add(child.getValue(String.class));
+                        for (DataSnapshot enfant : child.getChildren()) {
+                            enfant.add(enfant.getChildren()) {
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        @Override
+        public void onCancelled (@NonNull DatabaseError error){
+
+        }
+    })*/
+
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 ESP.clear();
-                for (DataSnapshot child : snapshot.getChildren()) {
-                    if (child.child("Nom").exists()) {
-                        ESP.put(child.getKey(), String.valueOf(child.child("Nom").getValue()));
-                    } else {
-                        ESP.putIfAbsent(child.getKey(), null);
+                if (snapshot.child("ESP32").exists() && snapshot.child("ESP32") != null) {
+                    for (DataSnapshot child : snapshot.child("ESP32").getChildren()) {
+                        if (child.child("Nom").exists()) {
+                            ESP.put(child.getKey(), String.valueOf(child.child("Nom").getValue()));
+                        } else {
+                            ESP.putIfAbsent(child.getKey(), null);
+                        }
                     }
-
                 }
                 Iterator iterator = ESP.entrySet().iterator();
                 tabESP.clear();
@@ -155,9 +219,26 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
                         tabESP.add((String) entry.getValue());
                     }
                 }
-                adapter.notifyDataSetChanged();
+                if (snapshot.child("Groupe").exists() && snapshot.child("Groupe") != null) {
+                    for (DataSnapshot childgroupe : snapshot.child("Groupe").getChildren()) {
+                        if (childgroupe.child("nom").exists()) {
+                            tabESP.add(childgroupe.child("nom").getValue().toString());
+                        } else {
+                            tabESP.add(childgroupe.getValue().toString());
+                        }
 
+                    }
 
+                    adapter.notifyDataSetChanged();
+                       /* int v=0;
+                        Iterator iteraor = ESP.entrySet().iterator();
+                            while(iteraor.hasNext()){
+                                Map.Entry entryd = (Map.Entry) iterator.next();
+    v++;
+    System.out.println("tab"+tabESP.get(v));
+    System.out.println(ESP.get(entryd));
+}*/
+                }
             }
 
             @Override
@@ -172,11 +253,11 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
     void actu() {
 
         if (valueEventListenerDate != null) {
-            myRef.child(oldChoixESP).child("TauxRafraichissement").removeEventListener(valueEventListenerTemps);
+            myRef.child("ESP32").child(oldChoixESP).child("TauxRafraichissement").removeEventListener(valueEventListenerTemps);
         }
         if (valueEventListenerTemps != null) {
             dataESP.deleteAllData();
-            myRef.child(oldChoixESP).child("Mesure").removeEventListener(valueEventListenerDate);
+            myRef.child("ESP32").child(oldChoixESP).child("Mesure").removeEventListener(valueEventListenerDate);
         }
 
         valueEventListenerDate = new ValueEventListener() {
@@ -196,12 +277,7 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
 
             }
         };
-        myRef.child(choixESP).child("Mesure").addValueEventListener(valueEventListenerDate);
-
-
-        ;
-
-
+        myRef.child("ESP32").child(choixESP).child("Mesure").addValueEventListener(valueEventListenerDate);
         valueEventListenerTemps = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -227,7 +303,7 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
 
             }
         };
-        myRef.child(choixESP).child("TauxRafraichissement").addValueEventListener(valueEventListenerTemps);
+        myRef.child("ESP32").child(choixESP).child("TauxRafraichissement").addValueEventListener(valueEventListenerTemps);
     }
 
 
@@ -282,7 +358,8 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
                 if (refresh.getText().toString().equals("")) {
                     Toast.makeText(getApplicationContext(), "Merci d'entrer' une valeur", Toast.LENGTH_SHORT).show();
                 } else {
-                    myRef.child(choixESP).child("TauxRafraichissement").setValue((Double.valueOf(refresh.getText().toString()) * 1000));
+                    boolean ture=databas.editTemps(choixESP,(Integer.valueOf(refresh.getText().toString())));
+                    System.out.println("yo"+ture);  // myRef.child("ESP32").child(choixESP).child("TauxRafraichissement").setValue((Double.valueOf(refresh.getText().toString()) * 1000));
                     Toast.makeText(getApplicationContext(), "Refresh : " + refresh.getText() + "s,\r\nVous pouvez redémarrer l'ESP", Toast.LENGTH_LONG).show();
                     refresh.setText("");
                 }
@@ -293,8 +370,8 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
                 popReini.getYesButton().setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        myRef.child(choixESP).child("Mesure").removeValue();
-                        myRef.child(choixESP).child("MesureNumber").removeValue();
+                        myRef.child("ESP32").child(choixESP).child("Mesure").removeValue();
+                        myRef.child("ESP32").child(choixESP).child("MesureNumber").removeValue();
                         popReini.dismiss();
                         actu();
                         dataAdapter.notifyDataSetChanged();
@@ -317,4 +394,3 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
 
     }
 }
-
