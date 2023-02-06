@@ -1,7 +1,6 @@
-package com.example.pageacceuil;
+package View;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,9 +12,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pageacceuil.R;
+
 import java.io.Serializable;
 
-public class VueData extends AppCompatActivity implements Serializable {
+import Model.ListData;
+import ViewModel.DataAdapter;
+
+public class VueData_page extends AppCompatActivity implements Serializable {
 
     private ListData listData;
     private Button btnTriChoix;
@@ -43,7 +47,7 @@ public class VueData extends AppCompatActivity implements Serializable {
 
             @Override
             public void onClick(View view) {
-                PopupMenu popupMenu = new PopupMenu(VueData.this, btnTriChoix);
+                PopupMenu popupMenu = new PopupMenu(VueData_page.this, btnTriChoix);
                 popupMenu.getMenuInflater().inflate(R.menu.menu_tri_choix, popupMenu.getMenu());
 
 

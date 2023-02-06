@@ -1,4 +1,4 @@
-package com.example.pageacceuil;
+package View;
 
 
 import static java.lang.Integer.parseInt;
@@ -17,13 +17,16 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.pageacceuil.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class SettingPage extends AppCompatActivity implements View.OnClickListener {
+import Model.FirebaseAccess;
+
+public class Setting_page extends AppCompatActivity implements View.OnClickListener {
 
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32");
@@ -113,16 +116,16 @@ FirebaseAccess databas= FirebaseAccess.getInstance();
         } else {
             textAxeRight.setText("Colonne Y droit");
         }
-        if (GraphPage.rightAxis.isAxisMaxCustom()) {
+        if (Graphique_page.rightAxis.isAxisMaxCustom()) {
             auto_droit.setChecked(false);
-            min_d.setHint(GraphPage.rightAxis.getAxisMinimum() + "");
-            max_d.setHint(GraphPage.rightAxis.getAxisMaximum() + "");
+            min_d.setHint(Graphique_page.rightAxis.getAxisMinimum() + "");
+            max_d.setHint(Graphique_page.rightAxis.getAxisMaximum() + "");
 
         }
-        if (GraphPage.leftAxis.isAxisMaxCustom()) {
+        if (Graphique_page.leftAxis.isAxisMaxCustom()) {
             auto_gauche.setChecked(false);
-            min_g.setHint(GraphPage.leftAxis.getAxisMinimum() + "");
-            max_g.setHint(GraphPage.leftAxis.getAxisMaximum() + "");
+            min_g.setHint(Graphique_page.leftAxis.getAxisMinimum() + "");
+            max_g.setHint(Graphique_page.leftAxis.getAxisMaximum() + "");
 
         }
 
@@ -179,16 +182,16 @@ FirebaseAccess databas= FirebaseAccess.getInstance();
         switch (view.getId()) {
             case R.id.auto_droit:
                 if (auto_droit.isChecked()) {
-                    GraphPage.rightAxis.resetAxisMinimum();
-                    GraphPage.rightAxis.resetAxisMaximum();
+                    Graphique_page.rightAxis.resetAxisMinimum();
+                    Graphique_page.rightAxis.resetAxisMaximum();
                     Toast.makeText(getApplicationContext(), "Mode auto activé", Toast.LENGTH_SHORT).show();
                     //Griser case pour le manuel
                     break;
                 }
             case R.id.auto_gauche:
                 if (auto_gauche.isChecked()) {
-                    GraphPage.leftAxis.resetAxisMinimum();
-                    GraphPage.leftAxis.resetAxisMaximum();
+                    Graphique_page.leftAxis.resetAxisMinimum();
+                    Graphique_page.leftAxis.resetAxisMaximum();
                     Toast.makeText(getApplicationContext(), "Mode auto activé", Toast.LENGTH_SHORT).show();
                     //Griser case pour le manuel
                     break;
@@ -200,11 +203,11 @@ FirebaseAccess databas= FirebaseAccess.getInstance();
                 } else {
                     if (Float.valueOf(max_d.getText().toString()) > Float.valueOf(min_d.getText().toString())) {
 
-                        GraphPage.rightAxis.setAxisMaximum(Float.valueOf(max_d.getText().toString()));
-                        GraphPage.rightAxis.setAxisMinimum(Float.valueOf(min_d.getText().toString()));
+                        Graphique_page.rightAxis.setAxisMaximum(Float.valueOf(max_d.getText().toString()));
+                        Graphique_page.rightAxis.setAxisMinimum(Float.valueOf(min_d.getText().toString()));
                         Toast.makeText(getApplicationContext(), "Fait", Toast.LENGTH_SHORT).show();
-                        GraphPage.graph.notifyDataSetChanged();
-                        GraphPage.graph.invalidate();
+                        Graphique_page.graph.notifyDataSetChanged();
+                        Graphique_page.graph.invalidate();
                         break;
                     } else {
                         Toast.makeText(getApplicationContext(), "Valeurs incorrects", Toast.LENGTH_SHORT).show();
@@ -218,10 +221,10 @@ FirebaseAccess databas= FirebaseAccess.getInstance();
                 } else {
                     if (Float.valueOf(max_g.getText().toString()) > Float.valueOf(min_g.getText().toString())) {
 
-                        GraphPage.leftAxis.setAxisMaximum(Float.valueOf(max_g.getText().toString()));
-                        GraphPage.leftAxis.setAxisMinimum(Float.valueOf(min_g.getText().toString()));
-                        GraphPage.graph.notifyDataSetChanged();
-                        GraphPage.graph.invalidate();
+                        Graphique_page.leftAxis.setAxisMaximum(Float.valueOf(max_g.getText().toString()));
+                        Graphique_page.leftAxis.setAxisMinimum(Float.valueOf(min_g.getText().toString()));
+                        Graphique_page.graph.notifyDataSetChanged();
+                        Graphique_page.graph.invalidate();
                         Toast.makeText(getApplicationContext(), "Fait", Toast.LENGTH_SHORT).show();
                         break;
                     } else {

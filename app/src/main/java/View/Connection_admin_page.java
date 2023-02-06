@@ -1,4 +1,4 @@
-package com.example.pageacceuil;
+package View;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.pageacceuil.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -20,7 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
-public class connectadmin extends AppCompatActivity {
+public class Connection_admin_page extends AppCompatActivity {
 
     EditText editUser;
     EditText editMdp;
@@ -39,7 +40,7 @@ public class connectadmin extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.connectadmin);
+        setContentView(R.layout.activty_connect_admin);
 
         editMdp = findViewById(R.id.coMdp);
         editUser = findViewById(R.id.coUsername);
@@ -53,7 +54,7 @@ public class connectadmin extends AppCompatActivity {
                 System.out.println(editMdp.getText().toString());
                 if (Objects.equals(user, editUser.getText().toString().trim()) && Objects.equals(mdp, editMdp.getText().toString().trim())) {
                     Intent ac;
-                    ac = new Intent(connectadmin.this, pageSettingAdmin.class);
+                    ac = new Intent(Connection_admin_page.this, Admin_page.class);
                     ac.putExtra("listeESP", tabESP);
                     ac.putExtra("hashmapEsp", ESP);
                     startActivity(ac);

@@ -1,6 +1,5 @@
-package com.example.pageacceuil;
+package Model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 

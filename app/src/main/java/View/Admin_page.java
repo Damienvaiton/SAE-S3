@@ -1,4 +1,4 @@
-package com.example.pageacceuil;
+package View;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -17,6 +17,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import ViewModel.Pop_up;
+import com.example.pageacceuil.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,7 +30,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-public class pageSettingAdmin extends AppCompatActivity implements View.OnClickListener {
+import Model.Data;
+import Model.FirebaseAccess;
+import Model.ListData;
+import ViewModel.DataAdapter;
+
+public class Admin_page extends AppCompatActivity implements View.OnClickListener {
 
 
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -99,7 +106,7 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
         recyclerView.setAdapter(dataAdapter);
         recyclerView.setLayoutManager((new LinearLayoutManager((this))));
 
-        AlertDialog.Builder pop = new AlertDialog.Builder(pageSettingAdmin.this);
+        AlertDialog.Builder pop = new AlertDialog.Builder(Admin_page.this);
         pop.setMessage("Assurez-vous qu'avant toute modification l'ESP est éteint.");
         pop.setPositiveButton("Compris", new DialogInterface.OnClickListener() {
             @Override

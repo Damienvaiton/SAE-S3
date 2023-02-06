@@ -1,4 +1,4 @@
-package com.example.pageacceuil;
+package View;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -13,6 +13,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import Model.ESP;
+import Model.FirebaseAccess;
+import Model.ListData;
+import com.example.pageacceuil.R;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -40,7 +44,9 @@ import java.io.FileOutputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-public class GraphPage extends AppCompatActivity implements View.OnClickListener, BottomNavigationView.OnNavigationItemSelectedListener {
+import ViewModel.XAxisValueFormatter;
+
+public class Graphique_page extends AppCompatActivity implements View.OnClickListener, BottomNavigationView.OnNavigationItemSelectedListener {
 
     private ListData listData;
 
@@ -203,6 +209,11 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
 
     }
 
+     public void notifi(){
+        chargerDonner();
+        actuValues();
+    };
+
     void chargerDonner() {
         A_CO2.add(new Entry(listData.list_size(), listData.recup_data(listData.list_size() - 1).getCO2()));
         A_lux.add(new Entry(listData.list_size(), listData.recup_data(listData.list_size() - 1).getLight()));
@@ -210,7 +221,6 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         A_temp.add(new Entry(listData.list_size(), listData.recup_data(listData.list_size() - 1).getTemperature()));
         A_humi.add(new Entry(listData.list_size(), listData.recup_data(listData.list_size() - 1).getHumidite()));
         creaGraph();
-
     }
 
 
@@ -343,12 +353,12 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
         switch (item.getItemId()) {
             case R.id.viewData:
                 Intent openViewData;
-                openViewData = new Intent(GraphPage.this, VueData.class);
+                openViewData = new Intent(Graphique_page.this, VueData_page.class);
                 startActivity(openViewData);
                 break;
             case R.id.setting:
                 Intent openSetting;
-                openSetting = new Intent(GraphPage.this, SettingPage.class);
+                openSetting = new Intent(Graphique_page.this, Setting_page.class);
                 openSetting.putExtra("choixESP", choixESP);
                 if (!nomESP.equals("")) {
                     openSetting.putExtra("nomESP", nomESP);

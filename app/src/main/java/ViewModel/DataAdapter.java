@@ -1,4 +1,4 @@
-package com.example.pageacceuil;
+package ViewModel;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -8,7 +8,11 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pageacceuil.R;
+
 import java.text.DecimalFormat;
+
+import Model.ListData;
 
 public class DataAdapter extends RecyclerView.Adapter<MyViewHolder> {
 

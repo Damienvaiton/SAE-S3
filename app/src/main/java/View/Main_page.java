@@ -1,4 +1,4 @@
-package com.example.pageacceuil;
+package View;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -12,6 +12,8 @@ import android.widget.Spinner;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import Model.ESP;
+import com.example.pageacceuil.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -24,7 +26,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 
-public class MainActivity extends AppCompatActivity {
+public class Main_page extends AppCompatActivity {
 
 
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -35,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     String nomESP = "";
     Spinner spinner;
     Button btncoEtu;
-    ESP a;
+    Model.ESP a;
     Button btnCoAdmin;
     HashMap<String, String> ESP;
     ArrayList<String> tabESP;
@@ -51,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         ESP = new HashMap<>();
         tabESP = new ArrayList<>();
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, tabESP);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(Main_page.this, android.R.layout.simple_spinner_dropdown_item, tabESP);
         spinner.setAdapter(adapter);
 
 
@@ -113,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent graph;
-                graph = new Intent(MainActivity.this, GraphPage.class);
+                graph = new Intent(Main_page.this, Graphique_page.class);
                 startActivity(graph);
             }
         });
@@ -122,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent admin;
-                admin = new Intent(getApplicationContext(), connectadmin.class);
+                admin = new Intent(getApplicationContext(), Connection_admin_page.class);
                 startActivity(admin);
 
             }

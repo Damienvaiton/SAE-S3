@@ -1,4 +1,4 @@
-package com.example.pageacceuil;
+package Model;
 
 import android.content.Context;
 import android.util.Log;

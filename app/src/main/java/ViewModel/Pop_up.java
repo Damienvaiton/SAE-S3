@@ -1,4 +1,4 @@
-package com.example.pageacceuil;
+package ViewModel;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.pageacceuil.R;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class Pop_up extends Dialog {
