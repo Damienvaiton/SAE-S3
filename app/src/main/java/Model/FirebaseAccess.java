@@ -213,6 +213,22 @@ public class FirebaseAccess {
         };
         myRef.child("ESP32").child(currentESP.getMacEsp()).child("Mesure").addChildEventListener(RealtimeDataListener);
     }
+
+    public String[] getAdminLog() {
+        final String[] access = new String[2];
+        myRef.child("Admin").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                DataSnapshot tab = task.getResult();
+                access[0] = tab.child("Admin").getValue(String.class);
+                access[1] = tab.child("mdp").getValue(String.class);
+
+            }
+        });
+        return access;
+    }
+
     public boolean deleteListener(String choixESP) {
         myRef.child("ESP32").child(choixESP).child("Mesure").removeEventListener(valueEventListenerTemps);
         myRef.child("ESP32").child(choixESP).child("TauxRafraichissement").removeEventListener(RealtimeDataListener);

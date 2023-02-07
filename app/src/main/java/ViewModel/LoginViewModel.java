@@ -12,7 +12,7 @@ import com.google.firebase.database.DataSnapshot;
 
 import java.util.Objects;
 
-public class MainViewModel extends ViewModel {
+public class LoginViewModel extends ViewModel {
      coBtn.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -32,15 +32,7 @@ public class MainViewModel extends ViewModel {
         }
 
     });
-        myRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-        @Override
-        public void onComplete(@NonNull Task<DataSnapshot> task) {
-            DataSnapshot tab = task.getResult();
-            user = tab.child("Admin").getValue(String.class);
-            mdp = tab.child("mdp").getValue(String.class);
 
-        }
-    });
 
 
 }
