@@ -14,35 +14,35 @@
         android:theme="@style/Theme.Pageacceuil"
         tools:targetApi="31">
         <activity
-            android:name="View.VueData_page"
+            android:name="View.VueDataActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name="View.AdminActivity"
+            android:name="View.SettingsAdminActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name="View.Setting_page"
+            android:name="View.SettingsEtuActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name="View.Graphique_page"
+            android:name="View.GraphiqueActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name="View.Main_page"
+            android:name="View.AccueilActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -55,7 +55,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name="View.Connection_admin_page"
+            android:name="View.ConnecAdminActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

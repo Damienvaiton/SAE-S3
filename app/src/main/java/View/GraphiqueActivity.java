@@ -46,7 +46,7 @@ import java.util.ArrayList;
 
 import ViewModel.XAxisValueFormatter;
 
-public class Graphique_page extends AppCompatActivity implements View.OnClickListener, BottomNavigationView.OnNavigationItemSelectedListener {
+public class GraphiqueActivity extends AppCompatActivity implements View.OnClickListener, BottomNavigationView.OnNavigationItemSelectedListener {
 
     private ListData listData;
 
@@ -353,12 +353,12 @@ public class Graphique_page extends AppCompatActivity implements View.OnClickLis
         switch (item.getItemId()) {
             case R.id.viewData:
                 Intent openViewData;
-                openViewData = new Intent(Graphique_page.this, VueData_page.class);
+                openViewData = new Intent(GraphiqueActivity.this, VueDataActivity.class);
                 startActivity(openViewData);
                 break;
             case R.id.setting:
                 Intent openSetting;
-                openSetting = new Intent(Graphique_page.this, Setting_page.class);
+                openSetting = new Intent(GraphiqueActivity.this, SettingsEtuActivity.class);
                 openSetting.putExtra("choixESP", choixESP);
                 if (!nomESP.equals("")) {
                     openSetting.putExtra("nomESP", nomESP);

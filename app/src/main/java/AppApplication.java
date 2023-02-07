@@ -1,10 +1,13 @@
 import android.app.Application;
 
+import Model.FirebaseAccess;
+
 public class AppApplication extends Application {
 
     @Override
     public void onCreate() {
         super.onCreate();
+        FirebaseAccess database=FirebaseAccess.getInstance();
 
         // je peux initialiser des données ici.
         //lancé une seule fois à l'init de l'app

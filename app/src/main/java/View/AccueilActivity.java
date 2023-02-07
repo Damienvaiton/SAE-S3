@@ -26,7 +26,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 
-public class Main_page extends AppCompatActivity {
+public class AccueilActivity extends AppCompatActivity {
 
 
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -53,7 +53,7 @@ public class Main_page extends AppCompatActivity {
         ESP = new HashMap<>();
         tabESP = new ArrayList<>();
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(Main_page.this, android.R.layout.simple_spinner_dropdown_item, tabESP);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(AccueilActivity.this, android.R.layout.simple_spinner_dropdown_item, tabESP);
         spinner.setAdapter(adapter);
 
 
@@ -115,7 +115,7 @@ public class Main_page extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent graph;
-                graph = new Intent(Main_page.this, Graphique_page.class);
+                graph = new Intent(AccueilActivity.this, GraphiqueActivity.class);
                 startActivity(graph);
             }
         });
@@ -124,7 +124,7 @@ public class Main_page extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent admin;
-                admin = new Intent(getApplicationContext(), Connection_admin_page.class);
+                admin = new Intent(getApplicationContext(), ConnecAdminActivity.class);
                 startActivity(admin);
 
             }

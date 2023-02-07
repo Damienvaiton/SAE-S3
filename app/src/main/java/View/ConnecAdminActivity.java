@@ -22,7 +22,7 @@ import java.util.Objects;
 
 import ViewModel.MainViewModel;
 
-public class Connection_admin_page extends AppCompatActivity {
+public class ConnecAdminActivity extends AppCompatActivity {
 
     EditText editUser;
     EditText editMdp;
@@ -61,7 +61,7 @@ public class Connection_admin_page extends AppCompatActivity {
                 System.out.println(editMdp.getText().toString());
                 if (Objects.equals(user, editUser.getText().toString().trim()) && Objects.equals(mdp, editMdp.getText().toString().trim())) {
                     Intent ac;
-                    ac = new Intent(Connection_admin_page.this, AdminActivity.class);
+                    ac = new Intent(ConnecAdminActivity.this, SettingsAdminActivity.class);
                     ac.putExtra("listeESP", tabESP);
                     ac.putExtra("hashmapEsp", ESP);
                     startActivity(ac);

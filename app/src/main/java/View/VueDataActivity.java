@@ -19,7 +19,7 @@ import java.io.Serializable;
 import Model.ListData;
 import ViewModel.DataAdapter;
 
-public class VueData_page extends AppCompatActivity implements Serializable {
+public class VueDataActivity extends AppCompatActivity implements Serializable {
 
     private ListData listData;
     private Button btnTriChoix;
@@ -47,7 +47,7 @@ public class VueData_page extends AppCompatActivity implements Serializable {
 
             @Override
             public void onClick(View view) {
-                PopupMenu popupMenu = new PopupMenu(VueData_page.this, btnTriChoix);
+                PopupMenu popupMenu = new PopupMenu(VueDataActivity.this, btnTriChoix);
                 popupMenu.getMenuInflater().inflate(R.menu.menu_tri_choix, popupMenu.getMenu());
 
 

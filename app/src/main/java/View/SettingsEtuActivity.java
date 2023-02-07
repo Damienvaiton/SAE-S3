@@ -26,7 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import Model.FirebaseAccess;
 
-public class Setting_page extends AppCompatActivity implements View.OnClickListener {
+public class SettingsEtuActivity extends AppCompatActivity implements View.OnClickListener {
 
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32");
@@ -116,16 +116,16 @@ FirebaseAccess databas= FirebaseAccess.getInstance();
         } else {
             textAxeRight.setText("Colonne Y droit");
         }
-        if (Graphique_page.rightAxis.isAxisMaxCustom()) {
+        if (GraphiqueActivity.rightAxis.isAxisMaxCustom()) {
             auto_droit.setChecked(false);
-            min_d.setHint(Graphique_page.rightAxis.getAxisMinimum() + "");
-            max_d.setHint(Graphique_page.rightAxis.getAxisMaximum() + "");
+            min_d.setHint(GraphiqueActivity.rightAxis.getAxisMinimum() + "");
+            max_d.setHint(GraphiqueActivity.rightAxis.getAxisMaximum() + "");
 
         }
-        if (Graphique_page.leftAxis.isAxisMaxCustom()) {
+        if (GraphiqueActivity.leftAxis.isAxisMaxCustom()) {
             auto_gauche.setChecked(false);
-            min_g.setHint(Graphique_page.leftAxis.getAxisMinimum() + "");
-            max_g.setHint(Graphique_page.leftAxis.getAxisMaximum() + "");
+            min_g.setHint(GraphiqueActivity.leftAxis.getAxisMinimum() + "");
+            max_g.setHint(GraphiqueActivity.leftAxis.getAxisMaximum() + "");
 
         }
 
@@ -182,16 +182,16 @@ FirebaseAccess databas= FirebaseAccess.getInstance();
         switch (view.getId()) {
             case R.id.auto_droit:
                 if (auto_droit.isChecked()) {
-                    Graphique_page.rightAxis.resetAxisMinimum();
-                    Graphique_page.rightAxis.resetAxisMaximum();
+                    GraphiqueActivity.rightAxis.resetAxisMinimum();
+                    GraphiqueActivity.rightAxis.resetAxisMaximum();
                     Toast.makeText(getApplicationContext(), "Mode auto activé", Toast.LENGTH_SHORT).show();
                     //Griser case pour le manuel
                     break;
                 }
             case R.id.auto_gauche:
                 if (auto_gauche.isChecked()) {
-                    Graphique_page.leftAxis.resetAxisMinimum();
-                    Graphique_page.leftAxis.resetAxisMaximum();
+                    GraphiqueActivity.leftAxis.resetAxisMinimum();
+                    GraphiqueActivity.leftAxis.resetAxisMaximum();
                     Toast.makeText(getApplicationContext(), "Mode auto activé", Toast.LENGTH_SHORT).show();
                     //Griser case pour le manuel
                     break;
@@ -203,11 +203,11 @@ FirebaseAccess databas= FirebaseAccess.getInstance();
                 } else {
                     if (Float.valueOf(max_d.getText().toString()) > Float.valueOf(min_d.getText().toString())) {
 
-                        Graphique_page.rightAxis.setAxisMaximum(Float.valueOf(max_d.getText().toString()));
-                        Graphique_page.rightAxis.setAxisMinimum(Float.valueOf(min_d.getText().toString()));
+                        GraphiqueActivity.rightAxis.setAxisMaximum(Float.valueOf(max_d.getText().toString()));
+                        GraphiqueActivity.rightAxis.setAxisMinimum(Float.valueOf(min_d.getText().toString()));
                         Toast.makeText(getApplicationContext(), "Fait", Toast.LENGTH_SHORT).show();
-                        Graphique_page.graph.notifyDataSetChanged();
-                        Graphique_page.graph.invalidate();
+                        GraphiqueActivity.graph.notifyDataSetChanged();
+                        GraphiqueActivity.graph.invalidate();
                         break;
                     } else {
                         Toast.makeText(getApplicationContext(), "Valeurs incorrects", Toast.LENGTH_SHORT).show();
@@ -221,10 +221,10 @@ FirebaseAccess databas= FirebaseAccess.getInstance();
                 } else {
                     if (Float.valueOf(max_g.getText().toString()) > Float.valueOf(min_g.getText().toString())) {
 
-                        Graphique_page.leftAxis.setAxisMaximum(Float.valueOf(max_g.getText().toString()));
-                        Graphique_page.leftAxis.setAxisMinimum(Float.valueOf(min_g.getText().toString()));
-                        Graphique_page.graph.notifyDataSetChanged();
-                        Graphique_page.graph.invalidate();
+                        GraphiqueActivity.leftAxis.setAxisMaximum(Float.valueOf(max_g.getText().toString()));
+                        GraphiqueActivity.leftAxis.setAxisMinimum(Float.valueOf(min_g.getText().toString()));
+                        GraphiqueActivity.graph.notifyDataSetChanged();
+                        GraphiqueActivity.graph.invalidate();
                         Toast.makeText(getApplicationContext(), "Fait", Toast.LENGTH_SHORT).show();
                         break;
                     } else {
