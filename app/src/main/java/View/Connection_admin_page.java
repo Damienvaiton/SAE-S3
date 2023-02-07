@@ -9,6 +9,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.pageacceuil.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -20,6 +22,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
+
+import ViewModel.MainViewModel;
 
 public class Connection_admin_page extends AppCompatActivity {
 
@@ -36,11 +40,17 @@ public class Connection_admin_page extends AppCompatActivity {
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference("SAE_S3_BD/Admin");
 
+    //déclaration du viewmodel
+    private MainViewModel mainViewModel = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activty_connect_admin);
+
+        // on demande au système de créer l'instance de Mainviewmodel si elle existe pas et de
+        // lier son cycle de vie à l'activity courrante
+        mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
 
         editMdp = findViewById(R.id.coMdp);
         editUser = findViewById(R.id.coUsername);
@@ -64,15 +74,27 @@ public class Connection_admin_page extends AppCompatActivity {
             }
 
         });
-        myRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                DataSnapshot tab = task.getResult();
-                user = tab.child("Admin").getValue(String.class);
-                mdp = tab.child("mdp").getValue(String.class);
 
+        // je demande au VM de me donner le user. Peut importe si il est en bdd etc ...
+        //l'idéal serait de ne pas recevoir de DataSnapShot
+        // On Observe le resultat grace au livedata qui est un conteneur qui permet d'observer
+        mainViewModel.getUser().observe(this, new Observer<DataSnapshot>() {
+            @Override
+            public void onChanged(DataSnapshot dataSnapshot) {
+                user = dataSnapshot.child("Admin").getValue(String.class);
+                mdp = dataSnapshot.child("mdp").getValue(String.class);
             }
         });
+//n'est plus util
+//        myRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<DataSnapshot> task) {
+//                DataSnapshot tab = task.getResult();
+//                user = tab.child("Admin").getValue(String.class);
+//                mdp = tab.child("mdp").getValue(String.class);
+//
+//            }
+//        });
 
 
     }
