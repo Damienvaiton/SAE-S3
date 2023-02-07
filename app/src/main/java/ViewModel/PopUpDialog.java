@@ -9,16 +9,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.pageacceuil.R;
-import com.google.firebase.database.FirebaseDatabase;
 
-public class Pop_up extends Dialog {
+public class PopUpDialog extends Dialog {
 
     private final TextView titre;
     private final EditText valeur;
     private final Button yesButton;
     private final Button noButton;
 
-    public Pop_up(Activity activity) {
+    public PopUpDialog(Activity activity) {
         super(activity, com.google.android.material.R.style.Theme_AppCompat_Dialog);
 
         setContentView(R.layout.pop_up_add);

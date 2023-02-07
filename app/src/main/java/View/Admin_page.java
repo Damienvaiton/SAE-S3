@@ -17,7 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import ViewModel.Pop_up;
+import ViewModel.PopUpDialog;
 import com.example.pageacceuil.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -319,7 +319,7 @@ public class Admin_page extends AppCompatActivity implements View.OnClickListene
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.rennoméA:
-                Pop_up customPopup = new Pop_up(this);
+                PopUpDialog customPopup = new PopUpDialog(this);
                 customPopup.build("Rennomé l'esp", "Nom", 1);
                 customPopup.getYesButton().setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -343,7 +343,7 @@ public class Admin_page extends AppCompatActivity implements View.OnClickListene
                 //Faire dans pop up
                 break;
             case R.id.suppA:
-                Pop_up deletePopup = new Pop_up(this);
+                PopUpDialog deletePopup = new PopUpDialog(this);
                 deletePopup.build("Supprimer l'esp " + choixESP);
                 deletePopup.getYesButton().setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -371,7 +371,7 @@ public class Admin_page extends AppCompatActivity implements View.OnClickListene
                 }
                 break;
             case R.id.reiniA:
-                Pop_up popReini = new Pop_up(this);
+                PopUpDialog popReini = new PopUpDialog(this);
                 popReini.build("En êtes vous sûr?");
                 popReini.getYesButton().setOnClickListener(new View.OnClickListener() {
                     @Override
