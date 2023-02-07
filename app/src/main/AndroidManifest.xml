@@ -20,7 +20,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name="View.Admin_page"
+            android:name="View.AdminActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

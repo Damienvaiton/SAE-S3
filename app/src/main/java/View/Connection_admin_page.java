@@ -7,14 +7,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.pageacceuil.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -64,7 +61,7 @@ public class Connection_admin_page extends AppCompatActivity {
                 System.out.println(editMdp.getText().toString());
                 if (Objects.equals(user, editUser.getText().toString().trim()) && Objects.equals(mdp, editMdp.getText().toString().trim())) {
                     Intent ac;
-                    ac = new Intent(Connection_admin_page.this, Admin_page.class);
+                    ac = new Intent(Connection_admin_page.this, AdminActivity.class);
                     ac.putExtra("listeESP", tabESP);
                     ac.putExtra("hashmapEsp", ESP);
                     startActivity(ac);

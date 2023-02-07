@@ -35,7 +35,7 @@ import Model.FirebaseAccess;
 import Model.ListData;
 import ViewModel.DataAdapter;
 
-public class Admin_page extends AppCompatActivity implements View.OnClickListener {
+public class AdminActivity extends AppCompatActivity implements View.OnClickListener {
 
 
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -106,7 +106,7 @@ public class Admin_page extends AppCompatActivity implements View.OnClickListene
         recyclerView.setAdapter(dataAdapter);
         recyclerView.setLayoutManager((new LinearLayoutManager((this))));
 
-        AlertDialog.Builder pop = new AlertDialog.Builder(Admin_page.this);
+        AlertDialog.Builder pop = new AlertDialog.Builder(AdminActivity.this);
         pop.setMessage("Assurez-vous qu'avant toute modification l'ESP est éteint.");
         pop.setPositiveButton("Compris", new DialogInterface.OnClickListener() {
             @Override
