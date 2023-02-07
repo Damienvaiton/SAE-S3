@@ -2,6 +2,7 @@ package View;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,8 +35,6 @@ public class ConnecAdminActivity extends AppCompatActivity {
     HashMap<String, String> ESP;
     ArrayList<String> tabESP;
 
-    private final FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference myRef = database.getReference("SAE_S3_BD/Admin");
 
     //déclaration du viewmodel
     private MainViewModel mainViewModel = null;
@@ -72,9 +71,22 @@ public class ConnecAdminActivity extends AppCompatActivity {
 
         });
 
+        mainViewModel.getUser().observe(this, new Observer<DataSnapshot>() {
+            @Override
+            public void onChanged(DataSnapshot dataSnapshot) {
+
+            }
+        });
+
         // je demande au VM de me donner le user. Peut importe si il est en bdd etc ...
         //l'idéal serait de ne pas recevoir de DataSnapShot
         // On Observe le resultat grace au livedata qui est un conteneur qui permet d'observer
+
+        mainViewModel.getUser().observe(this, new Observer<DataSnapshot>() {
+            @Override
+            public void onChanged(DataSnapshot dataSnapshot) {
+            }
+        });
         mainViewModel.getUser().observe(this, new Observer<DataSnapshot>() {
             @Override
             public void onChanged(DataSnapshot dataSnapshot) {

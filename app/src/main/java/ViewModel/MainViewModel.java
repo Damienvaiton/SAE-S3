@@ -30,6 +30,9 @@ public class MainViewModel extends ViewModel {
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference("SAE_S3_BD/Admin");
 
+
+
+
     // pour avoir l'utilisateur on observe grace au live data
     public LiveData<DataSnapshot> getUser() {
 
@@ -50,6 +53,10 @@ public class MainViewModel extends ViewModel {
         // quand les données sont récupérées.
         return listener;
     }
+
+
+
+
 
 //     coBtn.setOnClickListener(new View.OnClickListener() {
 //        @Override
