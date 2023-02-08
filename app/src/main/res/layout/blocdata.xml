@@ -28,8 +28,9 @@
         android:layout_centerVertical="true"
         android:layout_marginStart="20dp"
         android:layout_toEndOf="@id/heure"
+        android:gravity="center"
         android:hint="11111"
-android:textColor="@color/grays"
+        android:textColor="@color/grays"
         android:textColorHint="@color/purple_500" />
 
     <TextView
@@ -37,26 +38,26 @@ android:textColor="@color/grays"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toEndOf="@id/temp"
         android:layout_marginStart="5dp"
+        android:layout_toEndOf="@id/temp"
+        android:gravity="center"
         android:hint="11111"
         android:textColor="@color/green"
-        android:textColorHint="@color/redoblack"
 
-        />
+        android:textColorHint="@color/redoblack" />
 
     <TextView
         android:id="@+id/co2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toEndOf="@id/humi"
         android:layout_marginStart="5dp"
-android:textColor="@color/grays"
+        android:layout_toEndOf="@id/humi"
+        android:gravity="center"
         android:hint="11111"
-        android:textColorHint="@color/redoblack"
+        android:textColor="@color/grays"
 
-        />
+        android:textColorHint="@color/redoblack" />
 
     <TextView
         android:id="@+id/o2"
@@ -64,12 +65,12 @@ android:textColor="@color/grays"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginStart="5dp"
-android:textColor="@color/green"
         android:layout_toEndOf="@id/co2"
+        android:gravity="center"
         android:hint="11111"
-        android:textColorHint="@color/redoblack"
+        android:textColor="@color/green"
 
-        />
+        android:textColorHint="@color/redoblack" />
 
     <TextView
         android:id="@+id/lux"
@@ -77,12 +78,12 @@ android:textColor="@color/green"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginStart="5dp"
-android:textColor="@color/grays"
         android:layout_toEndOf="@id/o2"
+        android:gravity="center"
         android:hint="11111111"
-        android:textColorHint="@color/redoblack"
+        android:textColor="@color/grays"
 
-        />
+        android:textColorHint="@color/redoblack" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="2dp"
