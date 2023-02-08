@@ -12,8 +12,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
+import com.example.pageacceuil.Model.Data;
 import com.example.pageacceuil.R;
+import com.example.pageacceuil.ViewModel.GraphViewModel;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -89,12 +93,14 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
     public static YAxis rightAxis;
     private XAxis xl;
 
+    private GraphViewModel graphViewModel= null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph_page);
 
+        graphViewModel=new ViewModelProvider(this).get(GraphViewModel.class);
        /* Intent intent = getIntent();
         if (intent != null) {
             if (intent.hasExtra("choixESP")) {
@@ -108,17 +114,23 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
         }*/
 
 
+        graphViewModel.getData().observe(this, new Observer<Data>() {
+            @Override
+            public void onChanged(Data data) {
+                System.out.println("yo");
+            }
+        });
+
+
         ListData listData = ListData.getInstance();
         FirebaseAccess database = FirebaseAccess.getInstance();
         ESP currentESP = ESP.getInstance();
 
 
-        database.setPrechargeDonnee(currentESP.getMacEsp());
-        database.setRealtimeDataListener();
 
 
         valTemp = findViewById(R.id.viewTime);
-        valTemp.setText(currentESP.getTauxRafrai());
+        valTemp.setText(graphViewModel.getTemps().getValue());
 
         //Textview pour affichage données en haut
         viewTemp = findViewById(R.id.viewTemp);

@@ -122,7 +122,7 @@ public class FirebaseAccess {
     }
 
 
-    public boolean setPrechargeDonnee(String choixESP) {
+    public boolean setPrechargeDonnee() {
         ESP currentESP = ESP.getInstance();
         ListData listData = ListData.getInstance();
 
@@ -214,6 +214,7 @@ public class FirebaseAccess {
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 if (snapshot.getChildrenCount() == 6) {
                     listData.list_add_data(snapshot.getValue(Data.class));
+
                     //chargerDonner();
                     //actuValues();
 
@@ -239,6 +240,12 @@ public class FirebaseAccess {
         myRef.child("ESP32").child(currentESP.getMacEsp()).child("Mesure").addChildEventListener(RealtimeDataListener);
     }
 
+    public Data getNewData(){
+        ListData listData = ListData.getInstance();
+//        return listData.recup_data(i);
+        Data a=new Data(23,23,23,23,23,"efdz");
+        return a;
+    }
     public String[] getAdminLog() {
         final String[] access = new String[2];
         myRef.child("Admin").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
