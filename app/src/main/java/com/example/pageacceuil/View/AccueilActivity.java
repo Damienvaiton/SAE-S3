@@ -1,4 +1,4 @@
-package com.example.pageacceuil;
+package com.example.pageacceuil.View;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -12,6 +12,8 @@ import android.widget.Spinner;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.pageacceuil.Model.ESP;
+import com.example.pageacceuil.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -24,7 +26,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 
-public class MainActivity extends AppCompatActivity {
+public class AccueilActivity extends AppCompatActivity {
 
 
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -51,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         ESP = new HashMap<>();
         tabESP = new ArrayList<>();
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, tabESP);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(AccueilActivity.this, android.R.layout.simple_spinner_dropdown_item, tabESP);
         spinner.setAdapter(adapter);
 
 
@@ -61,10 +63,8 @@ public class MainActivity extends AppCompatActivity {
                 int curseur = 0;
                 for (Map.Entry entree : ESP.entrySet()) {
                     if (curseur == position) {
-                        choixESP = (String) entree.getKey();
                         if (entree.getValue().toString() != null) {
-                            nomESP = (String) entree.getValue();
-                            a=new ESP("yo","yi");
+                            a=new ESP((String) entree.getKey(),(String) entree.getValue());
                         }
                         break;
                     }
@@ -115,13 +115,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent graph;
-                graph = new Intent(MainActivity.this, GraphPage.class);
-//                ESP a=new ESP(choixESP,nomESP);
-                ESP esp=new ESP(choixESP,nomESP);
-             /*   graph.putExtra("choixESP", choixESP);
-                if (!nomESP.equals("")) {
-                    graph.putExtra("nomESP", nomESP);
-                }*/
+                graph = new Intent(AccueilActivity.this, GraphiqueActivity.class);
                 startActivity(graph);
             }
         });
@@ -130,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent admin;
-                admin = new Intent(getApplicationContext(), connectadmin.class);
+                admin = new Intent(getApplicationContext(), ConnecAdminActivity.class);
                 startActivity(admin);
 
             }

@@ -1,4 +1,4 @@
-package com.example.pageacceuil;
+package com.example.pageacceuil.Model;
 
 
 import java.io.Serializable;

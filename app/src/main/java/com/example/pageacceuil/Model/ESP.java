@@ -1,18 +1,11 @@
-package com.example.pageacceuil;
-
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import androidx.annotation.NonNull;
-
-import java.util.ArrayList;
+package com.example.pageacceuil.Model;
 
 
 public class ESP {
     String macEsp;
     String nomEsp;
-    Long tauxRafrai;
-    FirebaseAcces databas=FirebaseAcces.getInstance();
+    String tauxRafrai;
+    FirebaseAccess database = FirebaseAccess.getInstance();
 
     private static volatile ESP instance;
 
@@ -25,11 +18,10 @@ public class ESP {
         }
         return null;
     }
-
     public ESP(String macEsp, String nomEsp) {
         this.macEsp = macEsp;
         this.nomEsp = nomEsp;
-        this.tauxRafrai = databas.getTimeListener(macEsp) ;
+        database.getTimeListener(this) ;
         instance=this;
     }
 
@@ -49,17 +41,18 @@ public class ESP {
         this.nomEsp = nomEsp;
     }
 
-    public Long getTauxRafrai() {
+    public String getTauxRafrai() {
         return tauxRafrai;
     }
 
-    public void setTauxRafrai(Long tauxRafrai) {
+    public void setTauxRafrai(String tauxRafrai) {
         this.tauxRafrai = tauxRafrai;
     }
 
     @Override
     protected void finalize() throws Throwable {
         super.finalize();
+
         //remove listener
     }
 }

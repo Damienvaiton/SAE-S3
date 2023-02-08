@@ -1,4 +1,4 @@
-package com.example.pageacceuil;
+package com.example.pageacceuil.ViewModel;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -8,16 +8,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.google.firebase.database.FirebaseDatabase;
+import com.example.pageacceuil.R;
 
-public class Pop_up extends Dialog {
+public class PopUpDialog extends Dialog {
 
     private final TextView titre;
     private final EditText valeur;
     private final Button yesButton;
     private final Button noButton;
 
-    public Pop_up(Activity activity) {
+    public PopUpDialog(Activity activity) {
         super(activity, com.google.android.material.R.style.Theme_AppCompat_Dialog);
 
         setContentView(R.layout.pop_up_add);

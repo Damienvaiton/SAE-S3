@@ -1,4 +1,4 @@
-package com.example.pageacceuil;
+package com.example.pageacceuil.View;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -11,9 +11,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.pageacceuil.R;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -25,12 +25,6 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import org.apache.poi.ss.usermodel.ConditionalFormattingRule;
 import org.apache.poi.ss.usermodel.IndexedColors;
@@ -47,11 +41,15 @@ import java.io.FileOutputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-public class GraphPage extends AppCompatActivity implements View.OnClickListener, BottomNavigationView.OnNavigationItemSelectedListener {
+import com.example.pageacceuil.Model.ESP;
+import com.example.pageacceuil.Model.FirebaseAccess;
+import com.example.pageacceuil.Model.ListData;
+import com.example.pageacceuil.ViewModel.XAxisValueFormatter;
 
+public class GraphiqueActivity extends AppCompatActivity implements View.OnClickListener, BottomNavigationView.OnNavigationItemSelectedListener {
 
-    private final FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private ListData listData;
+    public ListData listData;
+
     ArrayList<Entry> A_temp = new ArrayList<>();
     ArrayList<Entry> A_lux = new ArrayList<>();
     ArrayList<Entry> A_CO2 = new ArrayList<>();
@@ -96,7 +94,8 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph_page);
-        Intent intent = getIntent();
+
+       /* Intent intent = getIntent();
         if (intent != null) {
             if (intent.hasExtra("choixESP")) {
                 this.choixESP = (String) intent.getSerializableExtra("choixESP");
@@ -106,111 +105,20 @@ public class GraphPage extends AppCompatActivity implements View.OnClickListener
             } else {
                 System.out.println("Impossible de récup num ESP");
             }
-        }
+        }*/
 
 
-        listData = ListData.getInstance();
-FirebaseAcces bd= FirebaseAcces.getInstance();
-bd.prechargebd(choixESP);
-ESP a=ESP.getInstance();
-choixESP=a.macEsp;
-nomESP=a.nomEsp;
-        DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32/" + a.macEsp);
-
-        System.out.println(choixESP);
-        System.out.println(nomESP);
-//        if(myRef.child("Mesure").
-/*        myRef.child("Mesure").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                DataSnapshot tab = task.getResult();
-                if (tab.exists()) {
-                    for (int i = 0; i < tab.getChildrenCount(); i++) {
-                        Data a = tab.child(i + "").getValue(Data.class);
-                        listData.list_add_data(a);
-                        chargerDonner();
-                    }
-
-                } else {
-                    AlertDialog.Builder pop = new AlertDialog.Builder(GraphPage.this);
-                    pop.setMessage("ESP hors tension, merci de le brancher");
-                    pop.setPositiveButton("ESP brancher", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Toast.makeText(getApplicationContext(), "Prêt", Toast.LENGTH_SHORT).show();
-                            dialog.cancel();
-
-                        }
-                    });
-
-                    pop.show();
-
-                }
-            }
-        });*/
+        ListData listData = ListData.getInstance();
+        FirebaseAccess database = FirebaseAccess.getInstance();
+        ESP currentESP = ESP.getInstance();
 
 
-
-        myRef.child("Mesure").addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                if (snapshot.getChildrenCount() == 6) {
-                    listData.list_add_data(snapshot.getValue(Data.class));
-                    chargerDonner();
-                    actuValues();
-
-                }
-            }
+        database.setPrechargeDonnee(currentESP.getMacEsp());
+        database.setRealtimeDataListener();
 
 
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                System.out.println("Impossible d'accéder au données");
-            }
-        });
-
-
-        myRef.child("TauxRafraichissement").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String heure = "";
-                String minute = "";
-                String seconde = "";
-                if (snapshot.getValue(Long.class) >= 3600000) {
-                    heure = (snapshot.getValue(Long.class) / (1000 * 60 * 60) + "h");
-                }
-                if (snapshot.getValue(Long.class) >= 60000) {
-                    minute = (snapshot.getValue(Long.class) % (1000 * 60 * 60)) / (1000 * 60) + "m";
-                }
-                if (snapshot.getValue(Long.class) >= 1000) {
-                    seconde = (snapshot.getValue(Long.class) % (1000 * 60)) / 1000 + "s";
-                }
-
-                valTemp.setText(heure + minute + seconde);
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
         valTemp = findViewById(R.id.viewTime);
-
+        valTemp.setText(currentESP.getTauxRafrai());
 
         //Textview pour affichage données en haut
         viewTemp = findViewById(R.id.viewTemp);
@@ -301,6 +209,11 @@ nomESP=a.nomEsp;
 
     }
 
+     public void notifi(){
+        chargerDonner();
+        actuValues();
+    };
+
     void chargerDonner() {
         A_CO2.add(new Entry(listData.list_size(), listData.recup_data(listData.list_size() - 1).getCO2()));
         A_lux.add(new Entry(listData.list_size(), listData.recup_data(listData.list_size() - 1).getLight()));
@@ -308,7 +221,6 @@ nomESP=a.nomEsp;
         A_temp.add(new Entry(listData.list_size(), listData.recup_data(listData.list_size() - 1).getTemperature()));
         A_humi.add(new Entry(listData.list_size(), listData.recup_data(listData.list_size() - 1).getHumidite()));
         creaGraph();
-
     }
 
 
@@ -441,13 +353,14 @@ nomESP=a.nomEsp;
         switch (item.getItemId()) {
             case R.id.viewData:
                 Intent openViewData;
-                openViewData = new Intent(GraphPage.this, VueData.class);
+                openViewData = new Intent(GraphiqueActivity.this, VueDataActivity.class);
                 startActivity(openViewData);
                 break;
             case R.id.setting:
                 Intent openSetting;
-                openSetting = new Intent(GraphPage.this, SettingPage.class);
+                openSetting = new Intent(GraphiqueActivity.this, SettingsEtuActivity.class);
                 openSetting.putExtra("choixESP", choixESP);
+                //openSetting.putExtra("Choix", listData.listD);
                 if (!nomESP.equals("")) {
                     openSetting.putExtra("nomESP", nomESP);
                 }

@@ -1,10 +1,10 @@
-package com.example.pageacceuil;
+package com.example.pageacceuil.Model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
 
-public class ListData {
+public class ListData implements Serializable {
     private static volatile ListData instance;
     private ArrayList<Data> listData;
 

@@ -1,4 +1,4 @@
-package com.example.pageacceuil;
+package com.example.pageacceuil.View;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pageacceuil.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,7 +29,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-public class pageSettingAdmin extends AppCompatActivity implements View.OnClickListener {
+import com.example.pageacceuil.Model.Data;
+import com.example.pageacceuil.Model.FirebaseAccess;
+import com.example.pageacceuil.Model.ListData;
+import com.example.pageacceuil.ViewModel.DataAdapter;
+import com.example.pageacceuil.ViewModel.PopUpDialog;
+
+public class SettingsAdminActivity extends AppCompatActivity implements View.OnClickListener {
 
 
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -36,6 +43,7 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
 
 
     RecyclerView recyclerView;
+
 
     ValueEventListener valueEventListenerTemps;
 
@@ -61,13 +69,13 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
 
     DataAdapter dataAdapter;
 
-    FirebaseAcces databas;
+    FirebaseAccess databas;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_page_setting_admin);
 
-        databas= FirebaseAcces.getInstance();
+        databas= FirebaseAccess.getInstance();
 
         idEsp = findViewById(R.id.selectedEsp);
         rename = findViewById(R.id.rennoméA);
@@ -98,7 +106,7 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
         recyclerView.setAdapter(dataAdapter);
         recyclerView.setLayoutManager((new LinearLayoutManager((this))));
 
-        AlertDialog.Builder pop = new AlertDialog.Builder(pageSettingAdmin.this);
+        AlertDialog.Builder pop = new AlertDialog.Builder(SettingsAdminActivity.this);
         pop.setMessage("Assurez-vous qu'avant toute modification l'ESP est éteint.");
         pop.setPositiveButton("Compris", new DialogInterface.OnClickListener() {
             @Override
@@ -311,7 +319,7 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.rennoméA:
-                Pop_up customPopup = new Pop_up(this);
+                PopUpDialog customPopup = new PopUpDialog(this);
                 customPopup.build("Rennomé l'esp", "Nom", 1);
                 customPopup.getYesButton().setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -335,7 +343,7 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
                 //Faire dans pop up
                 break;
             case R.id.suppA:
-                Pop_up deletePopup = new Pop_up(this);
+                PopUpDialog deletePopup = new PopUpDialog(this);
                 deletePopup.build("Supprimer l'esp " + choixESP);
                 deletePopup.getYesButton().setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -358,20 +366,17 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
                 if (refresh.getText().toString().equals("")) {
                     Toast.makeText(getApplicationContext(), "Merci d'entrer' une valeur", Toast.LENGTH_SHORT).show();
                 } else {
-                    boolean ture=databas.editTemps(choixESP,(Integer.valueOf(refresh.getText().toString())));
-                    System.out.println("yo"+ture);  // myRef.child("ESP32").child(choixESP).child("TauxRafraichissement").setValue((Double.valueOf(refresh.getText().toString()) * 1000));
-                    Toast.makeText(getApplicationContext(), "Refresh : " + refresh.getText() + "s,\r\nVous pouvez redémarrer l'ESP", Toast.LENGTH_LONG).show();
+                    databas.editTemps(choixESP,(Integer.valueOf(refresh.getText().toString())),getApplicationContext());
                     refresh.setText("");
                 }
                 break;
             case R.id.reiniA:
-                Pop_up popReini = new Pop_up(this);
+                PopUpDialog popReini = new PopUpDialog(this);
                 popReini.build("En êtes vous sûr?");
                 popReini.getYesButton().setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        myRef.child("ESP32").child(choixESP).child("Mesure").removeValue();
-                        myRef.child("ESP32").child(choixESP).child("MesureNumber").removeValue();
+                        databas.resetValueDb(choixESP,getApplicationContext());
                         popReini.dismiss();
                         actu();
                         dataAdapter.notifyDataSetChanged();

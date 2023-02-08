@@ -1,6 +1,7 @@
-package com.example.pageacceuil;
+package com.example.pageacceuil.ViewModel;
 
 
+import com.example.pageacceuil.Model.ListData;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 
 public class XAxisValueFormatter extends IndexAxisValueFormatter {
