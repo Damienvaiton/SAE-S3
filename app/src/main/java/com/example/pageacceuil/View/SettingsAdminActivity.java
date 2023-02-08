@@ -44,7 +44,6 @@ public class SettingsAdminActivity extends AppCompatActivity implements View.OnC
 
     RecyclerView recyclerView;
 
-
     ValueEventListener valueEventListenerTemps;
 
     ValueEventListener valueEventListenerDate;

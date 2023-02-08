@@ -146,7 +146,7 @@ public class FirebaseAccess {
         return false;
     }
 
-    public void getTimeListener(ESP currentESP) {
+    public void setTimeListener(ESP currentESP) {
         valueEventListenerTemps = new ValueEventListener() {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String heure = "";
@@ -167,6 +167,7 @@ public class FirebaseAccess {
                     System.out.println(seconde + "oooo");
                     System.out.println(heure + minute + seconde + "yoooooooooooooooooo");
                     currentESP.tauxRafrai = heure + minute + seconde;
+                    System.out.println(currentESP.getTauxRafrai());
                     return;
                 }
             }
@@ -240,6 +241,9 @@ public class FirebaseAccess {
         myRef.child("ESP32").child(currentESP.getMacEsp()).child("Mesure").addChildEventListener(RealtimeDataListener);
     }
 
+    public String getNewTime(){
+        return ESP.getInstance().getTauxRafrai();
+    }
     public Data getNewData(){
         ListData listData = ListData.getInstance();
 //        return listData.recup_data(i);

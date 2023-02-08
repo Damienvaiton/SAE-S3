@@ -37,10 +37,7 @@ ESP currentEsp= ESP.getInstance();
 
     public LiveData<String> getTemps() {
         MutableLiveData<String> listenerTemps = new MutableLiveData<>();
-        acess.getTimeListener(currentEsp);
-       // FirebaseAccess.getInstance().getTimeListener(ESP.getInstance());
-        System.out.println("je suis la");
-        listenerTemps.postValue(ESP.getInstance().getTauxRafrai());
+        listenerTemps.postValue(currentEsp.getTauxRafrai());
         return listenerTemps;
     }
 }

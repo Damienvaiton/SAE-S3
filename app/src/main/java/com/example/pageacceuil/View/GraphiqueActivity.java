@@ -121,7 +121,14 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
             }
         });
 
+graphViewModel.getTemps().observe(this, new Observer<String>() {
+    @Override
+    public void onChanged(String s) {
+        System.out.println("graphpage"+s);
+        valTemp.setText(s);
 
+    }
+});
         ListData listData = ListData.getInstance();
         FirebaseAccess database = FirebaseAccess.getInstance();
         ESP currentESP = ESP.getInstance();
@@ -130,7 +137,7 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
 
 
         valTemp = findViewById(R.id.viewTime);
-        valTemp.setText(graphViewModel.getTemps().getValue());
+
 
         //Textview pour affichage données en haut
         viewTemp = findViewById(R.id.viewTemp);
