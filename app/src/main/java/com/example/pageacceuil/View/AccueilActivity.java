@@ -11,9 +11,13 @@ import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.pageacceuil.Model.ESP;
 import com.example.pageacceuil.R;
+import com.example.pageacceuil.ViewModel.AccueilViewModel;
+import com.example.pageacceuil.ViewModel.ConnectAdminViewModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,17 +33,16 @@ import java.util.Map;
 public class AccueilActivity extends AppCompatActivity {
 
 
+    private AccueilViewModel accueilViewModel = null;
+
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32");
 
-
-    String choixESP = "";
-    String nomESP = "";
     Spinner spinner;
     Button btncoEtu;
-    ESP a;
+    ESP currentESP;
     Button btnCoAdmin;
-    HashMap<String, String> ESP;
+    //HashMap<String, String> ESP;
     ArrayList<String> tabESP;
 
     @SuppressLint("MissingInflatedId")
@@ -47,29 +50,45 @@ public class AccueilActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        accueilViewModel = new ViewModelProvider(this).get(AccueilViewModel.class);
         spinner = findViewById(R.id.SpinnerID);
         btncoEtu = findViewById(R.id.Gobtn);
         btnCoAdmin = findViewById(R.id.adminbtnmain);
-        ESP = new HashMap<>();
+        // ESP = new HashMap<>();
         tabESP = new ArrayList<>();
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(AccueilActivity.this, android.R.layout.simple_spinner_dropdown_item, tabESP);
         spinner.setAdapter(adapter);
 
 
+        //Observeur
+    accueilViewModel.getESP().observe(this, new Observer<ArrayList<String>>() {
+    @Override
+    public void onChanged(ArrayList<String> strings) {
+        for (String ESP : strings) {
+            tabESP.add(ESP.toString());
+        }
+        adapter.notifyDataSetChanged();
+    }
+});
+
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                int curseur = 0;
-                for (Map.Entry entree : ESP.entrySet()) {
-                    if (curseur == position) {
-                        if (entree.getValue().toString() != null) {
-                            a=new ESP((String) entree.getKey(),(String) entree.getValue());
-                        }
-                        break;
-                    }
-                    curseur++;
-                }
+                currentESP=new ESP((String) tabESP.get(position), "eee");
+//                System.out.println("vdsvfssf'"+myRef.child("ESP32").child((String) tabESP.get(position)).child("Nom").get);
+//                int curseur = 0;
+//                for (Map.Entry entree : ESP.entrySet()) {
+//                    if (curseur == position) {
+//                        if (entree.getValue().toString() != null) {
+//                            currentESP=new ESP((String) tabESP.get(position), "eee");
+//                            System.out.println("aaaaaaFUTIYKVLDCSOFLQGYREVOQBGUGYFBFVIPQFHHIUVRBQHLHVBFDHWLBVHDSGBLTSBSVFHVIERGFQERFEWBEVPQPEBRLQVIQRQIGBBEYIYIBRERYEEBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBQEIYHFAQELBVEQVBYQBEGVRBaaaaaa"+currentESP.getMacEsp().toString());
+//                        }
+//                        break;
+//                    }
+//                    curseur++;
+//                }
+//
             }
 
             @Override
@@ -78,7 +97,7 @@ public class AccueilActivity extends AppCompatActivity {
             }
         });
 
-        myRef.addValueEventListener(new ValueEventListener() {
+       /* myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 ESP.clear();
@@ -108,7 +127,7 @@ public class AccueilActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        });
+        });*/
 
 
         btncoEtu.setOnClickListener(new View.OnClickListener() {

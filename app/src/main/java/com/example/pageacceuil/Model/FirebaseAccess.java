@@ -6,7 +6,10 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.MutableLiveData;
 
+import com.example.pageacceuil.ViewModel.AccueilViewModel;
+import com.example.pageacceuil.ViewModel.GraphViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -17,6 +20,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 public class FirebaseAccess {
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -62,6 +67,25 @@ public class FirebaseAccess {
                 });
     } //test isSucessfull marche pas
 
+   /* public String getSurnom(String macESP){
+        myRef.child("ESP32").child(macESP).child("Nom").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+        if(myRef.child("ESP32").child(macESP).child("Nom").getKey()){
+
+        return myRef.child("ESP32").child(macESP).child("Nom").getKey();
+    }*/
+   MutableLiveData<ArrayList<String>> listener = new MutableLiveData<>();
+
     public void resetValueDb(String choixESP, Context context) {
         myRef.child("ESP32").child(choixESP).child("Mesure").removeValue()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -101,8 +125,9 @@ public class FirebaseAccess {
     public boolean setPrechargeDonnee(String choixESP) {
         ESP currentESP = ESP.getInstance();
         ListData listData = ListData.getInstance();
-        myRef.child("ESP32").child(choixESP).child("Mesure").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                @Override
+
+        myRef.child("ESP32").child(currentESP.getMacEsp()).child("Mesure").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 DataSnapshot tab = task.getResult();
                 if (tab.exists()) {
@@ -213,6 +238,22 @@ public class FirebaseAccess {
         };
         myRef.child("ESP32").child(currentESP.getMacEsp()).child("Mesure").addChildEventListener(RealtimeDataListener);
     }
+
+    public String[] getAdminLog() {
+        final String[] access = new String[2];
+        myRef.child("Admin").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                DataSnapshot tab = task.getResult();
+                access[0] = tab.child("Admin").getValue(String.class);
+                access[1] = tab.child("mdp").getValue(String.class);
+
+            }
+        });
+        return access;
+    }
+
     public boolean deleteListener(String choixESP) {
         myRef.child("ESP32").child(choixESP).child("Mesure").removeEventListener(valueEventListenerTemps);
         myRef.child("ESP32").child(choixESP).child("TauxRafraichissement").removeEventListener(RealtimeDataListener);
