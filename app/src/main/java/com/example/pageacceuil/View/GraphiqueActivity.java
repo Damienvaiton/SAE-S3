@@ -114,7 +114,7 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
         }*/
 
 
-        graphViewModel.getData().observe(this, new Observer<Data>() {
+        graphViewModel.getData(null).observe(this, new Observer<Data>() {
             @Override
             public void onChanged(Data data) {
                 System.out.println("yo");

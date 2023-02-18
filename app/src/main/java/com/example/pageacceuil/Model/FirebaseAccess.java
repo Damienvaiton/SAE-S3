@@ -7,8 +7,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
 import com.example.pageacceuil.ViewModel.AccueilViewModel;
+import com.example.pageacceuil.ViewModel.ConnectAdminViewModel;
 import com.example.pageacceuil.ViewModel.GraphViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -27,9 +29,14 @@ public class FirebaseAccess {
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
     private final DatabaseReference myRef = database.getReference("SAE_S3_BD");
 
+    GraphViewModel graphViewModel=null;
     ValueEventListener valueEventListenerTemps;
     ChildEventListener RealtimeDataListener;
 
+
+    public void setGraphViewModel(GraphViewModel graphViewModel) {
+        this.graphViewModel = graphViewModel;
+    }
 
     private static volatile FirebaseAccess instance;
 
@@ -125,7 +132,6 @@ public class FirebaseAccess {
     public boolean setPrechargeDonnee() {
         ESP currentESP = ESP.getInstance();
         ListData listData = ListData.getInstance();
-
         myRef.child("ESP32").child(currentESP.getMacEsp()).child("Mesure").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -215,7 +221,8 @@ public class FirebaseAccess {
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 if (snapshot.getChildrenCount() == 6) {
                     listData.list_add_data(snapshot.getValue(Data.class));
-
+                    graphViewModel.updateData();
+                    graphViewModel.getData(snapshot.getValue(Data.class));
                     //chargerDonner();
                     //actuValues();
 
@@ -241,15 +248,7 @@ public class FirebaseAccess {
         myRef.child("ESP32").child(currentESP.getMacEsp()).child("Mesure").addChildEventListener(RealtimeDataListener);
     }
 
-    public String getNewTime(){
-        return ESP.getInstance().getTauxRafrai();
-    }
-    public Data getNewData(){
-        ListData listData = ListData.getInstance();
-//        return listData.recup_data(i);
-        Data a=new Data(23,23,23,23,23,"efdz");
-        return a;
-    }
+
     public String[] getAdminLog() {
         final String[] access = new String[2];
         myRef.child("Admin").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {

@@ -29,10 +29,10 @@ public class SettingsAdminViewModel extends ViewModel {
         //listenerTempsAdmin.postValue(currentEsp.getTauxRafrai());
         return listenerTempsAdmin;
     }
-   public ChangeTime(int time){
-        if ()
-   }
-   public renameESP(){}
+  // public ChangeTime(int time){
+    //    if ()
+   //}
+   //public renameESP(){}
 
 
 }
