@@ -115,11 +115,12 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
         }*/
 
 
-        graphViewModel.getData(new Data()).observe(this, new Observer<Data>() {
+        graphViewModel.getData().observe(this, new Observer<Data>() {
             @Override
             public void onChanged(Data data) {
-
-                System.out.println("yo c moa new data");
+                System.out.println("new data view");
+                actuValues(data);
+                chargerDonner(data);
             }
         });
 
@@ -230,11 +231,17 @@ graphViewModel.getTemps().observe(this, new Observer<String>() {
 
     }
 
-     public void notifi(){
-        chargerDonner();
-        actuValues();
-    };
 
+    void chargerDonner(Data data) {
+        A_CO2.add(new Entry(A_CO2.size()-1, data.getCO2()));
+        A_temp.add(new Entry(A_temp.size()-1, data.getTemperature()));
+        A_humi.add(new Entry(A_CO2.size()-1, data.getHumidite()));
+        A_O2.add(new Entry(A_CO2.size()-1, data.getO2()));
+        A_lux.add(new Entry(A_CO2.size()-1, data.getLight()));
+        creaGraph();
+    }
+
+/*
     void chargerDonner() {
         A_CO2.add(new Entry(listData.list_size(), listData.recup_data(listData.list_size() - 1).getCO2()));
         A_lux.add(new Entry(listData.list_size(), listData.recup_data(listData.list_size() - 1).getLight()));
@@ -243,6 +250,7 @@ graphViewModel.getTemps().observe(this, new Observer<String>() {
         A_humi.add(new Entry(listData.list_size(), listData.recup_data(listData.list_size() - 1).getHumidite()));
         creaGraph();
     }
+*/
 
 
     void creaGraph() {
@@ -329,7 +337,26 @@ graphViewModel.getTemps().observe(this, new Observer<String>() {
         set.setDrawValues(false);
     }
 
-    void actuValues() {
+    void actuValues(Data data) {
+        DecimalFormat a = new DecimalFormat("##.###");
+        if (data.getTemperature() != 0) {
+            viewTemp.setText(a.format(data.getTemperature()) + "°");
+        }
+        if (data.getLight() != 0) {
+            viewLux.setText(a.format(data.getLight()) + "l");
+        }
+        if (data.getCO2() != 0) {
+            viewCO2.setText(a.format(data.getCO2()) + "%");
+        }
+        if (data.getO2() != 0) {
+            viewO2.setText(a.format(data.getO2()) + "%");
+        }
+        if (data.getHumidite() != 0) {
+            viewHumi.setText(a.format(data.getHumidite()) + "%");
+        }
+    }
+
+   /* void actuValues() {
         int pos = listData.list_size() - 1;
         DecimalFormat a = new DecimalFormat("##.###");
         if (listData.recup_data(pos).getTemperature() != 0) {
@@ -347,7 +374,7 @@ graphViewModel.getTemps().observe(this, new Observer<String>() {
         if (listData.recup_data(pos).getHumidite() != 0) {
             viewHumi.setText(a.format(listData.recup_data(pos).getHumidite()) + "%");
         }
-    }
+    }*/
 
 
     void paramGraph() {

@@ -16,10 +16,10 @@ public class XAxisValueFormatter extends IndexAxisValueFormatter {
     @Override
 
     public String getFormattedValue(float value) {
-        if ((int) value == 0) {
+       // if ((int) value == 0) {
             return "";
         }
-        return listData.recup_data((int) value - 1).getTemps();
-    }
+        //return listData.recup_data((int) value - 1).getTemps();
+   // }
 }
 

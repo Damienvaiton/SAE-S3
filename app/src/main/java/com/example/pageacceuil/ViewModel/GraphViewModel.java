@@ -23,21 +23,24 @@ ESP currentEsp;
         acess.setTimeListener(currentEsp);
     }
 
- /*   public void notifyData(){
-        getData();
+    private final MutableLiveData<Data> listenerData = new MutableLiveData<>();
+    private final MutableLiveData<String> listenerTemps = new MutableLiveData<>();
+    public LiveData<Data> getData() {
+        return listenerData;
     }
-    public void notifyTemps(){
 
+    public void updateData(Data data) {
+        System.out.println("update data");
+        listenerData.postValue(data);
     }
-*/
-    public LiveData<Data> getData(Data data) {
+
+  /*  public LiveData<Data> getData(Data data) {
         MutableLiveData<Data> listenerData = new MutableLiveData<>();
         listenerData.postValue(data);
         System.out.println("c mihswecs<");
         return listenerData;
-    }
+    }*/
     public LiveData<String> getTemps() {
-        MutableLiveData<String> listenerTemps = new MutableLiveData<>();
         listenerTemps.postValue(currentEsp.getTauxRafrai());
         return listenerTemps;
     }

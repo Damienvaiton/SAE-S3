@@ -139,7 +139,7 @@ public class FirebaseAccess {
                 if (tab.exists()) {
                     for (DataSnapshot dataSnapshot :tab.getChildren()) {
                         listData.list_add_data(dataSnapshot.getValue(Data.class));
-                        graphViewModel.getData(dataSnapshot.getValue(Data.class));                    }
+                        graphViewModel.updateData(dataSnapshot.getValue(Data.class));                    }
                     //Faire toute mes requetes ici et listener
                 }
             }
@@ -221,6 +221,7 @@ public class FirebaseAccess {
                 System.out.println("realtime");
                 if (snapshot.getChildrenCount() == 6) {
                     listData.list_add_data(snapshot.getValue(Data.class));
+                    graphViewModel.updateData(snapshot.getValue(Data.class));
                     //chargerDonner();
                     //actuValues();
 
