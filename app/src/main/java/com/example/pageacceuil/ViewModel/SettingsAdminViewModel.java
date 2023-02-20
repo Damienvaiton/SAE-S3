@@ -20,7 +20,7 @@ public class SettingsAdminViewModel extends ViewModel {
         MutableLiveData<ArrayList<ListData>> listenerDataAdmin = new MutableLiveData<>();
             MutableLiveData<Data> listenerData = new MutableLiveData<>();
             database.setPrechargeDonnee();
-            listenerData.postValue(FirebaseAccess.getInstance().getNewData());
+        //   listenerData.postValue(FirebaseAccess.getInstance().getNewData());
             return listenerDataAdmin;
         }
 

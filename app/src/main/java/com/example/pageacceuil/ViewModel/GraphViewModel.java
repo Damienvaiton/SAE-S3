@@ -17,15 +17,23 @@ ESP currentEsp;
     public GraphViewModel() {
         this.acess =FirebaseAccess.getInstance();
         this.currentEsp =ESP.getInstance();
+        acess.setGraphViewModel(this);
         acess.setPrechargeDonnee();
         acess.setRealtimeDataListener();
         acess.setTimeListener(currentEsp);
     }
 
+ /*   public void notifyData(){
+        getData();
+    }
+    public void notifyTemps(){
 
+    }
+*/
     public LiveData<Data> getData(Data data) {
         MutableLiveData<Data> listenerData = new MutableLiveData<>();
         listenerData.postValue(data);
+        System.out.println("c mihswecs<");
         return listenerData;
     }
     public LiveData<String> getTemps() {

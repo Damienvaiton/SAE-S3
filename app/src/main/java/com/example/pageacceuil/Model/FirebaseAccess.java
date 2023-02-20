@@ -137,9 +137,9 @@ public class FirebaseAccess {
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 DataSnapshot tab = task.getResult();
                 if (tab.exists()) {
-                    for (int i = 0; i < tab.getChildrenCount(); i++) {
-                        listData.list_add_data(tab.child(i + "").getValue(Data.class));
-                    }
+                    for (DataSnapshot dataSnapshot :tab.getChildren()) {
+                        listData.list_add_data(dataSnapshot.getValue(Data.class));
+                        graphViewModel.getData(dataSnapshot.getValue(Data.class));                    }
                     //Faire toute mes requetes ici et listener
                 }
             }
@@ -148,7 +148,7 @@ public class FirebaseAccess {
         if (listData.list_size() != 0) {
             return true;
         }
-        System.out.println("Impossible d'accéder au données");
+        System.out.println("Impossible d'accéder au données précharge");
         return false;
     }
 
@@ -170,7 +170,6 @@ public class FirebaseAccess {
                     if (snapshot.getValue(Long.class) >= 1000) {
                         seconde = (snapshot.getValue(Long.class) % (1000 * 60)) / 1000 + "s";
                     }
-                    System.out.println(seconde + "oooo");
                     System.out.println(heure + minute + seconde + "yoooooooooooooooooo");
                     currentESP.tauxRafrai = heure + minute + seconde;
                     System.out.println(currentESP.getTauxRafrai());
@@ -219,6 +218,7 @@ public class FirebaseAccess {
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                System.out.println("realtime");
                 if (snapshot.getChildrenCount() == 6) {
                     listData.list_add_data(snapshot.getValue(Data.class));
                     //chargerDonner();
@@ -244,6 +244,7 @@ public class FirebaseAccess {
             }
         };
         myRef.child("ESP32").child(currentESP.getMacEsp()).child("Mesure").addChildEventListener(RealtimeDataListener);
+
     }
 
 

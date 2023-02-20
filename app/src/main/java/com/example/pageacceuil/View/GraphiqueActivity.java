@@ -101,6 +101,7 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.activity_graph_page);
 
         graphViewModel=new ViewModelProvider(this).get(GraphViewModel.class);
+
        /* Intent intent = getIntent();
         if (intent != null) {
             if (intent.hasExtra("choixESP")) {
@@ -114,10 +115,11 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
         }*/
 
 
-        graphViewModel.getData(null).observe(this, new Observer<Data>() {
+        graphViewModel.getData(new Data()).observe(this, new Observer<Data>() {
             @Override
             public void onChanged(Data data) {
-                System.out.println("yo");
+
+                System.out.println("yo c moa new data");
             }
         });
 
