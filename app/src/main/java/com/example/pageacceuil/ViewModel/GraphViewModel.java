@@ -8,30 +8,40 @@ import com.example.pageacceuil.Model.Data;
 import com.example.pageacceuil.Model.ESP;
 import com.example.pageacceuil.Model.FirebaseAccess;
 
+import java.util.ArrayList;
+
 public class GraphViewModel extends ViewModel {
 FirebaseAccess acess;
 ESP currentEsp;
 
+    ArrayList<Data> datas;
     public GraphViewModel() {
         this.acess =FirebaseAccess.getInstance();
         this.currentEsp =ESP.getInstance();
-        acess.setGraphViewModel(this);
-
+        acess.setGraphViewModel(this);;
         acess.setRealtimeDataListener();
         acess.setTimeListener(currentEsp);
     }
 
-    private final MutableLiveData<Data> listenerData = new MutableLiveData<>();
+  //  private final MutableLiveData<Data> listenerData = new MutableLiveData<>();
+    private final MutableLiveData<ArrayList<Data>> listenerDatas = new MutableLiveData<ArrayList<Data>>(new ArrayList<>());
     private final MutableLiveData<String> listenerTemps = new MutableLiveData<>();
-    public LiveData<Data> getData() {
+  /*  public LiveData<Data> getData() {
 
                 return listenerData;
+    }
+*/
+    public LiveData getAllData() {
+        return listenerDatas;
     }
 
     public void updateData(Data data) {
         System.out.println("update data");
-        listenerData.postValue(data);
-    }
+            datas = listenerDatas.getValue();
+            datas.add(data);
+            listenerDatas.postValue(datas);
+        }
+
 
   /*  public LiveData<Data> getData(Data data) {
         MutableLiveData<Data> listenerData = new MutableLiveData<>();

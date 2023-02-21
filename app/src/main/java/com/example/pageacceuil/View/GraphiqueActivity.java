@@ -16,8 +16,12 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.pageacceuil.Model.Data;
+import com.example.pageacceuil.Model.ESP;
+import com.example.pageacceuil.Model.FirebaseAccess;
+import com.example.pageacceuil.Model.ListData;
 import com.example.pageacceuil.R;
 import com.example.pageacceuil.ViewModel.GraphViewModel;
+import com.example.pageacceuil.ViewModel.XAxisValueFormatter;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -45,14 +49,9 @@ import java.io.FileOutputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-import com.example.pageacceuil.Model.ESP;
-import com.example.pageacceuil.Model.FirebaseAccess;
-import com.example.pageacceuil.Model.ListData;
-import com.example.pageacceuil.ViewModel.XAxisValueFormatter;
-
 public class GraphiqueActivity extends AppCompatActivity implements View.OnClickListener, BottomNavigationView.OnNavigationItemSelectedListener {
 
-    public ListData listData;
+
 
     ArrayList<Entry> A_temp = new ArrayList<>();
     ArrayList<Entry> A_lux = new ArrayList<>();
@@ -94,6 +93,7 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
     private XAxis xl;
 
     private GraphViewModel graphViewModel= null;
+    ArrayList<Data> alldata = new ArrayList();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,23 +115,35 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
         }*/
 
 
-        graphViewModel.getData().observe(this, new Observer<Data>() {
+    /*    graphViewModel.getData().observe(this, new Observer<Data>() {
             @Override
             public void onChanged(Data data) {
+
+                alldata.add(data);
+
                 System.out.println("new data view");
                 actuValues(data);
                 chargerDonner(data);
             }
+        });*/
+
+        graphViewModel.getAllData().observe(this, new Observer<ArrayList<Data>>() {
+            @Override
+            public void onChanged(ArrayList<Data> list) {
+                alldata.add(list.get(list.size()-1));
+                actuValues(alldata.get(alldata.size()-1));
+                chargerDonner(alldata.get(alldata.size()-1));
+            }
         });
 
-graphViewModel.getTemps().observe(this, new Observer<String>() {
-    @Override
-    public void onChanged(String s) {
-        System.out.println("graphpage"+s);
-        valTemp.setText(s);
+        graphViewModel.getTemps().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                System.out.println("graphpage"+s);
+                valTemp.setText(s);
 
-    }
-});
+            }
+        });
         ListData listData = ListData.getInstance();
         FirebaseAccess database = FirebaseAccess.getInstance();
         ESP currentESP = ESP.getInstance();
@@ -188,7 +200,7 @@ graphViewModel.getTemps().observe(this, new Observer<String>() {
         xl.setDrawGridLines(true);
         xl.setEnabled(true);
         xl.setAvoidFirstLastClipping(false);
-        xl.setValueFormatter(new XAxisValueFormatter(listData));
+        xl.setValueFormatter(new XAxisValueFormatter(alldata));
         System.out.println(xl.mEntries.length);
         xl.mEntryCount = 0;
 
@@ -436,7 +448,7 @@ graphViewModel.getTemps().observe(this, new Observer<String>() {
     }
 
     private void exportFile() {
-        int cptLignes = listData.list_size() - 1;
+        int cptLignes = alldata.size() - 1;
         if (cptLignes < 1) {
             Toast.makeText(this, "Export excel annulé, pas de valeurs", Toast.LENGTH_SHORT).show();
             return;
@@ -490,12 +502,12 @@ graphViewModel.getTemps().observe(this, new Observer<String>() {
         for (int i = 0; i < cptLignes; i++) {
             XSSFRow row = sheet.createRow(i + 1);
             row.createCell(0).setCellValue(i);
-            row.createCell(1).setCellValue(listData.recup_data(i).getHumidite());
-            row.createCell(2).setCellValue(listData.recup_data(i).getTemperature());
-            row.createCell(3).setCellValue(listData.recup_data(i).getCO2());
-            row.createCell(4).setCellValue(listData.recup_data(i).getO2());
-            row.createCell(5).setCellValue(listData.recup_data(i).getLight());
-            row.createCell(6).setCellValue(listData.recup_data(i).getTemps());
+            row.createCell(1).setCellValue(alldata.get(i).getHumidite());
+            row.createCell(2).setCellValue(alldata.get(i).getTemperature());
+            row.createCell(3).setCellValue(alldata.get(i).getCO2());
+            row.createCell(4).setCellValue(alldata.get(i).getO2());
+            row.createCell(5).setCellValue(alldata.get(i).getLight());
+            row.createCell(6).setCellValue(alldata.get(i).getTemps());
         }
 
         // Création du fichier
@@ -522,22 +534,22 @@ graphViewModel.getTemps().observe(this, new Observer<String>() {
     }
 
     private boolean isDataValid(int cptLignes) {
-        if (listData.recup_data(cptLignes).getCO2() == 0) {
+        if (alldata.get(cptLignes).getCO2() == 0) {
             return false;
         }
-        if (listData.recup_data(cptLignes).getTemperature() == 0) {
+        if (alldata.get(cptLignes).getTemperature() == 0) {
             return false;
         }
-        if (listData.recup_data(cptLignes).getHumidite() == 0) {
+        if (alldata.get(cptLignes).getHumidite() == 0) {
             return false;
         }
-        if (listData.recup_data(cptLignes).getO2() == 0) {
+        if (alldata.get(cptLignes).getO2() == 0) {
             return false;
         }
-        if (listData.recup_data(cptLignes).getLight() == 0) {
+        if (alldata.get(cptLignes).getLight() == 0) {
             return false;
         }
-        return listData.recup_data(cptLignes).getTemps() != "";
+        return alldata.get(cptLignes).getTemps() != "";
     }
 
     @Override

@@ -10,7 +10,6 @@ public class AppApplication extends Application {
     public void onCreate() {
         super.onCreate();
         FirebaseAccess database=FirebaseAccess.getInstance();
-        System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
         // je peux initialiser des données ici.
         //lancé une seule fois à l'init de l'app
         // pour repasser ici il faut killer l'application et la relancer

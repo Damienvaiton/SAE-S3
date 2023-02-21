@@ -1,16 +1,19 @@
 package com.example.pageacceuil.ViewModel;
 
 
+import com.example.pageacceuil.Model.Data;
 import com.example.pageacceuil.Model.ListData;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 
+import java.util.ArrayList;
+
 public class XAxisValueFormatter extends IndexAxisValueFormatter {
 
-    private final ListData listData;
+    private final ArrayList<Data> datas;
 
 
-    public XAxisValueFormatter(ListData listData) {
-        this.listData = listData;
+    public XAxisValueFormatter(ArrayList<Data> datas) {
+        this.datas = datas;
     }
 
     @Override
