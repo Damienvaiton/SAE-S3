@@ -7,10 +7,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
-import com.example.pageacceuil.ViewModel.AccueilViewModel;
-import com.example.pageacceuil.ViewModel.ConnectAdminViewModel;
 import com.example.pageacceuil.ViewModel.GraphViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -138,6 +135,7 @@ public class FirebaseAccess {
                 DataSnapshot tab = task.getResult();
                 if (tab.exists()) {
                     for (DataSnapshot dataSnapshot :tab.getChildren()) {
+                        System.out.println("je passe");
                         listData.list_add_data(dataSnapshot.getValue(Data.class));
                         graphViewModel.updateData(dataSnapshot.getValue(Data.class));                    }
                     //Faire toute mes requetes ici et listener

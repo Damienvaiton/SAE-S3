@@ -8,8 +8,6 @@ import com.example.pageacceuil.Model.Data;
 import com.example.pageacceuil.Model.ESP;
 import com.example.pageacceuil.Model.FirebaseAccess;
 
-import java.util.ArrayList;
-
 public class GraphViewModel extends ViewModel {
 FirebaseAccess acess;
 ESP currentEsp;
@@ -18,7 +16,7 @@ ESP currentEsp;
         this.acess =FirebaseAccess.getInstance();
         this.currentEsp =ESP.getInstance();
         acess.setGraphViewModel(this);
-        acess.setPrechargeDonnee();
+
         acess.setRealtimeDataListener();
         acess.setTimeListener(currentEsp);
     }
@@ -26,7 +24,8 @@ ESP currentEsp;
     private final MutableLiveData<Data> listenerData = new MutableLiveData<>();
     private final MutableLiveData<String> listenerTemps = new MutableLiveData<>();
     public LiveData<Data> getData() {
-        return listenerData;
+
+                return listenerData;
     }
 
     public void updateData(Data data) {
