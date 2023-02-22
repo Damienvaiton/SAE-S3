@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel;
 import com.example.pageacceuil.Model.Data;
 import com.example.pageacceuil.Model.ESP;
 import com.example.pageacceuil.Model.FirebaseAccess;
+import com.example.pageacceuil.R;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
@@ -18,57 +19,8 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import java.util.ArrayList;
 
 public class GraphViewModel extends ViewModel {
-FirebaseAccess acess;
-ESP currentEsp;
-
-    ArrayList<Data> datas;
-    public GraphViewModel() {
-        this.acess =FirebaseAccess.getInstance();
-        this.currentEsp =ESP.getInstance();
-        acess.setGraphViewModel(this);
-        acess.setRealtimeDataListener();
-        acess.setTimeListener(currentEsp);
-    }
-
-  //  private final MutableLiveData<Data> listenerData = new MutableLiveData<>();
-    private final MutableLiveData<ArrayList<Data>> listenerDatas = new MutableLiveData<ArrayList<Data>>(new ArrayList<>());
-    private final MutableLiveData<String> listenerTemps = new MutableLiveData<>();
-  /*  public LiveData<Data> getData() {
-
-                return listenerData;
-    }
-*/
-    public LiveData getAllData() {
-        return listenerDatas;
-    }
-
-    public void updateData(Data data) {
-        System.out.println("update data");
-        datas.add(data);
-       chargerDonner(data);
-          /*  datas = listenerDatas.getValue();
-            datas.add(data);
-            listenerDatas.postValue(datas);*/
-        }
-
-
-  /*  public LiveData<Data> getData(Data data) {
-        MutableLiveData<Data> listenerData = new MutableLiveData<>();
-        listenerData.postValue(data);
-        System.out.println("c mihswecs<");
-        return listenerData;
-    }*/
-    public LiveData<String> getTemps() {
-        listenerTemps.postValue(currentEsp.getTauxRafrai());
-        return listenerTemps;
-    }
-    @Override
-    protected void onCleared() {
-        super.onCleared();
-    }
-
-// à partir d'ici test
-
+    FirebaseAccess acess;
+    ESP currentEsp;
     ArrayList<Entry> A_temp = new ArrayList<>();
     ArrayList<Entry> A_lux = new ArrayList<>();
     ArrayList<Entry> A_CO2 = new ArrayList<>();
@@ -85,29 +37,98 @@ ESP currentEsp;
     LineDataSet setTemp = new LineDataSet(A_temp, "Température");
     LineDataSet setLux = new LineDataSet(A_lux, "Lux");
 
-    boolean boxCO2=false;
-    public void act(){
-        boxCO2=true;
-        System.out.println("act");
-        creaGraph();
+    boolean boxCO2 = false;
+    boolean boxHumi = false;
+    boolean boxO2 = false;
+    boolean boxTemp = false;
+    boolean boxLux = false;
+
+
+    ArrayList<Data> datas;
+
+    public GraphViewModel() {
+        this.acess = FirebaseAccess.getInstance();
+        this.currentEsp = ESP.getInstance();
+        acess.setGraphViewModel(this);
+        acess.setPrechargeDonnee();
+        acess.setRealtimeDataListener();
+        acess.setTimeListener(currentEsp);
+        datas = new ArrayList<>();
+    }
+
+    private final MutableLiveData<Data> listenerData = new MutableLiveData<>();
+    private final MutableLiveData<String> listenerTemps = new MutableLiveData<>();
+    private final MutableLiveData<LineData> updateGraph = new MutableLiveData<>();
+
+    public LiveData getUpdateGraph() {
+        return updateGraph;
+    }
+
+    public void updateData(Data data) {
+        if (data != null) {
+            System.out.println("update data");
+            listenerData.postValue(data);
+            datas.add(data);
+            chargerDonner(data);
+        }
+    }
+
+    public LiveData<Data> getData() {
+        return listenerData;
+    }
+
+    public LiveData<String> getMoments() {
+        listenerTemps.postValue(currentEsp.getTauxRafrai());
+        return listenerTemps;
+    }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+    }
+
+
+    public void notifyCheck(int id) {
+        switch (id) {
+            case R.id.boxCO2:
+                boxCO2 = !boxCO2;
+                creaGraph();
+                break;
+            case R.id.boxTemp:
+                boxTemp = !boxTemp;
+                creaGraph();
+                break;
+            case R.id.boxO2:
+                boxO2 = !boxO2;
+                creaGraph();
+                break;
+            case R.id.boxHumi:
+                boxHumi = !boxHumi;
+                creaGraph();
+                break;
+            case R.id.boxLux:
+                boxLux = !boxLux;
+                creaGraph();
+                break;
+        }
     }
 
     void chargerDonner(Data data) {
         System.out.println("charger donner");
-        A_CO2.add(new Entry(A_CO2.size()-1, data.getCO2()));
-        A_temp.add(new Entry(A_temp.size()-1, data.getTemperature()));
-        A_humi.add(new Entry(A_CO2.size()-1, data.getHumidite()));
-        A_O2.add(new Entry(A_CO2.size()-1, data.getO2()));
-        A_lux.add(new Entry(A_CO2.size()-1, data.getLight()));
+        A_CO2.add(new Entry(A_CO2.size() - 1, data.getCO2()));
+        A_temp.add(new Entry(A_temp.size() - 1, data.getTemperature()));
+        A_humi.add(new Entry(A_CO2.size() - 1, data.getHumidite()));
+        A_O2.add(new Entry(A_CO2.size() - 1, data.getO2()));
+        A_lux.add(new Entry(A_CO2.size() - 1, data.getLight()));
         creaGraph();
     }
+
     void creaGraph() {
         System.out.println("créa graph");
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
 
 
         if (boxCO2) {
-            A_CO2.add(new Entry(A_CO2.size()-1,23F));
             setCO2 = new LineDataSet(A_CO2, "CO2");
             paramSet(setCO2);
             choixAxe(setCO2);
@@ -115,7 +136,7 @@ ESP currentEsp;
             setCO2.setCircleColor(Color.RED);
             dataSets.add(setCO2);
         }
-      /*  if (boxTemp.isChecked()) {
+        if (boxTemp) {
             setTemp = new LineDataSet(A_temp, "Température");
             paramSet(setTemp);
             choixAxe(setTemp);
@@ -124,7 +145,7 @@ ESP currentEsp;
             dataSets.add(setTemp);
         }
 
-        if (boxHumi.isChecked()) {
+        if (boxHumi) {
             setHumi = new LineDataSet(A_humi, "Humidité");
             paramSet(setHumi);
             choixAxe(setHumi);
@@ -132,7 +153,7 @@ ESP currentEsp;
             setHumi.setCircleColor(Color.MAGENTA);
             dataSets.add(setHumi);
         }
-        if (boxO2.isChecked()) {
+        if (boxO2) {
             setO2 = new LineDataSet(A_O2, "O2");
             paramSet(setO2);
             choixAxe(setO2);
@@ -140,7 +161,7 @@ ESP currentEsp;
             setO2.setCircleColor(Color.BLACK);
             dataSets.add(setO2);
         }
-        if (boxLux.isChecked()) {
+        if (boxLux) {
             setLux = new LineDataSet(A_lux, "Lux");
             paramSet(setLux);
             choixAxe(setLux);
@@ -148,7 +169,7 @@ ESP currentEsp;
             setLux.setCircleColor(Color.YELLOW);
             dataSets.add(setLux);
 
-        }*/
+        }
         updateGraph.postValue(new LineData(dataSets));
         leftAxisUsed = false;
         rightAxisUsed = false;
@@ -161,8 +182,16 @@ ESP currentEsp;
         set.setCircleHoleRadius(1f);
         set.setValueTextColor(Color.BLACK);
         set.setDrawValues(false);
+
     }
 
+    /*private void initGraph(){
+        paramSet(setCO2);
+        paramSet(setTemp);
+        paramSet(setO2);
+        paramSet(setLux);
+        paramSet(setHumi);
+    }*/
     void choixAxe(LineDataSet data) {
         if (!leftAxisUsed) {
             data.setAxisDependency(YAxis.AxisDependency.LEFT);
@@ -179,13 +208,6 @@ ESP currentEsp;
             data.setValueTextSize(15);
         }
     }
-
-    private final MutableLiveData<LineData> updateGraph = new MutableLiveData<>();
-
-    public LiveData getUpdateGraph() {
-        return updateGraph;
-    }
-
 
 
 

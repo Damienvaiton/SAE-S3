@@ -16,8 +16,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.pageacceuil.Model.Data;
-import com.example.pageacceuil.Model.ESP;
-import com.example.pageacceuil.Model.FirebaseAccess;
 import com.example.pageacceuil.Model.ListData;
 import com.example.pageacceuil.R;
 import com.example.pageacceuil.ViewModel.GraphViewModel;
@@ -93,7 +91,7 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
     private XAxis xl;
 
     private GraphViewModel graphViewModel= null;
-    ArrayList<Data> alldata = new ArrayList();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,11 +100,18 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
 
         graphViewModel=new ViewModelProvider(this).get(GraphViewModel.class);
 
+        graphViewModel.getData().observe(this, new Observer<Data>() {
+            @Override
+            public void onChanged(Data data) {
+                actuValues(data);
+            }
+        });
         graphViewModel.getUpdateGraph().observe(this, new Observer<LineData>() {
             @Override
             public void onChanged(LineData linedata) {
                 graph.setData(linedata);
                 graph.invalidate();
+               // actuValues();
             }
         });
 
@@ -124,7 +129,7 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
             }
         });
 */
-        graphViewModel.getTemps().observe(this, new Observer<String>() {
+        graphViewModel.getMoments().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
                 System.out.println("graphpage"+s);
@@ -133,10 +138,6 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
             }
         });
         ListData listData = ListData.getInstance();
-        FirebaseAccess database = FirebaseAccess.getInstance();
-        ESP currentESP = ESP.getInstance();
-
-
 
 
         valTemp = findViewById(R.id.viewTime);
@@ -188,8 +189,7 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
         xl.setDrawGridLines(true);
         xl.setEnabled(true);
         xl.setAvoidFirstLastClipping(false);
-        xl.setValueFormatter(new XAxisValueFormatter(alldata));
-        xl.mEntryCount = 0;
+        xl.setValueFormatter(new XAxisValueFormatter(listData));
 
 
         //Création Axe Y droit
@@ -230,113 +230,6 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
     }
 
 
-/*
-    void chargerDonner(Data data) {
-        A_CO2.add(new Entry(A_CO2.size()-1, data.getCO2()));
-        A_temp.add(new Entry(A_temp.size()-1, data.getTemperature()));
-        A_humi.add(new Entry(A_CO2.size()-1, data.getHumidite()));
-        A_O2.add(new Entry(A_CO2.size()-1, data.getO2()));
-        A_lux.add(new Entry(A_CO2.size()-1, data.getLight()));
-        creaGraph();
-    }
-*/
-
-/*
-    void chargerDonner() {
-        A_CO2.add(new Entry(listData.list_size(), listData.recup_data(listData.list_size() - 1).getCO2()));
-        A_lux.add(new Entry(listData.list_size(), listData.recup_data(listData.list_size() - 1).getLight()));
-        A_O2.add(new Entry(listData.list_size(), listData.recup_data(listData.list_size() - 1).getO2()));
-        A_temp.add(new Entry(listData.list_size(), listData.recup_data(listData.list_size() - 1).getTemperature()));
-        A_humi.add(new Entry(listData.list_size(), listData.recup_data(listData.list_size() - 1).getHumidite()));
-        creaGraph();
-    }
-*/
-
-
-   /* void creaGraph() {
-        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-
-
-        if (boxCO2.isChecked()) {
-            setCO2 = new LineDataSet(A_CO2, "CO2");
-            paramSet(setCO2);
-            choixAxe(setCO2);
-            setCO2.setColor(Color.RED);
-            setCO2.setCircleColor(Color.RED);
-            dataSets.add(setCO2);
-        }
-        if (boxTemp.isChecked()) {
-            setTemp = new LineDataSet(A_temp, "Température");
-            paramSet(setTemp);
-            choixAxe(setTemp);
-            setTemp.setColor(Color.BLUE);
-            setTemp.setCircleColor(Color.BLUE);
-            dataSets.add(setTemp);
-        }
-
-        if (boxHumi.isChecked()) {
-            setHumi = new LineDataSet(A_humi, "Humidité");
-            paramSet(setHumi);
-            choixAxe(setHumi);
-            setHumi.setColor(Color.MAGENTA);
-            setHumi.setCircleColor(Color.MAGENTA);
-            dataSets.add(setHumi);
-        }
-        if (boxO2.isChecked()) {
-            setO2 = new LineDataSet(A_O2, "O2");
-            paramSet(setO2);
-            choixAxe(setO2);
-            setO2.setColor(Color.BLACK);
-            setO2.setCircleColor(Color.BLACK);
-            dataSets.add(setO2);
-        }
-        if (boxLux.isChecked()) {
-            setLux = new LineDataSet(A_lux, "Lux");
-            paramSet(setLux);
-            choixAxe(setLux);
-            setLux.setColor(Color.YELLOW);
-            setLux.setCircleColor(Color.YELLOW);
-            dataSets.add(setLux);
-
-        }
-
-
-        LineData data = new LineData(dataSets);
-        graph.setData(data);
-        data.notifyDataChanged();
-        graph.notifyDataSetChanged();
-        graph.invalidate();
-        leftAxisUsed = false;
-        rightAxisUsed = false;
-    }*/
-
-/*    void choixAxe(LineDataSet data) {
-        if (!leftAxisUsed) {
-            data.setAxisDependency(YAxis.AxisDependency.LEFT);
-            leftAxisName = data.getLabel();
-            leftAxisUsed = true;
-            return;
-        } else if (!rightAxisUsed) {
-            data.setAxisDependency(YAxis.AxisDependency.RIGHT);
-            rightAxisName = data.getLabel();
-            rightAxisUsed = true;
-            return;
-        } else {
-            data.setDrawValues(true);
-            data.setValueTextSize(10);
-        }
-    }*/
-
-
-   /* private void paramSet(LineDataSet set) {
-        set.setFillAlpha(120);
-        set.setLineWidth(2.5f);
-        set.setCircleRadius(3.5f);
-        set.setCircleHoleRadius(1f);
-        set.setValueTextColor(Color.BLACK);
-        set.setDrawValues(false);
-    }
-*/
     void actuValues(Data data) {
         DecimalFormat a = new DecimalFormat("##.###");
         if (data.getTemperature() != 0) {
@@ -355,27 +248,6 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
             viewHumi.setText(a.format(data.getHumidite()) + "%");
         }
     }
-
-   /* void actuValues() {
-        int pos = listData.list_size() - 1;
-        DecimalFormat a = new DecimalFormat("##.###");
-        if (listData.recup_data(pos).getTemperature() != 0) {
-            viewTemp.setText(a.format(listData.recup_data(pos).getTemperature()) + "°");
-        }
-        if (listData.recup_data(pos).getLight() != 0) {
-            viewLux.setText(a.format(listData.recup_data(pos).getLight()) + "l");
-        }
-        if (listData.recup_data(pos).getCO2() != 0) {
-            viewCO2.setText(a.format(listData.recup_data(pos).getCO2()) + "%");
-        }
-        if (listData.recup_data(pos).getO2() != 0) {
-            viewO2.setText(a.format(listData.recup_data(pos).getO2()) + "%");
-        }
-        if (listData.recup_data(pos).getHumidite() != 0) {
-            viewHumi.setText(a.format(listData.recup_data(pos).getHumidite()) + "%");
-        }
-    }*/
-
 
     void paramGraph() {
         graph.setNoDataText("Aucune données reçu pour le moment");
@@ -434,9 +306,9 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
         }
         return false;
     }
-
     private void exportFile() {
-        int cptLignes = alldata.size() - 1;
+        ListData listData=ListData.getInstance();
+        int cptLignes = listData.list_size() - 1;
         if (cptLignes < 1) {
             Toast.makeText(this, "Export excel annulé, pas de valeurs", Toast.LENGTH_SHORT).show();
             return;
@@ -490,12 +362,12 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
         for (int i = 0; i < cptLignes; i++) {
             XSSFRow row = sheet.createRow(i + 1);
             row.createCell(0).setCellValue(i);
-            row.createCell(1).setCellValue(alldata.get(i).getHumidite());
-            row.createCell(2).setCellValue(alldata.get(i).getTemperature());
-            row.createCell(3).setCellValue(alldata.get(i).getCO2());
-            row.createCell(4).setCellValue(alldata.get(i).getO2());
-            row.createCell(5).setCellValue(alldata.get(i).getLight());
-            row.createCell(6).setCellValue(alldata.get(i).getTemps());
+            row.createCell(1).setCellValue(listData.recup_data(i).getHumidite());
+            row.createCell(2).setCellValue(listData.recup_data(i).getTemperature());
+            row.createCell(3).setCellValue(listData.recup_data(i).getCO2());
+            row.createCell(4).setCellValue(listData.recup_data(i).getO2());
+            row.createCell(5).setCellValue(listData.recup_data(i).getLight());
+            row.createCell(6).setCellValue(listData.recup_data(i).getTemps());
         }
 
         // Création du fichier
@@ -522,60 +394,34 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
     }
 
     private boolean isDataValid(int cptLignes) {
-        if (alldata.get(cptLignes).getCO2() == 0) {
+        ListData listData=ListData.getInstance();
+        if (listData.recup_data(cptLignes).getCO2() == 0) {
             return false;
         }
-        if (alldata.get(cptLignes).getTemperature() == 0) {
+        if (listData.recup_data(cptLignes).getTemperature() == 0) {
             return false;
         }
-        if (alldata.get(cptLignes).getHumidite() == 0) {
+        if (listData.recup_data(cptLignes).getHumidite() == 0) {
             return false;
         }
-        if (alldata.get(cptLignes).getO2() == 0) {
+        if (listData.recup_data(cptLignes).getO2() == 0) {
             return false;
         }
-        if (alldata.get(cptLignes).getLight() == 0) {
+        if (listData.recup_data(cptLignes).getLight() == 0) {
             return false;
         }
-        return alldata.get(cptLignes).getTemps() != "";
+        return listData.recup_data(cptLignes).getTemps() != "";
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.boxCO2:
-                graphViewModel.act();
-               /* if (setCO2.getAxisDependency() != null) {
-                    //Géré le fait qu'il y en ai plus de 2, genre boolean qui compte
-                    System.out.println("yoc02");
-                    desacAxe(setCO2.getAxisDependency());
-                    setCO2.setAxisDependency(null);
-                }*/
             case R.id.boxTemp:
-               /* if (setTemp.getAxisDependency() != null) {
-                    desacAxe(setTemp.getAxisDependency());
-                    System.out.println("yotemp");
-                    setTemp.setAxisDependency(null);
-                }*/
             case R.id.boxO2:
-               /* if (setO2.getAxisDependency() != null) {
-                    desacAxe(setO2.getAxisDependency());
-                    System.out.println("yo02");
-                    setO2.setAxisDependency(null);
-                }*/
             case R.id.boxHumi:
-               /* if (setHumi.getAxisDependency() != null) {
-                    desacAxe(setHumi.getAxisDependency());
-                    System.out.println("yohumi");
-                    setHumi.setAxisDependency(null);
-                }*/
             case R.id.boxLux:
-               /* if (setLux.getAxisDependency() != null) {
-                    desacAxe(setLux.getAxisDependency());
-                    System.out.println("yolux");
-                    setLux.setAxisDependency(null);
-                }*/
-                //creaGraph();
+                graphViewModel.notifyCheck(v.getId());
                 break;
         }
     }

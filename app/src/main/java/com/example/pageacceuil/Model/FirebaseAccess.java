@@ -216,8 +216,8 @@ public class FirebaseAccess {
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                System.out.println("realtime");
                 if (snapshot.getChildrenCount() == 6) {
+                    System.out.println("realtime");
                     listData.list_add_data(snapshot.getValue(Data.class));
                     graphViewModel.updateData(snapshot.getValue(Data.class));
                     //chargerDonner();
