@@ -29,7 +29,6 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -74,6 +73,7 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
 
 
     private CheckBox boxO2;
+
     private CheckBox boxCO2;
     private CheckBox boxTemp;
     private CheckBox boxHumi;
@@ -102,40 +102,28 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
 
         graphViewModel=new ViewModelProvider(this).get(GraphViewModel.class);
 
-       /* Intent intent = getIntent();
-        if (intent != null) {
-            if (intent.hasExtra("choixESP")) {
-                this.choixESP = (String) intent.getSerializableExtra("choixESP");
-            }
-            if (intent.hasExtra("nomESP")) {
-                this.nomESP = (String) intent.getSerializableExtra("nomESP");
-            } else {
-                System.out.println("Impossible de récup num ESP");
-            }
-        }*/
-
-
-    /*    graphViewModel.getData().observe(this, new Observer<Data>() {
+        graphViewModel.getUpdateGraph().observe(this, new Observer<LineData>() {
             @Override
-            public void onChanged(Data data) {
-
-                alldata.add(data);
-
-                System.out.println("new data view");
-                actuValues(data);
-                chargerDonner(data);
-            }
-        });*/
-
-        graphViewModel.getAllData().observe(this, new Observer<ArrayList<Data>>() {
-            @Override
-            public void onChanged(ArrayList<Data> list) {
-                alldata.add(list.get(list.size()-1));
-                actuValues(alldata.get(alldata.size()-1));
-                chargerDonner(alldata.get(alldata.size()-1));
+            public void onChanged(LineData linedata) {
+                graph.setData(linedata);
+                graph.invalidate();
             }
         });
 
+
+       /* graphViewModel.getAllData().observe(this, new Observer<ArrayList<Data>>() {
+            @Override
+            public void onChanged(ArrayList<Data> list) {
+                System.out.println("ut"+list.size());
+                if(list.size()!=0) {
+                    alldata.add(list.get(list.size() - 1));
+                    actuValues(alldata.get(alldata.size() - 1));
+                    chargerDonner(alldata.get(alldata.size() - 1));
+                    System.out.println(alldata.get(alldata.size() - 1).getTemps());
+                }
+            }
+        });
+*/
         graphViewModel.getTemps().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
@@ -201,7 +189,6 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
         xl.setEnabled(true);
         xl.setAvoidFirstLastClipping(false);
         xl.setValueFormatter(new XAxisValueFormatter(alldata));
-        System.out.println(xl.mEntries.length);
         xl.mEntryCount = 0;
 
 
@@ -236,7 +223,6 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
                     label = "X =";
                 }
                 Toast.makeText(getApplicationContext(), "Heure = " + listData.recup_data((int) h.getX() - 1).getTemps() + ", " + label + h.getY(), Toast.LENGTH_SHORT).show();
-
             }
 
         });
@@ -244,6 +230,7 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
     }
 
 
+/*
     void chargerDonner(Data data) {
         A_CO2.add(new Entry(A_CO2.size()-1, data.getCO2()));
         A_temp.add(new Entry(A_temp.size()-1, data.getTemperature()));
@@ -252,6 +239,7 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
         A_lux.add(new Entry(A_CO2.size()-1, data.getLight()));
         creaGraph();
     }
+*/
 
 /*
     void chargerDonner() {
@@ -265,7 +253,7 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
 */
 
 
-    void creaGraph() {
+   /* void creaGraph() {
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
 
 
@@ -320,9 +308,9 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
         graph.invalidate();
         leftAxisUsed = false;
         rightAxisUsed = false;
-    }
+    }*/
 
-    void choixAxe(LineDataSet data) {
+/*    void choixAxe(LineDataSet data) {
         if (!leftAxisUsed) {
             data.setAxisDependency(YAxis.AxisDependency.LEFT);
             leftAxisName = data.getLabel();
@@ -337,10 +325,10 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
             data.setDrawValues(true);
             data.setValueTextSize(10);
         }
-    }
+    }*/
 
 
-    private void paramSet(LineDataSet set) {
+   /* private void paramSet(LineDataSet set) {
         set.setFillAlpha(120);
         set.setLineWidth(2.5f);
         set.setCircleRadius(3.5f);
@@ -348,7 +336,7 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
         set.setValueTextColor(Color.BLACK);
         set.setDrawValues(false);
     }
-
+*/
     void actuValues(Data data) {
         DecimalFormat a = new DecimalFormat("##.###");
         if (data.getTemperature() != 0) {
@@ -556,6 +544,7 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.boxCO2:
+                graphViewModel.act();
                /* if (setCO2.getAxisDependency() != null) {
                     //Géré le fait qu'il y en ai plus de 2, genre boolean qui compte
                     System.out.println("yoc02");
@@ -586,8 +575,11 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
                     System.out.println("yolux");
                     setLux.setAxisDependency(null);
                 }*/
-                creaGraph();
+                //creaGraph();
                 break;
         }
     }
+    //A partir d'ici test mvvm
+
+
 }
