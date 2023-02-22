@@ -3,7 +3,6 @@ package com.example.pageacceuil.View;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
@@ -16,7 +15,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.pageacceuil.Model.Data;
-import com.example.pageacceuil.Model.ListData;
 import com.example.pageacceuil.R;
 import com.example.pageacceuil.ViewModel.GraphViewModel;
 import com.example.pageacceuil.ViewModel.XAxisValueFormatter;
@@ -25,42 +23,15 @@ import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import org.apache.poi.ss.usermodel.ConditionalFormattingRule;
-import org.apache.poi.ss.usermodel.IndexedColors;
-import org.apache.poi.ss.usermodel.PatternFormatting;
-import org.apache.poi.ss.usermodel.SheetConditionalFormatting;
-import org.apache.poi.ss.util.CellRangeAddress;
-import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
-import java.io.File;
-import java.io.FileOutputStream;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 
 public class GraphiqueActivity extends AppCompatActivity implements View.OnClickListener, BottomNavigationView.OnNavigationItemSelectedListener {
 
-
-
-    ArrayList<Entry> A_temp = new ArrayList<>();
-    ArrayList<Entry> A_lux = new ArrayList<>();
-    ArrayList<Entry> A_CO2 = new ArrayList<>();
-    ArrayList<Entry> A_humi = new ArrayList<>();
-    ArrayList<Entry> A_O2 = new ArrayList<>();
-
-    LineDataSet setHumi = new LineDataSet(A_humi, "Humidité");
-    LineDataSet setCO2 = new LineDataSet(A_CO2, "CO2");
-    LineDataSet setO2 = new LineDataSet(A_O2, "O2");
-    LineDataSet setTemp = new LineDataSet(A_temp, "Température");
-    LineDataSet setLux = new LineDataSet(A_lux, "Lux");
     public static LineChart graph;
     private TextView viewO2;
     private TextView viewCO2;
@@ -69,29 +40,17 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
     private TextView viewHumi;
     private TextView valTemp;
 
-
     private CheckBox boxO2;
-
     private CheckBox boxCO2;
     private CheckBox boxTemp;
     private CheckBox boxHumi;
     private CheckBox boxLux;
-
-    private boolean leftAxisUsed = false;
-    private boolean rightAxisUsed = false;
-
-    private String leftAxisName = "";
-    private String rightAxisName = "";
-    private String choixESP = "";
-    private String nomESP = "";
     private BottomAppBar bottomNav;
     private BottomNavigationView bottomNavigationView;
     public static YAxis leftAxis;
     public static YAxis rightAxis;
     private XAxis xl;
-
     private GraphViewModel graphViewModel= null;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,8 +96,6 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
 
             }
         });
-        ListData listData = ListData.getInstance();
-
 
         valTemp = findViewById(R.id.viewTime);
 
@@ -189,7 +146,7 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
         xl.setDrawGridLines(true);
         xl.setEnabled(true);
         xl.setAvoidFirstLastClipping(false);
-        xl.setValueFormatter(new XAxisValueFormatter(listData));
+        xl.setValueFormatter(new XAxisValueFormatter(graphViewModel.getDatas()));
 
 
         //Création Axe Y droit
@@ -216,13 +173,13 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
             public void onValueSelected(Entry e, Highlight h) {
                 String label;
                 if (h.getAxis().name().equals("LEFT")) {
-                    label = leftAxisName + " = ";
+                    label = graphViewModel.getLeftAxisName() + " = ";
                 } else if (h.getAxis().name().equals("RIGHT")) {
-                    label = rightAxisName + " = ";
+                    label = graphViewModel.getRightAxisName() + " = ";
                 } else {
                     label = "X =";
                 }
-                Toast.makeText(getApplicationContext(), "Heure = " + listData.recup_data((int) h.getX() - 1).getTemps() + ", " + label + h.getY(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "Heure = " + graphViewModel.getDatas().get((int) h.getX() - 1).get+ ", " + label + h.getY(), Toast.LENGTH_SHORT).show();
             }
 
         });
@@ -279,16 +236,16 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
             case R.id.setting:
                 Intent openSetting;
                 openSetting = new Intent(GraphiqueActivity.this, SettingsEtuActivity.class);
-                openSetting.putExtra("choixESP", choixESP);
+               // openSetting.putExtra("choixESP", choixESP);
                 //openSetting.putExtra("Choix", listData.listD);
-                if (!nomESP.equals("")) {
-                    openSetting.putExtra("nomESP", nomESP);
+                //if (!nomESP.equals("")) {
+                  //  openSetting.putExtra("nomESP", nomESP);
+                //} J'y récup direct avec l'instance d'ESP
+                if (!graphViewModel.getLeftAxisName().equals("")) {
+                    openSetting.putExtra("leftAxisName", graphViewModel.getLeftAxisName());
                 }
-                if (!leftAxisName.equals("")) {
-                    openSetting.putExtra("leftAxisName", leftAxisName);
-                }
-                if (!rightAxisName.equals("")) {
-                    openSetting.putExtra("rightAxisName", rightAxisName);
+                if (!graphViewModel.getRightAxisName().equals("")) {
+                    openSetting.putExtra("rightAxisName", graphViewModel.getRightAxisName());
                 }
 
                 startActivity(openSetting);
@@ -296,7 +253,7 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
             case R.id.btnExport:
                 try {
                     Toast.makeText(getApplicationContext(), "Export excel commencé ", Toast.LENGTH_SHORT).show();
-                    exportFile();
+                    //exportFile();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -306,7 +263,8 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
         }
         return false;
     }
-    private void exportFile() {
+
+  /*  private void exportFile() {
         ListData listData=ListData.getInstance();
         int cptLignes = listData.list_size() - 1;
         if (cptLignes < 1) {
@@ -392,26 +350,7 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
             Toast.makeText(this, "Export excel annulé, erreur", Toast.LENGTH_SHORT).show();
         }
     }
-
-    private boolean isDataValid(int cptLignes) {
-        ListData listData=ListData.getInstance();
-        if (listData.recup_data(cptLignes).getCO2() == 0) {
-            return false;
-        }
-        if (listData.recup_data(cptLignes).getTemperature() == 0) {
-            return false;
-        }
-        if (listData.recup_data(cptLignes).getHumidite() == 0) {
-            return false;
-        }
-        if (listData.recup_data(cptLignes).getO2() == 0) {
-            return false;
-        }
-        if (listData.recup_data(cptLignes).getLight() == 0) {
-            return false;
-        }
-        return listData.recup_data(cptLignes).getTemps() != "";
-    }
+    */
 
     @Override
     public void onClick(View v) {
@@ -425,7 +364,6 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
                 break;
         }
     }
-    //A partir d'ici test mvvm
 
 
 }

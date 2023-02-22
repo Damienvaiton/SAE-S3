@@ -73,20 +73,34 @@ public class GraphViewModel extends ViewModel {
         }
     }
 
+    public void updateMoments(){
+        listenerTemps.postValue(currentEsp.getTauxRafrai());
+    }
     public LiveData<Data> getData() {
         return listenerData;
     }
 
     public LiveData<String> getMoments() {
-        listenerTemps.postValue(currentEsp.getTauxRafrai());
         return listenerTemps;
     }
+
+
+
+    public String getLeftAxisName(){
+        return leftAxisName;
+    }
+    public String getRightAxisName(){
+        return rightAxisName;
+    }
+public ArrayList getDatas(){
+        return datas;
+}
 
     @Override
     protected void onCleared() {
         super.onCleared();
+        acess.deleteListener(currentEsp.getMacEsp());
     }
-
 
     public void notifyCheck(int id) {
         switch (id) {
@@ -208,6 +222,7 @@ public class GraphViewModel extends ViewModel {
             data.setValueTextSize(15);
         }
     }
+
 
 
 
