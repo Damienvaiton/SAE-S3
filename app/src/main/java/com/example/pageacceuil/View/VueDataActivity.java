@@ -9,15 +9,16 @@ import android.widget.PopupMenu;
 import android.widget.Switch;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pageacceuil.Model.ListData;
 import com.example.pageacceuil.R;
+import com.example.pageacceuil.ViewModel.DataAdapter;
+import com.example.pageacceuil.ViewModel.VueDataViewModel;
 
 import java.io.Serializable;
-
-import com.example.pageacceuil.Model.ListData;
-import com.example.pageacceuil.ViewModel.DataAdapter;
 
 public class VueDataActivity extends AppCompatActivity implements Serializable {
 
@@ -27,6 +28,7 @@ public class VueDataActivity extends AppCompatActivity implements Serializable {
     private Switch switchDesc;
     private String ChoixTri = "Choix du Tri";
     private boolean Desc = false;
+    VueDataViewModel vueDataViewModel;
 
 
     @SuppressLint("MissingInflatedId")
@@ -34,6 +36,11 @@ public class VueDataActivity extends AppCompatActivity implements Serializable {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vue_data);
+
+        vueDataViewModel=new ViewModelProvider(this).get(VueDataViewModel.class);
+        //Faire une interface commune pour les mutablesLiveDta afin que ce firebassacess ne soit pas dépendant d'un viewmodel et les garder pour tout viewmodel ayant besoin
+
+
         btnTriChoix = findViewById(R.id.SortChoise);
         switchDesc = findViewById(R.id.switch1);
         trid = findViewById(R.id.button8);

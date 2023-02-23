@@ -1,5 +1,7 @@
 package com.example.pageacceuil.ViewModel;
 
+import static com.example.pageacceuil.Model.DataUpdate.listenerDonnées;
+
 import android.graphics.Color;
 
 import androidx.lifecycle.LiveData;
@@ -67,6 +69,27 @@ public class GraphViewModel extends ViewModel {
     public void updateData(Data data) {
         if (data != null) {
             System.out.println("update data");
+            listenerDonnées.postValue(data);
+            datas.add(data);
+            chargerDonner(data);
+        }
+    }
+
+    public void updateMoments(){
+        listenerTemps.postValue(currentEsp.getTauxRafrai());
+    }
+    public LiveData<Data> getData() {
+        return listenerDonnées;
+    }
+
+    public LiveData<String> getMoments() {
+        return listenerTemps;
+    }
+
+
+    /* public void updateData(Data data) {
+        if (data != null) {
+            System.out.println("update data");
             listenerData.postValue(data);
             datas.add(data);
             chargerDonner(data);
@@ -85,7 +108,7 @@ public class GraphViewModel extends ViewModel {
     }
 
 
-
+*/
     public String getLeftAxisName(){
         return leftAxisName;
     }

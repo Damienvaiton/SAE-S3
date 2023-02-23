@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.pageacceuil.ViewModel.GraphViewModel;
@@ -22,7 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class FirebaseAccess {
+public class FirebaseAccess implements DataUpdate{
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
     private final DatabaseReference myRef = database.getReference("SAE_S3_BD");
 
@@ -136,8 +137,10 @@ public class FirebaseAccess {
                 if (tab.exists()) {
                     for (DataSnapshot dataSnapshot :tab.getChildren()) {
                         System.out.println("je passe");
+                        updateData(dataSnapshot.getValue(Data.class));
                         listData.list_add_data(dataSnapshot.getValue(Data.class));
-                        graphViewModel.updateData(dataSnapshot.getValue(Data.class));                    }
+                        //   graphViewModel.updateData(dataSnapshot.getValue(Data.class));
+                    }
                 }else {
                     System.out.println("Impossible d'accéder au données précharge");
                 }
@@ -245,5 +248,28 @@ public class FirebaseAccess {
         myRef.child("ESP32").child(choixESP).child("Mesure").removeEventListener(valueEventListenerTemps);
         myRef.child("ESP32").child(choixESP).child("TauxRafraichissement").removeEventListener(RealtimeDataListener);
         return true;
+    }
+
+    @Override
+    public LiveData<Data> getData() {
+        return null;
+    }
+
+    @Override
+    public LiveData<String> getMoments() {
+        return null;
+    }
+
+    @Override
+    public void updateData(Data data) {
+            if (data != null) {
+                System.out.println("update data");
+                listenerDonnées.postValue(data);
+            }
+        }
+
+    @Override
+    public void updateMoments() {
+
     }
 }
