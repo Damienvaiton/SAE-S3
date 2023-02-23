@@ -27,14 +27,10 @@ public class FirebaseAccess implements DataUpdate{
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
     private final DatabaseReference myRef = database.getReference("SAE_S3_BD");
 
-    GraphViewModel graphViewModel=null;
     ValueEventListener valueEventListenerTemps;
     ChildEventListener RealtimeDataListener;
 
 
-    public void setGraphViewModel(GraphViewModel graphViewModel) {
-        this.graphViewModel = graphViewModel;
-    }
 
     private static volatile FirebaseAccess instance;
 
@@ -200,8 +196,9 @@ public class FirebaseAccess implements DataUpdate{
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 if (snapshot.getChildrenCount() == 6) {
                     System.out.println("realtime");
+
                     listData.list_add_data(snapshot.getValue(Data.class));
-                    graphViewModel.updateData(snapshot.getValue(Data.class));
+                    //graphViewModel.updateData(snapshot.getValue(Data.class));
                     //chargerDonner();
                     //actuValues();
 
@@ -250,17 +247,6 @@ public class FirebaseAccess implements DataUpdate{
         return true;
     }
 
-    @Override
-    public LiveData<Data> getData() {
-        return null;
-    }
-
-    @Override
-    public LiveData<String> getMoments() {
-        return null;
-    }
-
-    @Override
     public void updateData(Data data) {
             if (data != null) {
                 System.out.println("update data");
@@ -268,7 +254,7 @@ public class FirebaseAccess implements DataUpdate{
             }
         }
 
-    @Override
+
     public void updateMoments() {
 
     }

@@ -4,11 +4,14 @@ import static com.example.pageacceuil.Model.DataUpdate.listenerDonnées;
 
 import android.graphics.Color;
 
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
 import com.example.pageacceuil.Model.Data;
+import com.example.pageacceuil.Model.DataUpdate;
 import com.example.pageacceuil.Model.ESP;
 import com.example.pageacceuil.Model.FirebaseAccess;
 import com.example.pageacceuil.R;
@@ -20,7 +23,9 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.util.ArrayList;
 
-public class GraphViewModel extends ViewModel {
+import javax.security.auth.callback.Callback;
+
+public class GraphViewModel extends ViewModel implements DataUpdate {
     FirebaseAccess acess;
     ESP currentEsp;
     ArrayList<Entry> A_temp = new ArrayList<>();
@@ -51,19 +56,26 @@ public class GraphViewModel extends ViewModel {
     public GraphViewModel() {
         this.acess = FirebaseAccess.getInstance();
         this.currentEsp = ESP.getInstance();
-        acess.setGraphViewModel(this);
         acess.setPrechargeDonnee();
         acess.setRealtimeDataListener();
         acess.setTimeListener(currentEsp);
         datas = new ArrayList<>();
     }
 
-    private final MutableLiveData<Data> listenerData = new MutableLiveData<>();
-    private final MutableLiveData<String> listenerTemps = new MutableLiveData<>();
     private final MutableLiveData<LineData> updateGraph = new MutableLiveData<>();
+
 
     public LiveData getUpdateGraph() {
         return updateGraph;
+    }
+
+
+    public LiveData<Data> getData() {
+        return listenerDonnées;
+    }
+
+    public LiveData<String> getMoments() {
+        return listenerTemps;
     }
 
     public void updateData(Data data) {
@@ -78,46 +90,17 @@ public class GraphViewModel extends ViewModel {
     public void updateMoments(){
         listenerTemps.postValue(currentEsp.getTauxRafrai());
     }
-    public LiveData<Data> getData() {
-        return listenerDonnées;
-    }
-
-    public LiveData<String> getMoments() {
-        return listenerTemps;
-    }
-
-
-    /* public void updateData(Data data) {
-        if (data != null) {
-            System.out.println("update data");
-            listenerData.postValue(data);
-            datas.add(data);
-            chargerDonner(data);
-        }
-    }
-
-    public void updateMoments(){
-        listenerTemps.postValue(currentEsp.getTauxRafrai());
-    }
-    public LiveData<Data> getData() {
-        return listenerData;
-    }
-
-    public LiveData<String> getMoments() {
-        return listenerTemps;
-    }
-
-
-*/
-    public String getLeftAxisName(){
+    public String getLeftAxisName() {
         return leftAxisName;
     }
-    public String getRightAxisName(){
+
+    public String getRightAxisName() {
         return rightAxisName;
     }
-public ArrayList getDatas(){
+
+    public ArrayList getDatas() {
         return datas;
-}
+    }
 
     @Override
     protected void onCleared() {
@@ -245,8 +228,6 @@ public ArrayList getDatas(){
             data.setValueTextSize(15);
         }
     }
-
-
 
 
 }

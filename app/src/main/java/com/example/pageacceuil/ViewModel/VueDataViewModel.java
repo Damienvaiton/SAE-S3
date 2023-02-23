@@ -20,17 +20,12 @@ public class VueDataViewModel extends ViewModel implements DataUpdate {
         listenerData.postValue(data);
     }
 
-    @Override
-    public void updateMoments() {
 
-    }
+
 
     public LiveData<Data> getData(){
         return listenerDonnées;
     }
 
-    @Override
-    public LiveData<String> getMoments() {
-        return null;
-    }
+
 }

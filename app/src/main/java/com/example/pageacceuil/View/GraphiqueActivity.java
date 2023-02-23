@@ -11,10 +11,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.pageacceuil.Model.Data;
+import com.example.pageacceuil.Model.DataUpdate;
 import com.example.pageacceuil.R;
 import com.example.pageacceuil.ViewModel.GraphViewModel;
 import com.example.pageacceuil.ViewModel.XAxisValueFormatter;
@@ -70,7 +72,6 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
             public void onChanged(LineData linedata) {
                 graph.setData(linedata);
                 graph.invalidate();
-               // actuValues();
             }
         });
 
@@ -148,7 +149,6 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
         xl.setAvoidFirstLastClipping(false);
         xl.setValueFormatter(new XAxisValueFormatter(graphViewModel.getDatas()));
 
-
         //Création Axe Y droit
         rightAxis = graph.getAxisRight();
         rightAxis.setEnabled(true);
@@ -179,7 +179,7 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
                 } else {
                     label = "X =";
                 }
-                //Toast.makeText(getApplicationContext(), "Heure = " + graphViewModel.getDatas().get((int) h.getX() - 1).get+ ", " + label + h.getY(), Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getApplicationContext(), "Heure = " + graphViewModel.getDatas().get((int) h.getX() - 1).toString()+ ", " + label + h.getY(), Toast.LENGTH_SHORT).show();
             }
 
         });
