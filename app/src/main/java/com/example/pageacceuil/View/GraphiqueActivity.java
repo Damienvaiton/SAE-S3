@@ -11,12 +11,10 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.pageacceuil.Model.Data;
-import com.example.pageacceuil.Model.DataUpdate;
 import com.example.pageacceuil.R;
 import com.example.pageacceuil.ViewModel.GraphViewModel;
 import com.example.pageacceuil.ViewModel.XAxisValueFormatter;
@@ -65,6 +63,12 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
             @Override
             public void onChanged(Data data) {
                 actuValues(data);
+            }
+        });
+        graphViewModel.getData().observeForever(new Observer<Data>() {
+            @Override
+            public void onChanged(Data data) {
+
             }
         });
         graphViewModel.getUpdateGraph().observe(this, new Observer<LineData>() {

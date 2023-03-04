@@ -6,9 +6,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.pageacceuil.ViewModel.ConnectAdminViewModel;
 import com.example.pageacceuil.ViewModel.GraphViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -23,15 +23,15 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class FirebaseAccess implements DataUpdate{
+public class FirebaseAccess implements DataUpdate {
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
     private final DatabaseReference myRef = database.getReference("SAE_S3_BD");
 
     ValueEventListener valueEventListenerTemps;
     ChildEventListener RealtimeDataListener;
 
-
-
+    ConnectAdminViewModel connect;
+    GraphViewModel grapModel;
     private static volatile FirebaseAccess instance;
 
     public static FirebaseAccess getInstance() {
@@ -46,6 +46,10 @@ public class FirebaseAccess implements DataUpdate{
             }
             return instance;
         }
+    }
+
+    public void setConnetViewModel(ConnectAdminViewModel connect) {
+        this.connect = connect;
     }
 
 
@@ -68,24 +72,24 @@ public class FirebaseAccess implements DataUpdate{
                 });
     } //test isSucessfull marche pas
 
-   /* public String getSurnom(String macESP){
-        myRef.child("ESP32").child(macESP).child("Nom").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
+    /* public String getSurnom(String macESP){
+         myRef.child("ESP32").child(macESP).child("Nom").addListenerForSingleValueEvent(new ValueEventListener() {
+             @Override
+             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-            }
+             }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+             @Override
+             public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
-    }
-        if(myRef.child("ESP32").child(macESP).child("Nom").getKey()){
+             }
+         });
+     }
+         if(myRef.child("ESP32").child(macESP).child("Nom").getKey()){
 
-        return myRef.child("ESP32").child(macESP).child("Nom").getKey();
-    }*/
-   MutableLiveData<ArrayList<String>> listener = new MutableLiveData<>();
+         return myRef.child("ESP32").child(macESP).child("Nom").getKey();
+     }*/
+    MutableLiveData<ArrayList<String>> listener = new MutableLiveData<>();
 
     public void resetValueDb(String choixESP, Context context) {
         myRef.child("ESP32").child(choixESP).child("Mesure").removeValue()
@@ -131,13 +135,13 @@ public class FirebaseAccess implements DataUpdate{
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 DataSnapshot tab = task.getResult();
                 if (tab.exists()) {
-                    for (DataSnapshot dataSnapshot :tab.getChildren()) {
+                    for (DataSnapshot dataSnapshot : tab.getChildren()) {
                         System.out.println("je passe");
                         updateData(dataSnapshot.getValue(Data.class));
                         listData.list_add_data(dataSnapshot.getValue(Data.class));
                         //   graphViewModel.updateData(dataSnapshot.getValue(Data.class));
                     }
-                }else {
+                } else {
                     System.out.println("Impossible d'accéder au données précharge");
                 }
             }
@@ -175,7 +179,7 @@ public class FirebaseAccess implements DataUpdate{
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.e("Firebase", "Erreur lors de l'enregistrement des données : "+error);
+                Log.e("Firebase", "Erreur lors de l'enregistrement des données : " + error);
 
             }
         };
@@ -184,7 +188,7 @@ public class FirebaseAccess implements DataUpdate{
     }
 
     public void setRealtimeDataListener() {
-        ESP currentESP=ESP.getInstance();
+        ESP currentESP = ESP.getInstance();
         RealtimeDataListener = new ChildEventListener() {
             ListData listData = ListData.getInstance();
 
@@ -227,18 +231,18 @@ public class FirebaseAccess implements DataUpdate{
 
 
     public String[] getAdminLog() {
-        final String[] access = new String[2];
+        final String[] identifiant = new String[2];
         myRef.child("Admin").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
 
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 DataSnapshot tab = task.getResult();
-                access[0] = tab.child("Admin").getValue(String.class);
-                access[1] = tab.child("mdp").getValue(String.class);
+                identifiant[0] = tab.child("Admin").getValue(String.class);
+                identifiant[1] = tab.child("mdp").getValue(String.class);
 
             }
         });
-        return access;
+        return identifiant;
     }
 
     public boolean deleteListener(String choixESP) {

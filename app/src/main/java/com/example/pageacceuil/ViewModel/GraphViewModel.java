@@ -1,10 +1,7 @@
 package com.example.pageacceuil.ViewModel;
 
-import static com.example.pageacceuil.Model.DataUpdate.listenerDonnées;
-
 import android.graphics.Color;
 
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
@@ -22,8 +19,6 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.util.ArrayList;
-
-import javax.security.auth.callback.Callback;
 
 public class GraphViewModel extends ViewModel implements DataUpdate {
     FirebaseAccess acess;
@@ -59,7 +54,15 @@ public class GraphViewModel extends ViewModel implements DataUpdate {
         acess.setPrechargeDonnee();
         acess.setRealtimeDataListener();
         acess.setTimeListener(currentEsp);
-        datas = new ArrayList<>();
+
+        DataUpdate.listenerDonnées.observeForever(new Observer<Data>() {
+            @Override
+            public void onChanged(Data data) {
+                System.out.println("chufgdsxbsi la");
+            }
+        });
+
+
     }
 
     private final MutableLiveData<LineData> updateGraph = new MutableLiveData<>();
@@ -86,6 +89,7 @@ public class GraphViewModel extends ViewModel implements DataUpdate {
             chargerDonner(data);
         }
     }
+
 
     public void updateMoments(){
         listenerTemps.postValue(currentEsp.getTauxRafrai());

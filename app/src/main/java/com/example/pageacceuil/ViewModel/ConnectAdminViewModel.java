@@ -1,15 +1,8 @@
 package com.example.pageacceuil.ViewModel;
 
-import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.example.pageacceuil.Model.FirebaseAccess;
 
 //ATTENTION
 // un VM est associé à une activity ou un fragment.
@@ -18,10 +11,24 @@ import com.google.firebase.database.FirebaseDatabase;
 // car nous auront 2 VM, 1 par activity.
 public class ConnectAdminViewModel extends ViewModel {
 
+    private String[] tabID;
+    public FirebaseAccess acces;
     //récupération des instances dont on a besoin dans le VM
-    private final FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference myRef = database.getReference("SAE_S3_BD/Admin");
+    public ConnectAdminViewModel() {
+        acces=FirebaseAccess.getInstance();
+        acces.setConnetViewModel(ConnectAdminViewModel.this);
+        tabID=acces.getAdminLog();
+    }
 
+    public boolean Verify(String username, String mdp) {
+ if((tabID[0].equals(username)) && (tabID[1].equals(mdp))){
+     return true;
+ }
+ return false;
+        }
+}
+
+    /*
 
     // pour avoir l'utilisateur on observe grace au live data
     public LiveData<DataSnapshot> getUser() {
@@ -29,20 +36,21 @@ public class ConnectAdminViewModel extends ViewModel {
         // je déclare l'observer
         MutableLiveData<DataSnapshot> listener = new MutableLiveData<>();
 
+
         //je fais le traitement souhaité
-        myRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+     *//*   myRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 DataSnapshot tab = task.getResult();
                 // je notifie les observateurs que les données sont dispos
                 listener.postValue(tab);
 
-              /*  String[] id= new String[2];
+              *//**//*  String[] id= new String[2];
                     id[0] = tab.child("Admin").getValue(String.class);
                     id[1] = tab.child("mdp").getValue(String.class);
 
                     // je notifie les observateurs que les données sont dispos
-                    listener.postValue(id);*/
+                    listener.postValue(id);*//**//*
             }
         });
 
@@ -50,7 +58,7 @@ public class ConnectAdminViewModel extends ViewModel {
         // quand les données sont récupérées.
         return listener;
     }
-
+*//*
 //     coBtn.setOnClickListener(new View.OnClickListener() {
 //        @Override
 //        public void onClick(View v) {
@@ -84,3 +92,4 @@ public class ConnectAdminViewModel extends ViewModel {
 //}
 //}
 }
+*/

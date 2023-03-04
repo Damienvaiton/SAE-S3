@@ -9,10 +9,12 @@ import android.widget.PopupMenu;
 import android.widget.Switch;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pageacceuil.Model.Data;
 import com.example.pageacceuil.Model.ListData;
 import com.example.pageacceuil.R;
 import com.example.pageacceuil.ViewModel.DataAdapter;
@@ -23,6 +25,8 @@ import java.io.Serializable;
 public class VueDataActivity extends AppCompatActivity implements Serializable {
 
     private ListData listData;
+
+    private RecyclerView recyclerView;
     private Button btnTriChoix;
     private Button trid;
     private Switch switchDesc;
@@ -38,6 +42,7 @@ public class VueDataActivity extends AppCompatActivity implements Serializable {
         setContentView(R.layout.activity_vue_data);
 
         vueDataViewModel=new ViewModelProvider(this).get(VueDataViewModel.class);
+
         //Faire une interface commune pour les mutablesLiveDta afin que ce firebassacess ne soit pas dépendant d'un viewmodel et les garder pour tout viewmodel ayant besoin
 
 
@@ -46,9 +51,11 @@ public class VueDataActivity extends AppCompatActivity implements Serializable {
         trid = findViewById(R.id.button8);
         btnTriChoix.setText(ChoixTri);
         DataAdapter dataAdapter = new DataAdapter(getApplicationContext());
-        RecyclerView recyclerView = findViewById(R.id.recyclerview);
+        recyclerView = findViewById(R.id.recyclerview);
         recyclerView.setAdapter(dataAdapter);
         listData=ListData.getInstance();
+
+        vueDataViewModel.setRecycler(recyclerView);
 
 
         btnTriChoix.setOnClickListener(new View.OnClickListener() {
@@ -147,6 +154,18 @@ public class VueDataActivity extends AppCompatActivity implements Serializable {
 
         });
 
+        vueDataViewModel.getData().observe(this, new Observer<Data>() {
+            @Override
+            public void onChanged(Data data) {
+                //dataAdapter.add
+                dataAdapter.notifyDataSetChanged();
+            }
+        });
 
+
+
+    }
+    public RecyclerView getRecycler(){
+        return recyclerView;
     }
 }

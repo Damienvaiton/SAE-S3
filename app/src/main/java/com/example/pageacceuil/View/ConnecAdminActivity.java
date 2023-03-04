@@ -8,19 +8,16 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.pageacceuil.R;
-import com.google.firebase.database.DataSnapshot;
+import com.example.pageacceuil.ViewModel.ConnectAdminViewModel;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
-
-import com.example.pageacceuil.ViewModel.ConnectAdminViewModel;
 
 public class ConnecAdminActivity extends AppCompatActivity {
 
@@ -59,6 +56,8 @@ public class ConnecAdminActivity extends AppCompatActivity {
                 System.out.println(editUser.getText().toString());
                 System.out.println(mdp);
                 System.out.println(editMdp.getText().toString());
+
+                
                 if (Objects.equals(user, editUser.getText().toString().trim()) && Objects.equals(mdp, editMdp.getText().toString().trim())) {
                     Intent ac;
                     ac = new Intent(ConnecAdminActivity.this, SettingsAdminActivity.class);
@@ -75,14 +74,14 @@ public class ConnecAdminActivity extends AppCompatActivity {
         // je demande au VM de me donner le user. Peut importe si il est en bdd etc ...
         //l'idéal serait de ne pas recevoir de DataSnapShot
         // On Observe le resultat grace au livedata qui est un conteneur qui permet d'observer
-        connectAdminViewModel.getUser().observe(this, new Observer<DataSnapshot>() {
+     /*   connectAdminViewModel.getUser().observe(this, new Observer<DataSnapshot>() {
             @Override
             public void onChanged(DataSnapshot dataSnapshot) {
                 user = dataSnapshot.child("Admin").getValue(String.class);
                 mdp = dataSnapshot.child("mdp").getValue(String.class);
             }
         });
-
+*/
        /* mainViewModel.getUser().observe(this, String[] id) {
             @Override
             public void onChanged(DataSnapshot dataSnapshot) {
