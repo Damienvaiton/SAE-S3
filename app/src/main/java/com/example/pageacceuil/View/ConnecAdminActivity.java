@@ -25,16 +25,7 @@ public class ConnecAdminActivity extends AppCompatActivity {
     EditText editMdp;
     Button coBtn;
 
-    String user;
-    String mdp;
 
-    HashMap<String, String> ESP;
-    ArrayList<String> tabESP;
-
-    private final FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference myRef = database.getReference("SAE_S3_BD/Admin");
-
-    //déclaration du viewmodel
     private ConnectAdminViewModel connectAdminViewModel = null;
 
     @Override
@@ -52,54 +43,13 @@ public class ConnecAdminActivity extends AppCompatActivity {
         coBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println(user);
-                System.out.println(editUser.getText().toString());
-                System.out.println(mdp);
-                System.out.println(editMdp.getText().toString());
-
-                
-                if (Objects.equals(user, editUser.getText().toString().trim()) && Objects.equals(mdp, editMdp.getText().toString().trim())) {
-                    Intent ac;
-                    ac = new Intent(ConnecAdminActivity.this, SettingsAdminActivity.class);
-                    ac.putExtra("listeESP", tabESP);
-                    ac.putExtra("hashmapEsp", ESP);
-                    startActivity(ac);
-                } else {
-                    Toast.makeText(getApplicationContext(), "Username ou mot de passe incorrect", Toast.LENGTH_SHORT).show();
+                if (connectAdminViewModel.Verify(editUser.getText().toString(), editMdp.getText().toString())) {
+                    Intent admin;
+                    admin = new Intent(ConnecAdminActivity.this, SettingsAdminActivity.class);
+                    startActivity(admin);
                 }
-            }
-
-        });
-
-        // je demande au VM de me donner le user. Peut importe si il est en bdd etc ...
-        //l'idéal serait de ne pas recevoir de DataSnapShot
-        // On Observe le resultat grace au livedata qui est un conteneur qui permet d'observer
-     /*   connectAdminViewModel.getUser().observe(this, new Observer<DataSnapshot>() {
-            @Override
-            public void onChanged(DataSnapshot dataSnapshot) {
-                user = dataSnapshot.child("Admin").getValue(String.class);
-                mdp = dataSnapshot.child("mdp").getValue(String.class);
+                Toast.makeText(ConnecAdminActivity.this, "Une erreur se trouve dans le formulaire", Toast.LENGTH_SHORT).show();
             }
         });
-*/
-       /* mainViewModel.getUser().observe(this, String[] id) {
-            @Override
-            public void onChanged(DataSnapshot dataSnapshot) {
-                user = id.get
-                mdp = dataSnapshot.child("mdp").getValue(String.class);
-            }
-        });*/
-//n'est plus util
-//        myRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<DataSnapshot> task) {
-//                DataSnapshot tab = task.getResult();
-//                user = tab.child("Admin").getValue(String.class);
-//                mdp = tab.child("mdp").getValue(String.class);
-//
-//            }
-//        });
-
-
     }
 }

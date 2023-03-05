@@ -32,7 +32,7 @@ import java.util.Map;
 import com.example.pageacceuil.Model.Data;
 import com.example.pageacceuil.Model.FirebaseAccess;
 import com.example.pageacceuil.Model.ListData;
-import com.example.pageacceuil.ViewModel.DataAdapter;
+import com.example.pageacceuil.ViewModel.dataRecyclerAdapter;
 import com.example.pageacceuil.ViewModel.PopUpDialog;
 
 public class SettingsAdminActivity extends AppCompatActivity implements View.OnClickListener {
@@ -66,7 +66,7 @@ public class SettingsAdminActivity extends AppCompatActivity implements View.OnC
     ArrayList<String> Groupe;
 
 
-    DataAdapter dataAdapter;
+    dataRecyclerAdapter dataRecyclerAdapter;
 
     FirebaseAccess databas;
     @Override
@@ -100,9 +100,9 @@ public class SettingsAdminActivity extends AppCompatActivity implements View.OnC
         spinner.setAdapter(adapter);
 
         dataESP = ListData.getInstance();
-
-        dataAdapter = new DataAdapter(getApplicationContext());
-        recyclerView.setAdapter(dataAdapter);
+ArrayList<Data> listData=new ArrayList<>();
+        dataRecyclerAdapter = new dataRecyclerAdapter(getApplicationContext(), listData);
+        recyclerView.setAdapter(dataRecyclerAdapter);
         recyclerView.setLayoutManager((new LinearLayoutManager((this))));
 
         AlertDialog.Builder pop = new AlertDialog.Builder(SettingsAdminActivity.this);
@@ -274,7 +274,7 @@ public class SettingsAdminActivity extends AppCompatActivity implements View.OnC
                     Data a = dataSnapshot.getValue(Data.class);
                     dataESP.list_add_data(a);
                 }
-                dataAdapter.notifyDataSetChanged();
+                dataRecyclerAdapter.notifyDataSetChanged();
                 recyclerView.invalidate();
 
             }
@@ -365,7 +365,7 @@ public class SettingsAdminActivity extends AppCompatActivity implements View.OnC
                 if (refresh.getText().toString().equals("")) {
                     Toast.makeText(getApplicationContext(), "Merci d'entrer' une valeur", Toast.LENGTH_SHORT).show();
                 } else {
-                    databas.editTemps(choixESP,(Integer.valueOf(refresh.getText().toString())),getApplicationContext());
+                    databas.editTemps(Integer.valueOf(refresh.getText().toString()));
                     refresh.setText("");
                 }
                 break;
@@ -378,7 +378,7 @@ public class SettingsAdminActivity extends AppCompatActivity implements View.OnC
                         databas.resetValueDb(choixESP,getApplicationContext());
                         popReini.dismiss();
                         actu();
-                        dataAdapter.notifyDataSetChanged();
+                        dataRecyclerAdapter.notifyDataSetChanged();
                         recyclerView.invalidate();
                     }
 

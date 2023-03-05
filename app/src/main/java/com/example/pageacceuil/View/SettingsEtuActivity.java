@@ -14,22 +14,22 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
+import com.example.pageacceuil.Model.Axe;
+import com.example.pageacceuil.Model.ESP;
 import com.example.pageacceuil.R;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
+import com.example.pageacceuil.ViewModel.SettingsEtuViewModel;
+import com.github.mikephil.charting.components.YAxis;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import com.example.pageacceuil.Model.FirebaseAccess;
 
 public class SettingsEtuActivity extends AppCompatActivity implements View.OnClickListener {
 
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32");
 FirebaseAccess databas= FirebaseAccess.getInstance();
     TextView textAxeLeft;
     TextView textAxeRight;
@@ -52,13 +52,21 @@ FirebaseAccess databas= FirebaseAccess.getInstance();
     CheckBox auto_droit;
     CheckBox auto_gauche;
 
+    YAxis rightAxis;
+    YAxis leftAxis;
+
+    SettingsEtuViewModel settingsEtuViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting_page);
 
+        settingsEtuViewModel =new ViewModelProvider(this).get(SettingsEtuViewModel.class);
 
+
+        rightAxis= Axe.getInstance().getRightAxis();
+        leftAxis=Axe.getInstance().getLeftAxis();
 
         max_g = findViewById(R.id.max_gauche);
         min_g = findViewById(R.id.min_gauche);
@@ -84,6 +92,7 @@ FirebaseAccess databas= FirebaseAccess.getInstance();
         auto_droit.setOnClickListener(this);
         auto_gauche.setOnClickListener(this);
 
+        ESP esp=ESP.getInstance();
         Intent intent = getIntent();
         if (intent != null) {
             if (intent.hasExtra("choixESP")) {
@@ -101,10 +110,10 @@ FirebaseAccess databas= FirebaseAccess.getInstance();
                 System.out.println("impossible récup ESP");
             }
         }
-        if (!nameEsp.equals("")) {
-            nomEsp.setText(nameEsp);
+        if (!esp.getNomEsp().equals("")) {
+            nomEsp.setText(esp.getNomEsp());
         } else {
-            nomEsp.setText(choixESP);
+            nomEsp.setText(esp.getMacEsp());
         }
         if (!leftAxisName.equals("")) {
             textAxeLeft.setText("Colonne " + leftAxisName);
@@ -116,52 +125,38 @@ FirebaseAccess databas= FirebaseAccess.getInstance();
         } else {
             textAxeRight.setText("Colonne Y droit");
         }
-        if (GraphiqueActivity.rightAxis.isAxisMaxCustom()) {
+        if (rightAxis.isAxisMaxCustom()) {
             auto_droit.setChecked(false);
-            min_d.setHint(GraphiqueActivity.rightAxis.getAxisMinimum() + "");
-            max_d.setHint(GraphiqueActivity.rightAxis.getAxisMaximum() + "");
+            min_d.setHint(rightAxis.getAxisMinimum() + "");
+            max_d.setHint(rightAxis.getAxisMaximum() + "");
 
         }
-        if (GraphiqueActivity.leftAxis.isAxisMaxCustom()) {
+        if (leftAxis.isAxisMaxCustom()) {
             auto_gauche.setChecked(false);
-            min_g.setHint(GraphiqueActivity.leftAxis.getAxisMinimum() + "");
-            max_g.setHint(GraphiqueActivity.leftAxis.getAxisMaximum() + "");
+            min_g.setHint(leftAxis.getAxisMinimum() + "");
+            max_g.setHint(leftAxis.getAxisMaximum() + "");
 
+
+            settingsEtuViewModel.getMoments().observe(this, new Observer<String>() {
+                @Override
+                public void onChanged(String s) {
+                    tauxRefresh.setHint(s);
+                }
+
+            });
         }
 
-        myRef.child(choixESP).child("TauxRafraichissement").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String heure = "";
-                String minute = "";
-                String seconde = "";
-                if(snapshot.exists()) {
-
-
-                if (snapshot.getValue(Long.class) >= 3600000) {
-                    heure = (snapshot.getValue(Long.class) / (1000 * 60 * 60) + "h");
-                }
-                if (snapshot.getValue(Long.class) >= 60000) {
-                    minute = (snapshot.getValue(Long.class) % (1000 * 60 * 60)) / (1000 * 60) + "m";
-                }
-                if (snapshot.getValue(Long.class) >= 1000) {
-                    seconde = (snapshot.getValue(Long.class) % (1000 * 60)) / 1000 + "s";
-                }
-                tauxRefresh.setHint(heure + minute + seconde);
-        }
-            }
-
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
         tauxRefresh.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE && !tauxRefresh.getText().toString().equals("")) {
-                    editTemps((parseInt(tauxRefresh.getText().toString())));
+                    if(settingsEtuViewModel.editTemps((parseInt(tauxRefresh.getText().toString())))==true){
+                        tauxRefresh.setText("");
+                        Toast.makeText(SettingsEtuActivity.this, "Refresh : " + tauxRefresh.getText().toString() + "s,\r\nVous pouvez redémarrer l'ESP", Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        Toast.makeText(SettingsEtuActivity.this, "Erreur", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     Toast.makeText(getApplicationContext(), "Merci d'entrer une valeur", Toast.LENGTH_SHORT).show();
                 }
@@ -171,27 +166,23 @@ FirebaseAccess databas= FirebaseAccess.getInstance();
         });
     }
 
-    public void editTemps(int values) {
-        databas.editTemps(choixESP,values,getApplicationContext());
-        tauxRefresh.setText("");
 
-    }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.auto_droit:
                 if (auto_droit.isChecked()) {
-                    GraphiqueActivity.rightAxis.resetAxisMinimum();
-                    GraphiqueActivity.rightAxis.resetAxisMaximum();
+                    rightAxis.resetAxisMinimum();
+                    rightAxis.resetAxisMaximum();
                     Toast.makeText(getApplicationContext(), "Mode auto activé", Toast.LENGTH_SHORT).show();
                     //Griser case pour le manuel
                     break;
                 }
             case R.id.auto_gauche:
                 if (auto_gauche.isChecked()) {
-                    GraphiqueActivity.leftAxis.resetAxisMinimum();
-                    GraphiqueActivity.leftAxis.resetAxisMaximum();
+                    leftAxis.resetAxisMinimum();
+                    leftAxis.resetAxisMaximum();
                     Toast.makeText(getApplicationContext(), "Mode auto activé", Toast.LENGTH_SHORT).show();
                     //Griser case pour le manuel
                     break;
@@ -203,8 +194,8 @@ FirebaseAccess databas= FirebaseAccess.getInstance();
                 } else {
                     if (Float.valueOf(max_d.getText().toString()) > Float.valueOf(min_d.getText().toString())) {
 
-                        GraphiqueActivity.rightAxis.setAxisMaximum(Float.valueOf(max_d.getText().toString()));
-                        GraphiqueActivity.rightAxis.setAxisMinimum(Float.valueOf(min_d.getText().toString()));
+                        rightAxis.setAxisMaximum(Float.valueOf(max_d.getText().toString()));
+                        rightAxis.setAxisMinimum(Float.valueOf(min_d.getText().toString()));
                         Toast.makeText(getApplicationContext(), "Fait", Toast.LENGTH_SHORT).show();
                         GraphiqueActivity.graph.notifyDataSetChanged();
                         GraphiqueActivity.graph.invalidate();
@@ -219,10 +210,9 @@ FirebaseAccess databas= FirebaseAccess.getInstance();
                 if (((min_g.getText().toString().trim().length() == 0) || (max_g.getText().toString().trim().length() == 0)) || (auto_gauche.isChecked())) {
                     Toast.makeText(getApplicationContext(), "Un champ est vide", Toast.LENGTH_SHORT).show();
                 } else {
-                    if (Float.valueOf(max_g.getText().toString()) > Float.valueOf(min_g.getText().toString())) {
-
-                        GraphiqueActivity.leftAxis.setAxisMaximum(Float.valueOf(max_g.getText().toString()));
-                        GraphiqueActivity.leftAxis.setAxisMinimum(Float.valueOf(min_g.getText().toString()));
+                    if (Float.parseFloat(max_g.getText().toString()) > Float.parseFloat(min_g.getText().toString())) {
+                        leftAxis.setAxisMaximum(Float.parseFloat(max_g.getText().toString()));
+                        leftAxis.setAxisMinimum(Float.parseFloat(min_g.getText().toString()));
                         GraphiqueActivity.graph.notifyDataSetChanged();
                         GraphiqueActivity.graph.invalidate();
                         Toast.makeText(getApplicationContext(), "Fait", Toast.LENGTH_SHORT).show();
@@ -233,7 +223,13 @@ FirebaseAccess databas= FirebaseAccess.getInstance();
                 }
             case R.id.btn_refresh:
                 if (!tauxRefresh.getText().toString().equals("")) {
-                    editTemps((parseInt(tauxRefresh.getText().toString())));
+                    if(settingsEtuViewModel.editTemps((parseInt(tauxRefresh.getText().toString())))){
+                        tauxRefresh.setText("");
+                        Toast.makeText(SettingsEtuActivity.this, "Refresh : " + tauxRefresh.getText().toString() + "s,\r\nVous pouvez redémarrer l'ESP", Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        Toast.makeText(SettingsEtuActivity.this, "Erreur", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     Toast.makeText(getApplicationContext(), "Merci d'entrer une valeur", Toast.LENGTH_SHORT).show();
                 }

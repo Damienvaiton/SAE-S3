@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.pageacceuil.Model.Axe;
 import com.example.pageacceuil.Model.Data;
 import com.example.pageacceuil.R;
 import com.example.pageacceuil.ViewModel.GraphViewModel;
@@ -47,8 +48,8 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
     private CheckBox boxLux;
     private BottomAppBar bottomNav;
     private BottomNavigationView bottomNavigationView;
-    public static YAxis leftAxis;
-    public static YAxis rightAxis;
+    public  YAxis leftAxis;
+    public YAxis rightAxis;
     private XAxis xl;
     private GraphViewModel graphViewModel= null;
 
@@ -65,19 +66,16 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
                 actuValues(data);
             }
         });
-        graphViewModel.getData().observeForever(new Observer<Data>() {
-            @Override
-            public void onChanged(Data data) {
-
-            }
-        });
         graphViewModel.getUpdateGraph().observe(this, new Observer<LineData>() {
             @Override
             public void onChanged(LineData linedata) {
                 graph.setData(linedata);
                 graph.invalidate();
+                // actuValues();
             }
         });
+
+
 
 
        /* graphViewModel.getAllData().observe(this, new Observer<ArrayList<Data>>() {
@@ -153,6 +151,7 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
         xl.setAvoidFirstLastClipping(false);
         xl.setValueFormatter(new XAxisValueFormatter(graphViewModel.getDatas()));
 
+
         //Création Axe Y droit
         rightAxis = graph.getAxisRight();
         rightAxis.setEnabled(true);
@@ -183,7 +182,7 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
                 } else {
                     label = "X =";
                 }
-               // Toast.makeText(getApplicationContext(), "Heure = " + graphViewModel.getDatas().get((int) h.getX() - 1).toString()+ ", " + label + h.getY(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "Heure = " + graphViewModel.getDatas().get((int) h.getX() - 1).get+ ", " + label + h.getY(), Toast.LENGTH_SHORT).show();
             }
 
         });
@@ -240,11 +239,7 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
             case R.id.setting:
                 Intent openSetting;
                 openSetting = new Intent(GraphiqueActivity.this, SettingsEtuActivity.class);
-               // openSetting.putExtra("choixESP", choixESP);
-                //openSetting.putExtra("Choix", listData.listD);
-                //if (!nomESP.equals("")) {
-                  //  openSetting.putExtra("nomESP", nomESP);
-                //} J'y récup direct avec l'instance d'ESP
+
                 if (!graphViewModel.getLeftAxisName().equals("")) {
                     openSetting.putExtra("leftAxisName", graphViewModel.getLeftAxisName());
                 }
@@ -280,10 +275,8 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
         }
         File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Mesure.xlsx");
         XSSFWorkbook workbook = new XSSFWorkbook();
-
         // Création de la feuille de calcul
         XSSFSheet sheet = workbook.createSheet("Mesures");
-
         // Création de la condition pour l'affichage en couleurs alternées
         SheetConditionalFormatting sheetCF = sheet.getSheetConditionalFormatting();
         ConditionalFormattingRule rule1 = sheetCF.createConditionalFormattingRule("MOD(ROW(),2)");
@@ -295,7 +288,6 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
                 CellRangeAddress.valueOf("A1:G" + (cptLignes + 1))
         };
         sheetCF.addConditionalFormatting(regions, rule1);
-
         // Ajout de la 1ère ligne de titre
         XSSFRow row0 = sheet.createRow(0);
         // Cellule Numero
@@ -319,7 +311,6 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
         // Cellule Heure
         XSSFCell cellHeure = row0.createCell(6);
         cellHeure.setCellValue("Heure");
-
         // Ajout des lignes de mesures
         for (int i = 0; i < cptLignes; i++) {
             XSSFRow row = sheet.createRow(i + 1);
@@ -331,7 +322,6 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
             row.createCell(5).setCellValue(listData.recup_data(i).getLight());
             row.createCell(6).setCellValue(listData.recup_data(i).getTemps());
         }
-
         // Création du fichier
         try {
             if (file.exists()) {
@@ -358,8 +348,7 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.boxCO2:
+        switch (v.getId()) {   case R.id.boxCO2:
             case R.id.boxTemp:
             case R.id.boxO2:
             case R.id.boxHumi:

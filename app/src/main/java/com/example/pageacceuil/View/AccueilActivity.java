@@ -39,6 +39,7 @@ public class AccueilActivity extends AppCompatActivity {
     DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32");
 
     Spinner spinner;
+    int position;
     Button btncoEtu;
     ESP currentESP;
     Button btnCoAdmin;
@@ -54,7 +55,6 @@ public class AccueilActivity extends AppCompatActivity {
         spinner = findViewById(R.id.SpinnerID);
         btncoEtu = findViewById(R.id.Gobtn);
         btnCoAdmin = findViewById(R.id.adminbtnmain);
-        // ESP = new HashMap<>();
         tabESP = new ArrayList<>();
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(AccueilActivity.this, android.R.layout.simple_spinner_dropdown_item, tabESP);
@@ -65,6 +65,7 @@ public class AccueilActivity extends AppCompatActivity {
     accueilViewModel.getESP().observe(this, new Observer<ArrayList<String>>() {
     @Override
     public void onChanged(ArrayList<String> strings) {
+        tabESP.clear();
         for (String ESP : strings) {
             tabESP.add(ESP.toString());
         }
@@ -74,22 +75,9 @@ public class AccueilActivity extends AppCompatActivity {
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                currentESP=new ESP((String) tabESP.get(position), "eee");
-//                System.out.println("vdsvfssf'"+myRef.child("ESP32").child((String) tabESP.get(position)).child("Nom").get);
-//                int curseur = 0;
-//                for (Map.Entry entree : ESP.entrySet()) {
-//                    if (curseur == position) {
-//                        if (entree.getValue().toString() != null) {
-//                            currentESP=new ESP((String) tabESP.get(position), "eee");
-//                            System.out.println("aaaaaaFUTIYKVLDCSOFLQGYREVOQBGUGYFBFVIPQFHHIUVRBQHLHVBFDHWLBVHDSGBLTSBSVFHVIERGFQERFEWBEVPQPEBRLQVIQRQIGBBEYIYIBRERYEEBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBQEIYHFAQELBVEQVBYQBEGVRBaaaaaa"+currentESP.getMacEsp().toString());
-//                        }
-//                        break;
-//                    }
-//                    curseur++;
-//                }
-//
-            }
+            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+                position=pos;
+        }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -97,43 +85,11 @@ public class AccueilActivity extends AppCompatActivity {
             }
         });
 
-       /* myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                ESP.clear();
-                for (DataSnapshot child : snapshot.getChildren()) {
-                    if (child.child("Nom").exists()) {
-                        ESP.put(child.getKey(), String.valueOf(child.child("Nom").getValue()));
-                    } else {
-                        ESP.putIfAbsent(child.getKey(), null);
-                    }
-
-                }
-                Iterator iterator = ESP.entrySet().iterator();
-                tabESP.clear();
-                while (iterator.hasNext()) {
-                    Map.Entry entry = (Map.Entry) iterator.next();
-                    if (entry.getValue() == null) {
-                        tabESP.add((String) entry.getKey());
-                    } else {
-                        tabESP.add((String) entry.getValue());
-                    }
-                }
-                adapter.notifyDataSetChanged();
-            }
-
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });*/
-
-
         btncoEtu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent graph;
+                accueilViewModel.creaESP(position);
                 graph = new Intent(AccueilActivity.this, GraphiqueActivity.class);
                 startActivity(graph);
             }

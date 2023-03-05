@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.pageacceuil.Model.Data;
 import com.example.pageacceuil.Model.ListData;
 import com.example.pageacceuil.R;
-import com.example.pageacceuil.ViewModel.DataAdapter;
+import com.example.pageacceuil.ViewModel.dataRecyclerAdapter;
 import com.example.pageacceuil.ViewModel.VueDataViewModel;
 
 import java.io.Serializable;
@@ -30,9 +30,11 @@ public class VueDataActivity extends AppCompatActivity implements Serializable {
     private Button btnTriChoix;
     private Button trid;
     private Switch switchDesc;
+
+    dataRecyclerAdapter dataRecyclerAdapter;
     private String ChoixTri = "Choix du Tri";
     private boolean Desc = false;
-    VueDataViewModel vueDataViewModel;
+    VueDataViewModel vueDataViewModel=null;
 
 
     @SuppressLint("MissingInflatedId")
@@ -50,12 +52,14 @@ public class VueDataActivity extends AppCompatActivity implements Serializable {
         switchDesc = findViewById(R.id.switch1);
         trid = findViewById(R.id.button8);
         btnTriChoix.setText(ChoixTri);
-        DataAdapter dataAdapter = new DataAdapter(getApplicationContext());
-        recyclerView = findViewById(R.id.recyclerview);
-        recyclerView.setAdapter(dataAdapter);
-        listData=ListData.getInstance();
 
-        vueDataViewModel.setRecycler(recyclerView);
+
+        dataRecyclerAdapter=vueDataViewModel.getDataRecyclerAdapter();
+        recyclerView = findViewById(R.id.recyclerview);
+        recyclerView.setAdapter(dataRecyclerAdapter);
+        recyclerView.setLayoutManager((new LinearLayoutManager((this))));
+
+
 
 
         btnTriChoix.setOnClickListener(new View.OnClickListener() {
@@ -85,10 +89,10 @@ public class VueDataActivity extends AppCompatActivity implements Serializable {
         });
 
 
-        recyclerView.setLayoutManager((new LinearLayoutManager((this))));
 
 
-        trid.setOnClickListener(new View.OnClickListener() {
+
+      /*  trid.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onClick(View v) {
@@ -96,76 +100,73 @@ public class VueDataActivity extends AppCompatActivity implements Serializable {
                 if (ChoixTri.equals("Co²")) {
                     if (Desc) {
                         listData.listsortCO2Desc();
-                        dataAdapter.notifyDataSetChanged();
-                        recyclerView.setAdapter(dataAdapter);
+                        dataRecyclerAdapter.notifyDataSetChanged();
+                        recyclerView.setAdapter(dataRecyclerAdapter);
                     } else {
                         listData.listsortCO2();
-                        dataAdapter.notifyDataSetChanged();
-                        recyclerView.setAdapter(dataAdapter);
+                        dataRecyclerAdapter.notifyDataSetChanged();
+                        recyclerView.setAdapter(dataRecyclerAdapter);
                     }
                 }
                 if (ChoixTri.equals("Température")) {
                     if (Desc) {
                         listData.listsortTempDesc();
-                        dataAdapter.notifyDataSetChanged();
-                        recyclerView.setAdapter(dataAdapter);
+                        dataRecyclerAdapter.notifyDataSetChanged();
+                        recyclerView.setAdapter(dataRecyclerAdapter);
                     } else {
                         listData.listsortTemp();
-                        dataAdapter.notifyDataSetChanged();
-                        recyclerView.setAdapter(dataAdapter);
+                        dataRecyclerAdapter.notifyDataSetChanged();
+                        recyclerView.setAdapter(dataRecyclerAdapter);
                     }
                 }
                 if (ChoixTri.equals("Humidité")) {
                     if (Desc) {
                         listData.listsortHumDesc();
-                        dataAdapter.notifyDataSetChanged();
-                        recyclerView.setAdapter(dataAdapter);
+                        dataRecyclerAdapter.notifyDataSetChanged();
+                        recyclerView.setAdapter(dataRecyclerAdapter);
                     } else {
                         listData.listsortHum();
-                        dataAdapter.notifyDataSetChanged();
-                        recyclerView.setAdapter(dataAdapter);
+                        dataRecyclerAdapter.notifyDataSetChanged();
+                        recyclerView.setAdapter(dataRecyclerAdapter);
                     }
                 }
                 if (ChoixTri.equals("Luminosité")) {
                     if (Desc) {
                         listData.listsortLuxDesc();
-                        dataAdapter.notifyDataSetChanged();
-                        recyclerView.setAdapter(dataAdapter);
+                        dataRecyclerAdapter.notifyDataSetChanged();
+                        recyclerView.setAdapter(dataRecyclerAdapter);
                     } else {
                         listData.listsortLux();
-                        dataAdapter.notifyDataSetChanged();
-                        recyclerView.setAdapter(dataAdapter);
+                        dataRecyclerAdapter.notifyDataSetChanged();
+                        recyclerView.setAdapter(dataRecyclerAdapter);
                     }
                 }
                 if (ChoixTri.equals("O²")) {
                     if (Desc) {
                         listData.listsortO2Desc();
-                        dataAdapter.notifyDataSetChanged();
-                        recyclerView.setAdapter(dataAdapter);
+                        dataRecyclerAdapter.notifyDataSetChanged();
+                        recyclerView.setAdapter(dataRecyclerAdapter);
                     } else {
                         listData.listsortO2();
-                        dataAdapter.notifyDataSetChanged();
-                        recyclerView.setAdapter(dataAdapter);
+                        dataRecyclerAdapter.notifyDataSetChanged();
+                        recyclerView.setAdapter(dataRecyclerAdapter);
                     }
                 }
 
 
             }
 
-        });
+        });*/
 
         vueDataViewModel.getData().observe(this, new Observer<Data>() {
             @Override
             public void onChanged(Data data) {
-                //dataAdapter.add
-                dataAdapter.notifyDataSetChanged();
+                dataRecyclerAdapter.notifyItemInserted(dataRecyclerAdapter.getItemCount()-1);
             }
         });
 
 
 
     }
-    public RecyclerView getRecycler(){
-        return recyclerView;
-    }
+
 }

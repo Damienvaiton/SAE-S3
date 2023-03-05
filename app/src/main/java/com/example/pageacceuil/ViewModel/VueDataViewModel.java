@@ -9,20 +9,26 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.pageacceuil.Model.Data;
 import com.example.pageacceuil.Model.DataUpdate;
 import com.example.pageacceuil.Model.FirebaseAccess;
+import com.example.pageacceuil.Model.ListData;
 import com.example.pageacceuil.View.VueDataActivity;
+
+import java.util.ArrayList;
 
 public class VueDataViewModel extends ViewModel implements DataUpdate {
     FirebaseAccess firebaseAccess;
     VueDataActivity vueDataActivity;
-    RecyclerView recyclerView;
-
+    dataRecyclerAdapter dataRecyclerAdapter;
+    ArrayList<Data> listData;
     public VueDataViewModel() {
+        listData=new ArrayList<>();
+        ListData a=ListData.getInstance();
+       listData.add(a.recup_data(1));
+        listData.add(a.recup_data(2));
+        listData.add(a.recup_data(3));
+        listData.add(a.recup_data(4));
+         firebaseAccess=FirebaseAccess.getInstance();
+         dataRecyclerAdapter = new dataRecyclerAdapter(getApplicationContext(),listData);
 
-        firebaseAccess=FirebaseAccess.getInstance();
-        DataAdapter dataAdapter = new DataAdapter(getApplicationContext());
-//vueDataActivity=
-      //  RecyclerView recyclerView = findViewById(R.id.recyclerview);
-      //  recyclerView.setAdapter(dataAdapter);
     }
 
    // public LiveData<Boolean>
@@ -35,16 +41,12 @@ public class VueDataViewModel extends ViewModel implements DataUpdate {
     }
     public void updateData(Data data) {
         if (data != null) {
+            dataRecyclerAdapter.notifyDataSetChanged();
             listenerDonnées.postValue(data);
         }
     }
 
-
-    public LiveData<String> getMoments() {
-        return listenerTemps;
+    public dataRecyclerAdapter getDataRecyclerAdapter() {
+        return dataRecyclerAdapter;
     }
-public void setRecycler(RecyclerView recyclerView){
-        this.recyclerView=recyclerView;
-}
-
 }
