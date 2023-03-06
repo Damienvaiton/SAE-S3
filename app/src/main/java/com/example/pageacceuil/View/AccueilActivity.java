@@ -38,13 +38,13 @@ public class AccueilActivity extends AppCompatActivity {
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32");
 
-    Spinner spinner;
-    int position;
-    Button btncoEtu;
-    ESP currentESP;
-    Button btnCoAdmin;
+    private Spinner spinner;
+    private int position;
+    private Button btncoEtu;
+    private ESP currentESP;
+    private Button btnCoAdmin;
     //HashMap<String, String> ESP;
-    ArrayList<String> tabESP;
+    private ArrayList<String> tabESP;
 
     @SuppressLint("MissingInflatedId")
     @Override

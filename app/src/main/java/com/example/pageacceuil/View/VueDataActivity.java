@@ -21,20 +21,21 @@ import com.example.pageacceuil.ViewModel.dataRecyclerAdapter;
 import com.example.pageacceuil.ViewModel.VueDataViewModel;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class VueDataActivity extends AppCompatActivity implements Serializable {
 
-    private ListData listData;
 
+ArrayList<Data> listData;
     private RecyclerView recyclerView;
     private Button btnTriChoix;
     private Button trid;
     private Switch switchDesc;
 
-    dataRecyclerAdapter dataRecyclerAdapter;
+    private dataRecyclerAdapter dataRecyclerAdapter;
     private String ChoixTri = "Choix du Tri";
     private boolean Desc = false;
-    VueDataViewModel vueDataViewModel=null;
+    private VueDataViewModel vueDataViewModel=null;
 
 
     @SuppressLint("MissingInflatedId")
@@ -48,13 +49,14 @@ public class VueDataActivity extends AppCompatActivity implements Serializable {
         //Faire une interface commune pour les mutablesLiveDta afin que ce firebassacess ne soit pas dépendant d'un viewmodel et les garder pour tout viewmodel ayant besoin
 
 
+        listData=new ArrayList<>();
+
         btnTriChoix = findViewById(R.id.SortChoise);
         switchDesc = findViewById(R.id.switch1);
         trid = findViewById(R.id.button8);
         btnTriChoix.setText(ChoixTri);
 
-
-        dataRecyclerAdapter=vueDataViewModel.getDataRecyclerAdapter();
+        dataRecyclerAdapter = new dataRecyclerAdapter(getApplicationContext(),listData);
         recyclerView = findViewById(R.id.recyclerview);
         recyclerView.setAdapter(dataRecyclerAdapter);
         recyclerView.setLayoutManager((new LinearLayoutManager((this))));
@@ -161,6 +163,7 @@ public class VueDataActivity extends AppCompatActivity implements Serializable {
         vueDataViewModel.getData().observe(this, new Observer<Data>() {
             @Override
             public void onChanged(Data data) {
+                listData.add(data);
                 dataRecyclerAdapter.notifyItemInserted(dataRecyclerAdapter.getItemCount()-1);
             }
         });

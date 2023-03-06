@@ -8,9 +8,8 @@ import com.example.pageacceuil.Model.ESP;
 import com.example.pageacceuil.Model.FirebaseAccess;
 
 public class SettingsEtuViewModel extends ViewModel {
-    FirebaseAccess acess;
-    ESP currentEsp;
-    GraphViewModel graphViewModel;
+    private FirebaseAccess acess;
+    private ESP currentEsp;
 
     public SettingsEtuViewModel() {
         acess = FirebaseAccess.getInstance();
@@ -31,7 +30,7 @@ public class SettingsEtuViewModel extends ViewModel {
     }
 
     public boolean editTemps(int values) {
-        acess.editTemps(values);
+        acess.setEspRefreshRate(values);
         return true;
 
     }

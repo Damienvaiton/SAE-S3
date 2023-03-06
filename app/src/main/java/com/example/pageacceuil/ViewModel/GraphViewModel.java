@@ -1,5 +1,7 @@
 package com.example.pageacceuil.ViewModel;
 
+import static com.example.pageacceuil.Model.DataUpdate.listenerTemps;
+
 import android.graphics.Color;
 
 import androidx.lifecycle.LiveData;
@@ -50,14 +52,13 @@ public class GraphViewModel extends ViewModel {
         this.acess = FirebaseAccess.getInstance();
         this.currentEsp = ESP.getInstance();
         acess.setGraphViewModel(this);
-        acess.setPrechargeDonnee();
+        acess.loadInData();
         acess.setRealtimeDataListener();
-        acess.setTimeListener(currentEsp);
+        acess.setEspTimeListener(currentEsp);
         datas = new ArrayList<>();
     }
 
-    private final MutableLiveData<Data> listenerData = new MutableLiveData<>();
-    private final MutableLiveData<String> listenerTemps = new MutableLiveData<>();
+
     private final MutableLiveData<LineData> updateGraph = new MutableLiveData<>();
 
     public LiveData getUpdateGraph() {
@@ -67,7 +68,6 @@ public class GraphViewModel extends ViewModel {
     public void updateData(Data data) {
         if (data != null) {
             System.out.println("update data");
-            listenerData.postValue(data);
             datas.add(data);
             chargerDonner(data);
         }
@@ -76,9 +76,7 @@ public class GraphViewModel extends ViewModel {
     public void updateMoments(){
         listenerTemps.postValue(currentEsp.getTauxRafrai());
     }
-    public LiveData<Data> getData() {
-        return listenerData;
-    }
+
 
     public LiveData<String> getMoments() {
         return listenerTemps;

@@ -1,6 +1,5 @@
 package com.example.pageacceuil.ViewModel;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -8,25 +7,20 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.pageacceuil.Model.ESP;
 import com.example.pageacceuil.Model.FirebaseAccess;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class AccueilViewModel extends ViewModel {
-    HashMap<String, String> ESP;
-    FirebaseAccess acess;
+    private HashMap<String, String> ESP;
+    private FirebaseAccess acess;
 
     public AccueilViewModel() {
 
        acess = FirebaseAccess.getInstance();
         acess.setAccueilViewModel(this);
-        acess.GetESP();
+        acess.getAllESP();
         ESP = new HashMap<String, String>();
     }
 

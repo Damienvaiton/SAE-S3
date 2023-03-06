@@ -21,9 +21,9 @@ import java.util.Objects;
 
 public class ConnecAdminActivity extends AppCompatActivity {
 
-    EditText editUser;
-    EditText editMdp;
-    Button coBtn;
+    private EditText editUser;
+    private EditText editMdp;
+    private Button coBtn;
 
 
     private ConnectAdminViewModel connectAdminViewModel = null;

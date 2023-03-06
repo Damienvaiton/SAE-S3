@@ -1,8 +1,6 @@
 package com.example.pageacceuil.Model;
 
-import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,20 +28,37 @@ public class FirebaseAccess {
     private GraphViewModel graphViewModel = null;
     private AccueilViewModel accueilViewModel = null;
     private ESP currentESP;
-    ValueEventListener valueEventListenerTemps;
-    ChildEventListener RealtimeDataListener;
+    private ValueEventListener valueEventListenerTemps;
+    private ChildEventListener RealtimeDataListener;
 
+    /**
+     * Différents setters pour la class FirebaseAccess qui s'occupe de tous les appels à la base de données Firebase.
+     */
 
+    /**
+     * Setter pour le ViewModel GraphViewModel
+     * @param graphViewModel
+     */
     public void setGraphViewModel(GraphViewModel graphViewModel) {
         this.graphViewModel = graphViewModel;
     }
-
+    /**
+     * Setter pour le ViewModel AcceuilViewModel
+     * @param accueilViewModel
+     */
     public void setAccueilViewModel(AccueilViewModel accueilViewModel) {
         this.accueilViewModel = accueilViewModel;
     }
 
+    /**
+     * Paramètre qui conserve une instance de FirebaseAccess une fois celle-ci créée
+     */
     private static volatile FirebaseAccess instance;
 
+    /**
+     * Récupère ou construit l'unique instaance de FirebaseAccess
+     * @return instance de la classe FirebaseAccess
+     */
     public static FirebaseAccess getInstance() {
 
         FirebaseAccess result = instance;
@@ -58,11 +73,18 @@ public class FirebaseAccess {
         }
     }
 
+    /**
+     * Setter pour la classe ESP actuel
+     * @param esp
+     */
     public void setEsp(ESP esp) {
         this.currentESP = esp;
     }
 
-    public void GetESP() {
+    /**
+     * Charge tous les ESP présents dans la table Firebase
+     */
+    public void getAllESP() {
         myRef.child("ESP32").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
@@ -76,7 +98,6 @@ public class FirebaseAccess {
                 }
             }
 
-            ;
 
 
             @Override
@@ -100,7 +121,7 @@ public class FirebaseAccess {
         });
     }
 
-    public void editTemps(int values) {// context passé en param
+    public void setEspRefreshRate(int values) {// context passé en param
         myRef.child("ESP32").child(currentESP.getMacEsp()).child("TauxRafraichissement").setValue(values * 1000)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -132,7 +153,7 @@ public class FirebaseAccess {
      }*/
     MutableLiveData<ArrayList<String>> listener = new MutableLiveData<>();
 
-    public void resetValueDb(String choixESP, Context context) {
+    public void resetValueFirebase() {
         myRef.child("ESP32").child(currentESP.getMacEsp()).child("Mesure").removeValue()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -144,12 +165,12 @@ public class FirebaseAccess {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(context, "Erreur base de données", Toast.LENGTH_SHORT).show();
+                      //  Toast.makeText(context, "Erreur base de données", Toast.LENGTH_SHORT).show();
                         Log.e("Firebase", "Erreur lors de l'enregistrement des données", e);
                         return;
                     }
                 });
-        myRef.child("ESP32").child(choixESP).child("Mesure").removeValue()
+        myRef.child("ESP32").child(currentESP.getMacEsp()).child("Mesure").removeValue()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -159,16 +180,16 @@ public class FirebaseAccess {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(context, "Erreur base de données", Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(context, "Erreur base de données", Toast.LENGTH_SHORT).show();
                         Log.e("Firebase", "Erreur lors de l'enregistrement des données", e);
                         return;
                     }
                 });
-        Toast.makeText(context, "Données correctement supprimé", Toast.LENGTH_SHORT).show();
+       // Toast.makeText(context, "Données correctement supprimé", Toast.LENGTH_SHORT).show();
     }
 
 
-    public boolean setPrechargeDonnee() {
+    public boolean loadInData() {
         ListData listData = ListData.getInstance();
         myRef.child("ESP32").child(currentESP.getMacEsp()).child("Mesure").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
@@ -190,7 +211,7 @@ public class FirebaseAccess {
         return true;
     }
 
-    public void setTimeListener(ESP currentESP) {
+    public void setEspTimeListener(ESP esp) {
         valueEventListenerTemps = new ValueEventListener() {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String heure = "";
@@ -207,10 +228,8 @@ public class FirebaseAccess {
                     if (snapshot.getValue(Long.class) >= 1000) {
                         seconde = (snapshot.getValue(Long.class) % (1000 * 60)) / 1000 + "s";
                     }
-                    System.out.println(heure + minute + seconde + "yoooooooooooooooooo");
-                    currentESP.setTauxRafrai(heure + minute + seconde);
+                    esp.setTauxRafrai(heure + minute + seconde);
                     //graphViewModel.updateMoments();
-                    System.out.println(currentESP.getTauxRafrai());
                     return;
                 }
             }
@@ -221,7 +240,7 @@ public class FirebaseAccess {
 
             }
         };
-        myRef.child("ESP32").child(currentESP.getMacEsp()).child("TauxRafraichissement").addValueEventListener(valueEventListenerTemps);
+        myRef.child("ESP32").child(esp.getMacEsp()).child("TauxRafraichissement").addValueEventListener(valueEventListenerTemps);
         return;
     }
 
@@ -265,7 +284,6 @@ public class FirebaseAccess {
 
     }
 
-    MutableLiveData<Data> listenerDo = new MutableLiveData<>();
 
 
     public String[] getAdminLog() {
@@ -284,6 +302,10 @@ public class FirebaseAccess {
     }
     public void setNicknameEsp(String nickname){
         myRef.child("ESP32").child(currentESP.getMacEsp()).child("Nom").setValue(nickname);
+
+    }
+    public void deleteEsp(){
+        myRef.child("ESP32").child(currentESP.getMacEsp()).removeValue();
 
     }
 

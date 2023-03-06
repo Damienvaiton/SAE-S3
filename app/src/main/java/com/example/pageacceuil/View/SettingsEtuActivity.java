@@ -29,33 +29,31 @@ import com.example.pageacceuil.Model.FirebaseAccess;
 
 public class SettingsEtuActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private final FirebaseDatabase database = FirebaseDatabase.getInstance();
-FirebaseAccess databas= FirebaseAccess.getInstance();
-    TextView textAxeLeft;
-    TextView textAxeRight;
-    String choixESP = "";
-    String nameEsp = "";
+    private TextView textAxeLeft;
+    private TextView textAxeRight;
+    private String choixESP = "";
+    private String nameEsp = "";
 
-    String rightAxisName = "";
-    String leftAxisName = "";
-    EditText max_g;
-    EditText min_g;
-    EditText max_d;
-    EditText min_d;
-    EditText tauxRefresh;
+    private String rightAxisName = "";
+    private String leftAxisName = "";
+    private EditText max_g;
+    private EditText min_g;
+    private EditText max_d;
+    private EditText min_d;
+    private EditText tauxRefresh;
 
-    Button b_droit;
-    Button b_gauche;
-    Button b_refresh;
+    private Button b_droit;
+    private Button b_gauche;
+    private Button b_refresh;
 
-    TextView nomEsp;
-    CheckBox auto_droit;
-    CheckBox auto_gauche;
+    private TextView nomEsp;
+    private CheckBox auto_droit;
+    private CheckBox auto_gauche;
 
-    YAxis rightAxis;
-    YAxis leftAxis;
+    private YAxis rightAxis;
+    private YAxis leftAxis;
 
-    SettingsEtuViewModel settingsEtuViewModel;
+    private SettingsEtuViewModel settingsEtuViewModel=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,7 +108,7 @@ FirebaseAccess databas= FirebaseAccess.getInstance();
                 System.out.println("impossible récup ESP");
             }
         }
-        if (!esp.getNomEsp().equals("")) {
+        if (esp.getNomEsp()==null) {
             nomEsp.setText(esp.getNomEsp());
         } else {
             nomEsp.setText(esp.getMacEsp());
@@ -151,8 +149,8 @@ FirebaseAccess databas= FirebaseAccess.getInstance();
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE && !tauxRefresh.getText().toString().equals("")) {
                     if(settingsEtuViewModel.editTemps((parseInt(tauxRefresh.getText().toString())))==true){
-                        tauxRefresh.setText("");
                         Toast.makeText(SettingsEtuActivity.this, "Refresh : " + tauxRefresh.getText().toString() + "s,\r\nVous pouvez redémarrer l'ESP", Toast.LENGTH_SHORT).show();
+                        tauxRefresh.setText("");
                     }
                     else{
                         Toast.makeText(SettingsEtuActivity.this, "Erreur", Toast.LENGTH_SHORT).show();

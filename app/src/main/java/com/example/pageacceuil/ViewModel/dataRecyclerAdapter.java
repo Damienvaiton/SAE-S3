@@ -20,12 +20,12 @@ import com.example.pageacceuil.Model.ListData;
 
 public class dataRecyclerAdapter extends RecyclerView.Adapter<dataRecyclerAdapter.ViewHolder> {
 
-    Context context;
+    private Context context;
 
-    ArrayList<Data> listData;
+    private ArrayList<Data> listData;
 
     public dataRecyclerAdapter(Context context, ArrayList<Data> listData) {
-
+this.context=context;
         this.listData = listData;
     }
 

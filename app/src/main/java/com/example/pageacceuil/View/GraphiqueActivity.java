@@ -59,12 +59,7 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
 
         graphViewModel=new ViewModelProvider(this).get(GraphViewModel.class);
 
-        graphViewModel.getData().observe(this, new Observer<Data>() {
-            @Override
-            public void onChanged(Data data) {
-                actuValues(data);
-            }
-        });
+
         graphViewModel.getUpdateGraph().observe(this, new Observer<LineData>() {
             @Override
             public void onChanged(LineData linedata) {
@@ -73,21 +68,6 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
             }
         });
 
-
-
-       /* graphViewModel.getAllData().observe(this, new Observer<ArrayList<Data>>() {
-            @Override
-            public void onChanged(ArrayList<Data> list) {
-                System.out.println("ut"+list.size());
-                if(list.size()!=0) {
-                    alldata.add(list.get(list.size() - 1));
-                    actuValues(alldata.get(alldata.size() - 1));
-                    chargerDonner(alldata.get(alldata.size() - 1));
-                    System.out.println(alldata.get(alldata.size() - 1).getTemps());
-                }
-            }
-        });
-*/
         graphViewModel.getMoments().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {

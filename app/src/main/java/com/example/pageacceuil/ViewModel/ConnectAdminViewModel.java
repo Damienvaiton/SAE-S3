@@ -7,7 +7,7 @@ import com.example.pageacceuil.Model.FirebaseAccess;
 public class ConnectAdminViewModel extends ViewModel {
 
     private String[] tabID;
-    public FirebaseAccess acces;
+    private FirebaseAccess acces;
 
 
     public ConnectAdminViewModel() {

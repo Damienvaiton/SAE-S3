@@ -21,7 +21,7 @@ public class ESP {
     public ESP(String macEsp, String nomEsp) {
         this.macEsp = macEsp;
         this.nomEsp = nomEsp;
-        database.setTimeListener(this) ;
+        database.setEspTimeListener(this) ;
         instance=this;
     }
 

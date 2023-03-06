@@ -71,15 +71,16 @@ public class SettingsAdminActivity extends AppCompatActivity implements View.OnC
 
     private FirebaseAccess databas;
 
-    private SettingsAdminViewModel settingsAdminViewModel=null;
+    private SettingsAdminViewModel settingsAdminViewModel = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_page_setting_admin);
 
-        settingsAdminViewModel=new ViewModelProvider(this).get(SettingsAdminViewModel.class);
+        settingsAdminViewModel = new ViewModelProvider(this).get(SettingsAdminViewModel.class);
 
-        databas= FirebaseAccess.getInstance();
+        databas = FirebaseAccess.getInstance();
 
         idEsp = findViewById(R.id.selectedEsp);
         rename = findViewById(R.id.rennoméA);
@@ -105,7 +106,7 @@ public class SettingsAdminActivity extends AppCompatActivity implements View.OnC
         spinner.setAdapter(adapter);
 
         dataESP = ListData.getInstance();
-ArrayList<Data> listData=new ArrayList<>();
+        ArrayList<Data> listData = new ArrayList<>();
         dataRecyclerAdapter = new dataRecyclerAdapter(getApplicationContext(), listData);
         recyclerView.setAdapter(dataRecyclerAdapter);
         recyclerView.setLayoutManager((new LinearLayoutManager((this))));
@@ -146,42 +147,8 @@ ArrayList<Data> listData=new ArrayList<>();
                     choixESP = tabESP.get(position);
                     idEsp.setText("Groupe : " + choixESP);
                     System.out.println(choixESP);
-                    myRef.child(choixESP).child("ESP").addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            Groupe.add(snapshot.getValue(String.class));
-                            System.out.println(snapshot.getValue(String.class)+"yofreot");
-                            for (String a : Groupe) {
-                                System.out.println(a+"eeEEEEEe");
-                            }
-
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
-                    myRef.child(choixESP).child("ESP").addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            Groupe.add(snapshot.getValue(String.class));
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
-
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+                    settingsAdminViewModel.getDonnées();
+                    //Puis faire celui en realtime
 
 
 
@@ -208,40 +175,40 @@ ArrayList<Data> listData=new ArrayList<>();
         }
     })*/
 
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                ESP.clear();
-                if (snapshot.child("ESP32").exists() && snapshot.child("ESP32") != null) {
-                    for (DataSnapshot child : snapshot.child("ESP32").getChildren()) {
-                        if (child.child("Nom").exists()) {
-                            ESP.put(child.getKey(), String.valueOf(child.child("Nom").getValue()));
-                        } else {
-                            ESP.putIfAbsent(child.getKey(), null);
-                        }
-                    }
-                }
-                Iterator iterator = ESP.entrySet().iterator();
-                tabESP.clear();
-                while (iterator.hasNext()) {
-                    Map.Entry entry = (Map.Entry) iterator.next();
-                    if (entry.getValue() == null) {
-                        tabESP.add((String) entry.getKey());
-                    } else {
-                        tabESP.add((String) entry.getValue());
-                    }
-                }
-                if (snapshot.child("Groupe").exists() && snapshot.child("Groupe") != null) {
-                    for (DataSnapshot childgroupe : snapshot.child("Groupe").getChildren()) {
-                        if (childgroupe.child("nom").exists()) {
-                            tabESP.add(childgroupe.child("nom").getValue().toString());
-                        } else {
-                            tabESP.add(childgroupe.getValue().toString());
-                        }
+                    myRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            ESP.clear();
+                            if (snapshot.child("ESP32").exists() && snapshot.child("ESP32") != null) {
+                                for (DataSnapshot child : snapshot.child("ESP32").getChildren()) {
+                                    if (child.child("Nom").exists()) {
+                                        ESP.put(child.getKey(), String.valueOf(child.child("Nom").getValue()));
+                                    } else {
+                                        ESP.putIfAbsent(child.getKey(), null);
+                                    }
+                                }
+                            }
+                            Iterator iterator = ESP.entrySet().iterator();
+                            tabESP.clear();
+                            while (iterator.hasNext()) {
+                                Map.Entry entry = (Map.Entry) iterator.next();
+                                if (entry.getValue() == null) {
+                                    tabESP.add((String) entry.getKey());
+                                } else {
+                                    tabESP.add((String) entry.getValue());
+                                }
+                            }
+                            if (snapshot.child("Groupe").exists() && snapshot.child("Groupe") != null) {
+                                for (DataSnapshot childgroupe : snapshot.child("Groupe").getChildren()) {
+                                    if (childgroupe.child("nom").exists()) {
+                                        tabESP.add(childgroupe.child("nom").getValue().toString());
+                                    } else {
+                                        tabESP.add(childgroupe.getValue().toString());
+                                    }
 
-                    }
+                                }
 
-                    adapter.notifyDataSetChanged();
+                                adapter.notifyDataSetChanged();
                        /* int v=0;
                         Iterator iteraor = ESP.entrySet().iterator();
                             while(iteraor.hasNext()){
@@ -250,156 +217,155 @@ ArrayList<Data> listData=new ArrayList<>();
     System.out.println("tab"+tabESP.get(v));
     System.out.println(ESP.get(entryd));
 }*/
-                }
-            }
+                            }
+                        }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-    }
-
-
-    void actu() {
-
-        if (valueEventListenerDate != null) {
-            myRef.child("ESP32").child(oldChoixESP).child("TauxRafraichissement").removeEventListener(valueEventListenerTemps);
-        }
-        if (valueEventListenerTemps != null) {
-            dataESP.deleteAllData();
-            myRef.child("ESP32").child(oldChoixESP).child("Mesure").removeEventListener(valueEventListenerDate);
-        }
-
-        valueEventListenerDate = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    Data a = dataSnapshot.getValue(Data.class);
-                    dataESP.list_add_data(a);
-                }
-                dataRecyclerAdapter.notifyDataSetChanged();
-                recyclerView.invalidate();
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        };
-        myRef.child("ESP32").child(choixESP).child("Mesure").addValueEventListener(valueEventListenerDate);
-        valueEventListenerTemps = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String heure = "";
-                String minute = "";
-                String seconde = "";
-                if (snapshot.exists()) {
-                    if (snapshot.getValue(Long.class) >= 3600000) {
-                        heure = (snapshot.getValue(Long.class) / (1000 * 60 * 60) + "h");
-                    }
-                    if (snapshot.getValue(Long.class) >= 60000) {
-                        minute = (snapshot.getValue(Long.class) % (1000 * 60 * 60)) / (1000 * 60) + "m";
-                    }
-                    if (snapshot.getValue(Long.class) >= 1000) {
-                        seconde = (snapshot.getValue(Long.class) % (1000 * 60)) / 1000 + "s";
-                    }
-                    refresh.setHint(heure + minute + seconde);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        };
-        myRef.child("ESP32").child(choixESP).child("TauxRafraichissement").addValueEventListener(valueEventListenerTemps);
-    }
-
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.rennoméA:
-                PopUpDialog customPopup = new PopUpDialog(this);
-                customPopup.build("Rennomé l'esp", "Nom", 1);
-                customPopup.getYesButton().setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (!customPopup.getString().equals("")) {
-                            myRef.child(choixESP).child("Nom").setValue(customPopup.getString());
-                            //  adapter.notifyDataSetChanged();
-                            customPopup.dismiss();
-                        } else {
-                            Toast.makeText(getApplicationContext(), "Merci d'entrer un nom", Toast.LENGTH_SHORT).show();
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
 
                         }
-                    }
-                });
-                customPopup.getNoButton().setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        customPopup.dismiss();
-                    }
-                });
-                //Faire dans pop up
-                break;
-            case R.id.suppA:
-                PopUpDialog deletePopup = new PopUpDialog(this);
-                deletePopup.build("Supprimer l'esp " + choixESP);
-                deletePopup.getYesButton().setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        myRef.child(choixESP).removeValue();
-                        deletePopup.dismiss();
+                    });
 
-                    }
-                });
-                deletePopup.getNoButton().setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        deletePopup.dismiss();
-                    }
-                });
-                break;
-            case R.id.grouperA:
-                break;
-            case R.id.valiRefresh:
-                if (refresh.getText().toString().equals("")) {
-                    Toast.makeText(getApplicationContext(), "Merci d'entrer' une valeur", Toast.LENGTH_SHORT).show();
-                } else {
-                    databas.editTemps(Integer.valueOf(refresh.getText().toString()));
-                    refresh.setText("");
                 }
-                break;
-            case R.id.reiniA:
-                PopUpDialog popReini = new PopUpDialog(this);
-                popReini.build("En êtes vous sûr?");
-                popReini.getYesButton().setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        databas.resetValueDb(choixESP,getApplicationContext());
-                        popReini.dismiss();
-                        actu();
-                        dataRecyclerAdapter.notifyDataSetChanged();
-                        recyclerView.invalidate();
+
+
+                void actu () {
+
+                    if (valueEventListenerDate != null) {
+                        myRef.child("ESP32").child(oldChoixESP).child("TauxRafraichissement").removeEventListener(valueEventListenerTemps);
+                    }
+                    if (valueEventListenerTemps != null) {
+                        dataESP.deleteAllData();
+                        myRef.child("ESP32").child(oldChoixESP).child("Mesure").removeEventListener(valueEventListenerDate);
                     }
 
+                    valueEventListenerDate = new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                                Data a = dataSnapshot.getValue(Data.class);
+                                dataESP.list_add_data(a);
+                            }
+                            dataRecyclerAdapter.notifyDataSetChanged();
+                            recyclerView.invalidate();
 
-                });
-                //spinner.getAdapter().notify();
-                popReini.getNoButton().setOnClickListener(new View.OnClickListener() {
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    };
+
+                    myRef.child("ESP32").child(choixESP).child("Mesure").addValueEventListener(valueEventListenerDate);
+                    valueEventListenerTemps = new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            String heure = "";
+                            String minute = "";
+                            String seconde = "";
+                            if (snapshot.exists()) {
+                                if (snapshot.getValue(Long.class) >= 3600000) {
+                                    heure = (snapshot.getValue(Long.class) / (1000 * 60 * 60) + "h");
+                                }
+                                if (snapshot.getValue(Long.class) >= 60000) {
+                                    minute = (snapshot.getValue(Long.class) % (1000 * 60 * 60)) / (1000 * 60) + "m";
+                                }
+                                if (snapshot.getValue(Long.class) >= 1000) {
+                                    seconde = (snapshot.getValue(Long.class) % (1000 * 60)) / 1000 + "s";
+                                }
+                                refresh.setHint(heure + minute + seconde);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    };
+                    myRef.child("ESP32").child(choixESP).child("TauxRafraichissement").addValueEventListener(valueEventListenerTemps);
+                }
+
                     @Override
-                    public void onClick(View view) {
-                        popReini.dismiss();
+                    public void onClick (View v){
+                        switch (v.getId()) {
+                            case R.id.rennoméA:
+                                PopUpDialog customPopup = new PopUpDialog(this);
+                                customPopup.build("Rennomé l'esp", "Nom", 1);
+                                customPopup.getYesButton().setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        if (!customPopup.getString().equals("")) {
+                                            settingsAdminViewModel.renameESP(customPopup.getString());
+                                            customPopup.dismiss();
+                                        } else {
+                                            Toast.makeText(getApplicationContext(), "Merci d'entrer un nom", Toast.LENGTH_SHORT).show();
+
+                                        }
+                                    }
+                                });
+                                customPopup.getNoButton().setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        customPopup.dismiss();
+                                    }
+                                });
+                                //Faire dans pop up
+                                break;
+                            case R.id.suppA:
+                                PopUpDialog deletePopup = new PopUpDialog(this);
+                                deletePopup.build("Supprimer l'esp " + choixESP);
+                                deletePopup.getYesButton().setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        settingsAdminViewModel.suppESP();
+                                        deletePopup.dismiss();
+
+                                    }
+                                });
+                                deletePopup.getNoButton().setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        deletePopup.dismiss();
+                                    }
+                                });
+                                break;
+                            case R.id.grouperA:
+                                break;
+                            case R.id.valiRefresh:
+                                if (refresh.getText().toString().equals("")) {
+                                    Toast.makeText(getApplicationContext(), "Merci d'entrer' une valeur", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    databas.setEspRefreshRate(Integer.valueOf(refresh.getText().toString()));
+                                    refresh.setText("");
+                                }
+                                break;
+                            case R.id.reiniA:
+                                PopUpDialog popReini = new PopUpDialog(this);
+                                popReini.build("En êtes vous sûr?");
+                                popReini.getYesButton().setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        settingsAdminViewModel.resetESP();
+                                        popReini.dismiss();
+                                        actu();
+                                        dataRecyclerAdapter.notifyDataSetChanged();
+                                        recyclerView.invalidate();
+                                    }
+
+
+                                });
+                                //spinner.getAdapter().notify();
+                                popReini.getNoButton().setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        popReini.dismiss();
+                                    }
+                                });
+
+                                break;
+
+                        }
+
                     }
-                });
-
-                break;
-
-        }
-
-    }
-}
+                }
