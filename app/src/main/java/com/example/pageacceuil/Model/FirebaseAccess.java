@@ -8,7 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.pageacceuil.View.AccueilActivity;
 import com.example.pageacceuil.ViewModel.AccueilViewModel;
 import com.example.pageacceuil.ViewModel.GraphViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -22,16 +21,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.apache.xmlbeans.soap.SOAPArrayType;
-
 import java.util.ArrayList;
 
 public class FirebaseAccess {
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
     private final DatabaseReference myRef = database.getReference("SAE_S3_BD");
 
-    GraphViewModel graphViewModel = null;
-    AccueilViewModel accueilViewModel = null;
+    private GraphViewModel graphViewModel = null;
+    private AccueilViewModel accueilViewModel = null;
     private ESP currentESP;
     ValueEventListener valueEventListenerTemps;
     ChildEventListener RealtimeDataListener;
@@ -201,7 +198,6 @@ public class FirebaseAccess {
                 String seconde = "";
                 if (snapshot.exists()) {
 
-
                     if (snapshot.getValue(Long.class) >= 3600000) {
                         heure = (snapshot.getValue(Long.class) / (1000 * 60 * 60)) + "h";
                     }
@@ -212,7 +208,7 @@ public class FirebaseAccess {
                         seconde = (snapshot.getValue(Long.class) % (1000 * 60)) / 1000 + "s";
                     }
                     System.out.println(heure + minute + seconde + "yoooooooooooooooooo");
-                    currentESP.tauxRafrai = heure + minute + seconde;
+                    currentESP.setTauxRafrai(heure + minute + seconde);
                     //graphViewModel.updateMoments();
                     System.out.println(currentESP.getTauxRafrai());
                     return;
@@ -225,7 +221,7 @@ public class FirebaseAccess {
 
             }
         };
-        myRef.child("ESP32").child(currentESP.macEsp).child("TauxRafraichissement").addValueEventListener(valueEventListenerTemps);
+        myRef.child("ESP32").child(currentESP.getMacEsp()).child("TauxRafraichissement").addValueEventListener(valueEventListenerTemps);
         return;
     }
 
@@ -285,6 +281,10 @@ public class FirebaseAccess {
             }
         });
         return access;
+    }
+    public void setNicknameEsp(String nickname){
+        myRef.child("ESP32").child(currentESP.getMacEsp()).child("Nom").setValue(nickname);
+
     }
 
     public boolean deleteListener() {

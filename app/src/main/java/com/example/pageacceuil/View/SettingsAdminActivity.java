@@ -14,10 +14,17 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pageacceuil.Model.Data;
+import com.example.pageacceuil.Model.FirebaseAccess;
+import com.example.pageacceuil.Model.ListData;
 import com.example.pageacceuil.R;
+import com.example.pageacceuil.ViewModel.PopUpDialog;
+import com.example.pageacceuil.ViewModel.SettingsAdminViewModel;
+import com.example.pageacceuil.ViewModel.dataRecyclerAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,50 +36,48 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import com.example.pageacceuil.Model.Data;
-import com.example.pageacceuil.Model.FirebaseAccess;
-import com.example.pageacceuil.Model.ListData;
-import com.example.pageacceuil.ViewModel.dataRecyclerAdapter;
-import com.example.pageacceuil.ViewModel.PopUpDialog;
-
 public class SettingsAdminActivity extends AppCompatActivity implements View.OnClickListener {
 
 
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference myRef = database.getReference("SAE_S3_BD");
+    private DatabaseReference myRef = database.getReference("SAE_S3_BD");
 
 
-    RecyclerView recyclerView;
+    private RecyclerView recyclerView;
 
-    ValueEventListener valueEventListenerTemps;
+    private ValueEventListener valueEventListenerTemps;
 
-    ValueEventListener valueEventListenerDate;
-    Spinner spinner;
-    Button valiRefresh;
-    Button rename;
+    private ValueEventListener valueEventListenerDate;
+    private Spinner spinner;
+    private Button valiRefresh;
+    private Button rename;
 
-    Button delete;
-    EditText refresh;
-    Button grouper;
-    Button reini;
-    TextView idEsp;
-    ListData dataESP;
-    String choixESP;
+    private Button delete;
+    private EditText refresh;
+    private Button grouper;
+    private Button reini;
+    private TextView idEsp;
+    private ListData dataESP;
+    private String choixESP;
 
-    String oldChoixESP = "";
-    HashMap<String, String> ESP;
-    ArrayAdapter<String> adapter;
-    ArrayList<String> tabESP;
-    ArrayList<String> Groupe;
+    private String oldChoixESP = "";
+    private HashMap<String, String> ESP;
+    private ArrayAdapter<String> adapter;
+    private ArrayList<String> tabESP;
+    private ArrayList<String> Groupe;
 
 
-    dataRecyclerAdapter dataRecyclerAdapter;
+    private dataRecyclerAdapter dataRecyclerAdapter;
 
-    FirebaseAccess databas;
+    private FirebaseAccess databas;
+
+    private SettingsAdminViewModel settingsAdminViewModel=null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_page_setting_admin);
+
+        settingsAdminViewModel=new ViewModelProvider(this).get(SettingsAdminViewModel.class);
 
         databas= FirebaseAccess.getInstance();
 

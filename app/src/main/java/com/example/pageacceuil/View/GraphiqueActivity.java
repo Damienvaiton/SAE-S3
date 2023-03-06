@@ -14,7 +14,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.pageacceuil.Model.Axe;
 import com.example.pageacceuil.Model.Data;
 import com.example.pageacceuil.R;
 import com.example.pageacceuil.ViewModel.GraphViewModel;
@@ -33,7 +32,7 @@ import java.text.DecimalFormat;
 
 public class GraphiqueActivity extends AppCompatActivity implements View.OnClickListener, BottomNavigationView.OnNavigationItemSelectedListener {
 
-    public static LineChart graph;
+    private LineChart graph;
     private TextView viewO2;
     private TextView viewCO2;
     private TextView viewLux;
@@ -48,8 +47,8 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
     private CheckBox boxLux;
     private BottomAppBar bottomNav;
     private BottomNavigationView bottomNavigationView;
-    public  YAxis leftAxis;
-    public YAxis rightAxis;
+    private  YAxis leftAxis;
+    private YAxis rightAxis;
     private XAxis xl;
     private GraphViewModel graphViewModel= null;
 
@@ -71,10 +70,8 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
             public void onChanged(LineData linedata) {
                 graph.setData(linedata);
                 graph.invalidate();
-                // actuValues();
             }
         });
-
 
 
 
@@ -99,6 +96,7 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
 
             }
         });
+
 
         valTemp = findViewById(R.id.viewTime);
 

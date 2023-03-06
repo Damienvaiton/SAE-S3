@@ -2,10 +2,10 @@ package com.example.pageacceuil.Model;
 
 
 public class ESP {
-    String macEsp;
-    String nomEsp;
-    String tauxRafrai;
-    FirebaseAccess database = FirebaseAccess.getInstance();
+    private String macEsp;
+    private String nomEsp;
+    private String tauxRafrai;
+    private FirebaseAccess database = FirebaseAccess.getInstance();
 
     private static volatile ESP instance;
 

@@ -19,32 +19,32 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import java.util.ArrayList;
 
 public class GraphViewModel extends ViewModel {
-    FirebaseAccess acess;
-    ESP currentEsp;
-    ArrayList<Entry> A_temp = new ArrayList<>();
-    ArrayList<Entry> A_lux = new ArrayList<>();
-    ArrayList<Entry> A_CO2 = new ArrayList<>();
-    ArrayList<Entry> A_humi = new ArrayList<>();
-    ArrayList<Entry> A_O2 = new ArrayList<>();
+    private FirebaseAccess acess;
+    private ESP currentEsp;
+    private ArrayList<Entry> A_temp = new ArrayList<>();
+    private ArrayList<Entry> A_lux = new ArrayList<>();
+    private ArrayList<Entry> A_CO2 = new ArrayList<>();
+    private ArrayList<Entry> A_humi = new ArrayList<>();
+    private ArrayList<Entry> A_O2 = new ArrayList<>();
     private boolean leftAxisUsed = false;
     private boolean rightAxisUsed = false;
     private String leftAxisName = "";
     private String rightAxisName = "";
 
-    LineDataSet setHumi = new LineDataSet(A_humi, "Humidité");
-    LineDataSet setCO2 = new LineDataSet(A_CO2, "CO2");
-    LineDataSet setO2 = new LineDataSet(A_O2, "O2");
-    LineDataSet setTemp = new LineDataSet(A_temp, "Température");
-    LineDataSet setLux = new LineDataSet(A_lux, "Lux");
+    private LineDataSet setHumi = new LineDataSet(A_humi, "Humidité");
+    private LineDataSet setCO2 = new LineDataSet(A_CO2, "CO2");
+    private LineDataSet setO2 = new LineDataSet(A_O2, "O2");
+    private LineDataSet setTemp = new LineDataSet(A_temp, "Température");
+    private LineDataSet setLux = new LineDataSet(A_lux, "Lux");
 
-    boolean boxCO2 = false;
-    boolean boxHumi = false;
-    boolean boxO2 = false;
-    boolean boxTemp = false;
-    boolean boxLux = false;
+    private boolean boxCO2 = false;
+    private boolean boxHumi = false;
+    private boolean boxO2 = false;
+    private boolean boxTemp = false;
+    private boolean boxLux = false;
 
 
-    ArrayList<Data> datas;
+    private ArrayList<Data> datas;
 
     public GraphViewModel() {
         this.acess = FirebaseAccess.getInstance();
