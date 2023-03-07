@@ -1,6 +1,7 @@
 package com.example.pageacceuil;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -44,6 +45,8 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
     Button valiRefresh;
     Button rename;
 
+    Button Group;
+
     Button delete;
     EditText refresh;
     Button grouper;
@@ -70,10 +73,10 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
         databas= FirebaseAcces.getInstance();
 
         idEsp = findViewById(R.id.selectedEsp);
+        Group = findViewById(R.id.GroupeAdminBtn);
         rename = findViewById(R.id.rennoméA);
         delete = findViewById(R.id.suppA);
         refresh = findViewById(R.id.refreshA);
-        grouper = findViewById(R.id.grouperA);
         reini = findViewById(R.id.reiniA);
         spinner = findViewById(R.id.spinnerAdmin);
         valiRefresh = findViewById(R.id.valiRefresh);
@@ -83,7 +86,7 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
         valiRefresh.setOnClickListener(this);
         rename.setOnClickListener(this);
         delete.setOnClickListener(this);
-        grouper.setOnClickListener(this);
+        Group.setOnClickListener(this);
         reini.setOnClickListener(this);
         ESP = new HashMap<>();
         tabESP = new ArrayList<>();
@@ -334,6 +337,14 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
                 });
                 //Faire dans pop up
                 break;
+
+
+            case R.id.GroupeAdminBtn:
+                Intent grp;
+                grp = new Intent(this, PageGroupe.class);
+                startActivity(grp);
+
+
             case R.id.suppA:
                 Pop_up deletePopup = new Pop_up(this);
                 deletePopup.build("Supprimer l'esp " + choixESP);
@@ -352,8 +363,7 @@ public class pageSettingAdmin extends AppCompatActivity implements View.OnClickL
                     }
                 });
                 break;
-            case R.id.grouperA:
-                break;
+
             case R.id.valiRefresh:
                 if (refresh.getText().toString().equals("")) {
                     Toast.makeText(getApplicationContext(), "Merci d'entrer' une valeur", Toast.LENGTH_SHORT).show();

@@ -3,18 +3,22 @@ package com.example.pageacceuil;
 import java.util.ArrayList;
 
 public class GroupeESP {
+
+    FirebaseAcces databas=FirebaseAcces.getInstance();
+
+    private static volatile GroupeESP instance;
     private String nomGroupe;
+
     private ArrayList<ESP> espList;
 
-    public GroupeESP(String nom) {
-        nomGroupe = nom;
-        espList = new ArrayList<>();
-    }
+   public GroupeESP(String nomGroupe) {
+        this.nomGroupe = nomGroupe;
+        espList = new ArrayList<ESP>(0);
+        }
 
-    public GroupeESP(String nom, ArrayList<ESP> espList) {
-        nomGroupe = nom;
-        this.espList = espList;
-    }
+
+
+
 
     public void addESP(ESP esp) {
         espList.add(esp);

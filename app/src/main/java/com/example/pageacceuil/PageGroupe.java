@@ -36,6 +36,8 @@ public class PageGroupe extends AppCompatActivity {
 
     ArrayList<String> tablGroupe;
 
+    GroupeESP groupe;
+
 
 
     ESP a;
