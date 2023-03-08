@@ -1,14 +1,14 @@
 package com.example.pageacceuil.ViewModel;
 
-import static com.example.pageacceuil.Model.DataUpdate.listenerTemps;
-
 import android.graphics.Color;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
 import com.example.pageacceuil.Model.Data;
+import com.example.pageacceuil.Model.DataUpdate;
 import com.example.pageacceuil.Model.ESP;
 import com.example.pageacceuil.Model.FirebaseAccess;
 import com.example.pageacceuil.R;
@@ -20,7 +20,7 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.util.ArrayList;
 
-public class GraphViewModel extends ViewModel {
+public class GraphViewModel extends ViewModel implements DataUpdate {
     private FirebaseAccess acess;
     private ESP currentEsp;
     private ArrayList<Entry> A_temp = new ArrayList<>();
@@ -46,16 +46,23 @@ public class GraphViewModel extends ViewModel {
     private boolean boxLux = false;
 
 
-    private ArrayList<Data> datas;
+    private ArrayList<Data> listData;
 
     public GraphViewModel() {
         this.acess = FirebaseAccess.getInstance();
         this.currentEsp = ESP.getInstance();
+        getData().observeForever(new Observer<Data>() {
+            @Override
+            public void onChanged(Data data) {
+                System.out.println("vue modele graphviewmodel");
+            }
+        });
         acess.setGraphViewModel(this);
         acess.loadInData();
         acess.setRealtimeDataListener();
         acess.setEspTimeListener(currentEsp);
-        datas = new ArrayList<>();
+        listData = new ArrayList<>();
+
     }
 
 
@@ -68,7 +75,7 @@ public class GraphViewModel extends ViewModel {
     public void updateData(Data data) {
         if (data != null) {
             System.out.println("update data");
-            datas.add(data);
+            listData.add(data);
             chargerDonner(data);
         }
     }
@@ -90,8 +97,8 @@ public class GraphViewModel extends ViewModel {
     public String getRightAxisName(){
         return rightAxisName;
     }
-    public ArrayList getDatas(){
-        return datas;
+    public ArrayList getListData(){
+        return listData;
     }
 
     @Override
@@ -197,13 +204,6 @@ public class GraphViewModel extends ViewModel {
 
     }
 
-    /*private void initGraph(){
-        paramSet(setCO2);
-        paramSet(setTemp);
-        paramSet(setO2);
-        paramSet(setLux);
-        paramSet(setHumi);
-    }*/
     void choixAxe(LineDataSet data) {
         if (!leftAxisUsed) {
             data.setAxisDependency(YAxis.AxisDependency.LEFT);

@@ -1,16 +1,12 @@
 package com.example.pageacceuil.ViewModel;
 
-import android.content.Context;
-
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pageacceuil.Model.Data;
 import com.example.pageacceuil.Model.DataUpdate;
 import com.example.pageacceuil.Model.FirebaseAccess;
-import com.example.pageacceuil.Model.ListData;
-import com.example.pageacceuil.View.VueDataActivity;
 
 import java.util.ArrayList;
 
@@ -19,8 +15,20 @@ public class VueDataViewModel extends ViewModel implements DataUpdate {
 
     private ArrayList<Data> listData;
     public VueDataViewModel() {
-         firebaseAccess=FirebaseAccess.getInstance();
+        firebaseAccess = FirebaseAccess.getInstance();
+        getData().observeForever(new Observer<Data>() {
+            @Override
+            public void onChanged(Data data) {
+                System.out.println("dans le vue data");
+            }
+        });
 
+        getMoments().observeForever(new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                System.out.println("dd");
+            }
+        });
     }
 
 

@@ -21,7 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class FirebaseAccess {
+public class FirebaseAccess implements DataUpdate{
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
     private final DatabaseReference myRef = database.getReference("SAE_S3_BD");
 
@@ -85,6 +85,7 @@ public class FirebaseAccess {
      * Charge tous les ESP présents dans la table Firebase
      */
     public void getAllESP() {
+
         myRef.child("ESP32").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
@@ -200,6 +201,7 @@ public class FirebaseAccess {
                         System.out.println("je passe");
                         listData.list_add_data(dataSnapshot.getValue(Data.class));
                         graphViewModel.updateData(dataSnapshot.getValue(Data.class));
+                        updateLiveData(dataSnapshot.getValue(Data.class));
                     }
                 } else {
                     System.out.println("Impossible d'accéder au données précharge");
@@ -314,4 +316,6 @@ public class FirebaseAccess {
         myRef.child("ESP32").child(currentESP.getMacEsp()).child("TauxRafraichissement").removeEventListener(RealtimeDataListener);
         return true;
     }
+
+
 }

@@ -23,9 +23,6 @@ import com.example.pageacceuil.Model.ESP;
 import com.example.pageacceuil.R;
 import com.example.pageacceuil.ViewModel.SettingsEtuViewModel;
 import com.github.mikephil.charting.components.YAxis;
-import com.google.firebase.database.FirebaseDatabase;
-
-import com.example.pageacceuil.Model.FirebaseAccess;
 
 public class SettingsEtuActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -195,8 +192,8 @@ public class SettingsEtuActivity extends AppCompatActivity implements View.OnCli
                         rightAxis.setAxisMaximum(Float.valueOf(max_d.getText().toString()));
                         rightAxis.setAxisMinimum(Float.valueOf(min_d.getText().toString()));
                         Toast.makeText(getApplicationContext(), "Fait", Toast.LENGTH_SHORT).show();
-                        GraphiqueActivity.graph.notifyDataSetChanged();
-                        GraphiqueActivity.graph.invalidate();
+                   /*     GraphiqueActivity.graph.notifyDataSetChanged();
+                        GraphiqueActivity.graph.invalidate();*/
                         break;
                     } else {
                         Toast.makeText(getApplicationContext(), "Valeurs incorrects", Toast.LENGTH_SHORT).show();
@@ -211,8 +208,8 @@ public class SettingsEtuActivity extends AppCompatActivity implements View.OnCli
                     if (Float.parseFloat(max_g.getText().toString()) > Float.parseFloat(min_g.getText().toString())) {
                         leftAxis.setAxisMaximum(Float.parseFloat(max_g.getText().toString()));
                         leftAxis.setAxisMinimum(Float.parseFloat(min_g.getText().toString()));
-                        GraphiqueActivity.graph.notifyDataSetChanged();
-                        GraphiqueActivity.graph.invalidate();
+                      /*  GraphiqueActivity.graph.notifyDataSetChanged();
+                        GraphiqueActivity.graph.invalidate();*/
                         Toast.makeText(getApplicationContext(), "Fait", Toast.LENGTH_SHORT).show();
                         break;
                     } else {

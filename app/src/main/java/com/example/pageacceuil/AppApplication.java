@@ -3,12 +3,18 @@ package com.example.pageacceuil;
 import android.app.Application;
 
 import com.example.pageacceuil.Model.FirebaseAccess;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class AppApplication extends Application {
+    private FirebaseAuth mAuth;
 
     @Override
     public void onCreate() {
         super.onCreate();
+
+
+// ...
+// Initialize Firebase Auth
         FirebaseAccess database=FirebaseAccess.getInstance();
         // je peux initialiser des données ici.
         //lancé une seule fois à l'init de l'app

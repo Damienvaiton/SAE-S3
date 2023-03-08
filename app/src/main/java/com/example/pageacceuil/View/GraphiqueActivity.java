@@ -15,6 +15,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.pageacceuil.Model.Data;
+import com.example.pageacceuil.Model.DataUpdate;
 import com.example.pageacceuil.R;
 import com.example.pageacceuil.ViewModel.GraphViewModel;
 import com.example.pageacceuil.ViewModel.XAxisValueFormatter;
@@ -30,7 +31,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.text.DecimalFormat;
 
-public class GraphiqueActivity extends AppCompatActivity implements View.OnClickListener, BottomNavigationView.OnNavigationItemSelectedListener {
+public class GraphiqueActivity extends AppCompatActivity implements View.OnClickListener, BottomNavigationView.OnNavigationItemSelectedListener, DataUpdate {
 
     private LineChart graph;
     private TextView viewO2;
@@ -47,17 +48,17 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
     private CheckBox boxLux;
     private BottomAppBar bottomNav;
     private BottomNavigationView bottomNavigationView;
-    private  YAxis leftAxis;
+    private YAxis leftAxis;
     private YAxis rightAxis;
     private XAxis xl;
-    private GraphViewModel graphViewModel= null;
+    private GraphViewModel graphViewModel = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph_page);
 
-        graphViewModel=new ViewModelProvider(this).get(GraphViewModel.class);
+        graphViewModel = new ViewModelProvider(this).get(GraphViewModel.class);
 
 
         graphViewModel.getUpdateGraph().observe(this, new Observer<LineData>() {
@@ -71,7 +72,7 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
         graphViewModel.getMoments().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                System.out.println("graphpage"+s);
+                System.out.println("graphpage" + s);
                 valTemp.setText(s);
 
             }
@@ -127,7 +128,7 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
         xl.setDrawGridLines(true);
         xl.setEnabled(true);
         xl.setAvoidFirstLastClipping(false);
-        xl.setValueFormatter(new XAxisValueFormatter(graphViewModel.getDatas()));
+        xl.setValueFormatter(new XAxisValueFormatter(graphViewModel.getListData()));
 
 
         //Création Axe Y droit
@@ -217,14 +218,12 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
             case R.id.setting:
                 Intent openSetting;
                 openSetting = new Intent(GraphiqueActivity.this, SettingsEtuActivity.class);
-
                 if (!graphViewModel.getLeftAxisName().equals("")) {
                     openSetting.putExtra("leftAxisName", graphViewModel.getLeftAxisName());
                 }
                 if (!graphViewModel.getRightAxisName().equals("")) {
                     openSetting.putExtra("rightAxisName", graphViewModel.getRightAxisName());
                 }
-
                 startActivity(openSetting);
                 break;
             case R.id.btnExport:
@@ -326,7 +325,8 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {   case R.id.boxCO2:
+        switch (v.getId()) {
+            case R.id.boxCO2:
             case R.id.boxTemp:
             case R.id.boxO2:
             case R.id.boxHumi:
@@ -335,6 +335,4 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
                 break;
         }
     }
-
-
 }
