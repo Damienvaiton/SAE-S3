@@ -23,16 +23,22 @@ import java.util.ArrayList;
 public class GraphViewModel extends ViewModel implements DataUpdate {
     private FirebaseAccess acess;
     private ESP currentEsp;
+    private boolean leftAxisUsed = false;
+    private boolean rightAxisUsed = false;
+    private String leftAxisName = "";
+    private String rightAxisName = "";
+    /**
+     * Tableaux de chaque entrée des LineDataSet
+     */
     private ArrayList<Entry> A_temp = new ArrayList<>();
     private ArrayList<Entry> A_lux = new ArrayList<>();
     private ArrayList<Entry> A_CO2 = new ArrayList<>();
     private ArrayList<Entry> A_humi = new ArrayList<>();
     private ArrayList<Entry> A_O2 = new ArrayList<>();
-    private boolean leftAxisUsed = false;
-    private boolean rightAxisUsed = false;
-    private String leftAxisName = "";
-    private String rightAxisName = "";
 
+    /**
+     * Tableaux des regroupant les ArrayList d'entry et le nom pour la construction du graphique
+     */
     private LineDataSet setHumi = new LineDataSet(A_humi, "Humidité");
     private LineDataSet setCO2 = new LineDataSet(A_CO2, "CO2");
     private LineDataSet setO2 = new LineDataSet(A_O2, "O2");
@@ -47,16 +53,19 @@ public class GraphViewModel extends ViewModel implements DataUpdate {
 
 
     private ArrayList<Data> listData;
+    /**
+     * Constructeur du ViewModel
+     */
 
     public GraphViewModel() {
         this.acess = FirebaseAccess.getInstance();
         this.currentEsp = ESP.getInstance();
-        getData().observeForever(new Observer<Data>() {
+      /*  getData().observeForever(new Observer<Data>() {
             @Override
             public void onChanged(Data data) {
                 System.out.println("vue modele graphviewmodel");
             }
-        });
+        });*/
         acess.setGraphViewModel(this);
         acess.loadInData();
         acess.setRealtimeDataListener();
@@ -65,13 +74,32 @@ public class GraphViewModel extends ViewModel implements DataUpdate {
 
     }
 
-
+    /**
+     * LiveData s'occupant de transiter l'objet du nouveau graphique du ViewModel à la Vue
+     */
     private final MutableLiveData<LineData> updateGraph = new MutableLiveData<>();
-
+    /**
+     * LiveData s'occupant de transiter le taux de raffraichissemnt de l'ESP du ViewModel à la Vue
+     */
+    public void updateMoments(){
+        listenerTemps.postValue(currentEsp.getTauxRafrai());
+    }
+    /**
+     * Getter du LiveData du graphique
+     */
     public LiveData getUpdateGraph() {
         return updateGraph;
     }
-
+    /**
+     * Getter du LiveData du temps de raffraichissement ESP
+     */
+    public LiveData<String> getMoments() {
+        return listenerTemps;
+    }
+    /**
+     * Fonction d'update du LiveData avec dernière valeur disponible
+     * @param data Objet Data récupéré de Firebase
+     */
     public void updateData(Data data) {
         if (data != null) {
             System.out.println("update data");
@@ -79,17 +107,6 @@ public class GraphViewModel extends ViewModel implements DataUpdate {
             chargerDonner(data);
         }
     }
-
-    public void updateMoments(){
-        listenerTemps.postValue(currentEsp.getTauxRafrai());
-    }
-
-
-    public LiveData<String> getMoments() {
-        return listenerTemps;
-    }
-
-
 
     public String getLeftAxisName(){
         return leftAxisName;
@@ -101,11 +118,17 @@ public class GraphViewModel extends ViewModel implements DataUpdate {
         return listData;
     }
 
+    /**
+     * Si ce ViewModel est détruit alors les listeners de la class FirebaseAccess sont détruit
+     */
     @Override
     protected void onCleared() {
         super.onCleared();
         acess.deleteListener();
     }
+    /**
+     * Détermine quel checkButton à été coché
+     */
 
     public void notifyCheck(int id) {
         switch (id) {
@@ -132,6 +155,10 @@ public class GraphViewModel extends ViewModel implements DataUpdate {
         }
     }
 
+    /**
+     * Charge les données dans leurs ArrayList respective
+     * @param data
+     */
     void chargerDonner(Data data) {
         System.out.println("charger donner");
         A_CO2.add(new Entry(A_CO2.size() - 1, data.getCO2()));
@@ -141,6 +168,11 @@ public class GraphViewModel extends ViewModel implements DataUpdate {
         A_lux.add(new Entry(A_CO2.size() - 1, data.getLight()));
         creaGraph();
     }
+
+    /**
+     * Fonction qui crée l'objet du graphique
+     * @param data
+     */
 
     void creaGraph() {
         System.out.println("créa graph");
@@ -219,6 +251,10 @@ public class GraphViewModel extends ViewModel implements DataUpdate {
             data.setDrawValues(true);
             data.setValueTextSize(15);
         }
+    }
+
+    public void onClose(){
+        acess.deleteListener();
     }
 
 

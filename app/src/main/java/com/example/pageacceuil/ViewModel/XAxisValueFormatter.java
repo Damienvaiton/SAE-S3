@@ -22,6 +22,6 @@ public class XAxisValueFormatter extends IndexAxisValueFormatter {
             return "";
         }
         return datas.get((int) value+1 ).getTemps();
-    }//A revoir
+    }
 }
 

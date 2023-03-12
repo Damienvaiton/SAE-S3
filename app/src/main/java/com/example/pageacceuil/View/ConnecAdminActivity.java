@@ -45,8 +45,8 @@ public class ConnecAdminActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (connectAdminViewModel.Verify(editUser.getText().toString(), editMdp.getText().toString())) {
                     Intent admin;
-                    admin = new Intent(ConnecAdminActivity.this, SettingsAdminActivity.class);
-                    startActivity(admin);
+                   // admin = new Intent(ConnecAdminActivity.this, SettingsAdminActivity.class);
+                    //startActivity(admin);
                 }
                 Toast.makeText(ConnecAdminActivity.this, "Une erreur se trouve dans le formulaire", Toast.LENGTH_SHORT).show();
             }

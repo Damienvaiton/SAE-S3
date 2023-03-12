@@ -28,23 +28,6 @@ public class AccueilViewModel extends ViewModel {
     ArrayList<String> tabESP = new ArrayList<>();
 
     public LiveData<ArrayList<String>> getESP() {
-
-        // je déclare l'observer
-
-
-        //je fais le traitement souhaité
-
-
-              /*  String[] id= new String[2];
-                    id[0] = tab.child("Admin").getValue(String.class);
-                    id[1] = tab.child("mdp").getValue(String.class);
-
-                    // je notifie les observateurs que les données sont dispos
-                    listener.postValue(id);*/
-
-
-        // je retourne l'observer qui est vide au début puis se "déclenche"
-        // quand les données sont récupérées.
         return listener;
     }
 

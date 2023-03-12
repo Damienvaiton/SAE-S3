@@ -1,3 +1,4 @@
+/*
 package com.example.pageacceuil.Model;
 
 import androidx.lifecycle.LiveData;
@@ -6,12 +7,16 @@ import androidx.lifecycle.MutableLiveData;
 public interface DataUpdate {
 
 
-      MutableLiveData<Data> listenerDonnées = new MutableLiveData<>();
+      MutableLiveData<Data> listenerDonnées=null;
       MutableLiveData<String> listenerTemps = new MutableLiveData<>();
 
 
       public default  LiveData<Data> getData() {
          return listenerDonnées;
+     }
+
+     public default void setLiveDataDonnée(MutableLiveData<Data> listenerDonnées){
+          this.listenerDonnées=listenerDonnées;
      }
      public default LiveData<String> getMoments(){
          return  listenerTemps;
@@ -33,3 +38,4 @@ public interface DataUpdate {
     //faire get et update, mais comment signiflier?
 
 }
+*/

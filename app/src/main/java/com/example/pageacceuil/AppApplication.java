@@ -3,10 +3,10 @@ package com.example.pageacceuil;
 import android.app.Application;
 
 import com.example.pageacceuil.Model.FirebaseAccess;
-import com.google.firebase.auth.FirebaseAuth;
+
 
 public class AppApplication extends Application {
-    private FirebaseAuth mAuth;
+    //  private FirebaseAuth mAuth;
 
     @Override
     public void onCreate() {

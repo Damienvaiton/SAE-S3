@@ -31,6 +31,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.text.DecimalFormat;
 
+
 public class GraphiqueActivity extends AppCompatActivity implements View.OnClickListener, BottomNavigationView.OnNavigationItemSelectedListener, DataUpdate {
 
     private LineChart graph;
@@ -59,6 +60,7 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.activity_graph_page);
 
         graphViewModel = new ViewModelProvider(this).get(GraphViewModel.class);
+
 
 
         graphViewModel.getUpdateGraph().observe(this, new Observer<LineData>() {
@@ -206,6 +208,15 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
         graph.getAxisRight().setDrawGridLines(true);
     }
 
+
+    /**
+     *
+     */
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        graphViewModel.onClose();
+    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
