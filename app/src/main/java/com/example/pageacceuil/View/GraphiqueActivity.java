@@ -15,7 +15,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.pageacceuil.Model.Data;
-import com.example.pageacceuil.Model.DataUpdate;
+//import com.example.pageacceuil.Model.DataUpdate;
 import com.example.pageacceuil.R;
 import com.example.pageacceuil.ViewModel.GraphViewModel;
 import com.example.pageacceuil.ViewModel.XAxisValueFormatter;
@@ -31,8 +31,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.text.DecimalFormat;
 
-
-public class GraphiqueActivity extends AppCompatActivity implements View.OnClickListener, BottomNavigationView.OnNavigationItemSelectedListener, DataUpdate {
+//, DataUpdate
+public class GraphiqueActivity extends AppCompatActivity implements View.OnClickListener, BottomNavigationView.OnNavigationItemSelectedListener {
 
     private LineChart graph;
     private TextView viewO2;
@@ -74,7 +74,6 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
         graphViewModel.getMoments().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                System.out.println("graphpage" + s);
                 valTemp.setText(s);
 
             }

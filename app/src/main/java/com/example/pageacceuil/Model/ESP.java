@@ -4,8 +4,6 @@ package com.example.pageacceuil.Model;
 public class ESP {
     private String macEsp;
     private String nomEsp;
-    private String tauxRafrai;
-    private FirebaseAccess database = FirebaseAccess.getInstance();
 
     private static volatile ESP instance;
 
@@ -21,7 +19,6 @@ public class ESP {
     public ESP(String macEsp, String nomEsp) {
         this.macEsp = macEsp;
         this.nomEsp = nomEsp;
-        database.setEspTimeListener(this) ;
         instance=this;
     }
 
@@ -41,13 +38,7 @@ public class ESP {
         this.nomEsp = nomEsp;
     }
 
-    public String getTauxRafrai() {
-        return tauxRafrai;
-    }
 
-    public void setTauxRafrai(String tauxRafrai) {
-        this.tauxRafrai = tauxRafrai;
-    }
 
     @Override
     protected void finalize() throws Throwable {

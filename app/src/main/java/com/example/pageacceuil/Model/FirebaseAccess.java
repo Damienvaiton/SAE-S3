@@ -4,7 +4,6 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.MutableLiveData;
 
 import com.example.pageacceuil.ViewModel.AccueilViewModel;
 import com.example.pageacceuil.ViewModel.GraphViewModel;
@@ -19,8 +18,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
 
 public class FirebaseAccess implements DataUpdate {
     /**
@@ -109,7 +106,7 @@ public class FirebaseAccess implements DataUpdate {
     }
 
     /**
-     * Charge tous les ESP présents dans la table Firebase
+     * Query to the database for load every ESP name
      */
     public void getAllESP() {
         myRef.child("ESP32").addChildEventListener(new ChildEventListener() {
@@ -146,9 +143,9 @@ public class FirebaseAccess implements DataUpdate {
     }
 
     /**
-     * Requête à la base de données pour changer le taux de rafraichissement de l'ESP actuel
+     * Query to the databse for change resfreh rate of the current ESP
      *
-     * @param temps le temps en ms
+     * @param temps time in millisecond
      */
     public void setEspRefreshRate(int temps) {// context passé en param
         myRef.child("ESP32").child(currentESP.getMacEsp()).child("TauxRafraichissement").setValue(temps * 1000)
@@ -182,7 +179,7 @@ public class FirebaseAccess implements DataUpdate {
      }*/
 
     /**
-     * Requête à la base de données pour remettre à 0 toutes les données de l'ESP actuel
+     * Query to the database for wipe datas
      */
     public void resetValueFirebase() {
         myRef.child("ESP32").child(currentESP.getMacEsp()).child("Mesure").removeValue()
@@ -220,7 +217,7 @@ public class FirebaseAccess implements DataUpdate {
     }
 
     /**
-     * Requête à la base de données pour charger les données déjà présente de l'ESP actuel
+     * Query to the database for load datas already on
      */
     public boolean loadInData() {
         ListData listData = ListData.getInstance();
@@ -233,7 +230,7 @@ public class FirebaseAccess implements DataUpdate {
                         System.out.println("je passe");
                         listData.list_add_data(dataSnapshot.getValue(Data.class));
                         graphViewModel.updateData(dataSnapshot.getValue(Data.class));
-                        updateLiveData(dataSnapshot.getValue(Data.class));
+
                     }
                 } else {
                     System.out.println("Impossible d'accéder au données précharge");
@@ -246,9 +243,9 @@ public class FirebaseAccess implements DataUpdate {
     }
 
     /**
-     * Requête à la base de données pour attacher le listener de temps à l'ESP actuel
+     * Query to the database to return the refresh time of the current ESP
      */
-    public void setEspTimeListener(ESP esp) {
+    public void setEspTimeListener() {
         valueEventListenerTemps = new ValueEventListener() {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String heure = "";
@@ -265,7 +262,8 @@ public class FirebaseAccess implements DataUpdate {
                     if (snapshot.getValue(Long.class) >= 1000) {
                         seconde = (snapshot.getValue(Long.class) % (1000 * 60)) / 1000 + "s";
                     }
-                    esp.setTauxRafrai(heure + minute + seconde);
+                    dataUpdate.
+                    ESP.getInstance().setTauxRafrai(heure + minute + seconde);
                     //graphViewModel.updateMoments();
                     return;
                 }
@@ -277,12 +275,12 @@ public class FirebaseAccess implements DataUpdate {
 
             }
         };
-        myRef.child("ESP32").child(esp.getMacEsp()).child("TauxRafraichissement").addValueEventListener(valueEventListenerTemps);
+        myRef.child("ESP32").child(ESP.getInstance().getMacEsp()).child("TauxRafraichissement").addValueEventListener(valueEventListenerTemps);
         return;
     }
 
     /**
-     * Requête à la base de données pour attacher le listener des données des capteurs à l'ESP actuel
+     * Set a listener to the value data on the database, this  function is triggered each new value add on the database
      */
     public void setRealtimeDataListener() {
         RealtimeDataListener = new ChildEventListener() {
@@ -325,7 +323,7 @@ public class FirebaseAccess implements DataUpdate {
 
 
     /**
-     * Requête à la base de données pour récupérer les identifiants administrateur
+     * Query to the database to get admin log
      */
     public String[] getAdminLog() {
         final String[] access = new String[2];
@@ -343,7 +341,8 @@ public class FirebaseAccess implements DataUpdate {
     }
 
     /**
-     * Requête à la base de données pour changer le surnom de l'ESP actuel
+     * Query to the databse to add a nickname on the current ESP
+     * @param nickname new nickname for the ESP
      */
     public void setNicknameEsp(String nickname) {
         myRef.child("ESP32").child(currentESP.getMacEsp()).child("Nom").setValue(nickname);
@@ -351,7 +350,7 @@ public class FirebaseAccess implements DataUpdate {
     }
 
     /**
-     * Requête à la base de données pour supprimer l'ESP actuel ainsi que touts ses données
+     * Query to the database to erase current ESP and all of this values
      */
     public void deleteEsp() {
         myRef.child("ESP32").child(currentESP.getMacEsp()).removeValue();
@@ -359,7 +358,7 @@ public class FirebaseAccess implements DataUpdate {
     }
 
     /**
-     * Retire les listeners rattaché à la base de données pour évite de charger des données inutiles
+     * delete each listener attach to the database
      */
     public boolean deleteListener() {
         myRef.child("ESP32").child(currentESP.getMacEsp()).child("Mesure").removeEventListener(valueEventListenerTemps);

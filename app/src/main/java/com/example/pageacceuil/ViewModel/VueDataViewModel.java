@@ -11,11 +11,9 @@ import com.example.pageacceuil.Model.FirebaseAccess;
 import java.util.ArrayList;
 
 public class VueDataViewModel extends ViewModel implements DataUpdate {
-    private FirebaseAccess firebaseAccess;
 
-    private ArrayList<Data> listData;
     public VueDataViewModel() {
-        firebaseAccess = FirebaseAccess.getInstance();
+
         getData().observeForever(new Observer<Data>() {
             @Override
             public void onChanged(Data data) {

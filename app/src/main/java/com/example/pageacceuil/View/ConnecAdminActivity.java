@@ -12,12 +12,6 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.pageacceuil.R;
 import com.example.pageacceuil.ViewModel.ConnectAdminViewModel;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Objects;
 
 public class ConnecAdminActivity extends AppCompatActivity {
 
@@ -45,11 +39,14 @@ public class ConnecAdminActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (connectAdminViewModel.Verify(editUser.getText().toString(), editMdp.getText().toString())) {
                     Intent admin;
-                   // admin = new Intent(ConnecAdminActivity.this, SettingsAdminActivity.class);
-                    //startActivity(admin);
+                 admin = new Intent(ConnecAdminActivity.this, SettingsAdminActivity.class);
+                    startActivity(admin);
                 }
+                else{
                 Toast.makeText(ConnecAdminActivity.this, "Une erreur se trouve dans le formulaire", Toast.LENGTH_SHORT).show();
             }
+            }
+
         });
     }
 }

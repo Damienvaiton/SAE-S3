@@ -9,7 +9,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -17,17 +16,10 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.pageacceuil.Model.ESP;
 import com.example.pageacceuil.R;
 import com.example.pageacceuil.ViewModel.AccueilViewModel;
-import com.example.pageacceuil.ViewModel.ConnectAdminViewModel;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 
 public class AccueilActivity extends AppCompatActivity {
@@ -62,7 +54,11 @@ public class AccueilActivity extends AppCompatActivity {
 
 
         //Observeur
-    accueilViewModel.getESP().observe(this, new Observer<ArrayList<String>>() {
+
+        /**
+         * Observe
+         */
+        accueilViewModel.getESP().observe(this, new Observer<ArrayList<String>>() {
     @Override
     public void onChanged(ArrayList<String> strings) {
         tabESP.clear();

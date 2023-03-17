@@ -13,9 +13,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AccueilViewModel extends ViewModel {
+    /**
+     * Hashmap who constains mac adress of ESP has key and nickname has value if he has one
+     */
     private HashMap<String, String> ESP;
     private FirebaseAccess acess;
 
+    /**
+     * Constructor who initialiaze the viewModel
+     */
     public AccueilViewModel() {
 
        acess = FirebaseAccess.getInstance();
@@ -25,6 +31,9 @@ public class AccueilViewModel extends ViewModel {
     }
 
     MutableLiveData<ArrayList<String>> listener = new MutableLiveData<>();
+    /**
+     *ArrayList wich contains nickname of each ESP if it has, mac adress if not
+     */
     ArrayList<String> tabESP = new ArrayList<>();
 
     public LiveData<ArrayList<String>> getESP() {
