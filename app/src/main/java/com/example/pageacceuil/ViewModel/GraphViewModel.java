@@ -20,7 +20,6 @@ import java.util.ArrayList;
 
 public class GraphViewModel extends ViewModel  {
     private FirebaseAccess acess;
-    private ESP currentEsp;
     private boolean leftAxisUsed = false;
     private boolean rightAxisUsed = false;
     private String leftAxisName = "";
