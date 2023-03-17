@@ -12,20 +12,25 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.pageacceuil.R;
 import com.example.pageacceuil.ViewModel.ConnectAdminViewModel;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Objects;
 
 public class ConnecAdminActivity extends AppCompatActivity {
 
+    /**
+     * EditText for the id of admin
+     */
     private EditText editUser;
+    /**
+     * EditText for the password of admin
+     */
     private EditText editMdp;
+    /**
+     * Button to valid the login
+     */
     private Button coBtn;
 
-
+    /**
+     * ViewModel of this view
+     */
     private ConnectAdminViewModel connectAdminViewModel = null;
 
     @Override
@@ -33,23 +38,27 @@ public class ConnecAdminActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.connectadmin);
 
-        // on demande au système de créer l'instance de Mainviewmodel si elle existe pas et de
-        // lier son cycle de vie à l'activity courrante
         connectAdminViewModel = new ViewModelProvider(this).get(ConnectAdminViewModel.class);
 
         editMdp = findViewById(R.id.coMdp);
         editUser = findViewById(R.id.coUsername);
         coBtn = findViewById(R.id.coBtn);
+
+        /**
+         * Launch SettingsAdminActivity if the authentication is ok, inflate a Toast if not
+         */
         coBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (connectAdminViewModel.Verify(editUser.getText().toString(), editMdp.getText().toString())) {
                     Intent admin;
-                   // admin = new Intent(ConnecAdminActivity.this, SettingsAdminActivity.class);
-                    //startActivity(admin);
+                    admin = new Intent(ConnecAdminActivity.this, SettingsAdminActivity.class);
+                    startActivity(admin);
+                } else {
+                    Toast.makeText(ConnecAdminActivity.this, "Une erreur se trouve dans le formulaire", Toast.LENGTH_SHORT).show();
                 }
-                Toast.makeText(ConnecAdminActivity.this, "Une erreur se trouve dans le formulaire", Toast.LENGTH_SHORT).show();
             }
+
         });
     }
 }

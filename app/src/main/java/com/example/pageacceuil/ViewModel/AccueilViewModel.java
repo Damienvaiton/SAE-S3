@@ -13,9 +13,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AccueilViewModel extends ViewModel {
+    /**
+     * Hashmap who constains mac adress of ESP has key and nickname has value if he has one
+     */
     private HashMap<String, String> ESP;
     private FirebaseAccess acess;
 
+    /**
+     * Constructor who initialiaze the viewModel
+     */
     public AccueilViewModel() {
 
        acess = FirebaseAccess.getInstance();
@@ -24,13 +30,24 @@ public class AccueilViewModel extends ViewModel {
         ESP = new HashMap<String, String>();
     }
 
+    /**
+     * LiveData who pass tabESP to the view
+     */
     MutableLiveData<ArrayList<String>> listener = new MutableLiveData<>();
+    /**
+     *ArrayList wich contains nickname of each ESP if it has, mac adress if not
+     */
     ArrayList<String> tabESP = new ArrayList<>();
-
+    /**
+     * Getter of LiveData object who contains tabESP
+     */
     public LiveData<ArrayList<String>> getESP() {
         return listener;
     }
-
+    /**
+     * Function trigger if a new ESP has been add to the databse
+     * Add value to hashmap ESP and name to tabESP if he has one, macAdress if not
+     */
     public void addESP(String esp, @Nullable String nom) {
         if (nom == null) {
             ESP.putIfAbsent(esp, null);
@@ -41,16 +58,21 @@ public class AccueilViewModel extends ViewModel {
         }
         listener.postValue(tabESP);
     }
-
-    public void deleteESP(String esp) {
+    /**
+     *Function trigger if a ESP has been delete to the databse
+     * Remove the ESP name of tabESP if @param nameESP has been find in tabESP
+     */
+    public void deleteESP(String nameESP) {
         for (String s : tabESP) {
-            if (s.equals(esp)) {
+            if (s.equals(nameESP)) {
                 tabESP.remove(s);
             }
             listener.postValue(tabESP);
         }
     }
-
+/**
+ * Define the selected ESP to FirebaseAcess
+ */
     public void creaESP(int pos) {
         int curseur = 0;
         for (Map.Entry<String, String> entry : ESP.entrySet()) {

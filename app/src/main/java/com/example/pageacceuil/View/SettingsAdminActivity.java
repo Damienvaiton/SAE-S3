@@ -19,19 +19,12 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.pageacceuil.Model.Data;
-import com.example.pageacceuil.Model.FirebaseAccess;
-import com.example.pageacceuil.Model.ListData;
 import com.example.pageacceuil.R;
 import com.example.pageacceuil.ViewModel.PopUpDialog;
 import com.example.pageacceuil.ViewModel.SettingsAdminViewModel;
 import com.example.pageacceuil.ViewModel.dataRecyclerAdapter;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class SettingsAdminActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -100,7 +93,6 @@ public class SettingsAdminActivity extends AppCompatActivity implements View.OnC
             public void onClick(DialogInterface dialog, int which) {
                 Toast.makeText(getApplicationContext(), "Prêt", Toast.LENGTH_SHORT).show();
                 dialog.cancel();
-
             }
         });
 

@@ -4,11 +4,9 @@ import android.graphics.Color;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
 import com.example.pageacceuil.Model.Data;
-import com.example.pageacceuil.Model.DataUpdate;
 import com.example.pageacceuil.Model.ESP;
 import com.example.pageacceuil.Model.FirebaseAccess;
 import com.example.pageacceuil.R;
@@ -20,9 +18,8 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.util.ArrayList;
 
-public class GraphViewModel extends ViewModel implements DataUpdate {
+public class GraphViewModel extends ViewModel  {
     private FirebaseAccess acess;
-    private ESP currentEsp;
     private boolean leftAxisUsed = false;
     private boolean rightAxisUsed = false;
     private String leftAxisName = "";
@@ -69,7 +66,7 @@ public class GraphViewModel extends ViewModel implements DataUpdate {
         acess.setGraphViewModel(this);
         acess.loadInData();
         acess.setRealtimeDataListener();
-        acess.setEspTimeListener(currentEsp);
+        acess.setEspTimeListener();
         listData = new ArrayList<>();
 
     }
@@ -78,11 +75,13 @@ public class GraphViewModel extends ViewModel implements DataUpdate {
      * LiveData s'occupant de transiter l'objet du nouveau graphique du ViewModel à la Vue
      */
     private final MutableLiveData<LineData> updateGraph = new MutableLiveData<>();
+
+    private final MutableLiveData<String> updateTemps = new MutableLiveData<>();
     /**
      * LiveData s'occupant de transiter le taux de raffraichissemnt de l'ESP du ViewModel à la Vue
      */
-    public void updateMoments(){
-        listenerTemps.postValue(currentEsp.getTauxRafrai());
+    public void updateMoments(String refresh){
+        updateTemps.postValue(refresh);
     }
     /**
      * Getter du LiveData du graphique
@@ -94,7 +93,7 @@ public class GraphViewModel extends ViewModel implements DataUpdate {
      * Getter du LiveData du temps de raffraichissement ESP
      */
     public LiveData<String> getMoments() {
-        return listenerTemps;
+        return updateTemps;
     }
     /**
      * Fonction d'update du LiveData avec dernière valeur disponible
@@ -171,7 +170,7 @@ public class GraphViewModel extends ViewModel implements DataUpdate {
 
     /**
      * Fonction qui crée l'objet du graphique
-     * @param data
+     * @param
      */
 
     void creaGraph() {
