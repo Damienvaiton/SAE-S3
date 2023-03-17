@@ -1,6 +1,5 @@
 package com.example.pageacceuil.View;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -13,32 +12,40 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.pageacceuil.Model.ESP;
 import com.example.pageacceuil.R;
 import com.example.pageacceuil.ViewModel.AccueilViewModel;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
 
 public class AccueilActivity extends AppCompatActivity {
 
-
+    /**
+     * Instance of the ViewModel
+     */
     private AccueilViewModel accueilViewModel = null;
 
-    private final FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference myRef = database.getReference("SAE_S3_BD/ESP32");
-
+    /**
+     * Spinner who shows all ESP available
+     */
     private Spinner spinner;
+    /**
+     * Store the index of ESP actually selected
+     */
     private int position;
+    /**
+     *  Button for switch to 'GraphView'
+     */
     private Button btncoEtu;
-    private ESP currentESP;
+    /**
+     * Button for switch to 'ConnectAdminView'
+     */
     private Button btnCoAdmin;
-    //HashMap<String, String> ESP;
+    /**
+     * Arraylist who contains all ESP available
+     */
     private ArrayList<String> tabESP;
 
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,15 +55,13 @@ public class AccueilActivity extends AppCompatActivity {
         btncoEtu = findViewById(R.id.Gobtn);
         btnCoAdmin = findViewById(R.id.adminbtnmain);
         tabESP = new ArrayList<>();
-
         ArrayAdapter<String> adapter = new ArrayAdapter<>(AccueilActivity.this, android.R.layout.simple_spinner_dropdown_item, tabESP);
         spinner.setAdapter(adapter);
 
 
-        //Observeur
 
         /**
-         * Observe
+         * Observe a LiveData and recreate tabESP to keep up to date with ESP available in the database
          */
         accueilViewModel.getESP().observe(this, new Observer<ArrayList<String>>() {
     @Override
@@ -68,7 +73,9 @@ public class AccueilActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 });
-
+/**
+ * Store the value selected into 'position'
+ */
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
@@ -81,6 +88,9 @@ public class AccueilActivity extends AppCompatActivity {
             }
         });
 
+        /**
+         * Launch ConnecAdminActivity if "btnCoAdmin" triggered
+         */
         btncoEtu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -91,6 +101,9 @@ public class AccueilActivity extends AppCompatActivity {
             }
         });
 
+        /**
+         * Launch ConnecAdminActivity if "btnCoAdmin" triggered
+         */
         btnCoAdmin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
