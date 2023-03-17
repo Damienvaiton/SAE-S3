@@ -10,115 +10,98 @@
 
     <Spinner
         android:id="@+id/spinnerAdmin"
-        android:layout_width="match_parent"
-        android:layout_height="58dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="9dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:autofillHints="Quel esp?"
         android:defaultFocusHighlightEnabled="false"
-        app:layout_constraintBottom_toTopOf="@+id/rennoméA"
+        app:layout_constraintBottom_toTopOf="@+id/guideline7"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+        app:layout_constraintTop_toBottomOf="@+id/selectedEsp" />
 
     <Button
         android:id="@+id/rennoméA"
-        android:layout_width="116dp"
-        android:layout_height="38dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
 
-        android:layout_marginTop="9dp"
-        android:layout_marginEnd="76dp"
         android:backgroundTint="#6C14C7"
         android:text="Renommer"
-        android:textSize="13dp"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/suppA"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerAdmin" />
+        app:layout_constraintTop_toTopOf="@+id/guideline7" />
 
     <Button
         android:id="@+id/suppA"
-        android:layout_width="116dp"
-        android:layout_height="38dp"
-        android:layout_marginTop="9dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="153dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:backgroundTint="#6c14c7"
         android:text="Supprimer"
-        android:textSize="13dp"
-        app:layout_constraintBottom_toTopOf="@+id/reiniA"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline6"
         app:layout_constraintEnd_toStartOf="@+id/rennoméA"
         app:layout_constraintStart_toEndOf="@+id/grouperA"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerAdmin" />
+        app:layout_constraintTop_toTopOf="@+id/guideline7" />
 
     <EditText
         android:id="@+id/refreshA"
-        android:layout_width="74dp"
-        android:layout_height="38dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginBottom="12dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:inputType="number"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerViewAdmin"
+        app:layout_constraintBottom_toTopOf="@+id/guideline9"
         app:layout_constraintEnd_toStartOf="@+id/valiRefresh"
-        app:layout_constraintStart_toEndOf="@+id/reiniA" />
+        app:layout_constraintStart_toEndOf="@+id/reiniA"
+        app:layout_constraintTop_toTopOf="@+id/guideline5" />
 
     <Button
-        android:visibility="invisible"
         android:id="@+id/grouperA"
-        android:layout_width="100dp"
-        android:layout_height="38dp"
-        android:layout_marginTop="9dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
 
-        android:layout_marginBottom="153dp"
+        android:backgroundTint="#6c14c7"
         android:text="Grouper"
-        android:textSize="13dp"
-        app:layout_constraintBottom_toTopOf="@+id/reiniA"
+        android:textSize="14sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/guideline6"
         app:layout_constraintEnd_toStartOf="@+id/suppA"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerAdmin" />
+        app:layout_constraintTop_toTopOf="@+id/guideline7" />
 
     <Button
         android:id="@+id/reiniA"
         android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="2dp"
+        android:layout_height="wrap_content"
         android:backgroundTint="#6c14c7"
         android:text="Réinitiliaser"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerViewAdmin"
+        app:layout_constraintBottom_toTopOf="@+id/guideline9"
         app:layout_constraintEnd_toStartOf="@+id/refreshA"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline5" />
 
     <TextView
         android:id="@+id/textView8"
-        android:layout_width="231dp"
+        android:layout_width="wrap_content"
         android:layout_height="50dp"
-        android:layout_marginStart="90dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="90dp"
-        android:layout_marginBottom="23dp"
         android:gravity="center"
         android:text="Administrateur"
         android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/spinnerAdmin"
+        app:layout_constraintBottom_toTopOf="@+id/guideline8"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/selectedEsp"
-        android:layout_width="match_parent"
-        android:layout_height="25dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="1dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:text="ESP choisi"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/spinnerAdmin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+        app:layout_constraintTop_toTopOf="@+id/guideline8" />
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
@@ -223,25 +206,63 @@
         android:id="@+id/valiRefresh"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="200dp"
-        android:layout_marginBottom="8dp"
         android:backgroundTint="#6c14c7"
         android:text="ok"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerViewAdmin"
+        app:layout_constraintBottom_toTopOf="@+id/guideline9"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/refreshA"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerAdmin"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="@+id/guideline5" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewAdmin"
-        android:layout_width="413dp"
-        android:layout_height="323dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/reiniA" />
+        app:layout_constraintTop_toTopOf="@+id/guideline" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="423dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="316dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="263dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="165dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="73dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="388dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
