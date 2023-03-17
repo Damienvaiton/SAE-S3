@@ -32,11 +32,14 @@ public class VueDataActivity extends AppCompatActivity implements Serializable {
     private dataRecyclerAdapter dataRecyclerAdapter;
     private String ChoixTri = "Choix du Tri";
     private boolean Desc = false;
+
+    /**
+     * The ViewModel for VueDataActivity
+     */
     private VueDataViewModel vueDataViewModel=null;
 
     private ArrayList<Data> listData;
 
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,11 +100,10 @@ public class VueDataActivity extends AppCompatActivity implements Serializable {
         });
 
 
-
-
-
+/**
+ * Sort the value in adapter by the 'ChoixTri' value and the 'Desc' boolean
+ */
         trid.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onClick(View v) {
                 //Jpeux faire une enum

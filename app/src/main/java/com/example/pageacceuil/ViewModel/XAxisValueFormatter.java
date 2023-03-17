@@ -10,13 +10,19 @@ public class XAxisValueFormatter extends IndexAxisValueFormatter {
 
     private ArrayList<Data> datas;
 
-
+    /**
+     * Default constructor
+     * @param datas ArrayList of Data
+     */
     public XAxisValueFormatter(ArrayList<Data> datas) {
         this.datas = datas;
     }
 
     @Override
 
+    /**
+     * Format the top X axe with the "Temps" fields
+     */
     public String getFormattedValue(float value) {
         if ((int) value == 0) {
             return "";

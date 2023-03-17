@@ -56,7 +56,6 @@ public class GraphViewModel extends ViewModel  {
 
     public GraphViewModel() {
         this.acess = FirebaseAccess.getInstance();
-        this.currentEsp = ESP.getInstance();
       /*  getData().observeForever(new Observer<Data>() {
             @Override
             public void onChanged(Data data) {
@@ -235,6 +234,12 @@ public class GraphViewModel extends ViewModel  {
 
     }
 
+    /**
+     *     Choice of axe for the LineDataSet in param
+     * @param data LineDataSet eady to go in the graph
+     */
+
+
     void choixAxe(LineDataSet data) {
         if (!leftAxisUsed) {
             data.setAxisDependency(YAxis.AxisDependency.LEFT);
@@ -251,6 +256,11 @@ public class GraphViewModel extends ViewModel  {
             data.setValueTextSize(15);
         }
     }
+
+    /**
+     *     Delete listener when the activity is close
+     */
+
 
     public void onClose(){
         acess.deleteListener();

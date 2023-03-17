@@ -220,7 +220,7 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
     }
 
     /**
-     * Configure the graph
+     * Configure the parameters of the graph
      */
     void paramGraph() {
         graph.setNoDataText("Aucune données reçu pour le moment");
