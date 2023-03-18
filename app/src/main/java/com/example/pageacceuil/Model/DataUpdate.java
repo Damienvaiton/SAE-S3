@@ -36,7 +36,12 @@ public interface DataUpdate {
                  listenerTemps.postValue(temps);
              }
          }
-
+    public default void updateLiveTabData(Data data) {
+        if (data != null) {
+            listenerTabData.postValue(listenerTabDatadata);
+            System.out.println("sdnjuivrefvn<");
+        }
+    }
     //faire get et update, mais comment signiflier?
 
 }
