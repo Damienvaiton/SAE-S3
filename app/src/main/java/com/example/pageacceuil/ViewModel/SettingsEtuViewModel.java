@@ -22,7 +22,7 @@ public class SettingsEtuViewModel extends ViewModel {
     private final MutableLiveData<String> listenerTemps = new MutableLiveData<>();
 
     public void updateMoments() {
-        listenerTemps.postValue(currentEsp.getTauxRafrai());
+       // listenerTemps.postValue(currentEsp.getTauxRafrai());
     }
 
     public LiveData<String> getMoments() {

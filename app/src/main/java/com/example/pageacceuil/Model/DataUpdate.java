@@ -1,4 +1,5 @@
 
+
 package com.example.pageacceuil.Model;
 
 import androidx.lifecycle.LiveData;
@@ -36,13 +37,13 @@ public interface DataUpdate {
                  listenerTemps.postValue(temps);
              }
          }
-    public default void updateLiveTabData(Data data) {
-        if (data != null) {
-            listenerTabData.postValue(listenerTabDatadata);
+    public default void updateLiveTabData(ArrayList<Data> arrayList) {
+        if (arrayList != null) {
+            listenerTabData.postValue(arrayList);
             System.out.println("sdnjuivrefvn<");
         }
     }
+
     //faire get et update, mais comment signiflier?
 
 }
-

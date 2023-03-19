@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.pageacceuil.ViewModel.AccueilViewModel;
+import com.example.pageacceuil.ViewModel.ClassTransitoireViewModel;
 import com.example.pageacceuil.ViewModel.GraphViewModel;
 import com.example.pageacceuil.ViewModel.SettingsAdminViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -19,6 +20,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 public class FirebaseAccess implements DataUpdate {
     /**
      * Instantiation de Firebase
@@ -29,7 +32,13 @@ public class FirebaseAccess implements DataUpdate {
     /**
      * Différent ViewModel
      */
+    private ClassTransitoireViewModel transitoireViewModel;
     private GraphViewModel graphViewModel = null;
+
+    public FirebaseAccess() {
+        this.transitoireViewModel = ClassTransitoireViewModel.getInstance();
+    }
+
     private AccueilViewModel accueilViewModel = null;
     private SettingsAdminViewModel settingsAdminViewModel = null;
 
@@ -115,9 +124,9 @@ public class FirebaseAccess implements DataUpdate {
 
                 String surnom = (String) snapshot.child("Nom").getValue();
                 if (surnom != null) {
-                    accueilViewModel.addESP(snapshot.getKey(), surnom);
+                    transitoireViewModel.ajoutESP(snapshot.getKey(),surnom);
                 } else {
-                    accueilViewModel.addESP(snapshot.getKey(), null);
+                    transitoireViewModel.ajoutESP(snapshot.getKey(), null);
                 }
             }
 
@@ -127,7 +136,7 @@ public class FirebaseAccess implements DataUpdate {
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-                accueilViewModel.deleteESP(snapshot.getKey());
+                transitoireViewModel.suppESP(snapshot.getKey());
             }
 
             @Override
@@ -228,10 +237,12 @@ public class FirebaseAccess implements DataUpdate {
                 if (tab.exists()) {
                     for (DataSnapshot dataSnapshot : tab.getChildren()) {
                         System.out.println("je passe");
+                        transitoireViewModel.updateData(dataSnapshot.getValue(Data.class));
                         listData.list_add_data(dataSnapshot.getValue(Data.class));
-                        graphViewModel.updateData(dataSnapshot.getValue(Data.class));
+
 
                     }
+                    updateLiveTabData(listData.getListData());
                 } else {
                     System.out.println("Impossible d'accéder au données précharge");
                 }
@@ -262,9 +273,9 @@ public class FirebaseAccess implements DataUpdate {
                     if (snapshot.getValue(Long.class) >= 1000) {
                         seconde = (snapshot.getValue(Long.class) % (1000 * 60)) / 1000 + "s";
                     }
-                    dataUpdate.
-                    ESP.getInstance().setTauxRafrai(heure + minute + seconde);
-                    //graphViewModel.updateMoments();
+                //    dataUpdate.
+                  //  ESP.getInstance().setTauxRafrai(heure + minute + seconde);
+                    //graphViewModel.updateRefresh();
                     return;
                 }
             }
@@ -295,7 +306,7 @@ public class FirebaseAccess implements DataUpdate {
                 if (snapshot.getChildrenCount() == 6) {
                     System.out.println("realtime");
                     listData.list_add_data(snapshot.getValue(Data.class));
-                    graphViewModel.updateData(snapshot.getValue(Data.class));
+                    updateLiveData(snapshot.getValue(Data.class));
                     //chargerDonner();
                     //actuValues();
 
@@ -367,4 +378,4 @@ public class FirebaseAccess implements DataUpdate {
     }
 
 
-}
+    }

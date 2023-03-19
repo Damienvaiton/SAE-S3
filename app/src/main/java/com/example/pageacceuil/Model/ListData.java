@@ -23,6 +23,9 @@ public class ListData implements Serializable {
         }
     }
 
+    public ArrayList<Data> getListData() {
+        return listData;
+    }
 
     public ListData() {
         listData = new ArrayList<Data>(0);

@@ -18,6 +18,10 @@ public class SettingsAdminViewModel extends ViewModel {
     private HashMap<String, String> hashmapESP;
     private FirebaseAccess database=FirebaseAccess.getInstance();
     private MutableLiveData<Data> recyclerListener;
+
+
+
+    private MutableLiveData<String> liveDataRefresh;
     public SettingsAdminViewModel() {
 
         database = FirebaseAccess.getInstance();
@@ -30,6 +34,14 @@ public class SettingsAdminViewModel extends ViewModel {
         database.setRealtimeDataListener();
         database.loadInData();
         database.setEspTimeListener();
+    }
+
+    public void updateRefresh(String refresh){
+        liveDataRefresh.postValue(refresh);
+    }
+
+    public void updateData(Data data){
+
     }
 
     public LiveData<Data> updateRecycler() {

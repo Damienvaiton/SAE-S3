@@ -1,5 +1,6 @@
 package com.example.pageacceuil.ViewModel;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,6 +40,7 @@ public class dataRecyclerAdapter extends RecyclerView.Adapter<dataRecyclerAdapte
      *        item at the given position in the data set.
      * @param position The position of the item within the adapter's data set.
      */
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         DecimalFormat a = new DecimalFormat("##.###");

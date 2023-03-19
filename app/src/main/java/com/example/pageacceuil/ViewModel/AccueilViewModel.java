@@ -48,6 +48,7 @@ public class AccueilViewModel extends ViewModel {
      * Function trigger if a new ESP has been add to the databse
      * Add value to hashmap ESP and name to tabESP if he has one, macAdress if not
      */
+
     public void addESP(String esp, @Nullable String nom) {
         if (nom == null) {
             ESP.putIfAbsent(esp, null);

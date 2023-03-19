@@ -7,7 +7,6 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.pageacceuil.Model.Data;
-import com.example.pageacceuil.Model.ESP;
 import com.example.pageacceuil.Model.FirebaseAccess;
 import com.example.pageacceuil.R;
 import com.github.mikephil.charting.components.YAxis;
@@ -56,17 +55,13 @@ public class GraphViewModel extends ViewModel  {
 
     public GraphViewModel() {
         this.acess = FirebaseAccess.getInstance();
-      /*  getData().observeForever(new Observer<Data>() {
-            @Override
-            public void onChanged(Data data) {
-                System.out.println("vue modele graphviewmodel");
-            }
-        });*/
+        ClassTransitoireViewModel.getInstance().setGraphViewModel(this);
         acess.setGraphViewModel(this);
         acess.loadInData();
         acess.setRealtimeDataListener();
         acess.setEspTimeListener();
         listData = new ArrayList<>();
+
 
     }
 
@@ -79,7 +74,7 @@ public class GraphViewModel extends ViewModel  {
     /**
      * LiveData s'occupant de transiter le taux de raffraichissemnt de l'ESP du ViewModel à la Vue
      */
-    public void updateMoments(String refresh){
+    public void updateRefresh(String refresh){
         updateTemps.postValue(refresh);
     }
     /**
@@ -105,6 +100,7 @@ public class GraphViewModel extends ViewModel  {
             chargerDonner(data);
         }
     }
+
 
     public String getLeftAxisName(){
         return leftAxisName;
