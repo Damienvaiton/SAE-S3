@@ -14,35 +14,35 @@
         android:theme="@style/Theme.Pageacceuil"
         tools:targetApi="31">
         <activity
-            android:name="com.example.pageacceuil.View.VueDataActivity"
+            android:name="com.example.saes3.View.VueDataActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name="com.example.pageacceuil.View.SettingsAdminActivity"
+            android:name="com.example.saes3.View.SettingsAdminActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name="com.example.pageacceuil.View.SettingsEtuActivity"
+            android:name="com.example.saes3.View.SettingsEtuActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name="com.example.pageacceuil.View.GraphiqueActivity"
+            android:name="com.example.saes3.View.GraphiqueActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name="com.example.pageacceuil.View.AccueilActivity"
+            android:name="com.example.saes3.View.AccueilActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -55,7 +55,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name="com.example.pageacceuil.View.ConnecAdminActivity"
+            android:name="com.example.saes3.View.ConnecAdminActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

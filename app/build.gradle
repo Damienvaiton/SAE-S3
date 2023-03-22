@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace 'com.example.pageacceuil'
+    namespace 'com.example.saes3'
     compileSdk 33
 
     defaultConfig {
