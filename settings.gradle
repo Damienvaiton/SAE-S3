@@ -13,5 +13,5 @@ dependencyResolutionManagement {
         maven { url 'https://jitpack.io/' }
     }
 }
-rootProject.name = "Pageacceuil"
+rootProject.name = "SaeS3"
 include ':app'
