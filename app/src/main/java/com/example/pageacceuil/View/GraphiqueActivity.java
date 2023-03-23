@@ -196,9 +196,8 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
                 } else {
                     label = "X =";
                 }
-                //Toast.makeText(getApplicationContext(), "Heure = " + graphViewModel.getDatas().get((int) h.getX() - 1).get+ ", " + label + h.getY(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Heure = " + graphViewModel.returnValue().recup_data((int) h.getX() - 1).getTemps()+ ", " + label + h.getY(), Toast.LENGTH_SHORT).show();
             }
-
         });
 
     }
@@ -285,9 +284,11 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
             case R.id.btnExport:
                 try {
                     Toast.makeText(getApplicationContext(), "Export excel commencé ", Toast.LENGTH_SHORT).show();
-                    //exportFile();
+                    String response=graphViewModel.exportFile();
+                    Toast.makeText(this, response, Toast.LENGTH_SHORT).show();
                 } catch (Exception e) {
                     e.printStackTrace();
+                    Toast.makeText(this, "échec", Toast.LENGTH_SHORT).show();
                 }
                 break;
             default:

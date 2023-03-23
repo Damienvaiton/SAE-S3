@@ -190,11 +190,16 @@ public class GraphViewModel extends ViewModel {
         creaGraph();
     }
 
+    public ListData returnValue(){
+        return ListData.getInstance();
+    }
+
     /**
      * Fonction qui crée l'objet du graphique
      *
      * @param
      */
+
 
     void creaGraph() {
         System.out.println("créa graph");
@@ -286,12 +291,31 @@ public class GraphViewModel extends ViewModel {
      * Delete listener when the activity is close
      */
 
-    private void exportFile() {
+    private boolean isDataValid(int cptLignes) {
         ListData listData= ListData.getInstance();
+        if (listData.recup_data(cptLignes).getCO2() == 0) {
+            return false;
+        }
+        if (listData.recup_data(cptLignes).getTemperature() == 0) {
+            return false;
+        }
+        if (listData.recup_data(cptLignes).getHumidite() == 0) {
+            return false;
+        }
+        if (listData.recup_data(cptLignes).getO2() == 0) {
+            return false;
+        }
+        if (listData.recup_data(cptLignes).getLight() == 0) {
+            return false;
+        }
+        return listData.recup_data(cptLignes).getTemps() != "";
+    }
+
+    public String exportFile() {
+        ListData listData = ListData.getInstance();
         int cptLignes = listData.list_size() - 1;
         if (cptLignes < 1) {
-            Toast.makeText(this, "Export excel annulé, pas de valeurs", Toast.LENGTH_SHORT).show();
-            return;
+            return "Export excel annulé, pas de valeurs";
         }
         if (!isDataValid(cptLignes)) {
             cptLignes--;
@@ -360,12 +384,12 @@ public class GraphViewModel extends ViewModel {
             if (fileOutputStream != null) {
                 fileOutputStream.flush();
                 fileOutputStream.close();
-                Toast.makeText(this, "Export de " + cptLignes + " mesures dans le dossier téléchargements", Toast.LENGTH_SHORT).show();
+                return "Export de " + cptLignes + " mesures dans le dossier téléchargements";
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this, "Export excel annulé, erreur", Toast.LENGTH_SHORT).show();
         }
+        return "Export terminé, disponible dans votre dossier téléchargement";
     }
 
     public void onClose() {
