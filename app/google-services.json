@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "323065863212",
+    "firebase_url": "https://sae-s3-72f67-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "sae-s3-72f67",
+    "storage_bucket": "sae-s3-72f67.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:323065863212:android:1f9b32367d3ca5272e4589",
+        "android_client_info": {
+          "package_name": "com.example.saes3"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "323065863212-jc389gt6i44s051esbs2bukjpm01rveb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAAi0ETR7OyBXDWXn_iUr0ulHcFKfL5xo"
+        }
+      ]
+    }
+  ],
+  "configuration_version": "1"
+}
