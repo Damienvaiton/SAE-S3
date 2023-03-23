@@ -225,33 +225,7 @@ public class FirebaseAccess implements DataUpdate {
         // Toast.makeText(context, "Données correctement supprimé", Toast.LENGTH_SHORT).show();
     }
 
-    /**
-     * Query to the database for load datas already on
-     */
-    public boolean loadInData() {
-        ListData listData = ListData.getInstance();
-        myRef.child("ESP32").child(currentESP.getMacEsp()).child("Mesure").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                DataSnapshot tab = task.getResult();
-                if (tab.exists()) {
-                    for (DataSnapshot dataSnapshot : tab.getChildren()) {
-                        System.out.println("je passe");
-                        transitoireViewModel.updateData(dataSnapshot.getValue(Data.class));
-                        listData.list_add_data(dataSnapshot.getValue(Data.class));
 
-
-                    }
-                    updateLiveTabData(listData.getListData());
-                } else {
-                    System.out.println("Impossible d'accéder au données précharge");
-                }
-            }
-
-        });
-
-        return true;
-    }
 
     /**
      * Query to the database to return the refresh time of the current ESP
@@ -291,6 +265,33 @@ public class FirebaseAccess implements DataUpdate {
     }
 
     /**
+     * Query to the database for load datas already on
+     */
+    public boolean loadInData() {
+        ListData listData = ListData.getInstance();
+        myRef.child("ESP32").child(currentESP.getMacEsp()).child("Mesure").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                DataSnapshot tab = task.getResult();
+                if (tab.exists()) {
+                    for (DataSnapshot dataSnapshot : tab.getChildren()) {
+                        System.out.println("je passe");
+                        transitoireViewModel.updateData(dataSnapshot.getValue(Data.class));
+                        listData.list_add_data(dataSnapshot.getValue(Data.class));
+
+
+                    }
+                    updateLiveTabData(listData.getListData());
+                } else {
+                    System.out.println("Impossible d'accéder au données précharge");
+                }
+            }
+
+        });
+
+        return true;
+    }
+    /**
      * Set a listener to the value data on the database, this  function is triggered each new value add on the database
      */
     public void setRealtimeDataListener() {
@@ -304,9 +305,9 @@ public class FirebaseAccess implements DataUpdate {
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 if (snapshot.getChildrenCount() == 6) {
-                    System.out.println("realtime");
+                    transitoireViewModel.updateData(snapshot.getValue(Data.class));
                     listData.list_add_data(snapshot.getValue(Data.class));
-                    updateLiveData(snapshot.getValue(Data.class));
+
                     //chargerDonner();
                     //actuValues();
 
@@ -372,8 +373,10 @@ public class FirebaseAccess implements DataUpdate {
      * delete each listener attach to the database
      */
     public boolean deleteListener() {
-        myRef.child("ESP32").child(currentESP.getMacEsp()).child("Mesure").removeEventListener(valueEventListenerTemps);
-        myRef.child("ESP32").child(currentESP.getMacEsp()).child("TauxRafraichissement").removeEventListener(RealtimeDataListener);
+        if(valueEventListenerTemps!=null && RealtimeDataListener!=null) {
+            myRef.child("ESP32").child(currentESP.getMacEsp()).child("Mesure").removeEventListener(valueEventListenerTemps);
+            myRef.child("ESP32").child(currentESP.getMacEsp()).child("TauxRafraichissement").removeEventListener(RealtimeDataListener);
+        }
         return true;
     }
 

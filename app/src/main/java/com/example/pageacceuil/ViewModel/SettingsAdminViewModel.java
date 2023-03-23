@@ -17,6 +17,8 @@ import java.util.Map;
 public class SettingsAdminViewModel extends ViewModel {
     private HashMap<String, String> hashmapESP;
     private FirebaseAccess database=FirebaseAccess.getInstance();
+
+    private ClassTransitoireViewModel transit;
     private MutableLiveData<Data> recyclerListener;
 
 
@@ -26,11 +28,15 @@ public class SettingsAdminViewModel extends ViewModel {
 
         database = FirebaseAccess.getInstance();
         database.setSettingsAdminViewModel(this);
+
+        transit=ClassTransitoireViewModel.getInstance();
+        transit.setSettingsAdminViewModel(this);
         database.getAllESP();
         hashmapESP = new HashMap<String, String>();
     }
     public void setListenerESP(String value) {
         hashmapESP.get(value);
+      //  ESP.getInstance().redefinition(hashmapESP.get(value));
         database.setRealtimeDataListener();
         database.loadInData();
         database.setEspTimeListener();

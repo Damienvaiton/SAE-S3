@@ -98,6 +98,13 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
             }
         });
 
+        graphViewModel.getData().observe(this, new Observer<Data>() {
+            @Override
+            public void onChanged(Data data) {
+                actuValues(data);
+            }
+        });
+
 
         valTemp = findViewById(R.id.viewTime);
 
@@ -289,87 +296,7 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
         return false;
     }
 
-  /*  private void exportFile() {
-        ListData listData=ListData.getInstance();
-        int cptLignes = listData.list_size() - 1;
-        if (cptLignes < 1) {
-            Toast.makeText(this, "Export excel annulé, pas de valeurs", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (!isDataValid(cptLignes)) {
-            cptLignes--;
-        }
-        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Mesure.xlsx");
-        XSSFWorkbook workbook = new XSSFWorkbook();
-        // Création de la feuille de calcul
-        XSSFSheet sheet = workbook.createSheet("Mesures");
-        // Création de la condition pour l'affichage en couleurs alternées
-        SheetConditionalFormatting sheetCF = sheet.getSheetConditionalFormatting();
-        ConditionalFormattingRule rule1 = sheetCF.createConditionalFormattingRule("MOD(ROW(),2)");
-        PatternFormatting fill1 = rule1.createPatternFormatting();
-        fill1.setFillBackgroundColor(IndexedColors.GREY_25_PERCENT.index);
-        fill1.setFillPattern(PatternFormatting.SOLID_FOREGROUND);
-        // Plage des cellules affectées par la condition
-        CellRangeAddress[] regions = {
-                CellRangeAddress.valueOf("A1:G" + (cptLignes + 1))
-        };
-        sheetCF.addConditionalFormatting(regions, rule1);
-        // Ajout de la 1ère ligne de titre
-        XSSFRow row0 = sheet.createRow(0);
-        // Cellule Numero
-        XSSFCell cellNumero = row0.createCell(0);
-        cellNumero.setCellValue("Numero mesure");
-        // Cellule Humidite
-        XSSFCell cellHum = row0.createCell(1);
-        cellHum.setCellValue("Humidite");
-        // Cellule Temperature
-        XSSFCell cellTemp = row0.createCell(2);
-        cellTemp.setCellValue("Temperature");
-        // Cellule CO2
-        XSSFCell cellCO2 = row0.createCell(3);
-        cellCO2.setCellValue("CO2");
-        // Cellule O2
-        XSSFCell cellO2 = row0.createCell(4);
-        cellO2.setCellValue("O2");
-        // Cellule Lux
-        XSSFCell cellLux = row0.createCell(5);
-        cellLux.setCellValue("Lux");
-        // Cellule Heure
-        XSSFCell cellHeure = row0.createCell(6);
-        cellHeure.setCellValue("Heure");
-        // Ajout des lignes de mesures
-        for (int i = 0; i < cptLignes; i++) {
-            XSSFRow row = sheet.createRow(i + 1);
-            row.createCell(0).setCellValue(i);
-            row.createCell(1).setCellValue(listData.recup_data(i).getHumidite());
-            row.createCell(2).setCellValue(listData.recup_data(i).getTemperature());
-            row.createCell(3).setCellValue(listData.recup_data(i).getCO2());
-            row.createCell(4).setCellValue(listData.recup_data(i).getO2());
-            row.createCell(5).setCellValue(listData.recup_data(i).getLight());
-            row.createCell(6).setCellValue(listData.recup_data(i).getTemps());
-        }
-        // Création du fichier
-        try {
-            if (file.exists()) {
-                file.delete();
-            }
-            try {
-                file.createNewFile();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            FileOutputStream fileOutputStream = new FileOutputStream(file);
-            workbook.write(fileOutputStream);
-            if (fileOutputStream != null) {
-                fileOutputStream.flush();
-                fileOutputStream.close();
-                Toast.makeText(this, "Export de " + cptLignes + " mesures dans le dossier téléchargements", Toast.LENGTH_SHORT).show();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            Toast.makeText(this, "Export excel annulé, erreur", Toast.LENGTH_SHORT).show();
-        }
-    }
+  /*
     */
 
     /**

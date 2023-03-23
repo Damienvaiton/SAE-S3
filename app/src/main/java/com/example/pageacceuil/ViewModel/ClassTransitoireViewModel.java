@@ -29,6 +29,10 @@ public class ClassTransitoireViewModel {
         }
     }
 
+    public void setAccueilViewModel(AccueilViewModel accueilViewModel) {
+        this.accueilViewModel = accueilViewModel;
+    }
+
     public GraphViewModel getGraphViewModel() {
         return graphViewModel;
     }
@@ -61,7 +65,8 @@ public class ClassTransitoireViewModel {
         }
     }
     public void ajoutESP(String esp, @Nullable String nom){
-        if(graphViewModel!=null){
+        System.out.println("ajout ESP");
+        if(accueilViewModel!=null){
             accueilViewModel.addESP(esp,nom);
         }
         if(settingsAdminViewModel!=null){
@@ -69,7 +74,7 @@ public class ClassTransitoireViewModel {
         }
     }
     public void suppESP(String esp){
-        if(graphViewModel!=null){
+        if(accueilViewModel!=null){
             accueilViewModel.deleteESP(esp);
         }
         if(settingsAdminViewModel!=null){
@@ -77,7 +82,7 @@ public class ClassTransitoireViewModel {
         }
     }
     public void creationESP(int pos){
-        if(graphViewModel!=null){
+        if(accueilViewModel!=null){
             accueilViewModel.creaESP(pos);
         }
         if(settingsAdminViewModel!=null){

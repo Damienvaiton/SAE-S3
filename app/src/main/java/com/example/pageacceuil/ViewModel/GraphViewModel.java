@@ -1,6 +1,8 @@
 package com.example.pageacceuil.ViewModel;
 
 import android.graphics.Color;
+import android.os.Environment;
+import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -8,6 +10,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.pageacceuil.Model.Data;
 import com.example.pageacceuil.Model.FirebaseAccess;
+import com.example.pageacceuil.Model.ListData;
 import com.example.pageacceuil.R;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -15,9 +18,21 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
+import org.apache.poi.ss.usermodel.ConditionalFormattingRule;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.PatternFormatting;
+import org.apache.poi.ss.usermodel.SheetConditionalFormatting;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 
-public class GraphViewModel extends ViewModel  {
+public class GraphViewModel extends ViewModel {
     private FirebaseAccess acess;
     private boolean leftAxisUsed = false;
     private boolean rightAxisUsed = false;
@@ -49,6 +64,7 @@ public class GraphViewModel extends ViewModel  {
 
 
     private ArrayList<Data> listData;
+
     /**
      * Constructeur du ViewModel
      */
@@ -71,26 +87,32 @@ public class GraphViewModel extends ViewModel  {
     private final MutableLiveData<LineData> updateGraph = new MutableLiveData<>();
 
     private final MutableLiveData<String> updateTemps = new MutableLiveData<>();
+    private final MutableLiveData<Data> updateData = new MutableLiveData<>();
+
     /**
      * LiveData s'occupant de transiter le taux de raffraichissemnt de l'ESP du ViewModel à la Vue
      */
-    public void updateRefresh(String refresh){
+    public void updateRefresh(String refresh) {
         updateTemps.postValue(refresh);
     }
+
     /**
      * Getter du LiveData du graphique
      */
     public LiveData getUpdateGraph() {
         return updateGraph;
     }
+
     /**
      * Getter du LiveData du temps de raffraichissement ESP
      */
     public LiveData<String> getMoments() {
         return updateTemps;
     }
+
     /**
      * Fonction d'update du LiveData avec dernière valeur disponible
+     *
      * @param data Objet Data récupéré de Firebase
      */
     public void updateData(Data data) {
@@ -98,17 +120,20 @@ public class GraphViewModel extends ViewModel  {
             System.out.println("update data");
             listData.add(data);
             chargerDonner(data);
+            updateData.postValue(data);
         }
     }
 
 
-    public String getLeftAxisName(){
+    public String getLeftAxisName() {
         return leftAxisName;
     }
-    public String getRightAxisName(){
+
+    public String getRightAxisName() {
         return rightAxisName;
     }
-    public ArrayList getListData(){
+
+    public ArrayList getListData() {
         return listData;
     }
 
@@ -120,6 +145,7 @@ public class GraphViewModel extends ViewModel  {
         super.onCleared();
         acess.deleteListener();
     }
+
     /**
      * Détermine quel checkButton à été coché
      */
@@ -151,6 +177,7 @@ public class GraphViewModel extends ViewModel  {
 
     /**
      * Charge les données dans leurs ArrayList respective
+     *
      * @param data
      */
     void chargerDonner(Data data) {
@@ -165,6 +192,7 @@ public class GraphViewModel extends ViewModel  {
 
     /**
      * Fonction qui crée l'objet du graphique
+     *
      * @param
      */
 
@@ -231,7 +259,8 @@ public class GraphViewModel extends ViewModel  {
     }
 
     /**
-     *     Choice of axe for the LineDataSet in param
+     * Choice of axe for the LineDataSet in param
+     *
      * @param data LineDataSet eady to go in the graph
      */
 
@@ -254,15 +283,97 @@ public class GraphViewModel extends ViewModel  {
     }
 
     /**
-     *     Delete listener when the activity is close
+     * Delete listener when the activity is close
      */
 
+    private void exportFile() {
+        ListData listData= ListData.getInstance();
+        int cptLignes = listData.list_size() - 1;
+        if (cptLignes < 1) {
+            Toast.makeText(this, "Export excel annulé, pas de valeurs", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (!isDataValid(cptLignes)) {
+            cptLignes--;
+        }
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Mesure.xlsx");
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        // Création de la feuille de calcul
+        XSSFSheet sheet = workbook.createSheet("Mesures");
+        // Création de la condition pour l'affichage en couleurs alternées
+        SheetConditionalFormatting sheetCF = sheet.getSheetConditionalFormatting();
+        ConditionalFormattingRule rule1 = sheetCF.createConditionalFormattingRule("MOD(ROW(),2)");
+        PatternFormatting fill1 = rule1.createPatternFormatting();
+        fill1.setFillBackgroundColor(IndexedColors.GREY_25_PERCENT.index);
+        fill1.setFillPattern(PatternFormatting.SOLID_FOREGROUND);
+        // Plage des cellules affectées par la condition
+        CellRangeAddress[] regions = {
+                CellRangeAddress.valueOf("A1:G" + (cptLignes + 1))
+        };
+        sheetCF.addConditionalFormatting(regions, rule1);
+        // Ajout de la 1ère ligne de titre
+        XSSFRow row0 = sheet.createRow(0);
+        // Cellule Numero
+        XSSFCell cellNumero = row0.createCell(0);
+        cellNumero.setCellValue("Numero mesure");
+        // Cellule Humidite
+        XSSFCell cellHum = row0.createCell(1);
+        cellHum.setCellValue("Humidite");
+        // Cellule Temperature
+        XSSFCell cellTemp = row0.createCell(2);
+        cellTemp.setCellValue("Temperature");
+        // Cellule CO2
+        XSSFCell cellCO2 = row0.createCell(3);
+        cellCO2.setCellValue("CO2");
+        // Cellule O2
+        XSSFCell cellO2 = row0.createCell(4);
+        cellO2.setCellValue("O2");
+        // Cellule Lux
+        XSSFCell cellLux = row0.createCell(5);
+        cellLux.setCellValue("Lux");
+        // Cellule Heure
+        XSSFCell cellHeure = row0.createCell(6);
+        cellHeure.setCellValue("Heure");
+        // Ajout des lignes de mesures
+        for (int i = 0; i < cptLignes; i++) {
+            XSSFRow row = sheet.createRow(i + 1);
+            row.createCell(0).setCellValue(i);
+            row.createCell(1).setCellValue(listData.recup_data(i).getHumidite());
+            row.createCell(2).setCellValue(listData.recup_data(i).getTemperature());
+            row.createCell(3).setCellValue(listData.recup_data(i).getCO2());
+            row.createCell(4).setCellValue(listData.recup_data(i).getO2());
+            row.createCell(5).setCellValue(listData.recup_data(i).getLight());
+            row.createCell(6).setCellValue(listData.recup_data(i).getTemps());
+        }
+        // Création du fichier
+        try {
+            if (file.exists()) {
+                file.delete();
+            }
+            try {
+                file.createNewFile();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+            workbook.write(fileOutputStream);
+            if (fileOutputStream != null) {
+                fileOutputStream.flush();
+                fileOutputStream.close();
+                Toast.makeText(this, "Export de " + cptLignes + " mesures dans le dossier téléchargements", Toast.LENGTH_SHORT).show();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Export excel annulé, erreur", Toast.LENGTH_SHORT).show();
+        }
+    }
 
-    public void onClose(){
+    public void onClose() {
         acess.deleteListener();
     }
 
 
-
-
+    public LiveData<Data> getData() {
+        return updateData;
+    }
 }

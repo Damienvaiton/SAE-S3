@@ -17,11 +17,14 @@ public class ESP {
         return null;
     }
     public ESP(String macEsp, String nomEsp) {
-        this.macEsp = macEsp;
-        this.nomEsp = nomEsp;
         instance=this;
+        redefinition(macEsp,nomEsp);
     }
 
+    public void redefinition(String macEsp, String nomEsp){
+        this.macEsp = macEsp;
+        this.nomEsp = nomEsp;
+    }
     public String getMacEsp() {
         return macEsp;
     }

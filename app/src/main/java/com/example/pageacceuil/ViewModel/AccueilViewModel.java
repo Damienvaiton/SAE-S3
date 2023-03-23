@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.pageacceuil.Model.ESP;
 import com.example.pageacceuil.Model.FirebaseAccess;
+import com.example.pageacceuil.View.AccueilActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,6 +19,7 @@ public class AccueilViewModel extends ViewModel {
      */
     private HashMap<String, String> ESP;
     private FirebaseAccess acess;
+    private ClassTransitoireViewModel transit;
 
     /**
      * Constructor who initialiaze the viewModel
@@ -27,6 +29,8 @@ public class AccueilViewModel extends ViewModel {
        acess = FirebaseAccess.getInstance();
         acess.setAccueilViewModel(this);
         acess.getAllESP();
+        transit=ClassTransitoireViewModel.getInstance();
+        transit.setAccueilViewModel(this);
         ESP = new HashMap<String, String>();
     }
 
@@ -50,6 +54,7 @@ public class AccueilViewModel extends ViewModel {
      */
 
     public void addESP(String esp, @Nullable String nom) {
+        System.out.println("addESP");
         if (nom == null) {
             ESP.putIfAbsent(esp, null);
             tabESP.add(esp);
@@ -89,4 +94,12 @@ public class AccueilViewModel extends ViewModel {
 
 
     }
+
+    public void pause(){
+        transit.setAccueilViewModel(null);
+    }
+    public void setInstance(){
+        transit.setAccueilViewModel(this);
+    }
+
 }

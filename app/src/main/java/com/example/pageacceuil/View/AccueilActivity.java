@@ -46,6 +46,29 @@ public class AccueilActivity extends AppCompatActivity {
      */
     private ArrayList<String> tabESP;
 
+    /**
+     *
+     */
+    @Override
+    protected void onPause() {
+        super.onPause();
+        accueilViewModel.pause();
+    }
+
+    /**
+     *
+     */
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        accueilViewModel.setInstance();
+    }
+
+    /**
+     *
+     */
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,6 +136,7 @@ public class AccueilActivity extends AppCompatActivity {
 
             }
         });
+
 
     }
 
