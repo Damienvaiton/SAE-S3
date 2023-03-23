@@ -165,7 +165,13 @@ public class SettingsEtuActivity extends AppCompatActivity implements View.OnCli
     protected void onDestroy() {
         super.onDestroy();
     }
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent myItent=new Intent();
+        setResult(RESULT_OK,myItent);
+        finish();
+    }
 
     @Override
     public void onClick(View view) {
@@ -208,7 +214,7 @@ public class SettingsEtuActivity extends AppCompatActivity implements View.OnCli
 
 
     private void setAxisMinMax(YAxis axis, String min, String max, String message) {
-        if (((min.trim().length() == 0) || (max.trim().length() == 0)) || (auto_droit.isChecked())) {
+        if (((min.trim().length() == 0) || (max.trim().length() == 0)) ) {
             Toast.makeText(getApplicationContext(), "Un champ est vide", Toast.LENGTH_SHORT).show();
         } else {
             if (Float.valueOf(max) > Float.valueOf(min)) {

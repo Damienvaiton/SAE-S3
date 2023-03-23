@@ -72,7 +72,7 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
     /**
      * The ViewModel of this view
      */
-
+    ActivityResultLauncher<Intent> mStartForResult;
     private GraphViewModel graphViewModel = null;
 
     @Override
@@ -208,7 +208,18 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
             }
         });
 
+        mStartForResult =
+                registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                        new ActivityResultCallback<ActivityResult>() {
+                            @Override
+                            public void onActivityResult(ActivityResult result) {
+                                if (result.getResultCode() == Activity.RESULT_OK) {
+                                   graph.notifyDataSetChanged();
+                                   graph.invalidate();
+                                }
+                            }
 
+                        });
     }
 
 
