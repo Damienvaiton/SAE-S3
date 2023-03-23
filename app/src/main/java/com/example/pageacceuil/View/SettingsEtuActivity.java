@@ -124,10 +124,17 @@ public class SettingsEtuActivity extends AppCompatActivity implements View.OnCli
             max_d.setHint(rightAxis.getAxisMaximum() + "");
 
         }
+        else{
+            min_d.setHint("auto");
+            max_d.setHint("auto");
+        }
         if (leftAxis.isAxisMaxCustom()) {
             auto_gauche.setChecked(false);
             min_g.setHint(leftAxis.getAxisMinimum() + "");
-            max_g.setHint(leftAxis.getAxisMaximum() + "");
+            max_g.setHint(leftAxis.getAxisMaximum() + "");}
+            else{
+            min_g.setHint("auto");
+            max_g.setHint("auto");}
 
 
             settingsEtuViewModel.getMoments().observe(this, new Observer<String>() {
@@ -137,7 +144,7 @@ public class SettingsEtuActivity extends AppCompatActivity implements View.OnCli
                 }
 
             });
-        }
+
 
         tauxRefresh.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -180,13 +187,20 @@ public class SettingsEtuActivity extends AppCompatActivity implements View.OnCli
                 if (auto_droit.isChecked()) {
                     resetAxis(rightAxis);
                     Toast.makeText(getApplicationContext(), "Mode auto activé", Toast.LENGTH_SHORT).show();
-
+                    min_d.setEnabled(false);
+                    min_d.setHint("auto");
+                    max_d.setEnabled(false);
+                    max_d.setHint("auto");
                 }
                 break;
             case R.id.auto_gauche:
                 if (auto_gauche.isChecked()) {
                     resetAxis(leftAxis);
                     Toast.makeText(getApplicationContext(), "Mode auto activé", Toast.LENGTH_SHORT).show();
+                    min_g.setEnabled(false);
+                    min_g.setHint("auto");
+                    max_g.setEnabled(false);
+                    max_g.setHint("auto");
                 }
                 break;
             case R.id.btn_droit:

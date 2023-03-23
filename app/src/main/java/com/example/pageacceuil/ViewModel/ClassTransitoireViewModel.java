@@ -60,8 +60,8 @@ public class ClassTransitoireViewModel {
         if(settingsAdminViewModel!=null){
             settingsAdminViewModel.updateRefresh(s);
         }
-        if(settingsAdminViewModel!=null){
-            settingsAdminViewModel.updateRefresh(s);
+        if(settingsEtuViewModel!=null){
+            settingsEtuViewModel.updateRefresh(s);
         }
     }
     public void updateData(Data data){
