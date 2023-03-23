@@ -15,7 +15,7 @@ public class AppApplication extends Application {
 
 // ...
 // Initialize Firebase Auth
-        FirebaseAccess database=FirebaseAccess.getInstance();
+        FirebaseAccess database = FirebaseAccess.getInstance();
         // je peux initialiser des données ici.
         //lancé une seule fois à l'init de l'app
         // pour repasser ici il faut killer l'application et la relancer

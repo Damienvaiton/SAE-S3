@@ -25,7 +25,6 @@ import com.example.saes3.ViewModel.SettingsEtuViewModel;
 import com.github.mikephil.charting.components.YAxis;
 
 public class SettingsEtuActivity extends AppCompatActivity implements View.OnClickListener {
-
     private TextView textAxeLeft;
     private TextView textAxeRight;
     private String choixESP = "";
@@ -50,18 +49,18 @@ public class SettingsEtuActivity extends AppCompatActivity implements View.OnCli
     private YAxis rightAxis;
     private YAxis leftAxis;
 
-    private SettingsEtuViewModel settingsEtuViewModel=null;
+    private SettingsEtuViewModel settingsEtuViewModel = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting_page);
 
-        settingsEtuViewModel =new ViewModelProvider(this).get(SettingsEtuViewModel.class);
+        settingsEtuViewModel = new ViewModelProvider(this).get(SettingsEtuViewModel.class);
 
 
-        rightAxis= Axe.getInstance().getRightAxis();
-        leftAxis=Axe.getInstance().getLeftAxis();
+        rightAxis = Axe.getInstance().getRightAxis();
+        leftAxis = Axe.getInstance().getLeftAxis();
 
         max_g = findViewById(R.id.max_gauche);
         min_g = findViewById(R.id.min_gauche);
@@ -87,7 +86,7 @@ public class SettingsEtuActivity extends AppCompatActivity implements View.OnCli
         auto_droit.setOnClickListener(this);
         auto_gauche.setOnClickListener(this);
 
-        ESP esp=ESP.getInstance();
+        ESP esp = ESP.getInstance();
         Intent intent = getIntent();
         if (intent != null) {
             if (intent.hasExtra("choixESP")) {
@@ -105,7 +104,7 @@ public class SettingsEtuActivity extends AppCompatActivity implements View.OnCli
                 System.out.println("impossible récup ESP");
             }
         }
-        if (esp.getNomEsp()==null) {
+        if (esp.getNomEsp() == null) {
             nomEsp.setText(esp.getNomEsp());
         } else {
             nomEsp.setText(esp.getMacEsp());
@@ -145,11 +144,10 @@ public class SettingsEtuActivity extends AppCompatActivity implements View.OnCli
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE && !tauxRefresh.getText().toString().equals("")) {
-                    if(settingsEtuViewModel.editTemps((parseInt(tauxRefresh.getText().toString())))==true){
+                    if (settingsEtuViewModel.editTemps((parseInt(tauxRefresh.getText().toString()))) == true) {
                         Toast.makeText(SettingsEtuActivity.this, "Refresh : " + tauxRefresh.getText().toString() + "s,\r\nVous pouvez redémarrer l'ESP", Toast.LENGTH_SHORT).show();
                         tauxRefresh.setText("");
-                    }
-                    else{
+                    } else {
                         Toast.makeText(SettingsEtuActivity.this, "Erreur", Toast.LENGTH_SHORT).show();
                     }
                 } else {
@@ -160,7 +158,6 @@ public class SettingsEtuActivity extends AppCompatActivity implements View.OnCli
 
         });
     }
-
 
 
     @Override
@@ -218,11 +215,10 @@ public class SettingsEtuActivity extends AppCompatActivity implements View.OnCli
                 }
             case R.id.btn_refresh:
                 if (!tauxRefresh.getText().toString().equals("")) {
-                    if(settingsEtuViewModel.editTemps((parseInt(tauxRefresh.getText().toString())))){
+                    if (settingsEtuViewModel.editTemps((parseInt(tauxRefresh.getText().toString())))) {
                         tauxRefresh.setText("");
                         Toast.makeText(SettingsEtuActivity.this, "Refresh : " + tauxRefresh.getText().toString() + "s,\r\nVous pouvez redémarrer l'ESP", Toast.LENGTH_SHORT).show();
-                    }
-                    else{
+                    } else {
                         Toast.makeText(SettingsEtuActivity.this, "Erreur", Toast.LENGTH_SHORT).show();
                     }
                 } else {

@@ -22,39 +22,58 @@ import com.google.firebase.database.ValueEventListener;
 
 public class FirebaseAccess implements DataUpdate {
     /**
+     * Paramètre qui conserve une instance de FirebaseAccess une fois celle-ci créée
+     */
+    private static volatile FirebaseAccess instance;
+    /**
      * Instantiation de Firebase
      */
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
     private final DatabaseReference myRef = database.getReference("SAE_S3_BD");
-
     /**
      * Différent ViewModel
      */
     private ClassTransitoireViewModel transitoireViewModel;
     private GraphViewModel graphViewModel = null;
-
-    public FirebaseAccess() {
-        this.transitoireViewModel = ClassTransitoireViewModel.getInstance();
-    }
-
     private AccueilViewModel accueilViewModel = null;
     private SettingsAdminViewModel settingsAdminViewModel = null;
-
     private ESP currentESP;
 
     /**
      * Listener rattaché au différent champs de Firebase
      */
-
     private ValueEventListener valueEventListenerTemps;
     private ChildEventListener RealtimeDataListener;
 
     /**
      * Différents setters pour la class FirebaseAccess qui s'occupe de tous les appels à la base de données Firebase.
      */
+    public FirebaseAccess() {
+        this.transitoireViewModel = ClassTransitoireViewModel.getInstance();
+    }
+
+    /**
+     * Récupère ou construit l'unique instaance de FirebaseAccess
+     *
+     * @return instance de la classe FirebaseAccess
+     */
+    public static FirebaseAccess getInstance() {
+
+        FirebaseAccess result = instance;
+        if (result != null) {
+            return result;
+        }
+        synchronized (FirebaseAccess.class) {
+            if (instance == null) {
+                instance = new FirebaseAccess();
+            }
+            return instance;
+        }
+    }
 
     /**
      * Setter pour le ViewModel GraphViewModel
+     *
      * @param graphViewModel
      */
     public void setGraphViewModel(GraphViewModel graphViewModel) {
@@ -80,30 +99,6 @@ public class FirebaseAccess implements DataUpdate {
     }
 
     /**
-     * Paramètre qui conserve une instance de FirebaseAccess une fois celle-ci créée
-     */
-    private static volatile FirebaseAccess instance;
-
-    /**
-     * Récupère ou construit l'unique instaance de FirebaseAccess
-     *
-     * @return instance de la classe FirebaseAccess
-     */
-    public static FirebaseAccess getInstance() {
-
-        FirebaseAccess result = instance;
-        if (result != null) {
-            return result;
-        }
-        synchronized (FirebaseAccess.class) {
-            if (instance == null) {
-                instance = new FirebaseAccess();
-            }
-            return instance;
-        }
-    }
-
-    /**
      * Setter pour la classe ESP actuel
      *
      * @param esp
@@ -119,10 +114,9 @@ public class FirebaseAccess implements DataUpdate {
         myRef.child("ESP32").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
                 String surnom = (String) snapshot.child("Nom").getValue();
                 if (surnom != null) {
-                    transitoireViewModel.ajoutESP(snapshot.getKey(),surnom);
+                    transitoireViewModel.ajoutESP(snapshot.getKey(), surnom);
                 } else {
                     transitoireViewModel.ajoutESP(snapshot.getKey(), null);
                 }
@@ -139,12 +133,10 @@ public class FirebaseAccess implements DataUpdate {
 
             @Override
             public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
     }
@@ -155,20 +147,18 @@ public class FirebaseAccess implements DataUpdate {
      * @param temps time in millisecond
      */
     public void setEspRefreshRate(int temps) {// context passé en param
-        myRef.child("ESP32").child(currentESP.getMacEsp()).child("TauxRafraichissement").setValue(temps * 1000)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        //  Snackbar.make(, "yo",Snackbar.LENGTH_SHORT).show();
-                        Log.d("Firebase", "Données enregistrées avec succès");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e("Firebase", "Erreur lors de l'enregistrement des données", e);
-                    }
-                });
+        myRef.child("ESP32").child(currentESP.getMacEsp()).child("TauxRafraichissement").setValue(temps * 1000).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                //  Snackbar.make(, "yo",Snackbar.LENGTH_SHORT).show();
+                Log.d("Firebase", "Données enregistrées avec succès");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e("Firebase", "Erreur lors de l'enregistrement des données", e);
+            }
+        });
     } //test isSucessfull marche pas
 
     /* public String getSurnom(String macESP){
@@ -189,37 +179,33 @@ public class FirebaseAccess implements DataUpdate {
      * Query to the database for wipe datas
      */
     public void resetValueFirebase() {
-        myRef.child("ESP32").child(currentESP.getMacEsp()).child("Mesure").removeValue()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        //  Snackbar.make(, "yo",Snackbar.LENGTH_SHORT).show();
-                        Log.d("Firebase", "Données enregistrées avec succès");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        //  Toast.makeText(context, "Erreur base de données", Toast.LENGTH_SHORT).show();
-                        Log.e("Firebase", "Erreur lors de l'enregistrement des données", e);
-                        return;
-                    }
-                });
-        myRef.child("ESP32").child(currentESP.getMacEsp()).child("Mesure").removeValue()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d("Firebase", "Données enregistrées avec succès");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // Toast.makeText(context, "Erreur base de données", Toast.LENGTH_SHORT).show();
-                        Log.e("Firebase", "Erreur lors de l'enregistrement des données", e);
-                        return;
-                    }
-                });
+        myRef.child("ESP32").child(currentESP.getMacEsp()).child("Mesure").removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                //  Snackbar.make(, "yo",Snackbar.LENGTH_SHORT).show();
+                Log.d("Firebase", "Données enregistrées avec succès");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                //  Toast.makeText(context, "Erreur base de données", Toast.LENGTH_SHORT).show();
+                Log.e("Firebase", "Erreur lors de l'enregistrement des données", e);
+                return;
+            }
+        });
+        myRef.child("ESP32").child(currentESP.getMacEsp()).child("Mesure").removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d("Firebase", "Données enregistrées avec succès");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                // Toast.makeText(context, "Erreur base de données", Toast.LENGTH_SHORT).show();
+                Log.e("Firebase", "Erreur lors de l'enregistrement des données", e);
+                return;
+            }
+        });
         // Toast.makeText(context, "Données correctement supprimé", Toast.LENGTH_SHORT).show();
     }
 
@@ -237,17 +223,13 @@ public class FirebaseAccess implements DataUpdate {
                         System.out.println("je passe");
                         transitoireViewModel.updateData(dataSnapshot.getValue(Data.class));
                         listData.list_add_data(dataSnapshot.getValue(Data.class));
-
-
                     }
                     updateLiveTabData(listData.getListData());
                 } else {
                     System.out.println("Impossible d'accéder au données précharge");
                 }
             }
-
         });
-
         return true;
     }
 
@@ -271,8 +253,8 @@ public class FirebaseAccess implements DataUpdate {
                     if (snapshot.getValue(Long.class) >= 1000) {
                         seconde = (snapshot.getValue(Long.class) % (1000 * 60)) / 1000 + "s";
                     }
-                //    dataUpdate.
-                  //  ESP.getInstance().setTauxRafrai(heure + minute + seconde);
+                    //    dataUpdate.
+                    //  ESP.getInstance().setTauxRafrai(heure + minute + seconde);
                     //graphViewModel.updateRefresh();
                     return;
                 }
@@ -281,7 +263,6 @@ public class FirebaseAccess implements DataUpdate {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Log.e("Firebase", "Erreur lors de l'enregistrement des données : " + error);
-
             }
         };
         myRef.child("ESP32").child(ESP.getInstance().getMacEsp()).child("TauxRafraichissement").addValueEventListener(valueEventListenerTemps);
@@ -313,12 +294,10 @@ public class FirebaseAccess implements DataUpdate {
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
             }
 
             @Override
             public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
             }
 
             @Override
@@ -327,9 +306,7 @@ public class FirebaseAccess implements DataUpdate {
             }
         };
         myRef.child("ESP32").child(currentESP.getMacEsp()).child("Mesure").addChildEventListener(RealtimeDataListener);
-
     }
-
 
     /**
      * Query to the database to get admin log
@@ -351,6 +328,7 @@ public class FirebaseAccess implements DataUpdate {
 
     /**
      * Query to the databse to add a nickname on the current ESP
+     *
      * @param nickname new nickname for the ESP
      */
     public void setNicknameEsp(String nickname) {
@@ -374,6 +352,4 @@ public class FirebaseAccess implements DataUpdate {
         myRef.child("ESP32").child(currentESP.getMacEsp()).child("TauxRafraichissement").removeEventListener(RealtimeDataListener);
         return true;
     }
-
-
-    }
+}

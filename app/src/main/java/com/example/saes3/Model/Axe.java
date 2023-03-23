@@ -3,8 +3,8 @@ package com.example.saes3.Model;
 import com.github.mikephil.charting.components.YAxis;
 
 public class Axe {
-    private  YAxis leftAxis;
-    private  YAxis rightAxis;
+    private YAxis leftAxis;
+    private YAxis rightAxis;
     private static volatile Axe instance;
 
     public YAxis getLeftAxis() {
@@ -29,7 +29,6 @@ public class Axe {
     }
 
     public static Axe getInstance() {
-
         Axe result = instance;
         if (result != null) {
             return result;

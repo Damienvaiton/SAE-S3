@@ -8,6 +8,7 @@ import com.example.saes3.Model.ESP;
 import com.example.saes3.Model.FirebaseAccess;
 
 public class SettingsEtuViewModel extends ViewModel {
+    private final MutableLiveData<String> listenerTemps = new MutableLiveData<>();
     private FirebaseAccess acess;
     private ESP currentEsp;
 
@@ -19,10 +20,8 @@ public class SettingsEtuViewModel extends ViewModel {
 
     }
 
-    private final MutableLiveData<String> listenerTemps = new MutableLiveData<>();
-
     public void updateMoments() {
-       // listenerTemps.postValue(currentEsp.getTauxRafrai());
+        // listenerTemps.postValue(currentEsp.getTauxRafrai());
     }
 
     public LiveData<String> getMoments() {

@@ -12,6 +12,7 @@ public class XAxisValueFormatter extends IndexAxisValueFormatter {
 
     /**
      * Default constructor
+     *
      * @param datas ArrayList of Data
      */
     public XAxisValueFormatter(ArrayList<Data> datas) {
@@ -27,7 +28,7 @@ public class XAxisValueFormatter extends IndexAxisValueFormatter {
         if ((int) value == 0) {
             return "";
         }
-        return datas.get((int) value+1 ).getTemps();
+        return datas.get((int) value + 1).getTemps();
     }
 }
 

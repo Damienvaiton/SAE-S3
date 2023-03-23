@@ -8,6 +8,9 @@ public class ListData implements Serializable {
     private static volatile ListData instance;
     private ArrayList<Data> listData;
 
+    public ListData() {
+        listData = new ArrayList<Data>(0);
+    }
 
     public static ListData getInstance() {
 
@@ -25,10 +28,6 @@ public class ListData implements Serializable {
 
     public ArrayList<Data> getListData() {
         return listData;
-    }
-
-    public ListData() {
-        listData = new ArrayList<Data>(0);
     }
 
     public Data recup_data(int i) {

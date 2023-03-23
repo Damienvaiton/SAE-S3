@@ -17,7 +17,7 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.util.ArrayList;
 
-public class GraphViewModel extends ViewModel  {
+public class GraphViewModel extends ViewModel {
     private FirebaseAccess acess;
     private boolean leftAxisUsed = false;
     private boolean rightAxisUsed = false;
@@ -49,6 +49,7 @@ public class GraphViewModel extends ViewModel  {
 
 
     private ArrayList<Data> listData;
+
     /**
      * Constructeur du ViewModel
      */
@@ -71,26 +72,31 @@ public class GraphViewModel extends ViewModel  {
     private final MutableLiveData<LineData> updateGraph = new MutableLiveData<>();
 
     private final MutableLiveData<String> updateTemps = new MutableLiveData<>();
+
     /**
      * LiveData s'occupant de transiter le taux de raffraichissemnt de l'ESP du ViewModel à la Vue
      */
-    public void updateRefresh(String refresh){
+    public void updateRefresh(String refresh) {
         updateTemps.postValue(refresh);
     }
+
     /**
      * Getter du LiveData du graphique
      */
     public LiveData getUpdateGraph() {
         return updateGraph;
     }
+
     /**
      * Getter du LiveData du temps de raffraichissement ESP
      */
     public LiveData<String> getMoments() {
         return updateTemps;
     }
+
     /**
      * Fonction d'update du LiveData avec dernière valeur disponible
+     *
      * @param data Objet Data récupéré de Firebase
      */
     public void updateData(Data data) {
@@ -102,13 +108,15 @@ public class GraphViewModel extends ViewModel  {
     }
 
 
-    public String getLeftAxisName(){
+    public String getLeftAxisName() {
         return leftAxisName;
     }
-    public String getRightAxisName(){
+
+    public String getRightAxisName() {
         return rightAxisName;
     }
-    public ArrayList getListData(){
+
+    public ArrayList getListData() {
         return listData;
     }
 
@@ -120,6 +128,7 @@ public class GraphViewModel extends ViewModel  {
         super.onCleared();
         acess.deleteListener();
     }
+
     /**
      * Détermine quel checkButton à été coché
      */
@@ -151,6 +160,7 @@ public class GraphViewModel extends ViewModel  {
 
     /**
      * Charge les données dans leurs ArrayList respective
+     *
      * @param data
      */
     void chargerDonner(Data data) {
@@ -165,6 +175,7 @@ public class GraphViewModel extends ViewModel  {
 
     /**
      * Fonction qui crée l'objet du graphique
+     *
      * @param
      */
 
@@ -231,7 +242,8 @@ public class GraphViewModel extends ViewModel  {
     }
 
     /**
-     *     Choice of axe for the LineDataSet in param
+     * Choice of axe for the LineDataSet in param
+     *
      * @param data LineDataSet eady to go in the graph
      */
 
@@ -254,15 +266,13 @@ public class GraphViewModel extends ViewModel  {
     }
 
     /**
-     *     Delete listener when the activity is close
+     * Delete listener when the activity is close
      */
 
 
-    public void onClose(){
+    public void onClose() {
         acess.deleteListener();
     }
-
-
 
 
 }

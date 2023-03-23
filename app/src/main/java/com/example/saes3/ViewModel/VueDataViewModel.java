@@ -8,7 +8,6 @@ import com.example.saes3.Model.Data;
 import com.example.saes3.Model.DataUpdate;
 
 public class VueDataViewModel extends ViewModel implements DataUpdate {
-
     public VueDataViewModel() {
 
         getData().observeForever(new Observer<Data>() {
@@ -27,9 +26,10 @@ public class VueDataViewModel extends ViewModel implements DataUpdate {
     }
 
 
-    public LiveData<Data> getData(){
+    public LiveData<Data> getData() {
         return listenerDonnées;
     }
+
     public void updateData(Data data) {
         if (data != null) {
             listenerDonnées.postValue(data);

@@ -24,9 +24,8 @@ public class ConnectAdminViewModel extends ViewModel {
     }
 
     /**
-     *
      * @param username Text in EditText on the view
-     * @param mdp Text in EditText on the view
+     * @param mdp      Text in EditText on the view
      * @return a boolean in connexion is valid or not
      * Verify if the username and password are the same in database and this wrote by users
      */

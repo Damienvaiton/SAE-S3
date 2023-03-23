@@ -58,7 +58,6 @@ public class ConnecAdminActivity extends AppCompatActivity {
                     Toast.makeText(ConnecAdminActivity.this, "Une erreur se trouve dans le formulaire", Toast.LENGTH_SHORT).show();
                 }
             }
-
         });
     }
 }

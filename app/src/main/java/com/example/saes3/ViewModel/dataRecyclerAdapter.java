@@ -16,14 +16,12 @@ import com.example.saes3.R;
 import java.text.DecimalFormat;
 
 public class dataRecyclerAdapter extends RecyclerView.Adapter<dataRecyclerAdapter.ViewHolder> {
-
     private Context context;
-
     private ListData listData;
 
     public dataRecyclerAdapter(Context context) {
-        this.context=context;
-        listData=ListData.getInstance();
+        this.context = context;
+        listData = ListData.getInstance();
     }
 
     @NonNull
@@ -36,8 +34,9 @@ public class dataRecyclerAdapter extends RecyclerView.Adapter<dataRecyclerAdapte
     /**
      * fill all the fields with the ArrayList of data
      * fields : temp, humidity, co2,o2,lux,temps
-     * @param holder The ViewHolder which should be updated to represent the contents of the
-     *        item at the given position in the data set.
+     *
+     * @param holder   The ViewHolder which should be updated to represent the contents of the
+     *                 item at the given position in the data set.
      * @param position The position of the item within the adapter's data set.
      */
     @SuppressLint("SetTextI18n")

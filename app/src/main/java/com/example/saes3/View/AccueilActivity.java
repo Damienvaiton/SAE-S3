@@ -34,7 +34,7 @@ public class AccueilActivity extends AppCompatActivity {
      */
     private int position;
     /**
-     *  Button for switch to 'GraphView'
+     * Button for switch to 'GraphView'
      */
     private Button btncoEtu;
     /**
@@ -58,29 +58,27 @@ public class AccueilActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(AccueilActivity.this, android.R.layout.simple_spinner_dropdown_item, tabESP);
         spinner.setAdapter(adapter);
 
-
-
         /**
          * Observe a LiveData and recreate tabESP to keep up to date with ESP available in the database
          */
         accueilViewModel.getESP().observe(this, new Observer<ArrayList<String>>() {
-    @Override
-    public void onChanged(ArrayList<String> strings) {
-        tabESP.clear();
-        for (String ESP : strings) {
-            tabESP.add(ESP.toString());
-        }
-        adapter.notifyDataSetChanged();
-    }
-});
-/**
- * Store the value selected into 'position'
- */
+            @Override
+            public void onChanged(ArrayList<String> strings) {
+                tabESP.clear();
+                for (String ESP : strings) {
+                    tabESP.add(ESP.toString());
+                }
+                adapter.notifyDataSetChanged();
+            }
+        });
+        /**
+         * Store the value selected into 'position'
+         */
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-                position=pos;
-        }
+                position = pos;
+            }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {

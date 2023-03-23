@@ -2,11 +2,15 @@ package com.example.saes3.Model;
 
 
 public class ESP {
+    private static volatile ESP instance;
     private String macEsp;
     private String nomEsp;
 
-    private static volatile ESP instance;
-
+    public ESP(String macEsp, String nomEsp) {
+        this.macEsp = macEsp;
+        this.nomEsp = nomEsp;
+        instance = this;
+    }
 
     public static ESP getInstance() {
 
@@ -15,11 +19,6 @@ public class ESP {
             return result;
         }
         return null;
-    }
-    public ESP(String macEsp, String nomEsp) {
-        this.macEsp = macEsp;
-        this.nomEsp = nomEsp;
-        instance=this;
     }
 
     public String getMacEsp() {
@@ -37,8 +36,6 @@ public class ESP {
     public void setNomEsp(String nomEsp) {
         this.nomEsp = nomEsp;
     }
-
-
 
     @Override
     protected void finalize() throws Throwable {

@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.example.saes3.R;
 
 public class PopUpDialog extends Dialog {
-
     private final TextView titre;
     private final EditText valeur;
     private final Button yesButton;
@@ -19,6 +18,7 @@ public class PopUpDialog extends Dialog {
 
     /**
      * Constructor
+     *
      * @param activity
      */
     public PopUpDialog(Activity activity) {
@@ -48,9 +48,8 @@ public class PopUpDialog extends Dialog {
     }
 
     /**
-     *
      * @param title Titre de la pop-up
-     * @param txt Texte pour la pop-up
+     * @param txt   Texte pour la pop-up
      * @param choix choix des champs que l'on souhaite, si 0 alors un nombre est attendu, sinon un texte
      */
     public void build(String title, String txt, int choix) {
@@ -63,10 +62,12 @@ public class PopUpDialog extends Dialog {
         valeur.setHint(txt);
         show();
     }
-/**
- * Build with only a text aera
- * @param txt text to show
- */
+
+    /**
+     * Build with only a text aera
+     *
+     * @param txt text to show
+     */
     public void build(String txt) {
         titre.setText(txt);
         titre.setTextSize(16);

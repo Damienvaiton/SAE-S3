@@ -24,7 +24,7 @@ public class AccueilViewModel extends ViewModel {
      */
     public AccueilViewModel() {
 
-       acess = FirebaseAccess.getInstance();
+        acess = FirebaseAccess.getInstance();
         acess.setAccueilViewModel(this);
         acess.getAllESP();
         ESP = new HashMap<String, String>();
@@ -35,15 +35,17 @@ public class AccueilViewModel extends ViewModel {
      */
     MutableLiveData<ArrayList<String>> listener = new MutableLiveData<>();
     /**
-     *ArrayList wich contains nickname of each ESP if it has, mac adress if not
+     * ArrayList wich contains nickname of each ESP if it has, mac adress if not
      */
     ArrayList<String> tabESP = new ArrayList<>();
+
     /**
      * Getter of LiveData object who contains tabESP
      */
     public LiveData<ArrayList<String>> getESP() {
         return listener;
     }
+
     /**
      * Function trigger if a new ESP has been add to the databse
      * Add value to hashmap ESP and name to tabESP if he has one, macAdress if not
@@ -59,8 +61,9 @@ public class AccueilViewModel extends ViewModel {
         }
         listener.postValue(tabESP);
     }
+
     /**
-     *Function trigger if a ESP has been delete to the databse
+     * Function trigger if a ESP has been delete to the databse
      * Remove the ESP name of tabESP if @param nameESP has been find in tabESP
      */
     public void deleteESP(String nameESP) {
@@ -71,9 +74,10 @@ public class AccueilViewModel extends ViewModel {
             listener.postValue(tabESP);
         }
     }
-/**
- * Define the selected ESP to FirebaseAcess
- */
+
+    /**
+     * Define the selected ESP to FirebaseAcess
+     */
     public void creaESP(int pos) {
         int curseur = 0;
         for (Map.Entry<String, String> entry : ESP.entrySet()) {
@@ -84,7 +88,8 @@ public class AccueilViewModel extends ViewModel {
                 }
                 acess.setEsp(new ESP(entry.getKey(), null));
                 return;
-            }curseur++;
+            }
+            curseur++;
         }
 
 

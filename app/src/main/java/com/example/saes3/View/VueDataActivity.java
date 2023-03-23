@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class VueDataActivity extends AppCompatActivity implements Serializable {
-
     private RecyclerView recyclerView;
     private Button btnTriChoix;
     private Button trid;
@@ -35,7 +34,7 @@ public class VueDataActivity extends AppCompatActivity implements Serializable {
     /**
      * The ViewModel for VueDataActivity
      */
-    private VueDataViewModel vueDataViewModel=null;
+    private VueDataViewModel vueDataViewModel = null;
 
     private ArrayList<Data> listData;
 
@@ -44,13 +43,13 @@ public class VueDataActivity extends AppCompatActivity implements Serializable {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vue_data);
 
-        vueDataViewModel=new ViewModelProvider(this).get(VueDataViewModel.class);
+        vueDataViewModel = new ViewModelProvider(this).get(VueDataViewModel.class);
 
 
         vueDataViewModel.getData().observe(this, new Observer<Data>() {
             @Override
             public void onChanged(Data data) {
-                dataRecyclerAdapter.notifyItemInserted(dataRecyclerAdapter.getItemCount()-1);
+                dataRecyclerAdapter.notifyItemInserted(dataRecyclerAdapter.getItemCount() - 1);
             }
         });
 
@@ -71,7 +70,7 @@ public class VueDataActivity extends AppCompatActivity implements Serializable {
         vueDataViewModel.getData().observe(this, new Observer<Data>() {
             @Override
             public void onChanged(Data data) {
-                dataRecyclerAdapter.notifyItemInserted(dataRecyclerAdapter.getItemCount()-1);
+                dataRecyclerAdapter.notifyItemInserted(dataRecyclerAdapter.getItemCount() - 1);
             }
         });
 
@@ -152,7 +151,7 @@ public class VueDataActivity extends AppCompatActivity implements Serializable {
 
                 }
             }
-            });
-        }
+        });
     }
+}
 
