@@ -1,9 +1,10 @@
-package com.example.pageacceuil;
+package com.example.pageacceuil.Model;
 
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
-public class Data implements Serializable {
+public class Data extends ArrayList<Data> implements Serializable {
 
     private float humidite;
     private float temperature;

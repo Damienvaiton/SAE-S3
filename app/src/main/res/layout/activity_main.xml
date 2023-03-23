@@ -4,18 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".View.AccueilActivity">
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="236dp"
+        android:layout_width="253dp"
         android:layout_height="253dp"
-        android:layout_marginStart="87dp"
-        android:layout_marginTop="43dp"
-        android:layout_marginEnd="88dp"
+        android:contentDescription="@string/img_desc"
+        app:layout_constraintBottom_toTopOf="@+id/guideline18"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline2"
         app:srcCompat="@drawable/logo_app" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -25,68 +24,85 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="20dp" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="20dp" />
-
     <TextView
         android:id="@+id/textView9"
-        android:layout_width="185dp"
-        android:layout_height="27dp"
-        android:layout_marginStart="69dp"
-        android:layout_marginTop="70dp"
-        android:layout_marginEnd="157dp"
-        android:layout_marginBottom="6dp"
-        android:text="Choix de votre carte :"
-        app:layout_constraintBottom_toTopOf="@+id/SpinnerID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/choix_carte"
+        app:layout_constraintBottom_toTopOf="@+id/guideline19"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintHorizontal_bias="0.02"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintVertical_bias="0.9" />
 
     <Button
         android:id="@+id/Gobtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="90dp"
-        android:layout_marginEnd="57dp"
-        android:layout_marginBottom="160dp"
         android:backgroundTint="#6C14C7"
-        android:text="Go"
-        app:layout_constraintBottom_toTopOf="@+id/adminbtnmain"
+        android:text="@string/go_button"
+        app:layout_constraintBottom_toTopOf="@+id/guideline21"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/SpinnerID"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toTopOf="@+id/guideline19"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/adminbtnmain"
-        android:layout_width="146dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="139dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="126dp"
-        android:layout_marginBottom="97dp"
         android:backgroundTint="#6C14C7"
-        android:text="Admin"
+        android:text="@string/admin_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/SpinnerID" />
+        app:layout_constraintTop_toTopOf="@+id/guideline21" />
 
     <Spinner
         android:id="@+id/SpinnerID"
         android:layout_width="187dp"
-        android:layout_height="46dp"
-        android:layout_marginStart="64dp"
-        android:layout_marginTop="6dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="101dp"
-        app:layout_constraintBottom_toTopOf="@+id/adminbtnmain"
-        app:layout_constraintEnd_toStartOf="@+id/Gobtn"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView9" />
+        android:layout_height="48dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline21"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        app:layout_constraintTop_toTopOf="@+id/guideline19"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="303dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="36dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline19"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="437dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="20dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline21"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="516dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

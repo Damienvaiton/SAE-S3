@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="5sp"
+    android:layout_marginTop="2sp"
+    android:layout_marginRight="5sp"
+    android:layout_marginBottom="5sp"
+    app:cardCornerRadius="5dp"
+    app:cardBackgroundColor="#ABFBAF">
+
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     >
@@ -16,8 +28,7 @@
         android:gravity="center"
         android:hint="11/22/33"
         android:textAlignment="center"
-        android:textColorHint="@color/orange"
-        android:textColor="@color/green"
+        android:textColor="@color/black"
         android:textSize="17sp"
         android:textStyle="bold" />
 
@@ -30,7 +41,7 @@
         android:layout_toEndOf="@id/heure"
         android:gravity="center"
         android:hint="11111"
-        android:textColor="@color/grays"
+        android:textColor="@color/black"
         android:textColorHint="@color/purple_500" />
 
     <TextView
@@ -42,9 +53,9 @@
         android:layout_toEndOf="@id/temp"
         android:gravity="center"
         android:hint="11111"
-        android:textColor="@color/green"
+        android:textColor="@color/black"
 
-        android:textColorHint="@color/redoblack" />
+        android:textColorHint="@color/black" />
 
     <TextView
         android:id="@+id/co2"
@@ -55,9 +66,9 @@
         android:layout_toEndOf="@id/humi"
         android:gravity="center"
         android:hint="11111"
-        android:textColor="@color/grays"
+        android:textColor="@color/black"
 
-        android:textColorHint="@color/redoblack" />
+        android:textColorHint="@color/black" />
 
     <TextView
         android:id="@+id/o2"
@@ -68,9 +79,9 @@
         android:layout_toEndOf="@id/co2"
         android:gravity="center"
         android:hint="11111"
-        android:textColor="@color/green"
+        android:textColor="@color/black"
 
-        android:textColorHint="@color/redoblack" />
+        android:textColorHint="@color/black" />
 
     <TextView
         android:id="@+id/lux"
@@ -81,14 +92,10 @@
         android:layout_toEndOf="@id/o2"
         android:gravity="center"
         android:hint="11111111"
-        android:textColor="@color/grays"
+        android:textColor="@color/black"
 
-        android:textColorHint="@color/redoblack" />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_below="@id/heure"
-        android:layout_marginTop="10dp"
-        android:background="@color/redoblack"/>
+        android:textColorHint="@color/black" />
+
 
 </RelativeLayout>
+</androidx.cardview.widget.CardView>

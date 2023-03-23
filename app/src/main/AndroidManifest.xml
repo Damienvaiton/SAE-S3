@@ -4,6 +4,7 @@
 
     <application
         android:allowBackup="true"
+        android:name=".AppApplication"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher_tutu"
@@ -13,35 +14,35 @@
         android:theme="@style/Theme.Pageacceuil"
         tools:targetApi="31">
         <activity
-            android:name=".VueData"
+            android:name="com.example.pageacceuil.View.VueDataActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".pageSettingAdmin"
+            android:name="com.example.pageacceuil.View.SettingsAdminActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".SettingPage"
+            android:name="com.example.pageacceuil.View.SettingsEtuActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".GraphPage"
+            android:name="com.example.pageacceuil.View.GraphiqueActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name="com.example.pageacceuil.View.AccueilActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -54,7 +55,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".connectadmin"
+            android:name="com.example.pageacceuil.View.ConnecAdminActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
