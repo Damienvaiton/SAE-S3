@@ -59,7 +59,7 @@ public class SettingsAdminActivity extends AppCompatActivity implements View.OnC
         setContentView(R.layout.activity_page_setting_admin);
 
         settingsAdminViewModel = new ViewModelProvider(this).get(SettingsAdminViewModel.class);
-
+        settingsAdminViewModel.creaESP(0);
 
         idEsp = findViewById(R.id.selectedEsp);
         rename = findViewById(R.id.rennoméA);
@@ -77,7 +77,7 @@ public class SettingsAdminActivity extends AppCompatActivity implements View.OnC
         delete.setOnClickListener(this);
         grouper.setOnClickListener(this);
         reini.setOnClickListener(this);
-        tabESP=new ArrayList<>();
+        tabESP = new ArrayList<>();
         Groupe = new ArrayList<>();
 
         adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, tabESP);
@@ -113,92 +113,96 @@ public class SettingsAdminActivity extends AppCompatActivity implements View.OnC
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
                 settingsAdminViewModel.changeESP();
                 settingsAdminViewModel.setListenerESP(adapter.getItem(position)); // Mettre tout les listener dedans
             }
+
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
-}
-                @Override
-                public void onClick (View v){
-                    switch (v.getId()) {
-                        case R.id.rennoméA:
-                            PopUpDialog customPopup = new PopUpDialog(this);
-                            customPopup.build("Rennomé l'esp", "Nom", 1);
-                            customPopup.getYesButton().setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    if (!customPopup.getString().equals("")) {
-                                        settingsAdminViewModel.renameESP(customPopup.getString());
-                                        customPopup.dismiss();
-                                    } else {
-                                        Toast.makeText(getApplicationContext(), "Merci d'entrer un nom", Toast.LENGTH_SHORT).show();
+    }
 
-                                    }
-                                }
-                            });
-                            customPopup.getNoButton().setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    customPopup.dismiss();
-                                }
-                            });
-                            //Faire dans pop up
-                            break;
-                        case R.id.suppA:
-                            PopUpDialog deletePopup = new PopUpDialog(this);
-                            deletePopup.build("Supprimer l'esp " + choixESP);
-                            deletePopup.getYesButton().setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    settingsAdminViewModel.suppESP();
-                                    deletePopup.dismiss();
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.rennoméA:
+                PopUpDialog customPopup = new PopUpDialog(this);
+                customPopup.build("Rennomé l'esp", "Nom", 1);
+                customPopup.getYesButton().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (!customPopup.getString().equals("")) {
+                            settingsAdminViewModel.renameESP(customPopup.getString());
+                            customPopup.dismiss();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Merci d'entrer un nom", Toast.LENGTH_SHORT).show();
 
-                                }
-                            });
-                            deletePopup.getNoButton().setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    deletePopup.dismiss();
-                                }
-                            });
-                            break;
-                        case R.id.grouperA:
-                            break;
-                        case R.id.valiRefresh:
-                            if (refresh.getText().toString().equals("")) {
-                                Toast.makeText(getApplicationContext(), "Merci d'entrer' une valeur", Toast.LENGTH_SHORT).show();
-                            } else {
-                                settingsAdminViewModel.setESPrefresh(refresh.getText().toString());
-                                refresh.setText("");
-                            }
-                            break;
-                        case R.id.reiniA:
-                            PopUpDialog popReini = new PopUpDialog(this);
-                            popReini.build("En êtes vous sûr?");
-                            popReini.getYesButton().setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    settingsAdminViewModel.resetESP();
-                                    popReini.dismiss();
-                                    dataRecyclerAdapter.notifyItemRangeRemoved(0,dataRecyclerAdapter.getItemCount());
-                                    recyclerView.invalidate();
-                                }
-
-
-                            });
-                            popReini.getNoButton().setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    popReini.dismiss();
-                                }
-                            });
-
-                            break;
+                        }
+                    }
+                });
+                customPopup.getNoButton().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        customPopup.dismiss();
+                    }
+                });
+                //Faire dans pop up
+                break;
+            case R.id.suppA:
+                PopUpDialog deletePopup = new PopUpDialog(this);
+                deletePopup.build("Supprimer l'esp " + choixESP);
+                deletePopup.getYesButton().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        settingsAdminViewModel.suppESP();
+                        deletePopup.dismiss();
 
                     }
+                });
+                deletePopup.getNoButton().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        deletePopup.dismiss();
+                    }
+                });
+                break;
+            case R.id.grouperA:
+                break;
+            case R.id.valiRefresh:
+                if (refresh.getText().toString().equals("")) {
+                    Toast.makeText(getApplicationContext(), "Merci d'entrer' une valeur", Toast.LENGTH_SHORT).show();
+                } else {
+                    settingsAdminViewModel.setESPrefresh(refresh.getText().toString());
+                    refresh.setText("");
+                }
+                break;
+            case R.id.reiniA:
+                PopUpDialog popReini = new PopUpDialog(this);
+                popReini.build("En êtes vous sûr?");
+                popReini.getYesButton().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        settingsAdminViewModel.resetESP();
+                        popReini.dismiss();
+                        dataRecyclerAdapter.notifyItemRangeRemoved(0, dataRecyclerAdapter.getItemCount());
+                        recyclerView.invalidate();
+                    }
 
-                }           }
+
+                });
+                popReini.getNoButton().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        popReini.dismiss();
+                    }
+                });
+
+                break;
+
+        }
+
+    }
+}
 
