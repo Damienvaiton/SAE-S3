@@ -9,6 +9,8 @@ import com.example.pageacceuil.Model.FirebaseAccess;
 public class ClassTransitoireViewModel {
     private GraphViewModel graphViewModel;
     private SettingsAdminViewModel settingsAdminViewModel;
+    private SettingsEtuViewModel settingsEtuViewModel;
+
 
     private AccueilViewModel accueilViewModel;
 
@@ -32,6 +34,9 @@ public class ClassTransitoireViewModel {
     public void setAccueilViewModel(AccueilViewModel accueilViewModel) {
         this.accueilViewModel = accueilViewModel;
     }
+    public void setSettingsEtuViewModel(SettingsEtuViewModel settingsEtuViewModel) {
+        this.settingsEtuViewModel=settingsEtuViewModel;
+    }
 
     public GraphViewModel getGraphViewModel() {
         return graphViewModel;
@@ -51,6 +56,9 @@ public class ClassTransitoireViewModel {
     public void updateRefresh(String s){
         if(graphViewModel!=null){
             graphViewModel.updateRefresh(s);
+        }
+        if(settingsAdminViewModel!=null){
+            settingsAdminViewModel.updateRefresh(s);
         }
         if(settingsAdminViewModel!=null){
             settingsAdminViewModel.updateRefresh(s);
@@ -89,4 +97,6 @@ public class ClassTransitoireViewModel {
             settingsAdminViewModel.creaESP(pos);
         }
     }
+
+
 }

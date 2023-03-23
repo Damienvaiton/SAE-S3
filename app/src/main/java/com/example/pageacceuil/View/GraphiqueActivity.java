@@ -1,5 +1,6 @@
 package com.example.pageacceuil.View;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -9,11 +10,16 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.pageacceuil.Model.Axe;
 import com.example.pageacceuil.Model.Data;
 //import com.example.pageacceuil.Model.DataUpdate;
 import com.example.pageacceuil.R;
@@ -60,12 +66,13 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
     /**
      * Object axis on the graph
      */
-    private YAxis leftAxis;
-    private YAxis rightAxis;
+    private Axe Axis;
+
     private XAxis xl;
     /**
      * The ViewModel of this view
      */
+
     private GraphViewModel graphViewModel = null;
 
     @Override
@@ -156,21 +163,22 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
         xl.setEnabled(true);
         xl.setAvoidFirstLastClipping(false);
         /**
-         * add formatter of value in the top X axis
+         * add formatter of value on the top X axis
          */
         xl.setValueFormatter(new XAxisValueFormatter(graphViewModel.getListData()));
 
-
+        Axis=Axe.getInstance();
         //Création Axe Y droit
-        rightAxis = graph.getAxisRight();
-        rightAxis.setEnabled(true);
-        rightAxis.setTextColor(Color.BLACK);
-        rightAxis.setDrawGridLines(true);
+        Axis.setRightAxis(graph.getAxisRight());
+        Axis.getRightAxis().setEnabled(true);
+        Axis.getRightAxis().setTextColor(Color.BLACK);
+        Axis.getRightAxis().setDrawGridLines(true);
 
-        leftAxis = graph.getAxisLeft();
-        leftAxis.setEnabled(true);
-        leftAxis.setTextColor(Color.BLACK);
-        leftAxis.setDrawGridLines(true);
+
+        Axis.setLeftAxis(graph.getAxisLeft());
+        Axis.getLeftAxis().setEnabled(true);
+        Axis.getLeftAxis().setTextColor(Color.BLACK);
+        Axis.getLeftAxis().setDrawGridLines(true);
 
         /**
          * Add preference to the graph
@@ -200,7 +208,9 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
             }
         });
 
+
     }
+
 
     /**
      * Set new Data values to the textView in the top
@@ -278,8 +288,9 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
                 }
                 if (!graphViewModel.getRightAxisName().equals("")) {
                     openSetting.putExtra("rightAxisName", graphViewModel.getRightAxisName());
-                }
+                };
                 startActivity(openSetting);
+               // mStartForResult.launch(mStartForResult.getContract().createIntent(getApplicationContext(), openSetting));
                 break;
             case R.id.btnExport:
                 try {

@@ -237,7 +237,6 @@ public class FirebaseAccess implements DataUpdate {
                 String minute = "";
                 String seconde = "";
                 if (snapshot.exists()) {
-
                     if (snapshot.getValue(Long.class) >= 3600000) {
                         heure = (snapshot.getValue(Long.class) / (1000 * 60 * 60)) + "h";
                     }
@@ -247,9 +246,9 @@ public class FirebaseAccess implements DataUpdate {
                     if (snapshot.getValue(Long.class) >= 1000) {
                         seconde = (snapshot.getValue(Long.class) % (1000 * 60)) / 1000 + "s";
                     }
-                //    dataUpdate.
-                  //  ESP.getInstance().setTauxRafrai(heure + minute + seconde);
-                    //graphViewModel.updateRefresh();
+                    System.out.println(heure+minute+seconde);
+                    transitoireViewModel.updateRefresh(heure+minute+seconde);
+
                     return;
                 }
             }

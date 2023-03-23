@@ -10,11 +10,13 @@ import com.example.pageacceuil.Model.FirebaseAccess;
 public class SettingsEtuViewModel extends ViewModel {
     private FirebaseAccess acess;
     private ESP currentEsp;
+    private ClassTransitoireViewModel transit;
 
     public SettingsEtuViewModel() {
+        transit=ClassTransitoireViewModel.getInstance();
+        transit.setSettingsEtuViewModel(this);
         acess = FirebaseAccess.getInstance();
         currentEsp = ESP.getInstance();
-        // Comment récup l'instance de graphViewModel= Pourquoi pas faire une classe qui contient les 2 axe?
 
 
     }

@@ -1,6 +1,8 @@
 package com.example.pageacceuil.View;
 
 
+import static org.apache.poi.sl.draw.geom.GuideIf.Op.max;
+import static org.apache.poi.sl.draw.geom.GuideIf.Op.min;
 import static java.lang.Integer.parseInt;
 
 import android.content.Intent;
@@ -50,18 +52,20 @@ public class SettingsEtuActivity extends AppCompatActivity implements View.OnCli
     private YAxis rightAxis;
     private YAxis leftAxis;
 
-    private SettingsEtuViewModel settingsEtuViewModel=null;
+    private int[] valAxeLeft;
+    private int[] valAxeRight;
+    private SettingsEtuViewModel settingsEtuViewModel = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting_page);
 
-        settingsEtuViewModel =new ViewModelProvider(this).get(SettingsEtuViewModel.class);
+        settingsEtuViewModel = new ViewModelProvider(this).get(SettingsEtuViewModel.class);
 
 
-        rightAxis= Axe.getInstance().getRightAxis();
-        leftAxis=Axe.getInstance().getLeftAxis();
+        rightAxis = Axe.getInstance().getRightAxis();
+        leftAxis = Axe.getInstance().getLeftAxis();
 
         max_g = findViewById(R.id.max_gauche);
         min_g = findViewById(R.id.min_gauche);
@@ -87,15 +91,9 @@ public class SettingsEtuActivity extends AppCompatActivity implements View.OnCli
         auto_droit.setOnClickListener(this);
         auto_gauche.setOnClickListener(this);
 
-        ESP esp=ESP.getInstance();
+        ESP esp = ESP.getInstance();
         Intent intent = getIntent();
         if (intent != null) {
-            if (intent.hasExtra("choixESP")) {
-                this.choixESP = (String) intent.getSerializableExtra("choixESP");
-            }
-            if (intent.hasExtra("nomESP")) {
-                this.nameEsp = (String) intent.getSerializableExtra("nomESP");
-            }
             if (intent.hasExtra("leftAxisName")) {
                 this.leftAxisName = (String) intent.getSerializableExtra("leftAxisName");
             }
@@ -105,7 +103,7 @@ public class SettingsEtuActivity extends AppCompatActivity implements View.OnCli
                 System.out.println("impossible récup ESP");
             }
         }
-        if (esp.getNomEsp()==null) {
+        if (esp.getNomEsp() == null) {
             nomEsp.setText(esp.getNomEsp());
         } else {
             nomEsp.setText(esp.getMacEsp());
@@ -145,11 +143,10 @@ public class SettingsEtuActivity extends AppCompatActivity implements View.OnCli
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE && !tauxRefresh.getText().toString().equals("")) {
-                    if(settingsEtuViewModel.editTemps((parseInt(tauxRefresh.getText().toString())))==true){
+                    if (settingsEtuViewModel.editTemps((parseInt(tauxRefresh.getText().toString()))) == true) {
                         Toast.makeText(SettingsEtuActivity.this, "Refresh : " + tauxRefresh.getText().toString() + "s,\r\nVous pouvez redémarrer l'ESP", Toast.LENGTH_SHORT).show();
                         tauxRefresh.setText("");
-                    }
-                    else{
+                    } else {
                         Toast.makeText(SettingsEtuActivity.this, "Erreur", Toast.LENGTH_SHORT).show();
                     }
                 } else {
@@ -161,6 +158,13 @@ public class SettingsEtuActivity extends AppCompatActivity implements View.OnCli
         });
     }
 
+    /**
+     *
+     */
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 
 
     @Override
@@ -168,69 +172,72 @@ public class SettingsEtuActivity extends AppCompatActivity implements View.OnCli
         switch (view.getId()) {
             case R.id.auto_droit:
                 if (auto_droit.isChecked()) {
-                    rightAxis.resetAxisMinimum();
-                    rightAxis.resetAxisMaximum();
+                    resetAxis(rightAxis);
                     Toast.makeText(getApplicationContext(), "Mode auto activé", Toast.LENGTH_SHORT).show();
-                    //Griser case pour le manuel
-                    break;
-                }
-            case R.id.auto_gauche:
-                if (auto_gauche.isChecked()) {
-                    leftAxis.resetAxisMinimum();
-                    leftAxis.resetAxisMaximum();
-                    Toast.makeText(getApplicationContext(), "Mode auto activé", Toast.LENGTH_SHORT).show();
-                    //Griser case pour le manuel
-                    break;
-                }
 
-            case R.id.btn_droit:
-                if (((min_d.getText().toString().trim().length() == 0) || (max_d.getText().toString().trim().length() == 0)) || (auto_droit.isChecked())) {
-                    Toast.makeText(getApplicationContext(), "Un champ est vide", Toast.LENGTH_SHORT).show();
-                } else {
-                    if (Float.valueOf(max_d.getText().toString()) > Float.valueOf(min_d.getText().toString())) {
-
-                        rightAxis.setAxisMaximum(Float.valueOf(max_d.getText().toString()));
-                        rightAxis.setAxisMinimum(Float.valueOf(min_d.getText().toString()));
-                        Toast.makeText(getApplicationContext(), "Fait", Toast.LENGTH_SHORT).show();
-                   /*     GraphiqueActivity.graph.notifyDataSetChanged();
-                        GraphiqueActivity.graph.invalidate();*/
-                        break;
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Valeurs incorrects", Toast.LENGTH_SHORT).show();
-                    }
                 }
                 break;
+            case R.id.auto_gauche:
+                if (auto_gauche.isChecked()) {
+                    resetAxis(leftAxis);
+                    Toast.makeText(getApplicationContext(), "Mode auto activé", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case R.id.btn_droit:
+                if(auto_droit.isChecked()){
+                    Toast.makeText(this, "L'axe est bloqué en mode auto", Toast.LENGTH_SHORT).show();
+                }
+                setAxisMinMax(rightAxis, min_d.getText().toString(), max_d.getText().toString(), "Fait");
+                break;
             case R.id.btn_gauche:
-
-                if (((min_g.getText().toString().trim().length() == 0) || (max_g.getText().toString().trim().length() == 0)) || (auto_gauche.isChecked())) {
-                    Toast.makeText(getApplicationContext(), "Un champ est vide", Toast.LENGTH_SHORT).show();
-                } else {
-                    if (Float.parseFloat(max_g.getText().toString()) > Float.parseFloat(min_g.getText().toString())) {
-                        leftAxis.setAxisMaximum(Float.parseFloat(max_g.getText().toString()));
-                        leftAxis.setAxisMinimum(Float.parseFloat(min_g.getText().toString()));
-                      /*  GraphiqueActivity.graph.notifyDataSetChanged();
-                        GraphiqueActivity.graph.invalidate();*/
-                        Toast.makeText(getApplicationContext(), "Fait", Toast.LENGTH_SHORT).show();
-                        break;
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Valeurs incorrects", Toast.LENGTH_SHORT).show();
-                    }
+                if(auto_gauche.isChecked()){
+                    Toast.makeText(this, "L'axe est bloqué en mode auto", Toast.LENGTH_SHORT).show();
                 }
+                setAxisMinMax(leftAxis, min_g.getText().toString(), max_g.getText().toString(), "Fait");
+                break;
             case R.id.btn_refresh:
-                if (!tauxRefresh.getText().toString().equals("")) {
-                    if(settingsEtuViewModel.editTemps((parseInt(tauxRefresh.getText().toString())))){
-                        tauxRefresh.setText("");
-                        Toast.makeText(SettingsEtuActivity.this, "Refresh : " + tauxRefresh.getText().toString() + "s,\r\nVous pouvez redémarrer l'ESP", Toast.LENGTH_SHORT).show();
-                    }
-                    else{
-                        Toast.makeText(SettingsEtuActivity.this, "Erreur", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Toast.makeText(getApplicationContext(), "Merci d'entrer une valeur", Toast.LENGTH_SHORT).show();
-                }
+                refreshSettings();
+                break;
         }
     }
+
+    private void resetAxis(YAxis axis) {
+        axis.resetAxisMinimum();
+        axis.resetAxisMaximum();
+    }
+
+
+    private void setAxisMinMax(YAxis axis, String min, String max, String message) {
+        if (((min.trim().length() == 0) || (max.trim().length() == 0)) || (auto_droit.isChecked())) {
+            Toast.makeText(getApplicationContext(), "Un champ est vide", Toast.LENGTH_SHORT).show();
+        } else {
+            if (Float.valueOf(max) > Float.valueOf(min)) {
+                axis.setAxisMaximum(Float.valueOf(max));
+                axis.setAxisMinimum(Float.valueOf(min));
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getApplicationContext(), "Valeurs incorrectes", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+
+    private void refreshSettings() {
+        if (!tauxRefresh.getText().toString().equals("")) {
+            if (settingsEtuViewModel.editTemps((parseInt(tauxRefresh.getText().toString())))) {
+                Toast.makeText(SettingsEtuActivity.this, "Refresh : " + tauxRefresh.getText().toString() + "s,\r\nVous pouvez redémarrer l'ESP", Toast.LENGTH_SHORT).show();
+                tauxRefresh.setText("");
+            } else {
+                Toast.makeText(SettingsEtuActivity.this, "Erreur", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(getApplicationContext(), "Merci d'entrer une valeur", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 }
+
+
 
 
 
