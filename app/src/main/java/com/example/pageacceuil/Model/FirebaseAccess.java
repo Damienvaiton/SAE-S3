@@ -191,7 +191,7 @@ public class FirebaseAccess implements DataUpdate {
                         seconde = (snapshot.getValue(Long.class) % (1000 * 60)) / 1000 + "s";
                     }
                     System.out.println(heure+minute+seconde);
-                    transitoireViewModel.updateRefresh(heure+minute+seconde);
+                    transitoireViewModel.updateRefresh(String.valueOf(5));
                 }
             }
 

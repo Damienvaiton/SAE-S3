@@ -18,11 +18,12 @@ public class XAxisValueFormatter extends IndexAxisValueFormatter {
         this.datas = datas;
     }
 
-    @Override
+
 
     /**
      * Format the top X axe with the "Temps" fields
      */
+    @Override
     public String getFormattedValue(float value) {
         if ((int) value == 0) {
             return "";

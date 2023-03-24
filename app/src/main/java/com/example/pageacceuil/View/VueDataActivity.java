@@ -55,8 +55,6 @@ public class VueDataActivity extends AppCompatActivity implements Serializable {
             }
         });
 
-        //Faire une interface commune pour les mutablesLiveDta afin que ce firebassacess ne soit pas dépendant d'un viewmodel et les garder pour tout viewmodel ayant besoin
-
 
         btnTriChoix = findViewById(R.id.SortChoise);
         switchDesc = findViewById(R.id.switch1);
@@ -110,42 +108,42 @@ public class VueDataActivity extends AppCompatActivity implements Serializable {
                 switch (ChoixTri.toString()) {
                     case "Co²":
                         if (Desc) {
-                            Collections.sort(listData, (e1, e2) -> Float.valueOf(e1.getCO2()).compareTo(Float.valueOf(e2.getCO2())));
+                            Collections.sort(listData, (e1, e2) -> Float.compare(e1.getCO2(), e2.getCO2()));
                             dataRecyclerAdapter.notifyDataSetChanged();
                         } else {
-                            Collections.sort(listData, (e1, e2) -> Float.valueOf(e1.getCO2()).compareTo(Float.valueOf(e2.getCO2())));
+                            Collections.sort(listData, (e1, e2) -> Float.compare(e1.getCO2(), e2.getCO2()));
                             dataRecyclerAdapter.notifyDataSetChanged();
                         }
                     case "Température":
                         if (Desc) {
-                            Collections.sort(listData, (e1, e2) -> Float.valueOf(e1.getTemperature()).compareTo(Float.valueOf(e2.getTemperature())));
+                            Collections.sort(listData, (e1, e2) -> Float.compare(e1.getTemperature(), e2.getTemperature()));
                             dataRecyclerAdapter.notifyDataSetChanged();
                         } else {
-                            Collections.sort(listData, (e1, e2) -> Float.valueOf(e1.getTemperature()).compareTo(Float.valueOf(e2.getTemperature())));
+                            Collections.sort(listData, (e1, e2) -> Float.compare(e1.getTemperature(), e2.getTemperature()));
                             dataRecyclerAdapter.notifyDataSetChanged();
                         }
                     case "Humidité":
                         if (Desc) {
-                            Collections.sort(listData, (e1, e2) -> Float.valueOf(e1.getHumidite()).compareTo(Float.valueOf(e2.getHumidite())));
+                            Collections.sort(listData, (e1, e2) -> Float.compare(e1.getHumidite(), e2.getHumidite()));
                             dataRecyclerAdapter.notifyDataSetChanged();
                         } else {
-                            Collections.sort(listData, (e1, e2) -> Float.valueOf(e1.getHumidite()).compareTo(Float.valueOf(e2.getHumidite())));
+                            Collections.sort(listData, (e1, e2) -> Float.compare(e1.getHumidite(), e2.getHumidite()));
                             dataRecyclerAdapter.notifyDataSetChanged();
                         }
                     case "Luminiosité":
                         if (Desc) {
-                            Collections.sort(listData, (e1, e2) -> Float.valueOf(e1.getLight()).compareTo(Float.valueOf(e2.getLight())));
+                            Collections.sort(listData, (e1, e2) -> Float.compare(e1.getLight(), e2.getLight()));
                             dataRecyclerAdapter.notifyDataSetChanged();
                         } else {
-                            Collections.sort(listData, (e1, e2) -> Float.valueOf(e1.getLight()).compareTo(Float.valueOf(e2.getLight())));
+                            Collections.sort(listData, (e1, e2) -> Float.compare(e1.getLight(), e2.getLight()));
                             dataRecyclerAdapter.notifyDataSetChanged();
                         }
                     case "O²":
                         if (Desc) {
-                            Collections.sort(listData, (e1, e2) -> Float.valueOf(e1.getLight()).compareTo(Float.valueOf(e2.getLight())));
+                            Collections.sort(listData, (e1, e2) -> Float.compare(e1.getLight(), e2.getLight()));
                             dataRecyclerAdapter.notifyDataSetChanged();
                         } else {
-                            Collections.sort(listData, (e1, e2) -> Float.valueOf(e1.getLight()).compareTo(Float.valueOf(e2.getLight())));
+                            Collections.sort(listData, (e1, e2) -> Float.compare(e1.getLight(), e2.getLight()));
                             dataRecyclerAdapter.notifyDataSetChanged();
                         }
                     default:

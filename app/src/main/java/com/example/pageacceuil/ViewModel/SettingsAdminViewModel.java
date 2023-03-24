@@ -16,14 +16,14 @@ import java.util.Map;
 
 public class SettingsAdminViewModel extends ViewModel {
     private HashMap<String, String> hashmapESP;
-    private FirebaseAccess database=FirebaseAccess.getInstance();
+    private FirebaseAccess database;
 
     private ClassTransitoireViewModel transit;
     private MutableLiveData<Data> recyclerListener;
 
 
 
-    private MutableLiveData<String> liveDataRefresh;
+
     public SettingsAdminViewModel() {
 
         database = FirebaseAccess.getInstance();
@@ -33,18 +33,23 @@ public class SettingsAdminViewModel extends ViewModel {
         database.getAllESP();
         hashmapESP = new HashMap<String, String>();
     }
-    public void setListenerESP(String value) {
+    public void setListenerESP() {
       //  ESP.getInstance().redefinition(hashmapESP.get(value));
         database.setRealtimeDataListener();
         database.loadInData();
         database.setEspTimeListener();
     }
+    private final MutableLiveData<String> liveDataRefresh = new MutableLiveData<>();
 
     public void updateRefresh(String refresh){
         liveDataRefresh.postValue(refresh);
     }
 
+    public LiveData getData(){return recyclerListener;}
     public void updateData(Data data){
+        if (data!=null) {
+            recyclerListener.postValue(data);
+        }
 
     }
 
@@ -94,22 +99,10 @@ public class SettingsAdminViewModel extends ViewModel {
             }
         }
 
-        public void creaESP(int pos) {
-            int curseur = 0;
-            for (Map.Entry<String, String> entry : hashmapESP.entrySet()) {
-                if (curseur == pos) {
-                    if (entry.getValue() == null) {
-                        database.setEsp(new ESP(entry.getKey(), null));
-                        return;
-                    }
-                    database.setEsp(new ESP(entry.getKey(), null));
-                    return;
-                }curseur++;
-            }
-        }
 
-        public void changeESP(){
+        public void changeESP(ESP esp){
             database.deleteListener();
+            database.setEsp(esp);
         }
 
     public void renameESP(String nickname){
@@ -125,6 +118,24 @@ public class SettingsAdminViewModel extends ViewModel {
     public void setESPrefresh(String temps){
             database.setEspRefreshRate(Integer.parseInt(temps));
     }
+
+    /**
+     * Define the selected ESP to FirebaseAcess
+     */
+    /*public void creaESP(int pos) {
+        int curseur = 0;
+        for (Map.Entry<String, String> entry :hashESP.entrySet()) {
+            if (curseur == pos) {
+                if (entry.getValue() == null) {
+                    acess.setEsp(new ESP(entry.getKey(), null));
+                    return;
+                }
+                acess.setEsp(new ESP(entry.getKey(), null));
+                return;
+            }curseur++;
+      }     }*/
+
+
 
 
  public void getDonnées(){

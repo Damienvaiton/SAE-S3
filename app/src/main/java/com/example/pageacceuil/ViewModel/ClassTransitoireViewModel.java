@@ -92,9 +92,9 @@ public class ClassTransitoireViewModel {
         if(accueilViewModel!=null){
             accueilViewModel.creaESP(pos);
         }
-        if(settingsAdminViewModel!=null){
+       /* if(settingsAdminViewModel!=null){
             settingsAdminViewModel.creaESP(pos);
-        }
+        }*/
     }
 
 

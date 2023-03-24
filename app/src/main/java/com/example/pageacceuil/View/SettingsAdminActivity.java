@@ -19,6 +19,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pageacceuil.Model.Data;
+import com.example.pageacceuil.Model.ESP;
 import com.example.pageacceuil.R;
 import com.example.pageacceuil.ViewModel.PopUpDialog;
 import com.example.pageacceuil.ViewModel.SettingsAdminViewModel;
@@ -59,7 +61,7 @@ public class SettingsAdminActivity extends AppCompatActivity implements View.OnC
         setContentView(R.layout.activity_page_setting_admin);
 
         settingsAdminViewModel = new ViewModelProvider(this).get(SettingsAdminViewModel.class);
-        settingsAdminViewModel.creaESP(0);
+
         // Créer un esp
 
         idEsp = findViewById(R.id.selectedEsp);
@@ -107,6 +109,12 @@ public class SettingsAdminActivity extends AppCompatActivity implements View.OnC
                 adapter.notifyDataSetChanged();
             }
         });
+        settingsAdminViewModel.getData().observe(this, new Observer<Data>() {
+            @Override
+            public void onChanged(Data data) {
+                adapter.notifyDataSetChanged();
+            }
+        });
 
 
         pop.show();
@@ -114,9 +122,9 @@ public class SettingsAdminActivity extends AppCompatActivity implements View.OnC
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                settingsAdminViewModel.changeESP();
-                settingsAdminViewModel.setListenerESP(adapter.getItem(position)); // Mettre tout les listener dedans
+                ESP esp=new ESP("A8:03:2A:EA:EE:CC",null);
+                settingsAdminViewModel.changeESP(esp);
+                settingsAdminViewModel.setListenerESP(); // Mettre tout les listener dedans
             }
 
             public void onNothingSelected(AdapterView<?> parent) {
