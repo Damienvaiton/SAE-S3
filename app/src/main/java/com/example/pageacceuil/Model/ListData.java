@@ -5,8 +5,8 @@ import java.util.ArrayList;
 
 
 public class ListData implements Serializable {
-    private static volatile ListData instance;
-    private ArrayList<Data> listData;
+    private static ListData instance;
+    private ArrayList<Data> listAllData;
 
 
     public static ListData getInstance() {
@@ -23,173 +23,173 @@ public class ListData implements Serializable {
         }
     }
 
-    public ArrayList<Data> getListData() {
-        return listData;
+    public ArrayList<Data> getListAllData() {
+        return listAllData;
     }
 
     public ListData() {
-        listData = new ArrayList<Data>(0);
+        listAllData = new ArrayList<>(0);
     }
 
     public Data recup_data(int i) {
-        return listData.get(i);
+        return listAllData.get(i);
     }
 
     public void deleteAllData() {
-        listData.clear();
+        listAllData.clear();
     }
 
     public void list_add_data(Data a) {
-        listData.add(a);
+        listAllData.add(a);
     }
 
     public void list_supAll_data() {
-        listData.clear();
+        listAllData.clear();
     }
 
     public int list_size() {
-        return listData.size();
+        return listAllData.size();
     }
 
     public void listsortCO2() {
-        for (int i = 0; i < listData.size(); i++) {
-            for (int j = 0; j < listData.size(); j++) {
-                if (listData.get(i).getCO2() < listData.get(j).getCO2()) {
-                    Data temp = listData.get(i);
-                    listData.set(i, listData.get(j));
-                    listData.set(j, temp);
+        for (int i = 0; i < listAllData.size(); i++) {
+            for (int j = 0; j < listAllData.size(); j++) {
+                if (listAllData.get(i).getCO2() < listAllData.get(j).getCO2()) {
+                    Data temp = listAllData.get(i);
+                    listAllData.set(i, listAllData.get(j));
+                    listAllData.set(j, temp);
                 }
             }
         }
     }
 
     public void listsortTemp() {
-        for (int i = 0; i < listData.size(); i++) {
-            for (int j = 0; j < listData.size(); j++) {
-                if (listData.get(i).getTemperature() < listData.get(j).getTemperature()) {
-                    Data temp = listData.get(i);
-                    listData.set(i, listData.get(j));
-                    listData.set(j, temp);
+        for (int i = 0; i < listAllData.size(); i++) {
+            for (int j = 0; j < listAllData.size(); j++) {
+                if (listAllData.get(i).getTemperature() < listAllData.get(j).getTemperature()) {
+                    Data temp = listAllData.get(i);
+                    listAllData.set(i, listAllData.get(j));
+                    listAllData.set(j, temp);
                 }
             }
         }
     }
 
     public void listsortHum() {
-        for (int i = 0; i < listData.size(); i++) {
-            for (int j = 0; j < listData.size(); j++) {
-                if (listData.get(i).getHumidite() < listData.get(j).getHumidite()) {
-                    Data temp = listData.get(i);
-                    listData.set(i, listData.get(j));
-                    listData.set(j, temp);
+        for (int i = 0; i < listAllData.size(); i++) {
+            for (int j = 0; j < listAllData.size(); j++) {
+                if (listAllData.get(i).getHumidite() < listAllData.get(j).getHumidite()) {
+                    Data temp = listAllData.get(i);
+                    listAllData.set(i, listAllData.get(j));
+                    listAllData.set(j, temp);
                 }
             }
         }
     }
 
     public void listsortO2() {
-        for (int i = 0; i < listData.size(); i++) {
-            for (int j = 0; j < listData.size(); j++) {
-                if (listData.get(i).getO2() < listData.get(j).getO2()) {
-                    Data temp = listData.get(i);
-                    listData.set(i, listData.get(j));
-                    listData.set(j, temp);
+        for (int i = 0; i < listAllData.size(); i++) {
+            for (int j = 0; j < listAllData.size(); j++) {
+                if (listAllData.get(i).getO2() < listAllData.get(j).getO2()) {
+                    Data temp = listAllData.get(i);
+                    listAllData.set(i, listAllData.get(j));
+                    listAllData.set(j, temp);
                 }
             }
         }
     }
 
     public void listsortLux() {
-        for (int i = 0; i < listData.size(); i++) {
-            for (int j = 0; j < listData.size(); j++) {
-                if (listData.get(i).getLight() < listData.get(j).getLight()) {
-                    Data temp = listData.get(i);
-                    listData.set(i, listData.get(j));
-                    listData.set(j, temp);
+        for (int i = 0; i < listAllData.size(); i++) {
+            for (int j = 0; j < listAllData.size(); j++) {
+                if (listAllData.get(i).getLight() < listAllData.get(j).getLight()) {
+                    Data temp = listAllData.get(i);
+                    listAllData.set(i, listAllData.get(j));
+                    listAllData.set(j, temp);
                 }
             }
         }
     }
 
     public void listsortDate() {
-        for (int i = 0; i < listData.size(); i++) {
-            for (int j = 0; j < listData.size(); j++) {
-                if (listData.get(i).getTemps().compareTo(listData.get(j).getTemps()) < 0) {
-                    Data temp = listData.get(i);
-                    listData.set(i, listData.get(j));
-                    listData.set(j, temp);
+        for (int i = 0; i < listAllData.size(); i++) {
+            for (int j = 0; j < listAllData.size(); j++) {
+                if (listAllData.get(i).getTemps().compareTo(listAllData.get(j).getTemps()) < 0) {
+                    Data temp = listAllData.get(i);
+                    listAllData.set(i, listAllData.get(j));
+                    listAllData.set(j, temp);
                 }
             }
         }
     }
 
     public void listsortDateDesc() {
-        for (int i = 0; i < listData.size(); i++) {
-            for (int j = 0; j < listData.size(); j++) {
-                if (listData.get(i).getTemps().compareTo(listData.get(j).getTemps()) > 0) {
-                    Data temp = listData.get(i);
-                    listData.set(i, listData.get(j));
-                    listData.set(j, temp);
+        for (int i = 0; i < listAllData.size(); i++) {
+            for (int j = 0; j < listAllData.size(); j++) {
+                if (listAllData.get(i).getTemps().compareTo(listAllData.get(j).getTemps()) > 0) {
+                    Data temp = listAllData.get(i);
+                    listAllData.set(i, listAllData.get(j));
+                    listAllData.set(j, temp);
                 }
             }
         }
     }
 
     public void listsortCO2Desc() {
-        for (int i = 0; i < listData.size(); i++) {
-            for (int j = 0; j < listData.size(); j++) {
-                if (listData.get(i).getCO2() > listData.get(j).getCO2()) {
-                    Data temp = listData.get(i);
-                    listData.set(i, listData.get(j));
-                    listData.set(j, temp);
+        for (int i = 0; i < listAllData.size(); i++) {
+            for (int j = 0; j < listAllData.size(); j++) {
+                if (listAllData.get(i).getCO2() > listAllData.get(j).getCO2()) {
+                    Data temp = listAllData.get(i);
+                    listAllData.set(i, listAllData.get(j));
+                    listAllData.set(j, temp);
                 }
             }
         }
     }
 
     public void listsortTempDesc() {
-        for (int i = 0; i < listData.size(); i++) {
-            for (int j = 0; j < listData.size(); j++) {
-                if (listData.get(i).getTemperature() > listData.get(j).getTemperature()) {
-                    Data temp = listData.get(i);
-                    listData.set(i, listData.get(j));
-                    listData.set(j, temp);
+        for (int i = 0; i < listAllData.size(); i++) {
+            for (int j = 0; j < listAllData.size(); j++) {
+                if (listAllData.get(i).getTemperature() > listAllData.get(j).getTemperature()) {
+                    Data temp = listAllData.get(i);
+                    listAllData.set(i, listAllData.get(j));
+                    listAllData.set(j, temp);
                 }
             }
         }
     }
 
     public void listsortHumDesc() {
-        for (int i = 0; i < listData.size(); i++) {
-            for (int j = 0; j < listData.size(); j++) {
-                if (listData.get(i).getHumidite() > listData.get(j).getHumidite()) {
-                    Data temp = listData.get(i);
-                    listData.set(i, listData.get(j));
-                    listData.set(j, temp);
+        for (int i = 0; i < listAllData.size(); i++) {
+            for (int j = 0; j < listAllData.size(); j++) {
+                if (listAllData.get(i).getHumidite() > listAllData.get(j).getHumidite()) {
+                    Data temp = listAllData.get(i);
+                    listAllData.set(i, listAllData.get(j));
+                    listAllData.set(j, temp);
                 }
             }
         }
     }
 
     public void listsortO2Desc() {
-        for (int i = 0; i < listData.size(); i++) {
-            for (int j = 0; j < listData.size(); j++) {
-                if (listData.get(i).getO2() > listData.get(j).getO2()) {
-                    Data temp = listData.get(i);
-                    listData.set(i, listData.get(j));
-                    listData.set(j, temp);
+        for (int i = 0; i < listAllData.size(); i++) {
+            for (int j = 0; j < listAllData.size(); j++) {
+                if (listAllData.get(i).getO2() > listAllData.get(j).getO2()) {
+                    Data temp = listAllData.get(i);
+                    listAllData.set(i, listAllData.get(j));
+                    listAllData.set(j, temp);
                 }
             }
         }
     }
 
     public void listsortLuxDesc() {
-        for (int i = 0; i < listData.size(); i++) {
-            for (int j = 0; j < listData.size(); j++) {
-                if (listData.get(i).getLight() > listData.get(j).getLight()) {
-                    Data temp = listData.get(i);
-                    listData.set(i, listData.get(j));
-                    listData.set(j, temp);
+        for (int i = 0; i < listAllData.size(); i++) {
+            for (int j = 0; j < listAllData.size(); j++) {
+                if (listAllData.get(i).getLight() > listAllData.get(j).getLight()) {
+                    Data temp = listAllData.get(i);
+                    listAllData.set(i, listAllData.get(j));
+                    listAllData.set(j, temp);
                 }
             }
         }

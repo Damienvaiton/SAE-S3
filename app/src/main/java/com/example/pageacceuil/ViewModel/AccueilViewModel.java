@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.pageacceuil.Model.ESP;
 import com.example.pageacceuil.Model.FirebaseAccess;
-import com.example.pageacceuil.View.AccueilActivity;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,7 +17,7 @@ public class AccueilViewModel extends ViewModel {
     /**
      * Hashmap who constains mac adress of ESP has key and nickname has value if he has one
      */
-    private HashMap<String, String> ESP;
+    private HashMap<String, String> hashESP;
     private FirebaseAccess acess;
     private ClassTransitoireViewModel transit;
 
@@ -27,11 +27,10 @@ public class AccueilViewModel extends ViewModel {
     public AccueilViewModel() {
 
        acess = FirebaseAccess.getInstance();
-        acess.setAccueilViewModel(this);
         acess.getAllESP();
         transit=ClassTransitoireViewModel.getInstance();
         transit.setAccueilViewModel(this);
-        ESP = new HashMap<String, String>();
+        hashESP = new HashMap<>();
     }
 
     /**
@@ -45,7 +44,7 @@ public class AccueilViewModel extends ViewModel {
     /**
      * Getter of LiveData object who contains tabESP
      */
-    public LiveData<ArrayList<String>> getESP() {
+    public LiveData<ArrayList<String>> getHashESP() {
         return listener;
     }
     /**
@@ -56,10 +55,10 @@ public class AccueilViewModel extends ViewModel {
     public void addESP(String esp, @Nullable String nom) {
         System.out.println("addESP");
         if (nom == null) {
-            ESP.putIfAbsent(esp, null);
+            hashESP.putIfAbsent(esp, null);
             tabESP.add(esp);
         } else {
-            ESP.put(esp, nom);
+            hashESP.put(esp, nom);
             tabESP.add(nom);
         }
         listener.postValue(tabESP);
@@ -81,7 +80,7 @@ public class AccueilViewModel extends ViewModel {
  */
     public void creaESP(int pos) {
         int curseur = 0;
-        for (Map.Entry<String, String> entry : ESP.entrySet()) {
+        for (Map.Entry<String, String> entry : hashESP.entrySet()) {
             if (curseur == pos) {
                 if (entry.getValue() == null) {
                     acess.setEsp(new ESP(entry.getKey(), null));

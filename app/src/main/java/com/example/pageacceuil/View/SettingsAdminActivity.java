@@ -60,6 +60,7 @@ public class SettingsAdminActivity extends AppCompatActivity implements View.OnC
 
         settingsAdminViewModel = new ViewModelProvider(this).get(SettingsAdminViewModel.class);
         settingsAdminViewModel.creaESP(0);
+        // Créer un esp
 
         idEsp = findViewById(R.id.selectedEsp);
         rename = findViewById(R.id.rennoméA);

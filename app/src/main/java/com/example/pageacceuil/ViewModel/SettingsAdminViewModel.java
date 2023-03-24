@@ -27,7 +27,6 @@ public class SettingsAdminViewModel extends ViewModel {
     public SettingsAdminViewModel() {
 
         database = FirebaseAccess.getInstance();
-        database.setSettingsAdminViewModel(this);
 
         transit=ClassTransitoireViewModel.getInstance();
         transit.setSettingsAdminViewModel(this);
@@ -35,7 +34,6 @@ public class SettingsAdminViewModel extends ViewModel {
         hashmapESP = new HashMap<String, String>();
     }
     public void setListenerESP(String value) {
-        hashmapESP.get(value);
       //  ESP.getInstance().redefinition(hashmapESP.get(value));
         database.setRealtimeDataListener();
         database.loadInData();

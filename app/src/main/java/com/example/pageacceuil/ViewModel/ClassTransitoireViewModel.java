@@ -3,8 +3,7 @@ package com.example.pageacceuil.ViewModel;
 import androidx.annotation.Nullable;
 
 import com.example.pageacceuil.Model.Data;
-import com.example.pageacceuil.Model.ESP;
-import com.example.pageacceuil.Model.FirebaseAccess;
+
 
 public class ClassTransitoireViewModel {
     private GraphViewModel graphViewModel;
@@ -14,7 +13,7 @@ public class ClassTransitoireViewModel {
 
     private AccueilViewModel accueilViewModel;
 
-    private static volatile ClassTransitoireViewModel instance;
+    private static ClassTransitoireViewModel instance;
 
 
     public static ClassTransitoireViewModel getInstance() {

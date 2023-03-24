@@ -72,7 +72,6 @@ public class GraphViewModel extends ViewModel {
     public GraphViewModel() {
         this.acess = FirebaseAccess.getInstance();
         ClassTransitoireViewModel.getInstance().setGraphViewModel(this);
-        acess.setGraphViewModel(this);
         acess.loadInData();
         acess.setRealtimeDataListener();
         acess.setEspTimeListener();
@@ -292,28 +291,28 @@ public class GraphViewModel extends ViewModel {
      */
 
     private boolean isDataValid(int cptLignes) {
-        ListData listData= ListData.getInstance();
-        if (listData.recup_data(cptLignes).getCO2() == 0) {
+        ListData instanceListData= ListData.getInstance();
+        if (instanceListData.recup_data(cptLignes).getCO2() == 0) {
             return false;
         }
-        if (listData.recup_data(cptLignes).getTemperature() == 0) {
+        if (instanceListData.recup_data(cptLignes).getTemperature() == 0) {
             return false;
         }
-        if (listData.recup_data(cptLignes).getHumidite() == 0) {
+        if (instanceListData.recup_data(cptLignes).getHumidite() == 0) {
             return false;
         }
-        if (listData.recup_data(cptLignes).getO2() == 0) {
+        if (instanceListData.recup_data(cptLignes).getO2() == 0) {
             return false;
         }
-        if (listData.recup_data(cptLignes).getLight() == 0) {
+        if (instanceListData.recup_data(cptLignes).getLight() == 0) {
             return false;
         }
-        return listData.recup_data(cptLignes).getTemps() != "";
+        return instanceListData.recup_data(cptLignes).getTemps() != "";
     }
 
     public String exportFile() {
-        ListData listData = ListData.getInstance();
-        int cptLignes = listData.list_size() - 1;
+        ListData instanceListData = ListData.getInstance();
+        int cptLignes = instanceListData.list_size() - 1;
         if (cptLignes < 1) {
             return "Export excel annulé, pas de valeurs";
         }
@@ -362,12 +361,12 @@ public class GraphViewModel extends ViewModel {
         for (int i = 0; i < cptLignes; i++) {
             XSSFRow row = sheet.createRow(i + 1);
             row.createCell(0).setCellValue(i);
-            row.createCell(1).setCellValue(listData.recup_data(i).getHumidite());
-            row.createCell(2).setCellValue(listData.recup_data(i).getTemperature());
-            row.createCell(3).setCellValue(listData.recup_data(i).getCO2());
-            row.createCell(4).setCellValue(listData.recup_data(i).getO2());
-            row.createCell(5).setCellValue(listData.recup_data(i).getLight());
-            row.createCell(6).setCellValue(listData.recup_data(i).getTemps());
+            row.createCell(1).setCellValue(instanceListData.recup_data(i).getHumidite());
+            row.createCell(2).setCellValue(instanceListData.recup_data(i).getTemperature());
+            row.createCell(3).setCellValue(instanceListData.recup_data(i).getCO2());
+            row.createCell(4).setCellValue(instanceListData.recup_data(i).getO2());
+            row.createCell(5).setCellValue(instanceListData.recup_data(i).getLight());
+            row.createCell(6).setCellValue(instanceListData.recup_data(i).getTemps());
         }
         // Création du fichier
         try {

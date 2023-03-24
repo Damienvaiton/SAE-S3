@@ -5,7 +5,7 @@ import com.github.mikephil.charting.components.YAxis;
 public class Axe {
     private  YAxis leftAxis;
     private  YAxis rightAxis;
-    private static volatile Axe instance;
+    private static Axe instance;
 
     public YAxis getLeftAxis() {
         return leftAxis;

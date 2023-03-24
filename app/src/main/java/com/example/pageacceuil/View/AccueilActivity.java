@@ -86,7 +86,7 @@ public class AccueilActivity extends AppCompatActivity {
         /**
          * Observe a LiveData and recreate tabESP to keep up to date with ESP available in the database
          */
-        accueilViewModel.getESP().observe(this, new Observer<ArrayList<String>>() {
+        accueilViewModel.getHashESP().observe(this, new Observer<ArrayList<String>>() {
     @Override
     public void onChanged(ArrayList<String> strings) {
         tabESP.clear();

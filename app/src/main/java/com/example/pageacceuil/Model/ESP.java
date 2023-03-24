@@ -5,7 +5,7 @@ public class ESP {
     private String macEsp;
     private String nomEsp;
 
-    private static volatile ESP instance;
+    private static ESP instance;
 
 
     public static ESP getInstance() {
