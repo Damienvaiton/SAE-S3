@@ -21,7 +21,6 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.pageacceuil.Model.Axe;
 import com.example.pageacceuil.Model.Data;
-//import com.example.pageacceuil.Model.DataUpdate;
 import com.example.pageacceuil.R;
 import com.example.pageacceuil.ViewModel.GraphViewModel;
 import com.example.pageacceuil.ViewModel.XAxisValueFormatter;
@@ -336,6 +335,9 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
             case R.id.boxLux:
                 graphViewModel.notifyCheck(v.getId());
                 break;
+
+                default:
+                throw new IllegalStateException("Unexpected value: " + v.getId());
         }
     }
 }

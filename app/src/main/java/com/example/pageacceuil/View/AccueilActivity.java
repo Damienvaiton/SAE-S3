@@ -2,6 +2,7 @@ package com.example.pageacceuil.View;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -91,7 +92,7 @@ public class AccueilActivity extends AppCompatActivity {
     public void onChanged(ArrayList<String> strings) {
         tabESP.clear();
         for (String ESP : strings) {
-            tabESP.add(ESP.toString());
+            tabESP.add(ESP);
         }
         adapter.notifyDataSetChanged();
     }
@@ -107,7 +108,7 @@ public class AccueilActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
+                Log.d("Spinner", "Nothing selected");
             }
         });
 

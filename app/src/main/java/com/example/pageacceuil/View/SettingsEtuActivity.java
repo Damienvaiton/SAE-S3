@@ -7,6 +7,7 @@ import static java.lang.Integer.parseInt;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -30,8 +31,7 @@ public class SettingsEtuActivity extends AppCompatActivity implements View.OnCli
 
     private TextView textAxeLeft;
     private TextView textAxeRight;
-    private String choixESP = "";
-    private String nameEsp = "";
+
 
     private String rightAxisName = "";
     private String leftAxisName = "";
@@ -52,8 +52,7 @@ public class SettingsEtuActivity extends AppCompatActivity implements View.OnCli
     private YAxis rightAxis;
     private YAxis leftAxis;
 
-    private int[] valAxeLeft;
-    private int[] valAxeRight;
+
     private SettingsEtuViewModel settingsEtuViewModel = null;
 
     @Override
@@ -100,7 +99,7 @@ public class SettingsEtuActivity extends AppCompatActivity implements View.OnCli
             if (intent.hasExtra("rightAxisName")) {
                 this.rightAxisName = (String) intent.getSerializableExtra("rightAxisName");
             } else {
-                System.out.println("impossible récup ESP");
+                Log.d("Error", "impossible récup ESP");
             }
         }
         if (esp.getNomEsp() == null) {
@@ -150,7 +149,7 @@ public class SettingsEtuActivity extends AppCompatActivity implements View.OnCli
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE && !tauxRefresh.getText().toString().equals("")) {
-                    if (settingsEtuViewModel.editTemps((parseInt(tauxRefresh.getText().toString()))) == true) {
+                    if (settingsEtuViewModel.editTemps((parseInt(tauxRefresh.getText().toString())))) {
                         Toast.makeText(SettingsEtuActivity.this, "Refresh : " + tauxRefresh.getText().toString() + "s,\r\nVous pouvez redémarrer l'ESP", Toast.LENGTH_SHORT).show();
                         tauxRefresh.setText("");
                     } else {
@@ -168,10 +167,8 @@ public class SettingsEtuActivity extends AppCompatActivity implements View.OnCli
     /**
      *
      */
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
+
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -183,6 +180,8 @@ public class SettingsEtuActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+
+
             case R.id.auto_droit:
                 if (auto_droit.isChecked()) {
                     resetAxis(rightAxis);
@@ -217,6 +216,9 @@ public class SettingsEtuActivity extends AppCompatActivity implements View.OnCli
                 break;
             case R.id.btn_refresh:
                 refreshSettings();
+                break;
+
+            default:
                 break;
         }
     }

@@ -105,23 +105,28 @@ public class VueDataActivity extends AppCompatActivity implements Serializable {
             @Override
             public void onClick(View v) {
                 //Jpeux faire une enum
-                switch (ChoixTri.toString()) {
+                switch (ChoixTri) {
                     case "Co²":
                         if (Desc) {
                             Collections.sort(listData, (e1, e2) -> Float.compare(e1.getCO2(), e2.getCO2()));
                             dataRecyclerAdapter.notifyDataSetChanged();
+
                         } else {
                             Collections.sort(listData, (e1, e2) -> Float.compare(e1.getCO2(), e2.getCO2()));
                             dataRecyclerAdapter.notifyDataSetChanged();
+
                         }
+                        break;
                     case "Température":
                         if (Desc) {
                             Collections.sort(listData, (e1, e2) -> Float.compare(e1.getTemperature(), e2.getTemperature()));
                             dataRecyclerAdapter.notifyDataSetChanged();
+                            break;
                         } else {
                             Collections.sort(listData, (e1, e2) -> Float.compare(e1.getTemperature(), e2.getTemperature()));
                             dataRecyclerAdapter.notifyDataSetChanged();
                         }
+                        break;
                     case "Humidité":
                         if (Desc) {
                             Collections.sort(listData, (e1, e2) -> Float.compare(e1.getHumidite(), e2.getHumidite()));
@@ -130,6 +135,7 @@ public class VueDataActivity extends AppCompatActivity implements Serializable {
                             Collections.sort(listData, (e1, e2) -> Float.compare(e1.getHumidite(), e2.getHumidite()));
                             dataRecyclerAdapter.notifyDataSetChanged();
                         }
+                        break;
                     case "Luminiosité":
                         if (Desc) {
                             Collections.sort(listData, (e1, e2) -> Float.compare(e1.getLight(), e2.getLight()));
@@ -138,14 +144,16 @@ public class VueDataActivity extends AppCompatActivity implements Serializable {
                             Collections.sort(listData, (e1, e2) -> Float.compare(e1.getLight(), e2.getLight()));
                             dataRecyclerAdapter.notifyDataSetChanged();
                         }
+                        break;
                     case "O²":
                         if (Desc) {
-                            Collections.sort(listData, (e1, e2) -> Float.compare(e1.getLight(), e2.getLight()));
+                            Collections.sort(listData, (e1, e2) -> Float.compare(e1.getO2(), e2.getO2()));
                             dataRecyclerAdapter.notifyDataSetChanged();
                         } else {
-                            Collections.sort(listData, (e1, e2) -> Float.compare(e1.getLight(), e2.getLight()));
+                            Collections.sort(listData, (e1, e2) -> Float.compare(e1.getO2(), e2.getO2()));
                             dataRecyclerAdapter.notifyDataSetChanged();
                         }
+                        break;
                     default:
                         break;
 

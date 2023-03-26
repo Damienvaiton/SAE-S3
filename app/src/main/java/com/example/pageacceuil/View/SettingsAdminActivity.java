@@ -3,6 +3,7 @@ package com.example.pageacceuil.View;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -40,14 +41,11 @@ public class SettingsAdminActivity extends AppCompatActivity implements View.OnC
     private EditText refresh;
     private Button grouper;
     private Button reini;
-    private TextView idEsp;
 
     private String choixESP;
 
-    private String oldChoixESP = "";
     private ArrayAdapter<String> adapter;
     private ArrayList<String> tabESP;
-    private ArrayList<String> Groupe;
 
 
     private dataRecyclerAdapter dataRecyclerAdapter;
@@ -64,7 +62,6 @@ public class SettingsAdminActivity extends AppCompatActivity implements View.OnC
 
         // Créer un esp
 
-        idEsp = findViewById(R.id.selectedEsp);
         rename = findViewById(R.id.rennoméA);
         delete = findViewById(R.id.suppA);
         refresh = findViewById(R.id.refreshA);
@@ -81,7 +78,6 @@ public class SettingsAdminActivity extends AppCompatActivity implements View.OnC
         grouper.setOnClickListener(this);
         reini.setOnClickListener(this);
         tabESP = new ArrayList<>();
-        Groupe = new ArrayList<>();
 
         adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, tabESP);
         spinner.setAdapter(adapter);
@@ -104,7 +100,7 @@ public class SettingsAdminActivity extends AppCompatActivity implements View.OnC
             public void onChanged(ArrayList<String> strings) {
                 tabESP.clear();
                 for (String ESP : strings) {
-                    tabESP.add(ESP.toString());
+                    tabESP.add(ESP);
                 }
                 adapter.notifyDataSetChanged();
             }
@@ -129,6 +125,8 @@ public class SettingsAdminActivity extends AppCompatActivity implements View.OnC
 
             public void onNothingSelected(AdapterView<?> parent) {
 
+                Log.d("Spinner", "Nothing selected");
+
             }
         });
     }
@@ -136,6 +134,11 @@ public class SettingsAdminActivity extends AppCompatActivity implements View.OnC
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+
+
+
+
+
             case R.id.rennoméA:
                 PopUpDialog customPopup = new PopUpDialog(this);
                 customPopup.build("Rennomé l'esp", "Nom", 1);
@@ -209,6 +212,10 @@ public class SettingsAdminActivity extends AppCompatActivity implements View.OnC
                 });
 
                 break;
+
+            default:
+                break;
+
 
         }
 
