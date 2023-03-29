@@ -9,7 +9,7 @@ public class ESP {
     public ESP(String macEsp, String nomEsp) {
         this.macEsp = macEsp;
         this.nomEsp = nomEsp;
-        this.instance = this;
+        instance = this;
     }
 
     public static ESP getInstance() {
@@ -41,5 +41,6 @@ public class ESP {
     protected void finalize() throws Throwable {
         super.finalize();
         FirebaseAccess.getInstance().deleteListener();
+        //remove listener
     }
 }

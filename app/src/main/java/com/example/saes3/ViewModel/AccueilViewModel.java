@@ -54,7 +54,6 @@ public class AccueilViewModel extends ViewModel {
      */
 
     public void addESP(String esp, @Nullable String nom) {
-        System.out.println("addESP");
         if (nom == null) {
             hashESP.putIfAbsent(esp, null);
             tabESP.add(esp);

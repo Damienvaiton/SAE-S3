@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.saes3.R;
@@ -85,15 +84,12 @@ public class AccueilActivity extends AppCompatActivity {
         /**
          * Observe a LiveData and recreate tabESP to keep up to date with ESP available in the database
          */
-        accueilViewModel.getHashESP().observe(this, new Observer<ArrayList<String>>() {
-            @Override
-            public void onChanged(ArrayList<String> strings) {
-                tabESP.clear();
-                for (String ESP : strings) {
-                    tabESP.add(ESP.toString());
-                }
-                adapter.notifyDataSetChanged();
+        accueilViewModel.getHashESP().observe(this, strings -> {
+            tabESP.clear();
+            for (String ESP : strings) {
+                tabESP.add(ESP);
             }
+            adapter.notifyDataSetChanged();
         });
         /**
          * Store the value selected into 'position'

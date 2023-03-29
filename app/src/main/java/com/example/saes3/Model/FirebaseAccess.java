@@ -6,8 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.saes3.ViewModel.ClassTransitoireViewModel;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -25,12 +23,15 @@ public class FirebaseAccess implements DataUpdate {
      */
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
     private final DatabaseReference myRef = database.getReference("SAE_S3_BD");
-    /**
-     * Différent ViewModel
-     */
+
+    public static final String ESP32 = "ESP32";
+    public static final String REFRESH_TIME = "TauxRafraichissement";
+    public static final String MEASURE = "MESURE";
+
     private ClassTransitoireViewModel transitoireViewModel;
 
     private ESP currentESP;
+
 
     /**
      * Listener rattaché au différent champs de Firebase
@@ -79,7 +80,7 @@ public class FirebaseAccess implements DataUpdate {
      * Query to the database for load every ESP name
      */
     public void getAllESP() {
-        myRef.child("ESP32").addChildEventListener(new ChildEventListener() {
+        myRef.child(ESP32).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 String surnom = (String) snapshot.child("Nom").getValue();
@@ -118,29 +119,17 @@ public class FirebaseAccess implements DataUpdate {
      * @param temps time in millisecond
      */
     public void setEspRefreshRate(int temps) {// context passé en param
-        myRef.child("ESP32").child(currentESP.getMacEsp()).child("TauxRafraichissement").setValue(temps * 1000).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Log.d("Firebase", "Données enregistrées avec succès");
-            }
-        }).addOnFailureListener(e -> Log.e("Firebase", "Erreur lors de l'enregistrement des données", e));
+        myRef.child(ESP32).child(currentESP.getMacEsp()).child(REFRESH_TIME).setValue(temps * 1000).addOnSuccessListener(aVoid -> Log.d("Firebase", "Données enregistrées avec succès")).addOnFailureListener(e -> Log.e("Firebase", "Erreur lors de l'enregistrement des données", e));
     }
 
     /**
      * Query to the database for wipe datas
      */
     public void resetValueFirebase() {
-        myRef.child("ESP32").child(currentESP.getMacEsp()).child("Mesure").removeValue().addOnSuccessListener(aVoid -> Log.d("Firebase", "Données enregistrées avec succès")).addOnFailureListener(e -> {
+        myRef.child(ESP32).child(currentESP.getMacEsp()).child(MEASURE).removeValue().addOnSuccessListener(aVoid -> Log.d("Firebase", "Données enregistrées avec succès")).addOnFailureListener(e -> {
             Log.e("Firebase", "Erreur lors de l'enregistrement des données", e);
-            return;
         });
-        myRef.child("ESP32").child(currentESP.getMacEsp()).child("Mesure").removeValue().addOnSuccessListener(aVoid -> Log.d("Firebase", "Données enregistrées avec succès")).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.e("Firebase", "Erreur lors de l'enregistrement des données", e);
-                return;
-            }
-        });
+        myRef.child("ESP32").child(currentESP.getMacEsp()).child("Mesure").removeValue().addOnSuccessListener(aVoid -> Log.d("Firebase", "Données enregistrées avec succès")).addOnFailureListener(e -> Log.e("Firebase", "Erreur lors de l'enregistrement des données", e));
     }
 
     /**
@@ -148,11 +137,10 @@ public class FirebaseAccess implements DataUpdate {
      */
     public boolean loadInData() {
         ListData listData = ListData.getInstance();
-        myRef.child("ESP32").child(currentESP.getMacEsp()).child("Mesure").get().addOnCompleteListener(task -> {
+        myRef.child(ESP32).child(currentESP.getMacEsp()).child(MEASURE).get().addOnCompleteListener(task -> {
             DataSnapshot tab = task.getResult();
             if (tab.exists()) {
                 for (DataSnapshot dataSnapshot : tab.getChildren()) {
-                    System.out.println("je passe");
                     transitoireViewModel.updateData(dataSnapshot.getValue(Data.class));
                     listData.list_add_data(dataSnapshot.getValue(Data.class));
                 }
@@ -193,7 +181,7 @@ public class FirebaseAccess implements DataUpdate {
                 Log.e("Firebase", "Erreur lors de l'enregistrement des données : " + error);
             }
         };
-        myRef.child("ESP32").child(ESP.getInstance().getMacEsp()).child("TauxRafraichissement").addValueEventListener(valueEventListenerTemps);
+        myRef.child(ESP32).child(ESP.getInstance().getMacEsp()).child(REFRESH_TIME).addValueEventListener(valueEventListenerTemps);
     }
 
     /**
@@ -211,7 +199,6 @@ public class FirebaseAccess implements DataUpdate {
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 if (snapshot.getChildrenCount() == 6) {
-                    System.out.println("realtime");
                     listData.list_add_data(snapshot.getValue(Data.class));
                     updateLiveData(snapshot.getValue(Data.class));
                 }
@@ -229,10 +216,9 @@ public class FirebaseAccess implements DataUpdate {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                System.out.println("Impossible d'accéder au données");
-            }
+Log.w("Erreur",error.toString());}
         };
-        myRef.child("ESP32").child(currentESP.getMacEsp()).child("Mesure").addChildEventListener(realtimeDataListener);
+        myRef.child(ESP32).child(currentESP.getMacEsp()).child(MEASURE).addChildEventListener(realtimeDataListener);
     }
 
     /**
@@ -255,7 +241,7 @@ public class FirebaseAccess implements DataUpdate {
      * @param nickname new nickname for the ESP
      */
     public void setNicknameEsp(String nickname) {
-        myRef.child("ESP32").child(currentESP.getMacEsp()).child("Nom").setValue(nickname);
+        myRef.child(ESP32).child(currentESP.getMacEsp()).child("Nom").setValue(nickname);
 
     }
 
@@ -263,7 +249,7 @@ public class FirebaseAccess implements DataUpdate {
      * Query to the database to erase current ESP and all of this values
      */
     public void deleteEsp() {
-        myRef.child("ESP32").child(currentESP.getMacEsp()).removeValue();
+        myRef.child(ESP32).child(currentESP.getMacEsp()).removeValue();
 
     }
 
@@ -271,8 +257,8 @@ public class FirebaseAccess implements DataUpdate {
      * delete each listener attach to the database
      */
     public boolean deleteListener() {
-        myRef.child("ESP32").child(currentESP.getMacEsp()).child("Mesure").removeEventListener(valueEventListenerTemps);
-        myRef.child("ESP32").child(currentESP.getMacEsp()).child("TauxRafraichissement").removeEventListener(realtimeDataListener);
+        myRef.child(ESP32).child(currentESP.getMacEsp()).child(MEASURE).removeEventListener(valueEventListenerTemps);
+        myRef.child(ESP32).child(currentESP.getMacEsp()).child(REFRESH_TIME).removeEventListener(realtimeDataListener);
         return true;
     }
 }
