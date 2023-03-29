@@ -20,7 +20,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pageacceuil.Model.Data;
-import com.example.pageacceuil.Model.ESP;
 import com.example.pageacceuil.R;
 import com.example.pageacceuil.ViewModel.PopUpDialog;
 import com.example.pageacceuil.ViewModel.SettingsAdminViewModel;
@@ -118,8 +117,7 @@ settingsAdminViewModel.getListenerData().observe(this, new Observer<Data>() {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                ESP esp=new ESP(parent.,null);
-                settingsAdminViewModel.changeESP(esp);
+                settingsAdminViewModel.creaESP(position);
                 settingsAdminViewModel.setListenerESP(); // Mettre tout les listener dedans
             }
 

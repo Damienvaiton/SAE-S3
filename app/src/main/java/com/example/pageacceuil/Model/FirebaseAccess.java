@@ -78,6 +78,9 @@ public class FirebaseAccess implements DataUpdate {
      */
     public void setEsp(ESP esp) {
         this.currentESP = esp;
+        if(valueEventListenerTemps==null||realtimeDataListener==null ){
+            deleteListener();
+        }
     }
 
     /**

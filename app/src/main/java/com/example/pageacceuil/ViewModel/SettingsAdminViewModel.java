@@ -13,6 +13,7 @@ import com.example.pageacceuil.Model.ListData;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class SettingsAdminViewModel extends ViewModel {
     private HashMap<String, String> hashmapESP;
@@ -138,27 +139,18 @@ public class SettingsAdminViewModel extends ViewModel {
     public void setESPrefresh(String temps){
             database.setEspRefreshRate(Integer.parseInt(temps));
     }
-
-    /**
-     * Define the selected ESP to FirebaseAcess
-     */
-    /*public void creaESP(int pos) {
+    public void creaESP(int pos) {
         int curseur = 0;
-        for (Map.Entry<String, String> entry :hashESP.entrySet()) {
+        for (Map.Entry<String, String> entry : hashmapESP.entrySet()) {
             if (curseur == pos) {
                 if (entry.getValue() == null) {
-                    acess.setEsp(new ESP(entry.getKey(), null));
+                    database.setEsp(new ESP(entry.getKey(), null));
                     return;
                 }
-                acess.setEsp(new ESP(entry.getKey(), null));
+                database.setEsp(new ESP(entry.getKey(), null));
                 return;
-            }curseur++;
-      }     }*/
-
-
-
-
-
-
-
+            }
+            curseur++;
+        }
+    }
 }
