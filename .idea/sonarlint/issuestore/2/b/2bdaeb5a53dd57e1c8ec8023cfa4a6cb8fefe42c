@@ -1,8 +1,0 @@
-
-f	java:S117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(…‹ÊÅ
-f	java:S117A"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Å„Œ•
-t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(ë’®Úşÿÿÿÿ
-b	java:S116"MRename this field "O2" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¥Èöç
-c	java:S116"NRename this field "CO2" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(üîä
-A
-java:S2160"+Override the "equals" method in this class.(¯Ğ…Ğ

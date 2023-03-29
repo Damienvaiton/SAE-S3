@@ -1,6 +1,0 @@
-
-t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(ë’®Úþÿÿÿÿ
-@
-java:S3010"%Remove this assignment of "instance".(ñõîÙþÿÿÿÿ
-H
-java:S1113/"-Do not override the Object.finalize() method.(ÖÒ˜Ùùÿÿÿÿ
