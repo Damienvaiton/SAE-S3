@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 public class ListData implements Serializable {
     private static ListData instance;
-    private ObservableArrayList listAllData;
+    private final ObservableArrayList listAllData;
 
 
     public static ListData getInstance() {

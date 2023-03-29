@@ -25,7 +25,6 @@ public class AccueilViewModel extends ViewModel {
      * Constructor who initialiaze the viewModel
      */
     public AccueilViewModel() {
-
        acess = FirebaseAccess.getInstance();
         acess.getAllESP();
         transit=ClassTransitoireViewModel.getInstance();

@@ -2,16 +2,15 @@ package com.example.saes3.ViewModel;
 
 import android.graphics.Color;
 import android.os.Environment;
-import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.saes3.Model.ListData;
-import com.example.saes3.R;
 import com.example.saes3.Model.Data;
 import com.example.saes3.Model.FirebaseAccess;
+import com.example.saes3.Model.ListData;
+import com.example.saes3.R;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
@@ -76,8 +75,6 @@ public class GraphViewModel extends ViewModel {
         acess.setRealtimeDataListener();
         acess.setEspTimeListener();
         listData = new ArrayList<>();
-
-
     }
 
     /**

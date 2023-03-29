@@ -1,14 +1,11 @@
 package com.example.saes3.View;
 
 
-import static org.apache.poi.sl.draw.geom.GuideIf.Op.max;
-import static org.apache.poi.sl.draw.geom.GuideIf.Op.min;
 import static java.lang.Integer.parseInt;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
@@ -18,7 +15,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.saes3.Model.Axe;
@@ -100,6 +96,7 @@ public class SettingsEtuActivity extends AppCompatActivity implements View.OnCli
                 Log.d("Error", "impossible récup ESP");
             }
         }
+        assert esp != null;
         if (esp.getNomEsp() == null) {
             nomEsp.setText(esp.getNomEsp());
         } else {
@@ -134,31 +131,21 @@ public class SettingsEtuActivity extends AppCompatActivity implements View.OnCli
             max_g.setHint("auto");}
 
 
-            settingsEtuViewModel.getMoments().observe(this, new Observer<String>() {
-                @Override
-                public void onChanged(String s) {
-                    tauxRefresh.setHint(s);
-                }
-
-            });
+            settingsEtuViewModel.getMoments().observe(this, s -> tauxRefresh.setHint(s));
 
 
-        tauxRefresh.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE && !tauxRefresh.getText().toString().equals("")) {
-                    if (settingsEtuViewModel.editTemps((parseInt(tauxRefresh.getText().toString()))) == true) {
-                        Toast.makeText(SettingsEtuActivity.this, "Refresh : " + tauxRefresh.getText().toString() + "s,\r\nVous pouvez redémarrer l'ESP", Toast.LENGTH_SHORT).show();
-                        tauxRefresh.setText("");
-                    } else {
-                        Toast.makeText(SettingsEtuActivity.this, "Erreur", Toast.LENGTH_SHORT).show();
-                    }
+        tauxRefresh.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE && !tauxRefresh.getText().toString().equals("")) {
+                if (settingsEtuViewModel.editTemps((parseInt(tauxRefresh.getText().toString())))) {
+                    Toast.makeText(SettingsEtuActivity.this, "Refresh : " + tauxRefresh.getText().toString() + "s,\r\nVous pouvez redémarrer l'ESP", Toast.LENGTH_SHORT).show();
+                    tauxRefresh.setText("");
                 } else {
-                    Toast.makeText(getApplicationContext(), "Merci d'entrer une valeur", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SettingsEtuActivity.this, "Erreur", Toast.LENGTH_SHORT).show();
                 }
-                return false;
+            } else {
+                Toast.makeText(getApplicationContext(), "Merci d'entrer une valeur", Toast.LENGTH_SHORT).show();
             }
-
+            return false;
         });
     }
 
@@ -230,9 +217,9 @@ public class SettingsEtuActivity extends AppCompatActivity implements View.OnCli
         if (((min.trim().length() == 0) || (max.trim().length() == 0)) ) {
             Toast.makeText(getApplicationContext(), "Un champ est vide", Toast.LENGTH_SHORT).show();
         } else {
-            if (Float.valueOf(max) > Float.valueOf(min)) {
-                axis.setAxisMaximum(Float.valueOf(max));
-                axis.setAxisMinimum(Float.valueOf(min));
+            if (Float.parseFloat(max) > Float.parseFloat(min)) {
+                axis.setAxisMaximum(Float.parseFloat(max));
+                axis.setAxisMinimum(Float.parseFloat(min));
                 Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(getApplicationContext(), "Valeurs incorrectes", Toast.LENGTH_SHORT).show();

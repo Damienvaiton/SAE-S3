@@ -113,28 +113,22 @@ public class AccueilActivity extends AppCompatActivity {
         /**
          * Launch ConnecAdminActivity if "btnCoAdmin" triggered
          */
-        btncoEtu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent graph;
-                accueilViewModel.creaESP(position);
-                graph = new Intent(AccueilActivity.this, GraphiqueActivity.class);
-                startActivity(graph);
-            }
+        btncoEtu.setOnClickListener(view -> {
+            Intent graph;
+            accueilViewModel.creaESP(position);
+            graph = new Intent(AccueilActivity.this, GraphiqueActivity.class);
+            startActivity(graph);
         });
 
         /**
          * Launch ConnecAdminActivity if "btnCoAdmin" triggered
          */
-        btnCoAdmin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent admin;
-                accueilViewModel.creaESP(position);
-                admin = new Intent(getApplicationContext(), ConnecAdminActivity.class);
-                startActivity(admin);
+        btnCoAdmin.setOnClickListener(view -> {
+            Intent admin;
+            accueilViewModel.creaESP(position);
+            admin = new Intent(getApplicationContext(), ConnecAdminActivity.class);
+            startActivity(admin);
 
-            }
         });
 
 

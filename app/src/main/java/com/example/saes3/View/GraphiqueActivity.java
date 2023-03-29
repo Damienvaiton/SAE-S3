@@ -10,8 +10,6 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -20,13 +18,12 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.saes3.Model.Axe;
-import com.example.saes3.R;
 import com.example.saes3.Model.Data;
+import com.example.saes3.R;
 import com.example.saes3.ViewModel.GraphViewModel;
 import com.example.saes3.ViewModel.XAxisValueFormatter;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.highlight.Highlight;
@@ -86,31 +83,17 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
 /**
  * Observer of new LineData object available to refrest current graph
  */
-        graphViewModel.getUpdateGraph().observe(this, new Observer<LineData>() {
-            @Override
-            public void onChanged(LineData linedata) {
-                graph.setData(linedata);
-                graph.invalidate();
-            }
+        graphViewModel.getUpdateGraph().observe(this, (Observer<LineData>) linedata -> {
+            graph.setData(linedata);
+            graph.invalidate();
         });
 
         /**
          * Observer of new refresh rate of current ESP
          */
-        graphViewModel.getMoments().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                valTemp.setText(s);
+        graphViewModel.getMoments().observe(this, s -> valTemp.setText(s));
 
-            }
-        });
-
-        graphViewModel.getData().observe(this, new Observer<Data>() {
-            @Override
-            public void onChanged(Data data) {
-                actuValues(data);
-            }
-        });
+        graphViewModel.getData().observe(this, this::actuValues);
 
 
         valTemp = findViewById(R.id.viewTime);
@@ -191,7 +174,7 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
         graph.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
             public void onNothingSelected() {
-
+                // TODO document why this method is empty
             }
 
             @Override
@@ -210,15 +193,11 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
 
         mStartForResult =
                 registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-                        new ActivityResultCallback<ActivityResult>() {
-                            @Override
-                            public void onActivityResult(ActivityResult result) {
-                                if (result.getResultCode() == Activity.RESULT_OK) {
-                                   graph.notifyDataSetChanged();
-                                   graph.invalidate();
-                                }
+                        result -> {
+                            if (result.getResultCode() == Activity.RESULT_OK) {
+                               graph.notifyDataSetChanged();
+                               graph.invalidate();
                             }
-
                         });
     }
 
@@ -301,7 +280,6 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
                     openSetting.putExtra("rightAxisName", graphViewModel.getRightAxisName());
                 };
                 startActivity(openSetting);
-               // mStartForResult.launch(mStartForResult.getContract().createIntent(getApplicationContext(), openSetting));
                 break;
             case R.id.btnExport:
                 try {

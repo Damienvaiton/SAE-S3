@@ -31,10 +31,7 @@ public class ConnectAdminViewModel extends ViewModel {
      */
     public boolean Verify(String username, String mdp) {
         System.out.println(tabID[0] + "edd" + tabID[1]);
-        if ((tabID[0].equals(username)) && (tabID[1].equals(mdp))) {
-            return true;
-        }
-        return false;
+        return (tabID[0].equals(username)) && (tabID[1].equals(mdp));
     }
 }
 

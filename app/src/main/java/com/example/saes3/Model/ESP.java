@@ -2,14 +2,14 @@ package com.example.saes3.Model;
 
 
 public class ESP {
-    private static volatile ESP instance;
+    private static ESP instance;
     private String macEsp;
     private String nomEsp;
 
     public ESP(String macEsp, String nomEsp) {
         this.macEsp = macEsp;
         this.nomEsp = nomEsp;
-        instance = this;
+        this.instance = this;
     }
 
     public static ESP getInstance() {
@@ -41,6 +41,5 @@ public class ESP {
     protected void finalize() throws Throwable {
         super.finalize();
         FirebaseAccess.getInstance().deleteListener();
-        //remove listener
     }
 }
