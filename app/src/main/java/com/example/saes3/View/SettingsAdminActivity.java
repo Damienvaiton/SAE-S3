@@ -107,6 +107,12 @@ settingsAdminViewModel.getListenerData().observe(this, new Observer<Data>() {
                 adapter.notifyDataSetChanged();
             }
         });
+        settingsAdminViewModel.getTempsAdmin().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                refresh.setText(s);
+            }
+        });
 
 
 
