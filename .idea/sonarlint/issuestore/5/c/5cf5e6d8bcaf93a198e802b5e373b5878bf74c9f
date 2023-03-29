@@ -1,0 +1,53 @@
+
+Q
+java:S3740e"/Provide the parametrized type for this generic.(ä”‹ïùÿÿÿÿ8ŞïÄáò0
+R
+java:S3740‡"/Provide the parametrized type for this generic.(Ø ¶õùÿÿÿÿ8ŞïÄáò0
+“
+java:S1319‡"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(Ø ¶õùÿÿÿÿ8àïÄáò0
+Q
+java:S1141ø"5Extract this nested try block into a separate method.(¡»¢üùÿÿÿÿ
+Z
+java:S4973¶"<Strings and Boxed types should be compared using "equals()".(šº¦ó8äïÄáò0
+g
+java:S2184¸"DCast one of the operands of this subtraction operation to a "float".(İÈé¶şÿÿÿÿ8çïÄáò0
+g
+java:S2184¹"DCast one of the operands of this subtraction operation to a "float".(÷Ä†Êıÿÿÿÿ8èïÄáò0
+g
+java:S2184º"DCast one of the operands of this subtraction operation to a "float".(á“šßüÿÿÿÿ8èïÄáò0
+b
+java:S2184»"DCast one of the operands of this subtraction operation to a "float".(Š Œ¿8èïÄáò0
+g
+java:S2184¼"DCast one of the operands of this subtraction operation to a "float".(øú†ıüÿÿÿÿ8èïÄáò0
+o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(¢“öŞ
+h
+java:S2095Ã"JUse try-with-resources or close this "XSSFWorkbook" in a "finally" clause.(¸™á…8œñÄáò0
+N
+java:S2589ÿ"7Remove this expression which always evaluates to "true"(©µæÜ
+k	java:S116,"QRename this field "A_temp" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÓĞ‘úÿÿÿÿ
+e	java:S116-"PRename this field "A_lux" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(’¿×™
+j	java:S116."PRename this field "A_CO2" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(üæÎıÿÿÿÿ
+k	java:S116/"QRename this field "A_humi" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¬ˆûşÿÿÿÿ
+i	java:S1160"ORename this field "A_O2" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ğ‘·ûÿÿÿÿ
+k
+java:S14506"URemove the "setCO2" field and declare it as a local variable in the relevant methods.(ó·¦Ã
+l
+java:S14505"VRemove the "setHumi" field and declare it as a local variable in the relevant methods.(¯À»š
+k
+java:S14509"URemove the "setLux" field and declare it as a local variable in the relevant methods.(Êœ–µ
+j
+java:S14507"TRemove the "setO2" field and declare it as a local variable in the relevant methods.(–ã©é
+l
+java:S14508"VRemove the "setTemp" field and declare it as a local variable in the relevant methods.(¿™²
+Z	java:S106w"9Replace this use of System.out or System.err by a logger.(»£–×şÿÿÿÿ8©ñÄáò0
+D	java:S131™""Add a default case to this switch.(Ò“ÿšùÿÿÿÿ8­ñÄáò0
+[	java:S106·"9Replace this use of System.out or System.err by a logger.(è¾®üÿÿÿÿ8¯ñÄáò0
+V	java:S106Ì"9Replace this use of System.out or System.err by a logger.(ğŞ¢ÿ8±ñÄáò0
+9
+java:S3626•"Remove this redundant jump.(ûÁİ…8¶ñÄáò0
+9
+java:S3626š"Remove this redundant jump.(ûÁİ…8¶ñÄáò0
+V	java:S899ö";Do something with the "boolean" value returned by "delete".(²Œ­ûÿÿÿÿ
+j
+java:S4042ö"NUse "java.nio.file.Files#delete" here for better messages on error conditions.(²Œ­ûÿÿÿÿ
+]	java:S899ù"BDo something with the "boolean" value returned by "createNewFile".(Ğ’Íùÿÿÿÿ

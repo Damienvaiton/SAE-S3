@@ -67,9 +67,6 @@ public class ClassTransitoireViewModel {
         if(graphViewModel!=null){
             graphViewModel.updateData(data);
         }
-        if(settingsAdminViewModel!=null){
-            settingsAdminViewModel.updateData(data);
-        }
     }
     public void ajoutESP(String esp, @Nullable String nom){
         System.out.println("ajout ESP");

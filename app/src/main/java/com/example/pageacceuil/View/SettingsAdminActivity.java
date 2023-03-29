@@ -10,7 +10,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -94,7 +93,12 @@ public class SettingsAdminActivity extends AppCompatActivity implements View.OnC
                 dialog.cancel();
             }
         });
-
+settingsAdminViewModel.getListenerData().observe(this, new Observer<Data>() {
+    @Override
+    public void onChanged(Data data) {
+        dataRecyclerAdapter.notifyDataSetChanged();
+    }
+});
         settingsAdminViewModel.getHashmapESP().observe(this, new Observer<ArrayList<String>>() {
             @Override
             public void onChanged(ArrayList<String> strings) {
@@ -105,12 +109,8 @@ public class SettingsAdminActivity extends AppCompatActivity implements View.OnC
                 adapter.notifyDataSetChanged();
             }
         });
-        settingsAdminViewModel.getData().observe(this, new Observer<Data>() {
-            @Override
-            public void onChanged(Data data) {
-                adapter.notifyDataSetChanged();
-            }
-        });
+
+
 
 
         pop.show();
@@ -118,7 +118,7 @@ public class SettingsAdminActivity extends AppCompatActivity implements View.OnC
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                ESP esp=new ESP("A8:03:2A:EA:EE:CC",null);
+                ESP esp=new ESP(parent.,null);
                 settingsAdminViewModel.changeESP(esp);
                 settingsAdminViewModel.setListenerESP(); // Mettre tout les listener dedans
             }
@@ -142,16 +142,13 @@ public class SettingsAdminActivity extends AppCompatActivity implements View.OnC
             case R.id.rennoméA:
                 PopUpDialog customPopup = new PopUpDialog(this);
                 customPopup.build("Rennomé l'esp", "Nom", 1);
-                customPopup.getYesButton().setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (!customPopup.getString().equals("")) {
-                            settingsAdminViewModel.renameESP(customPopup.getString());
-                            customPopup.dismiss();
-                        } else {
-                            Toast.makeText(getApplicationContext(), "Merci d'entrer un nom", Toast.LENGTH_SHORT).show();
+                customPopup.getYesButton().setOnClickListener(view -> {
+                    if (!customPopup.getString().equals("")) {
+                        settingsAdminViewModel.renameESP(customPopup.getString());
+                        customPopup.dismiss();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Merci d'entrer un nom", Toast.LENGTH_SHORT).show();
 
-                        }
                     }
                 });
                 customPopup.getNoButton().setOnClickListener(new View.OnClickListener() {
@@ -173,12 +170,7 @@ public class SettingsAdminActivity extends AppCompatActivity implements View.OnC
 
                     }
                 });
-                deletePopup.getNoButton().setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        deletePopup.dismiss();
-                    }
-                });
+                deletePopup.getNoButton().setOnClickListener(view -> deletePopup.dismiss());
                 break;
             case R.id.grouperA:
                 break;

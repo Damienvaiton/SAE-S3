@@ -1,0 +1,42 @@
+
+>
+java:S1604Y"(Make this anonymous inner class a lambda(ÿŒÙ…
+C
+java:S1604d"(Make this anonymous inner class a lambda(¥ ûğüÿÿÿÿ
+>
+java:S1604l"(Make this anonymous inner class a lambda( Ì¤‰
+D
+java:S1604Õ"(Make this anonymous inner class a lambda(Ş¡ó¢úÿÿÿÿ
+o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(¦ü
+V	java:S125"<This block of commented-out lines of code should be removed.(åõÕÜûÿÿÿÿ
+d	java:S116E"ORename this field "Axis" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(½¿Ç¯
+i
+java:S1450E"SRemove the "Axis" field and declare it as a local variable in the relevant methods.(½¿Ç¯
+m
+java:S1450@"XRemove the "bottomNav" field and declare it as a local variable in the relevant methods.(²¨Ç
+y
+java:S1450A"cRemove the "bottomNavigationView" field and declare it as a local variable in the relevant methods.(ê¥ÎÚ
+p
+java:S14509"URemove the "boxCO2" field and declare it as a local variable in the relevant methods.(‚•š­ıÿÿÿÿ
+q
+java:S1450;"VRemove the "boxHumi" field and declare it as a local variable in the relevant methods.(‡Àªšøÿÿÿÿ
+p
+java:S1450<"URemove the "boxLux" field and declare it as a local variable in the relevant methods.(µŞ™–úÿÿÿÿ
+o
+java:S14508"TRemove the "boxO2" field and declare it as a local variable in the relevant methods.(ñ©·£şÿÿÿÿ
+l
+java:S1450:"VRemove the "boxTemp" field and declare it as a local variable in the relevant methods.(ÏÛÕß
+g
+java:S1450G"QRemove the "xl" field and declare it as a local variable in the relevant methods.(Ì·™ø
+]
+java:S1874)"HRemove this use of "OnNavigationItemSelectedListener"; it is deprecated.(‚æ‹P
+b
+java:S1874„"KRemove this use of "setOnNavigationItemSelectedListener"; it is deprecated.(³ò»Ã
+˜
+java:S1186Á"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(÷”Öš
+f
+java:S1874“"JDon't override a deprecated method or explicitly mark it as "@Deprecated".(œƒƒ©ùÿÿÿÿ
+8
+java:S1116®"Remove this empty statement.(ôŸìúÿÿÿÿ
+R	java:S125°"<This block of commented-out lines of code should be removed.(İë¸ï
+=	java:S131Ë""Add a default case to this switch.(×“¾ñùÿÿÿÿ

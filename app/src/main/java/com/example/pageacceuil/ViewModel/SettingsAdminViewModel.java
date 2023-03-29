@@ -1,6 +1,7 @@
 package com.example.pageacceuil.ViewModel;
 
 import androidx.annotation.Nullable;
+import androidx.databinding.ObservableList;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -12,15 +13,19 @@ import com.example.pageacceuil.Model.ListData;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 public class SettingsAdminViewModel extends ViewModel {
     private HashMap<String, String> hashmapESP;
     private FirebaseAccess database;
 
     private ClassTransitoireViewModel transit;
-    private MutableLiveData<Data> recyclerListener;
 
+    MutableLiveData<String> listenerTempsAdmin = new MutableLiveData<>();
+    MutableLiveData<ArrayList<ListData>> listenerDataAdmin = new MutableLiveData<>();
+
+    MutableLiveData<ArrayList<String>> listener = new MutableLiveData<>();
+
+    MutableLiveData<Data> listenerData = new MutableLiveData<>();
 
 
 
@@ -30,8 +35,36 @@ public class SettingsAdminViewModel extends ViewModel {
 
         transit=ClassTransitoireViewModel.getInstance();
         transit.setSettingsAdminViewModel(this);
+
         database.getAllESP();
-        hashmapESP = new HashMap<String, String>();
+        hashmapESP = new HashMap<>();
+
+        ListData.getInstance().getListAllData().addOnListChangedCallback(new ObservableList.OnListChangedCallback() {
+            @Override
+            public void onChanged(ObservableList sender) {
+
+            }
+
+            @Override
+            public void onItemRangeChanged(ObservableList sender, int positionStart, int itemCount) {
+
+            }
+
+            @Override
+            public void onItemRangeInserted(ObservableList sender, int positionStart, int itemCount) {
+                listenerData.postValue((Data) sender.get(positionStart));
+            }
+
+            @Override
+            public void onItemRangeMoved(ObservableList sender, int fromPosition, int toPosition, int itemCount) {
+
+            }
+
+            @Override
+            public void onItemRangeRemoved(ObservableList sender, int positionStart, int itemCount) {
+
+            }
+        });
     }
     public void setListenerESP() {
       //  ESP.getInstance().redefinition(hashmapESP.get(value));
@@ -41,38 +74,25 @@ public class SettingsAdminViewModel extends ViewModel {
     }
     private final MutableLiveData<String> liveDataRefresh = new MutableLiveData<>();
 
+    public LiveData<Data> getListenerData(){return listenerData;}
     public void updateRefresh(String refresh){
         liveDataRefresh.postValue(refresh);
     }
 
-    public LiveData getData(){return recyclerListener;}
-    public void updateData(Data data){
-        if (data!=null) {
-            recyclerListener.postValue(data);
-        }
 
-    }
-
-    public LiveData<Data> updateRecycler() {
-        return recyclerListener;
-    }
     public LiveData<ArrayList<ListData>> getDataAdmin() {
-        MutableLiveData<ArrayList<ListData>> listenerDataAdmin = new MutableLiveData<>();
-            MutableLiveData<Data> listenerData = new MutableLiveData<>();
+        ;
             database.loadInData();
         //   listenerData.postValue(FirebaseAccess.getInstance().getNewData());
             return listenerDataAdmin;
         }
 
     public LiveData<String> getTempsAdmin() {
-        MutableLiveData<String> listenerTempsAdmin = new MutableLiveData<>();
+
         //listenerTempsAdmin.postValue(currentEsp.getTauxRafrai());
         return listenerTempsAdmin;
     }
 
-
-
-        MutableLiveData<ArrayList<String>> listener = new MutableLiveData<>();
         ArrayList<String> tabESP = new ArrayList<>();
 
         public LiveData<ArrayList<String>> getHashmapESP() {
@@ -138,9 +158,7 @@ public class SettingsAdminViewModel extends ViewModel {
 
 
 
- public void getDonnées(){
-        database.loadInData();
- }
+
 
 
 }

@@ -1,0 +1,49 @@
+
+D
+java:S1604Œ"(Make this anonymous inner class a lambda(ÁıÔâüÿÿÿÿ
+?
+java:S1604•"(Make this anonymous inner class a lambda(çÃóğ
+o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(¦ü
+e	java:S116&"PRename this field "max_g" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÚÁÅ
+e	java:S116'"PRename this field "min_g" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Û’¯Û
+j	java:S116("PRename this field "max_d" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ò¤—ƒûÿÿÿÿ
+e	java:S116)"PRename this field "min_d" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ù¶ß
+f	java:S116,"RRename this field "b_droit" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¯ò÷
+h	java:S116-"SRename this field "b_gauche" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ê÷ùÒ
+n	java:S116."TRename this field "b_refresh" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(“ùí–ıÿÿÿÿ
+o	java:S1161"URename this field "auto_droit" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(áéûÔùÿÿÿÿ
+p	java:S1162"VRename this field "auto_gauche" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¢¦Ÿ”ûÿÿÿÿ
+k
+java:S1450,"VRemove the "b_droit" field and declare it as a local variable in the relevant methods.(¯ò÷
+m
+java:S1450-"WRemove the "b_gauche" field and declare it as a local variable in the relevant methods.(ê÷ùÒ
+s
+java:S1450."XRemove the "b_refresh" field and declare it as a local variable in the relevant methods.(“ùí–ıÿÿÿÿ
+p
+java:S14500"URemove the "nomEsp" field and declare it as a local variable in the relevant methods.(ÀŞû–ÿÿÿÿÿ
+u
+java:S1450"ZRemove the "textAxeLeft" field and declare it as a local variable in the relevant methods.(¥Àâíüÿÿÿÿ
+q
+java:S1450 "[Remove the "textAxeRight" field and declare it as a local variable in the relevant methods.(×º÷×
+m
+java:S3776<"RRefactor this method to reduce its Cognitive Complexity from 24 to the 15 allowed.(¨Œşÿÿÿÿ
+R
+java:S1874b"<Remove this use of "getSerializableExtra"; it is deprecated.(ÄµÒË
+R
+java:S1874e"<Remove this use of "getSerializableExtra"; it is deprecated.(Â¥á
+N	java:S106g"9Replace this use of System.out or System.err by a logger.(ıÕî–
+C
+java:S1125™"'Remove the unnecessary boolean literal.(‚¤ÏÖûÿÿÿÿ
+?
+java:S1185¬"(Remove this method to simply inherit it.(ÍÙ÷¢
+f
+java:S1874°"JDon't override a deprecated method or explicitly mark it as "@Deprecated".(œƒƒ©ùÿÿÿÿ
+8	java:S131¹""Add a default case to this switch.(ºÖ
+B
+java:S1068!",Remove this unused "choixESP" private field.(éÔ¹İ
+F
+java:S1068""+Remove this unused "nameEsp" private field.(Ó â–øÿÿÿÿ
+I
+java:S10687".Remove this unused "valAxeLeft" private field.(åú¼úÿÿÿÿ
+J
+java:S10688"/Remove this unused "valAxeRight" private field.(ÑŸ£šûÿÿÿÿ

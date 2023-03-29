@@ -1,0 +1,51 @@
+
+C
+java:S16043"(Make this anonymous inner class a lambda(Â‡ï ûÿÿÿÿ
+C
+java:S1604F"(Make this anonymous inner class a lambda(Â‡ï ûÿÿÿÿ
+>
+java:S1604U"(Make this anonymous inner class a lambda(»ä”ö
+>
+java:S1604M"(Make this anonymous inner class a lambda(ìóª
+=
+java:S1604h"(Make this anonymous inner class a lambda(Á¯û
+o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(¦ü
+h	java:S116!"SRename this field "ChoixTri" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Å’Ş´
+i	java:S116""ORename this field "Desc" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(é”íúÿÿÿÿ
+v
+java:S1450"[Remove the "recyclerView" field and declare it as a local variable in the relevant methods.(¿á© ıÿÿÿÿ
+n
+java:S1450"SRemove the "trid" field and declare it as a local variable in the relevant methods.(æƒÌ“ÿÿÿÿÿ
+u
+java:S1450'"_Remove the "vueDataViewModel" field and declare it as a local variable in the relevant methods.(‰€è×
+I
+java:S1948".Make "recyclerView" transient or serializable.(¿á© ıÿÿÿÿ
+C
+java:S1948"-Make "btnTriChoix" transient or serializable.(ïìã±
+A
+java:S1948"&Make "trid" transient or serializable.(æƒÌ“ÿÿÿÿÿ
+B
+java:S1948",Make "switchDesc" transient or serializable.(÷Ä°‹
+K
+java:S1948 "5Make "dataRecyclerAdapter" transient or serializable.(ú’‡Õ
+H
+java:S1948'"2Make "vueDataViewModel" transient or serializable.(‰€è×
+m
+java:S3776,"RRefactor this method to reduce its Cognitive Complexity from 22 to the 15 allowed.(¨Œşÿÿÿÿ
+g	java:S128"LEnd this switch case with an unconditional break, return or throw statement.(´Òıÿÿÿÿ
+g	java:S128…"LEnd this switch case with an unconditional break, return or throw statement.(ÛÑ—‘ıÿÿÿÿ
+a	java:S128}"LEnd this switch case with an unconditional break, return or throw statement.(‰·¤‹
+f	java:S128u"LEnd this switch case with an unconditional break, return or throw statement.(«ô½Âøÿÿÿÿ
+a	java:S128m"LEnd this switch case with an unconditional break, return or throw statement.(·óŒ©
+a
+java:S1858l"K"ChoixTri" is already a string, there's no need to call "toString()" on it.(¯§Šş
+v
+java:S3923n"[Remove this conditional structure or edit its code blocks so that they're not all the same.(š“’µıÿÿÿÿ
+v
+java:S3923v"[Remove this conditional structure or edit its code blocks so that they're not all the same.(š“’µıÿÿÿÿ
+v
+java:S3923~"[Remove this conditional structure or edit its code blocks so that they're not all the same.(š“’µıÿÿÿÿ
+w
+java:S3923†"[Remove this conditional structure or edit its code blocks so that they're not all the same.(š“’µıÿÿÿÿ
+w
+java:S3923"[Remove this conditional structure or edit its code blocks so that they're not all the same.(š“’µıÿÿÿÿ
