@@ -224,7 +224,7 @@ public class FirebaseAccess implements DataUpdate {
                         transitoireViewModel.updateData(dataSnapshot.getValue(Data.class));
                         listData.list_add_data(dataSnapshot.getValue(Data.class));
                     }
-                    updateLiveTabData(listData.getListData());
+                    updateLiveTabData(listData.getListAllData());
                 } else {
                     System.out.println("Impossible d'accéder au données précharge");
                 }

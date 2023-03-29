@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.saes3.Model.Axe;
 import com.example.saes3.R;
 import com.example.saes3.Model.Data;
 import com.example.saes3.ViewModel.GraphViewModel;
@@ -32,11 +33,12 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.bottomnavigation.BottomNavigationView.OnNavigationItemSelectedListener;
 
 import java.text.DecimalFormat;
 
 //, DataUpdate
-public class GraphiqueActivity extends AppCompatActivity implements View.OnClickListener, BottomNavigationView.OnNavigationItemSelectedListener {
+public class GraphiqueActivity extends AppCompatActivity implements View.OnClickListener, OnNavigationItemSelectedListener {
 
     private LineChart graph;
     /**
