@@ -21,7 +21,7 @@ import com.example.saes3.Model.Axe;
 import com.example.saes3.Model.Data;
 import com.example.saes3.R;
 import com.example.saes3.ViewModel.GraphViewModel;
-import com.example.saes3.ViewModel.XAxisValueFormatter;
+import com.example.saes3.Util.XAxisValueFormatter;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;

@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.saes3.Model.Data;
 import com.example.saes3.R;
 import com.example.saes3.ViewModel.VueDataViewModel;
-import com.example.saes3.ViewModel.dataRecyclerAdapter;
+import com.example.saes3.Util.dataRecyclerAdapter;
 
 import java.io.Serializable;
 import java.util.ArrayList;

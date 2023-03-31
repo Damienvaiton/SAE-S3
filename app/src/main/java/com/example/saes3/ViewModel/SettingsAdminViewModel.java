@@ -11,6 +11,7 @@ import com.example.saes3.Model.Data;
 import com.example.saes3.Model.ESP;
 import com.example.saes3.Model.FirebaseAccess;
 import com.example.saes3.Model.ListData;
+import com.example.saes3.Util.ClassTransitoireViewModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;

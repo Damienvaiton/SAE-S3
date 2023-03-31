@@ -1,8 +1,12 @@
-package com.example.saes3.ViewModel;
+package com.example.saes3.Util;
 
 import androidx.annotation.Nullable;
 
 import com.example.saes3.Model.Data;
+import com.example.saes3.ViewModel.AccueilViewModel;
+import com.example.saes3.ViewModel.GraphViewModel;
+import com.example.saes3.ViewModel.SettingsAdminViewModel;
+import com.example.saes3.ViewModel.SettingsEtuViewModel;
 
 public class ClassTransitoireViewModel {
     private GraphViewModel graphViewModel;

@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.saes3.Model.FirebaseAccess;
+import com.example.saes3.Util.ClassTransitoireViewModel;
 
 public class SettingsEtuViewModel extends ViewModel {
 

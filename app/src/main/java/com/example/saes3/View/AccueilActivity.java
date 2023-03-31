@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.saes3.R;
+import com.example.saes3.Util.notif;
 import com.example.saes3.ViewModel.AccueilViewModel;
 
 import java.util.ArrayList;
@@ -74,6 +75,9 @@ public class AccueilActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         accueilViewModel = new ViewModelProvider(this).get(AccueilViewModel.class);
+        notif a=new notif();
+        a.createNotificationChannel(this);
+        a.creaNotif(this);
         spinner = findViewById(R.id.SpinnerID);
         btncoEtu = findViewById(R.id.Gobtn);
         btnCoAdmin = findViewById(R.id.adminbtnmain);
