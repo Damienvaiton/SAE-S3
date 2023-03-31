@@ -45,8 +45,7 @@
         android:layout_marginEnd="68dp"
         android:ems="10"
         android:gravity="center"
-        android:text="admin"
-
+        android:hint="Identifiant"
         android:inputType="text"
         android:singleLine="true"
         app:layout_constraintBottom_toTopOf="@+id/coMdp"
@@ -63,9 +62,8 @@
         android:layout_marginBottom="46dp"
         android:ems="10"
         android:gravity="center"
-
+        android:hint="Mot de passe"
         android:singleLine="true"
-        android:text="admin"
         android:inputType="textPassword"
         app:layout_constraintBottom_toTopOf="@+id/coBtn"
         app:layout_constraintEnd_toEndOf="parent"
