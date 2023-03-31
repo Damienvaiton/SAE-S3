@@ -2,7 +2,7 @@ package com.example.saes3.Model;
 
 
 public class ESP {
-    private static volatile ESP instance;
+    private static ESP instance;
     private String macEsp;
     private String nomEsp;
 

@@ -6,8 +6,6 @@ import com.example.saes3.Model.FirebaseAccess;
 
 
 public class AppApplication extends Application {
-    //  private FirebaseAuth mAuth;
-
     @Override
     public void onCreate() {
         super.onCreate();

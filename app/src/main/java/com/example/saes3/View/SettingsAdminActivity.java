@@ -1,7 +1,6 @@
 
 package com.example.saes3.View;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -83,12 +82,9 @@ public class SettingsAdminActivity extends AppCompatActivity implements View.OnC
 
         AlertDialog.Builder pop = new AlertDialog.Builder(SettingsAdminActivity.this);
         pop.setMessage("Assurez-vous qu'avant toute modification l'ESP est éteint.");
-        pop.setPositiveButton("Compris", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(getApplicationContext(), "Prêt", Toast.LENGTH_SHORT).show();
-                dialog.cancel();
-            }
+        pop.setPositiveButton("Compris", (dialog, which) -> {
+            Toast.makeText(getApplicationContext(), "Prêt", Toast.LENGTH_SHORT).show();
+            dialog.cancel();
         });
 
 settingsAdminViewModel.getListenerData().observe(this, new Observer<Data>() {
@@ -97,16 +93,14 @@ settingsAdminViewModel.getListenerData().observe(this, new Observer<Data>() {
         dataRecyclerAdapter.notifyDataSetChanged();
     }
 });
-        settingsAdminViewModel.getHashmapESP().observe(this, new Observer<ArrayList<String>>() {
-            @Override
-            public void onChanged(ArrayList<String> strings) {
-                tabESP.clear();
-                for (String ESP : strings) {
-                    tabESP.add(ESP);
-                }
-                adapter.notifyDataSetChanged();
+        settingsAdminViewModel.getHashmapESP().observe(this, strings -> {
+            tabESP.clear();
+            for (String ESP : strings) {
+                tabESP.add(ESP);
             }
+            adapter.notifyDataSetChanged();
         });
+        settingsAdminViewModel.getTempsAdmin().observe(this, s -> refresh.setText(s));
 
 
 
@@ -142,24 +136,16 @@ settingsAdminViewModel.getListenerData().observe(this, new Observer<Data>() {
 
                         }
                 });
-                customPopup.getNoButton().setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        customPopup.dismiss();
-                    }
-                });
+                customPopup.getNoButton().setOnClickListener(view -> customPopup.dismiss());
                 //Faire dans pop up
                 break;
             case R.id.suppA:
                 PopUpDialog deletePopup = new PopUpDialog(this);
                 deletePopup.build("Supprimer l'esp " + choixESP);
-                deletePopup.getYesButton().setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        settingsAdminViewModel.suppESP();
-                        deletePopup.dismiss();
+                deletePopup.getYesButton().setOnClickListener(view -> {
+                    settingsAdminViewModel.suppESP();
+                    deletePopup.dismiss();
 
-                    }
                 });
                 deletePopup.getNoButton().setOnClickListener(view -> deletePopup.dismiss());
                 break;
@@ -176,16 +162,11 @@ settingsAdminViewModel.getListenerData().observe(this, new Observer<Data>() {
             case R.id.reiniA:
                 PopUpDialog popReini = new PopUpDialog(this);
                 popReini.build("En êtes vous sûr?");
-                popReini.getYesButton().setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        settingsAdminViewModel.resetESP();
-                        popReini.dismiss();
-                        dataRecyclerAdapter.notifyItemRangeRemoved(0, dataRecyclerAdapter.getItemCount());
-                        recyclerView.invalidate();
-                    }
-
-
+                popReini.getYesButton().setOnClickListener(view -> {
+                    settingsAdminViewModel.resetESP();
+                    popReini.dismiss();
+                    dataRecyclerAdapter.notifyItemRangeRemoved(0, dataRecyclerAdapter.getItemCount());
+                    recyclerView.invalidate();
                 });
                 popReini.getNoButton().setOnClickListener(new View.OnClickListener() {
                     @Override

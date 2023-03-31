@@ -4,11 +4,10 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.saes3.Model.ESP;
 import com.example.saes3.Model.FirebaseAccess;
 
 public class SettingsEtuViewModel extends ViewModel {
-    private final MutableLiveData<String> listenerTemps = new MutableLiveData<>();
+
     private FirebaseAccess acess;
 
     private ClassTransitoireViewModel transit;

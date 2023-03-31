@@ -69,7 +69,6 @@ public class ClassTransitoireViewModel {
 
     }
     public void ajoutESP(String esp, @Nullable String nom){
-        System.out.println("ajout ESP");
         if(accueilViewModel!=null){
             accueilViewModel.addESP(esp,nom);
         }
@@ -89,9 +88,6 @@ public class ClassTransitoireViewModel {
         if(accueilViewModel!=null){
             accueilViewModel.creaESP(pos);
         }
-       /* if(settingsAdminViewModel!=null){
-            settingsAdminViewModel.creaESP(pos);
-        }*/
     }
 
 

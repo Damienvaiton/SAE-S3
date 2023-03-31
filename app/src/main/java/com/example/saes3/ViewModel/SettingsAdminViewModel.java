@@ -44,12 +44,12 @@ public class SettingsAdminViewModel extends ViewModel {
         ListData.getInstance().getListAllData().addOnListChangedCallback(new ObservableList.OnListChangedCallback() {
             @Override
             public void onChanged(ObservableList sender) {
-
+                // TODO document why this method is empty
             }
 
             @Override
             public void onItemRangeChanged(ObservableList sender, int positionStart, int itemCount) {
-
+// TODO document why this method is empty
             }
 
             @Override
@@ -59,17 +59,16 @@ public class SettingsAdminViewModel extends ViewModel {
 
             @Override
             public void onItemRangeMoved(ObservableList sender, int fromPosition, int toPosition, int itemCount) {
-
+// TODO document why this method is empty
             }
 
             @Override
             public void onItemRangeRemoved(ObservableList sender, int positionStart, int itemCount) {
-
+// TODO document why this method is empty
             }
         });
     }
     public void setListenerESP() {
-        //  ESP.getInstance().redefinition(hashmapESP.get(value));
         database.setRealtimeDataListener();
         database.loadInData();
         database.setEspTimeListener();
@@ -85,13 +84,10 @@ public class SettingsAdminViewModel extends ViewModel {
     public LiveData<ArrayList<ListData>> getDataAdmin() {
         ;
         database.loadInData();
-        //   listenerData.postValue(FirebaseAccess.getInstance().getNewData());
         return listenerDataAdmin;
     }
 
     public LiveData<String> getTempsAdmin() {
-
-        //listenerTempsAdmin.postValue(currentEsp.getTauxRafrai());
         return listenerTempsAdmin;
     }
 
