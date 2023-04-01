@@ -195,7 +195,7 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
                 } else {
                     label = "X =";
                 }
-                Toast.makeText(getApplicationContext(), "Heure = " + graphViewModel.returnValue().recup_data((int) h.getX() - 1).getTemps()+ ", " + label + h.getY(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Heure = " + graphViewModel.returnValue().recup_data((int) h.getX()+1 ).getTemps()+ ", " + label + h.getY(), Toast.LENGTH_SHORT).show();
             }
         });
 
