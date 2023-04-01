@@ -35,14 +35,12 @@ public class SplashActivity extends AppCompatActivity {
         splashViewModel = new ViewModelProvider(this).get(SplashViewModel.class);
         splashViewModel.getAppReady().observe(this, aBoolean -> ready=aBoolean);
 
-<<<<<<< HEAD
         splash = findViewById(R.id.imageplante);
         text = findViewById(R.id.nameAPP);
 
         splashViewModel.getMobileStatus().observe(this, aBoolean -> isMobileConn=aBoolean);
         splashViewModel.getWifiStatus().observe(this, aBoolean -> isWifiConn=aBoolean);
-=======
->>>>>>> Alexis-v2
+
 
 
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.animimgsplashscreen);
