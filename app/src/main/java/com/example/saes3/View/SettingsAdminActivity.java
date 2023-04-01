@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.saes3.Model.Data;
+import com.example.saes3.Model.ListData;
 import com.example.saes3.R;
 import com.example.saes3.ViewModel.SettingsAdminViewModel;
 import com.example.saes3.Util.dataRecyclerAdapter;
@@ -84,12 +85,15 @@ public class SettingsAdminActivity extends AppCompatActivity implements View.OnC
             dialog.cancel();
         });
         pop.show();
+
+        // TODO Observer des différentes données affiché
 settingsAdminViewModel.getListenerData().observe(this, new Observer<Data>() {
     @Override
     public void onChanged(Data data) {
         dataRecyclerAdapter.notifyDataSetChanged();
     }
 });
+
         settingsAdminViewModel.getHashmapESP().observe(this, strings -> {
             tabESP.clear();
             for (String ESP : strings) {
@@ -99,15 +103,16 @@ settingsAdminViewModel.getListenerData().observe(this, new Observer<Data>() {
         });
 
 
-        settingsAdminViewModel.getTempsAdmin().observe(this, s -> refresh.setText(s));
+        settingsAdminViewModel.getTempsAdmin().observe(this, s -> refresh.setHint(s));
 
 
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                dataRecyclerAdapter.notifyItemRangeRemoved(0,dataRecyclerAdapter.getItemCount());
-                settingsAdminViewModel.creaESP(position);
+                settingsAdminViewModel.clearTab();
+dataRecyclerAdapter.notifyDataSetChanged();
+            settingsAdminViewModel.creaESP(position);
                 settingsAdminViewModel.setListenerESP(); // Mettre tout les listener dedans
             }
 
@@ -181,5 +186,6 @@ settingsAdminViewModel.getListenerData().observe(this, new Observer<Data>() {
         }
 
     }
+
 }
 

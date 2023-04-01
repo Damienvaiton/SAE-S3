@@ -24,7 +24,6 @@ public class SettingsAdminViewModel extends ViewModel {
     private ClassTransitoireViewModel transit;
 
     MutableLiveData<String> listenerTempsAdmin = new MutableLiveData<>();
-    MutableLiveData<ArrayList<ListData>> listenerDataAdmin = new MutableLiveData<>();
 
     MutableLiveData<ArrayList<String>> listener = new MutableLiveData<>();
 
@@ -79,17 +78,15 @@ public class SettingsAdminViewModel extends ViewModel {
         liveDataRefresh.postValue(refresh);
     }
 
-
-    public LiveData<ArrayList<ListData>> getDataAdmin() {
-        ;
-        database.loadInData();
-        return listenerDataAdmin;
-    }
-
     public LiveData<String> getTempsAdmin() {
-        return listenerTempsAdmin;
+        return liveDataRefresh;
     }
 
+    public void clearTab(){
+        ListData.getInstance().list_supAll_data();
+
+
+    }
     ArrayList<String> tabESP = new ArrayList<>();
 
     public LiveData<ArrayList<String>> getHashmapESP() {
