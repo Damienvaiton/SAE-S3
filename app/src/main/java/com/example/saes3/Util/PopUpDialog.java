@@ -1,4 +1,4 @@
-package com.example.saes3.View;
+package com.example.saes3.Util;
 
 import android.app.Activity;
 import android.app.Dialog;

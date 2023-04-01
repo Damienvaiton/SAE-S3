@@ -87,5 +87,6 @@ public class Data extends ArrayList<Data> implements Serializable {
         message+=a.format(getLight()) + "L";
         message+=getTemps();
         return message;
+
     }
 }
