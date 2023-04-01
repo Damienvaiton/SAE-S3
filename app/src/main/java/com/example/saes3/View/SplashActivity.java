@@ -24,8 +24,8 @@ public class SplashActivity extends AppCompatActivity {
 
     TextView text;
     SplashViewModel splashViewModel=null;
-    boolean isWifiConn = false;
-    boolean isMobileConn = false;
+
+    boolean ready=false;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -33,12 +33,16 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
         splashViewModel = new ViewModelProvider(this).get(SplashViewModel.class);
+        splashViewModel.getAppReady().observe(this, aBoolean -> ready=aBoolean);
 
+<<<<<<< HEAD
         splash = findViewById(R.id.imageplante);
         text = findViewById(R.id.nameAPP);
 
         splashViewModel.getMobileStatus().observe(this, aBoolean -> isMobileConn=aBoolean);
         splashViewModel.getWifiStatus().observe(this, aBoolean -> isWifiConn=aBoolean);
+=======
+>>>>>>> Alexis-v2
 
 
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.animimgsplashscreen);
@@ -53,31 +57,38 @@ public class SplashActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         splashViewModel.checkCo();
-        if (isWifiConn || isMobileConn) {
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    transi();
-                }
-            }, 1000);
-        } else {
-            AlertDialog.Builder pop = new AlertDialog.Builder(AppApplication.getCurrentActivity());
-            pop.setMessage("Merci de vous connectez à internet");
-            pop.setPositiveButton("Fait", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    if (isMobileConn || isWifiConn) {
-                        dialog.cancel();
-                        transi();
+        Handler handlerTest=new Handler();
+        handlerTest.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (ready) {
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            transi();
+                        }
+                    }, 1000);
+                } else {
+                    AlertDialog.Builder pop = new AlertDialog.Builder(AppApplication.getCurrentActivity());
+                    pop.setMessage("Merci de vous connectez à internet");
+pop.setCancelable(false);
 
-                    } else {
-                        pop.show();
-                    }
+                    pop.setPositiveButton("Fait", (dialog, which) -> {
+                        splashViewModel.checkCo();
+                        if (ready) {
+                            dialog.cancel();
+                            transi();
+
+                        } else {
+                            pop.show();
+                        }
+                    });
+                    pop.show();
                 }
-            });
-            pop.show();
-        }
+            }
+        },1000);
+
     }
 
     public void transi() {
