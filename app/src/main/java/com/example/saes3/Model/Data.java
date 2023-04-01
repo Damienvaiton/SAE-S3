@@ -2,6 +2,8 @@ package com.example.saes3.Model;
 
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class Data extends ArrayList<Data> implements Serializable {
@@ -71,5 +73,18 @@ public class Data extends ArrayList<Data> implements Serializable {
 
     public void setTemps(String temps) {
         this.temps = temps;
+    }
+
+
+    @Override
+    public String toString() {
+        DecimalFormat a = new DecimalFormat("##.###");
+        String message="";
+        message+=(a.format(getTemperature()) + "° | ");
+        message+=a.format(getHumidite()) + "% | ";
+        message+=a.format(getCO2()) + "% | ";
+        message+=a.format(getO2()) + "% | ";
+        message+=a.format(getLight()) + "L";
+        return message;
     }
 }

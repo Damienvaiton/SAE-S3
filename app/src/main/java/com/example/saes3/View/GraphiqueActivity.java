@@ -20,6 +20,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.saes3.Model.Axe;
 import com.example.saes3.Model.Data;
 import com.example.saes3.R;
+import com.example.saes3.Util.notif;
 import com.example.saes3.ViewModel.GraphViewModel;
 import com.example.saes3.Util.XAxisValueFormatter;
 import com.github.mikephil.charting.charts.LineChart;
@@ -93,7 +94,10 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
          */
         graphViewModel.getMoments().observe(this, s -> valTemp.setText(s));
 
-        graphViewModel.getData().observe(this, this::actuValues);
+        graphViewModel.getData().observe(this, (Observer<Data>) newData-> {
+            actuValues(newData);
+            notif.getInstance().creaNotif(newData);
+        });
 
 
         valTemp = findViewById(R.id.viewTime);

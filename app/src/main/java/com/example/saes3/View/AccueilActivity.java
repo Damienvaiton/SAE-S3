@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.saes3.R;
+import com.example.saes3.Util.notif;
 import com.example.saes3.ViewModel.AccueilViewModel;
 
 import java.util.ArrayList;
@@ -80,6 +81,7 @@ public class AccueilActivity extends AppCompatActivity {
         tabESP = new ArrayList<>();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(AccueilActivity.this, android.R.layout.simple_spinner_dropdown_item, tabESP);
         spinner.setAdapter(adapter);
+
 
         /**
          * Observe a LiveData and recreate tabESP to keep up to date with ESP available in the database

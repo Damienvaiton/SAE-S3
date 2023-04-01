@@ -76,6 +76,7 @@ public class GraphViewModel extends ViewModel {
         acess.setRealtimeDataListener();
         acess.setEspTimeListener();
         listData = new ArrayList<>();
+
     }
 
     /**
