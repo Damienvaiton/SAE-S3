@@ -190,7 +190,6 @@
             android:layout_marginTop="2dp"
             android:gravity="center"
             android:inputType="numberDecimal"
-            android:text="2s"
             app:layout_constraintBottom_toTopOf="@+id/bottomNav"
             app:layout_constraintEnd_toEndOf="@+id/textView5"
             app:layout_constraintStart_toStartOf="@+id/textView5"

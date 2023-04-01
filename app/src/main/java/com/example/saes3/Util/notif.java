@@ -3,7 +3,10 @@ package com.example.saes3.Util;
 import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 
@@ -48,10 +51,20 @@ Context context;
     }
 
     public void creaNotif(Data data) {
+        Intent intentAction = new Intent(context,ActionReceive.class);
+//This is optional if you have more than one buttons and want to differentiate between two
+       // intentAction.putExtra("action","actionName");
+        PendingIntent pIntentlogin = PendingIntent.getBroadcast(context, 1, intentAction, PendingIntent.FLAG_IMMUTABLE);
+
         builder.setSmallIcon(R.drawable.logo_app);
         builder.setContentTitle("Degré | Humi  |    O2    |    CO2    | Lumière");
         builder.setContentText(data.toString());
-        builder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
+        builder.setPriority(NotificationCompat.PRIORITY_LOW);
+        builder.addAction(R.drawable.logo_app, "Désactiver", pIntentlogin);
+        builder.setOngoing(true);
+        builder.setSound(null);
+        builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions

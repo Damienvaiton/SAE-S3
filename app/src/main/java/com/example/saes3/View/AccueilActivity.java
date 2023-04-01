@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.saes3.R;
 import com.example.saes3.Util.notif;
 import com.example.saes3.ViewModel.AccueilViewModel;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
@@ -112,10 +113,14 @@ public class AccueilActivity extends AppCompatActivity {
          * Launch ConnecAdminActivity if "btnCoAdmin" triggered
          */
         btncoEtu.setOnClickListener(view -> {
-            Intent graph;
-            accueilViewModel.creaESP(position);
-            graph = new Intent(AccueilActivity.this, GraphiqueActivity.class);
-            startActivity(graph);
+            if(!adapter.isEmpty() ) {
+                Intent graph;
+                accueilViewModel.creaESP(position);
+                graph = new Intent(AccueilActivity.this, GraphiqueActivity.class);
+                startActivity(graph);
+            }else{
+                Snackbar.make(btncoEtu,"Merci de patienter jusqu'à la fin du chargement",Snackbar.LENGTH_LONG).show();
+            }
         });
 
         /**
@@ -123,7 +128,6 @@ public class AccueilActivity extends AppCompatActivity {
          */
         btnCoAdmin.setOnClickListener(view -> {
             Intent admin;
-            accueilViewModel.creaESP(position);
             admin = new Intent(getApplicationContext(), ConnecAdminActivity.class);
             startActivity(admin);
 
