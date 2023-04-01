@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
+import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -44,7 +46,20 @@ public class SplashActivity extends AppCompatActivity {
 
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.animimgsplashscreen);
         Animation animation2 = AnimationUtils.loadAnimation(this, R.anim.animtxtsplashscreen);
-        splash.startAnimation(animation);
+
+
+        ScaleAnimation scaleAnimation = new ScaleAnimation(0.5f, 1.0f, 0.5f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        scaleAnimation.setDuration(1000);
+        animation2.setStartOffset(1000);
+
+
+        AnimationSet animationSet = new AnimationSet(true);
+
+        animationSet.addAnimation(animation);
+        animationSet.addAnimation(scaleAnimation);
+
+
+        splash.startAnimation(animationSet);
         text.startAnimation(animation2);
 
 
