@@ -57,7 +57,8 @@ Context context;
         PendingIntent pIntentlogin = PendingIntent.getBroadcast(context, 1, intentAction, PendingIntent.FLAG_IMMUTABLE);
 
         builder.setSmallIcon(R.drawable.logo_app);
-        builder.setContentTitle("Degré | Humi  |    O2    |    CO2    | Lumière");
+        builder.setContentTitle(data.getTemps());
+        //builder.setContentTitle("Degré | Humi  |    O2    |    CO2    | Lumière");
         builder.setContentText(data.toString());
         builder.setPriority(NotificationCompat.PRIORITY_LOW);
         builder.addAction(R.drawable.logo_app, "Désactiver", pIntentlogin);
