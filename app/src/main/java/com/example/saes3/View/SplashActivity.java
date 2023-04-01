@@ -38,8 +38,7 @@ public class SplashActivity extends AppCompatActivity {
         splash = findViewById(R.id.imageplante);
         text = findViewById(R.id.nameAPP);
 
-        splashViewModel.getMobileStatus().observe(this, aBoolean -> isMobileConn=aBoolean);
-        splashViewModel.getWifiStatus().observe(this, aBoolean -> isWifiConn=aBoolean);
+
 
 
 
@@ -85,7 +84,7 @@ pop.setCancelable(false);
                     pop.show();
                 }
             }
-        },1000);
+        },3000);
 
     }
 
