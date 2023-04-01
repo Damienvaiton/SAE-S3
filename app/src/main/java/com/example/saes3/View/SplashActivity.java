@@ -22,17 +22,16 @@ import com.example.saes3.ViewModel.SplashViewModel;
 
 public class SplashActivity extends AppCompatActivity {
     SplashViewModel splashViewModel=null;
-    boolean isWifiConn = false;
-    boolean isMobileConn = false;
+
+    boolean ready=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
         splashViewModel = new ViewModelProvider(this).get(SplashViewModel.class);
+        splashViewModel.getAppReady().observe(this, aBoolean -> ready=aBoolean);
 
-        splashViewModel.getMobileStatus().observe(this, aBoolean -> isMobileConn=aBoolean);
-        splashViewModel.getWifiStatus().observe(this, aBoolean -> isWifiConn=aBoolean);
 
 
     }
@@ -41,31 +40,36 @@ public class SplashActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         splashViewModel.checkCo();
-        if (isWifiConn || isMobileConn) {
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    transi();
-                }
-            }, 1000);
-        } else {
-            AlertDialog.Builder pop = new AlertDialog.Builder(AppApplication.getCurrentActivity());
-            pop.setMessage("Merci de vous connectez à internet");
-            pop.setPositiveButton("Fait", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    if (isMobileConn || isWifiConn) {
-                        dialog.cancel();
-                        transi();
+        Handler handlerTest=new Handler();
+        handlerTest.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (ready) {
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            transi();
+                        }
+                    }, 1000);
+                } else {
+                    AlertDialog.Builder pop = new AlertDialog.Builder(AppApplication.getCurrentActivity());
+                    pop.setMessage("Merci de vous connectez à internet");
+                    pop.setPositiveButton("Fait", (dialog, which) -> {
+                        splashViewModel.checkCo();
+                        if (ready) {
+                            dialog.cancel();
+                            transi();
 
-                    } else {
-                        pop.show();
-                    }
+                        } else {
+                            pop.show();
+                        }
+                    });
+                    pop.show();
                 }
-            });
-            pop.show();
-        }
+            }
+        },1000);
+
     }
 
     public void transi() {
