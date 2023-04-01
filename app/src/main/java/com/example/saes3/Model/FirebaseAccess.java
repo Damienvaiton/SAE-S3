@@ -26,7 +26,7 @@ public class FirebaseAccess implements DataUpdate {
 
     public static final String ESP32 = "ESP32";
     public static final String REFRESH_TIME = "TauxRafraichissement";
-    public static final String MEASURE = "MESURE";
+    public static final String MEASURE = "Mesure";
 
     private ClassTransitoireViewModel transitoireViewModel;
 
@@ -136,6 +136,7 @@ public class FirebaseAccess implements DataUpdate {
      * Query to the database for load datas already on
      */
     public boolean loadInData() {
+        System.out.println(currentESP.getMacEsp());
         ListData listData = ListData.getInstance();
         myRef.child(ESP32).child(currentESP.getMacEsp()).child(MEASURE).get().addOnCompleteListener(task -> {
             DataSnapshot tab = task.getResult();

@@ -54,8 +54,6 @@ public class SettingsAdminActivity extends AppCompatActivity implements View.OnC
 
         settingsAdminViewModel = new ViewModelProvider(this).get(SettingsAdminViewModel.class);
 
-        // Créer un esp
-
         rename = findViewById(R.id.rennoméA);
         delete = findViewById(R.id.suppA);
         refresh = findViewById(R.id.refreshA);
@@ -85,7 +83,7 @@ public class SettingsAdminActivity extends AppCompatActivity implements View.OnC
             Toast.makeText(getApplicationContext(), "Prêt", Toast.LENGTH_SHORT).show();
             dialog.cancel();
         });
-
+        pop.show();
 settingsAdminViewModel.getListenerData().observe(this, new Observer<Data>() {
     @Override
     public void onChanged(Data data) {
@@ -99,16 +97,16 @@ settingsAdminViewModel.getListenerData().observe(this, new Observer<Data>() {
             }
             adapter.notifyDataSetChanged();
         });
+
+
         settingsAdminViewModel.getTempsAdmin().observe(this, s -> refresh.setText(s));
 
 
 
-
-        pop.show();
-
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                dataRecyclerAdapter.notifyItemRangeRemoved(0,dataRecyclerAdapter.getItemCount());
                 settingsAdminViewModel.creaESP(position);
                 settingsAdminViewModel.setListenerESP(); // Mettre tout les listener dedans
             }
