@@ -86,13 +86,7 @@ public class SettingsAdminActivity extends AppCompatActivity implements View.OnC
         });
         pop.show();
 
-        // TODO Observer des différentes données affiché
-settingsAdminViewModel.getListenerData().observe(this, new Observer<Data>() {
-    @Override
-    public void onChanged(Data data) {
-        dataRecyclerAdapter.notifyDataSetChanged();
-    }
-});
+settingsAdminViewModel.getListenerData().observe(this, data -> dataRecyclerAdapter.notifyDataSetChanged());
 
         settingsAdminViewModel.getHashmapESP().observe(this, strings -> {
             tabESP.clear();
@@ -170,12 +164,7 @@ dataRecyclerAdapter.notifyDataSetChanged();
                     dataRecyclerAdapter.notifyItemRangeRemoved(0, dataRecyclerAdapter.getItemCount());
                     recyclerView.invalidate();
                 });
-                popReini.getNoButton().setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        popReini.dismiss();
-                    }
-                });
+                popReini.getNoButton().setOnClickListener(view -> popReini.dismiss());
 
                 break;
 

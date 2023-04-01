@@ -329,31 +329,27 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
                 default:
                     throw new IllegalStateException("Unexpected value: " + v.getId());
             }
+        } catch (NullPointerException e) {
+            Toast.makeText(getApplicationContext(), "Aucune données reçu pour le moment", Toast.LENGTH_SHORT).show();
+
+        } catch (IndexOutOfBoundsException e) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Erreur");
+            builder.setMessage("VOus avez une erreur de données dans la base de données\n" +
+                    "Veuillez identifier l'erreur et la corriger");
+
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
         } catch (Exception e) {
-            if (e instanceof NullPointerException) {
-                Toast.makeText(getApplicationContext(), "Aucune données reçu pour le moment", Toast.LENGTH_SHORT).show();
-            }else if (e instanceof IllegalArgumentException) {
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("Erreur");
-                builder.setMessage("VOus avez une erreur de données dans la base de données\n" +
-                        "Veuillez identifier l'erreur et la corriger");
-
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-
-
-
-            }
-
-            else {
-                Toast.makeText(getApplicationContext(), "Erreur inconnue", Toast.LENGTH_SHORT).show();
-            }
+            Toast.makeText(getApplicationContext(), "Erreur inconnue", Toast.LENGTH_SHORT).show();
         }
+
+
     }
 }
