@@ -1,38 +1,50 @@
 package com.example.saes3.View;
 
-import android.content.Context;
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.Network;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
-import android.window.SplashScreen;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.saes3.AppApplication;
 import com.example.saes3.R;
-import com.example.saes3.ViewModel.GraphViewModel;
 import com.example.saes3.ViewModel.SplashViewModel;
 
 public class SplashActivity extends AppCompatActivity {
+
+    ImageView splash;
+
+    TextView text;
     SplashViewModel splashViewModel=null;
     boolean isWifiConn = false;
     boolean isMobileConn = false;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
         splashViewModel = new ViewModelProvider(this).get(SplashViewModel.class);
 
+        splash = findViewById(R.id.imageplante);
+        text = findViewById(R.id.nameAPP);
+
         splashViewModel.getMobileStatus().observe(this, aBoolean -> isMobileConn=aBoolean);
         splashViewModel.getWifiStatus().observe(this, aBoolean -> isWifiConn=aBoolean);
+
+
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.animimgsplashscreen);
+        Animation animation2 = AnimationUtils.loadAnimation(this, R.anim.animtxtsplashscreen);
+        splash.startAnimation(animation);
+        text.startAnimation(animation2);
 
 
     }
