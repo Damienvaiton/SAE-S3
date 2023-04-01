@@ -1,6 +1,7 @@
 package com.example.saes3.View;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -13,14 +14,17 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.saes3.R;
 import com.example.saes3.Model.Axe;
 import com.example.saes3.Model.Data;
-import com.example.saes3.R;
 import com.example.saes3.Util.notif;
+
 import com.example.saes3.ViewModel.GraphViewModel;
 import com.example.saes3.Util.XAxisValueFormatter;
 import com.github.mikephil.charting.charts.LineChart;
@@ -310,17 +314,46 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
      */
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.boxCO2:
-            case R.id.boxTemp:
-            case R.id.boxO2:
-            case R.id.boxHumi:
-            case R.id.boxLux:
-                graphViewModel.notifyCheck(v.getId());
-                break;
+        try {
+
+
+            switch (v.getId()) {
+                case R.id.boxCO2:
+                case R.id.boxTemp:
+                case R.id.boxO2:
+                case R.id.boxHumi:
+                case R.id.boxLux:
+                    graphViewModel.notifyCheck(v.getId());
+                    break;
 
                 default:
-                throw new IllegalStateException("Unexpected value: " + v.getId());
+                    throw new IllegalStateException("Unexpected value: " + v.getId());
+            }
+        } catch (Exception e) {
+            if (e instanceof NullPointerException) {
+                Toast.makeText(getApplicationContext(), "Aucune données reçu pour le moment", Toast.LENGTH_SHORT).show();
+            }else if (e instanceof IllegalArgumentException) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Erreur");
+                builder.setMessage("VOus avez une erreur de données dans la base de données\n" +
+                        "Veuillez identifier l'erreur et la corriger");
+
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+
+
+            }
+
+            else {
+                Toast.makeText(getApplicationContext(), "Erreur inconnue", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }
