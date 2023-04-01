@@ -93,6 +93,12 @@ public class SettingsAdminViewModel extends ViewModel {
         return listener;
     }
 
+
+    /**
+     * Function trigger if a new ESP has been add to the databse
+     * Add value to hashmap ESP and name to tabESP if he has one, macAdress if not
+     */
+
     public void addESP(String esp, @Nullable String nom) {
         if (nom == null) {
             hashmapESP.putIfAbsent(esp, null);
@@ -104,20 +110,23 @@ public class SettingsAdminViewModel extends ViewModel {
         listener.postValue(tabESP);
     }
 
-    public void deleteESP(String esp) {
+    /**
+     * Function trigger if a ESP has been delete to the databse
+     * Remove the ESP name of tabESP if @param nameESP has been find in tabESP
+     */
+    public void deleteESP(String nameESP) {
         for (String s : tabESP) {
-            if (s.equals(esp)) {
+            if (s.equals(nameESP)) {
                 tabESP.remove(s);
             }
             listener.postValue(tabESP);
         }
     }
 
+    /**
+     * Define the selected ESP to FirebaseAcess
+     */
 
-    public void changeESP(ESP esp){
-        database.deleteListener();
-        database.setEsp(esp);
-    }
 
     public void renameESP(String nickname){
         database.setNicknameEsp(nickname);
