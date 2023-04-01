@@ -55,6 +55,8 @@ public class SplashActivity extends AppCompatActivity {
                 } else {
                     AlertDialog.Builder pop = new AlertDialog.Builder(AppApplication.getCurrentActivity());
                     pop.setMessage("Merci de vous connectez à internet");
+pop.setCancelable(false);
+
                     pop.setPositiveButton("Fait", (dialog, which) -> {
                         splashViewModel.checkCo();
                         if (ready) {
