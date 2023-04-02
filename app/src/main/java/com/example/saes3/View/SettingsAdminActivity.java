@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.saes3.Model.ListData;
 import com.example.saes3.R;
 import com.example.saes3.Util.PopUpDialog;
 import com.example.saes3.ViewModel.SettingsAdminViewModel;
@@ -72,7 +73,7 @@ public class SettingsAdminActivity extends AppCompatActivity implements View.OnC
 
         adapterRecyclerESP = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, tabESP);
         spinner.setAdapter(adapterRecyclerESP);
-        dataRecyclerAdapter = new dataRecyclerAdapter(getApplicationContext());
+        dataRecyclerAdapter = new dataRecyclerAdapter(getApplicationContext(), ListData.getInstance().getListAllData());
         recyclerView.setAdapter(dataRecyclerAdapter);
         recyclerView.setLayoutManager((new LinearLayoutManager((this))));
 

@@ -11,19 +11,22 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.saes3.Model.Data;
 import com.example.saes3.Model.ListData;
 import com.example.saes3.R;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 public class dataRecyclerAdapter extends RecyclerView.Adapter<dataRecyclerAdapter.ViewHolder> {
     private Context context;
-    private ListData listData;
+    private ArrayList<Data> listData;
     //private int originalHeight;
 
-    public dataRecyclerAdapter(Context context) {
+    public dataRecyclerAdapter(Context context, ArrayList<Data> listData) {
         this.context = context;
-        listData = ListData.getInstance();
+        this.listData=listData;
+        //  listData = ListData.getInstance();
       //  originalHeight = ViewGroup.LayoutParams.WRAP_CONTENT;
     }
 
@@ -47,12 +50,12 @@ public class dataRecyclerAdapter extends RecyclerView.Adapter<dataRecyclerAdapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         DecimalFormat a = new DecimalFormat("##.###");
-        holder.temp.setText(a.format(listData.recup_data(position).getTemperature()) + "°C");
-        holder.humi.setText(a.format(listData.recup_data(position).getHumidite()) + "%");
-        holder.co2.setText(a.format(listData.recup_data(position).getCO2()) + "%");
-        holder.o2.setText(a.format(listData.recup_data(position).getO2()) + "%");
-        holder.lux.setText(a.format(listData.recup_data(position).getLight()) + "L");
-        holder.temps.setText(listData.recup_data(position).getTemps());
+        holder.temp.setText(a.format(listData.get(position).getTemperature()) + "°C");
+        holder.humi.setText(a.format(listData.get(position).getHumidite()) + "%");
+        holder.co2.setText(a.format(listData.get(position).getCO2()) + "%");
+        holder.o2.setText(a.format(listData.get(position).getO2()) + "%");
+        holder.lux.setText(a.format(listData.get(position).getLight()) + "L");
+        holder.temps.setText(listData.get(position).getTemps());
     }
        /* holder.itemView.setOnTouchListener(new View.OnTouchListener() {
 
@@ -84,7 +87,7 @@ public class dataRecyclerAdapter extends RecyclerView.Adapter<dataRecyclerAdapte
 
     @Override
     public int getItemCount() {
-        return listData.list_size();
+        return listData.size();
     }
 
 
