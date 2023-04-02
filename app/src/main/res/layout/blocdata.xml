@@ -99,12 +99,14 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toEndOf="@id/o2"
-            android:gravity="center"
 
+            android:gravity="center"
             android:hint="11111111"
             android:textColor="@color/black"
             android:textColorHint="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/guideline28"
             app:layout_constraintTop_toTopOf="parent" />
 
