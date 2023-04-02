@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/Vegetabilis_green_trans"
+    >
 
     <TextView
         android:id="@+id/nameAPP"
@@ -29,5 +31,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.5"
-        app:srcCompat="@drawable/plante_verte_d_ivy_dans_le_dessin_de_pot_brun_lierre_vert_en_pour_votre_design_166246012" />
+        app:srcCompat="@drawable/plant" />
 </androidx.constraintlayout.widget.ConstraintLayout>

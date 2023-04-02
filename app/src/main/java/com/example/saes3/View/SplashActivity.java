@@ -82,7 +82,7 @@ public class SplashActivity extends AppCompatActivity {
                         public void run() {
                             transi();
                         }
-                    }, 1000);
+                    }, 500);
                 } else if(!ready){
                     AlertDialog.Builder pop = new AlertDialog.Builder(AppApplication.getCurrentActivity());
                     pop.setMessage("Merci de vous connectez à internet");
@@ -111,7 +111,7 @@ pop.setCancelable(false);
                     pop.show();
                 }
             }
-        },3000);
+        },1500);
 
     }
 
