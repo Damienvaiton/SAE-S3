@@ -41,7 +41,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView.OnNavig
 
 import java.text.DecimalFormat;
 
-//, DataUpdate
 public class GraphiqueActivity extends AppCompatActivity implements View.OnClickListener, OnNavigationItemSelectedListener {
 
     private LineChart graph;
@@ -110,7 +109,7 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
 
         graphViewModel.getData().observe(this, (Observer<Data>) newData-> {
             actuValues(newData);
-            notif.getInstance().creaNotif(newData);
+         //   notif.getInstance().creaNotif(newData);
         });
 
 

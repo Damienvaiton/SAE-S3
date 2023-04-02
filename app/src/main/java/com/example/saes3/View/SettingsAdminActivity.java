@@ -13,12 +13,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.saes3.Model.Data;
 import com.example.saes3.R;
 import com.example.saes3.Util.PopUpDialog;
 import com.example.saes3.ViewModel.SettingsAdminViewModel;
@@ -39,7 +37,7 @@ public class SettingsAdminActivity extends AppCompatActivity implements View.OnC
 
     private String choixESP;
 
-    private ArrayAdapter<String> adapter;
+    private ArrayAdapter<String> adapterRecyclerESP;
     private ArrayList<String> tabESP;
 
 
@@ -72,8 +70,8 @@ public class SettingsAdminActivity extends AppCompatActivity implements View.OnC
         reini.setOnClickListener(this);
         tabESP = new ArrayList<>();
 
-        adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, tabESP);
-        spinner.setAdapter(adapter);
+        adapterRecyclerESP = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, tabESP);
+        spinner.setAdapter(adapterRecyclerESP);
         dataRecyclerAdapter = new dataRecyclerAdapter(getApplicationContext());
         recyclerView.setAdapter(dataRecyclerAdapter);
         recyclerView.setLayoutManager((new LinearLayoutManager((this))));
@@ -93,7 +91,7 @@ settingsAdminViewModel.getListenerData().observe(this, data -> dataRecyclerAdapt
             for (String ESP : strings) {
                 tabESP.add(ESP);
             }
-            adapter.notifyDataSetChanged();
+            adapterRecyclerESP.notifyDataSetChanged();
         });
 
 
@@ -106,7 +104,8 @@ settingsAdminViewModel.getListenerData().observe(this, data -> dataRecyclerAdapt
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 settingsAdminViewModel.clearTab();
 dataRecyclerAdapter.notifyDataSetChanged();
-            settingsAdminViewModel.creaESP(position);
+int po=(dataRecyclerAdapter.getItemCount()-position);
+            settingsAdminViewModel.creaESP(po);
                 settingsAdminViewModel.setListenerESP(); // Mettre tout les listener dedans
             }
 

@@ -3,6 +3,7 @@ package com.example.saes3.Util;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -18,17 +19,20 @@ import java.text.DecimalFormat;
 public class dataRecyclerAdapter extends RecyclerView.Adapter<dataRecyclerAdapter.ViewHolder> {
     private Context context;
     private ListData listData;
+    //private int originalHeight;
 
     public dataRecyclerAdapter(Context context) {
         this.context = context;
         listData = ListData.getInstance();
+      //  originalHeight = ViewGroup.LayoutParams.WRAP_CONTENT;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.blocdata, parent, false));
-
+        View itemView = LayoutInflater.from(context).inflate(R.layout.blocdata, parent, false);
+       // itemView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, originalHeight));
+        return new ViewHolder(itemView);
     }
 
     /**
@@ -50,6 +54,33 @@ public class dataRecyclerAdapter extends RecyclerView.Adapter<dataRecyclerAdapte
         holder.lux.setText(a.format(listData.recup_data(position).getLight()) + "L");
         holder.temps.setText(listData.recup_data(position).getTemps());
     }
+       /* holder.itemView.setOnTouchListener(new View.OnTouchListener() {
+
+            private float startY;
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                holder.itemView.setNestedScrollingEnabled(false);
+                    System.out.println("yo");
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        // Record the starting Y position of the touch
+                        startY = event.getY();
+                    } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+                        // Check if the swipe was large enough to expand the RecyclerView
+                        float endY = event.getY();
+                        System.out.println("yoded");
+                        float distance = Math.abs(endY - startY);
+                        if (distance > 5) {
+                            System.out.println("lzlzllz");
+                            ViewGroup.LayoutParams layoutParams = holder.itemView.getLayoutParams();
+                            layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
+                            holder.itemView.setLayoutParams(layoutParams);
+                        }
+                    }
+                    return false;
+                }
+            });  */
+
 
     @Override
     public int getItemCount() {
