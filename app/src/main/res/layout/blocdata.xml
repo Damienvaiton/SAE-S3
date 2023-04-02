@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="5sp"
@@ -101,11 +100,8 @@
             android:layout_toEndOf="@id/o2"
 
             android:gravity="center"
-<<<<<<< HEAD
             android:hint="11111"
-=======
-            android:hint="11111111"
->>>>>>> 31ad31d7bf6b6e70c9de86888ac4fc4c80a7793f
+
             android:textColor="@color/black"
             android:textColorHint="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
