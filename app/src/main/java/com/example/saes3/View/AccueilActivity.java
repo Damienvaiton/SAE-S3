@@ -100,7 +100,7 @@ public class AccueilActivity extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-                position = pos;
+                position = adapter.getCount()-pos-1;
             }
 
             @Override

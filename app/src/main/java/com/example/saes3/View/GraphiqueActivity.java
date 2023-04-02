@@ -1,10 +1,8 @@
 package com.example.saes3.View;
 
 import android.app.Activity;
-<<<<<<< HEAD
-=======
+
 import android.app.AlertDialog;
->>>>>>> 50f149f6cf54a2e9a74e2256f495b38944e01234
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -20,7 +18,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -44,7 +41,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView.OnNavig
 
 import java.text.DecimalFormat;
 
-//, DataUpdate
 public class GraphiqueActivity extends AppCompatActivity implements View.OnClickListener, OnNavigationItemSelectedListener {
 
     private LineChart graph;
