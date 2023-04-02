@@ -121,12 +121,12 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_centerVertical="true"
-            android:layout_marginStart="15dp"
+            android:layout_marginStart="25dp"
             android:gravity="center"
-            android:hint="Date"
+            android:hint="@string/heure"
             android:textAlignment="center"
             android:textColor="@color/black"
-            android:textColorHint="@color/green"
+            android:textColorHint="@color/black"
             android:textSize="16dp"
             android:textStyle="bold" />
 
@@ -135,22 +135,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginStart="44dp"
+            android:layout_marginStart="35dp"
             android:layout_toEndOf="@id/heure"
-            android:hint="Tempé"
-            android:textColor="@color/green"
+            android:hint="@string/temp"
+            android:textColor="@color/black"
 
-            android:textColorHint="@color/grays" />
+            android:textColorHint="@color/black" />
 
         <TextView
             android:id="@+id/humi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="20dp"
             android:layout_toEndOf="@id/temp"
-            android:hint="Humi"
-            android:textColorHint="@color/green"
+            android:hint="@string/humi"
+            android:textColorHint="@color/black"
 
             />
 
@@ -159,11 +159,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginStart="30dp"
+            android:layout_marginStart="22dp"
             android:layout_toEndOf="@id/humi"
 
-            android:hint="CO2"
-            android:textColorHint="@color/grays"
+            android:hint="@string/co2"
+            android:textColorHint="@color/black"
 
             />
 
@@ -172,11 +172,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginStart="15dp"
+            android:layout_marginStart="40dp"
 
             android:layout_toEndOf="@id/co2"
-            android:hint="O2"
-            android:textColorHint="@color/green"
+            android:hint="@string/o2"
+            android:textColorHint="@color/black"
 
             />
 
@@ -185,11 +185,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginStart="28dp"
+            android:layout_marginStart="38dp"
 
             android:layout_toEndOf="@id/o2"
             android:hint="LUX"
-            android:textColorHint="@color/grays"
+            android:textColorHint="@color/black"
 
             />
 
@@ -198,7 +198,7 @@
             android:layout_height="2dp"
             android:layout_below="@id/temp"
             android:layout_marginTop="10dp"
-            android:background="@color/redoblack" />
+            android:background="@color/black" />
 
     </RelativeLayout>
 

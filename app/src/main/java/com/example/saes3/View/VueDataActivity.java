@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.saes3.Model.Data;
+import com.example.saes3.Model.ListData;
 import com.example.saes3.R;
 import com.example.saes3.ViewModel.VueDataViewModel;
 import com.example.saes3.Util.dataRecyclerAdapter;
@@ -26,13 +27,13 @@ public class VueDataActivity extends AppCompatActivity implements Serializable {
     private dataRecyclerAdapter dataRecyclerAdapter;
     private String ChoixTri = "Choix du Tri";
     private boolean Desc = false;
+    private ArrayList<Data> listData;
 
     /**
      * The ViewModel for VueDataActivity
      */
     private VueDataViewModel vueDataViewModel = null;
 
-    private ArrayList<Data> listData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +41,7 @@ public class VueDataActivity extends AppCompatActivity implements Serializable {
         setContentView(R.layout.activity_vue_data);
 
         vueDataViewModel = new ViewModelProvider(this).get(VueDataViewModel.class);
-
+listData= (ArrayList<Data>) ListData.getInstance().getListAllData().clone();
 
         btnTriChoix = findViewById(R.id.SortChoise);
         switchDesc = findViewById(R.id.switch1);

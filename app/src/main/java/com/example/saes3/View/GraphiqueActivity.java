@@ -109,7 +109,7 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
 
         graphViewModel.getData().observe(this, (Observer<Data>) newData-> {
             actuValues(newData);
-            notif.getInstance().creaNotif(newData);
+         //   notif.getInstance().creaNotif(newData);
         });
 
 
