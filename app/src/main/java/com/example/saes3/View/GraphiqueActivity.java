@@ -1,10 +1,15 @@
 package com.example.saes3.View;
 
 import android.app.Activity;
+<<<<<<< HEAD
+=======
+import android.app.AlertDialog;
+>>>>>>> 50f149f6cf54a2e9a74e2256f495b38944e01234
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
@@ -84,13 +89,21 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
 
         graphViewModel = new ViewModelProvider(this).get(GraphViewModel.class);
 
-
+        Handler handler = new Handler();
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                emptyESP();
+            }
+        };
 /**
  * Observer of new LineData object available to refrest current graph
  */
         graphViewModel.getUpdateGraph().observe(this, (Observer<LineData>) linedata -> {
             graph.setData(linedata);
             graph.invalidate();
+            handler.removeCallbacks(runnable);
+            handler.postDelayed(runnable, 7000);
         });
 
         /**
@@ -305,8 +318,19 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
         return false;
     }
 
-  /*
-    */
+    public void emptyESP(){
+        AlertDialog.Builder alertDialog=new AlertDialog.Builder(GraphiqueActivity.this);
+        alertDialog.setMessage("Il semblerait que l'ESP ne contienne aucune données, l'avez vous brancher?");
+        alertDialog.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        alertDialog.show();
+    }
+
+
 
     /**
      * send CheckBox clicked to the ViewModel

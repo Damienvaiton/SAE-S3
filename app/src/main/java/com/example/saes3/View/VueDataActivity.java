@@ -42,9 +42,6 @@ public class VueDataActivity extends AppCompatActivity implements Serializable {
         vueDataViewModel = new ViewModelProvider(this).get(VueDataViewModel.class);
 
 
-        vueDataViewModel.getData().observe(this, data -> dataRecyclerAdapter.notifyItemInserted(dataRecyclerAdapter.getItemCount() - 1));
-
-
         btnTriChoix = findViewById(R.id.SortChoise);
         switchDesc = findViewById(R.id.switch1);
         trid = findViewById(R.id.button8);

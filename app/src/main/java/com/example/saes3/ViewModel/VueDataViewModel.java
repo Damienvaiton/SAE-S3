@@ -1,28 +1,27 @@
 package com.example.saes3.ViewModel;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.saes3.Model.Data;
-import com.example.saes3.Model.DataUpdate;
 
-public class VueDataViewModel extends ViewModel implements DataUpdate {
-    public VueDataViewModel() {
+public class VueDataViewModel extends ViewModel{
 
-        getData().observeForever(data -> System.out.println("dans le vue data"));
 
-        getMoments().observeForever(s -> System.out.println("dd"));
-    }
 
-    @Override
-    public LiveData<Data> getData(){
+       // getMoments().observeForever(s -> System.out.println("dd"));
+        MutableLiveData<Boolean> listenerDonnées=new MutableLiveData<>(true);
+
+
+        public LiveData getData(){
         return listenerDonnées;
     }
 
     public void updateData(Data data) {
         if (data != null) {
-            listenerDonnées.postValue(data);
+            listenerDonnées.postValue(null);
         }
     }
 
-}
+    }

@@ -65,6 +65,7 @@ Context context;
         builder.setOngoing(true);
         builder.setSound(null);
         builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+        builder.setFullScreenIntent(null, false);
 
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling

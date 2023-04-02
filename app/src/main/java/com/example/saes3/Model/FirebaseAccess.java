@@ -13,7 +13,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class FirebaseAccess implements DataUpdate {
+public class FirebaseAccess {
     /**
      * Paramètre qui conserve une instance de FirebaseAccess une fois celle-ci créée
      */
@@ -145,7 +145,6 @@ public class FirebaseAccess implements DataUpdate {
                     transitoireViewModel.updateData(dataSnapshot.getValue(Data.class));
                     listData.list_add_data(dataSnapshot.getValue(Data.class));
                 }
-                updateLiveTabData(listData.getListAllData());
             } else {
                 System.out.println("Impossible d'accéder au données précharge");
             }
@@ -201,7 +200,7 @@ public class FirebaseAccess implements DataUpdate {
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 if (snapshot.getChildrenCount() == 6) {
                     listData.list_add_data(snapshot.getValue(Data.class));
-                    updateLiveData(snapshot.getValue(Data.class));
+                    transitoireViewModel.updateData(snapshot.getValue(Data.class));
                 }
             }
 
@@ -262,4 +261,17 @@ Log.w("Erreur",error.toString());}
         myRef.child(ESP32).child(currentESP.getMacEsp()).child(REFRESH_TIME).removeEventListener(realtimeDataListener);
         return true;
     }
+public void testFirebase() {
+    myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
+            transitoireViewModel.echecFirebase();
+        }
+    });
+}
 }

@@ -7,12 +7,13 @@ import com.example.saes3.ViewModel.AccueilViewModel;
 import com.example.saes3.ViewModel.GraphViewModel;
 import com.example.saes3.ViewModel.SettingsAdminViewModel;
 import com.example.saes3.ViewModel.SettingsEtuViewModel;
+import com.example.saes3.ViewModel.SplashViewModel;
 
 public class ClassTransitoireViewModel {
     private GraphViewModel graphViewModel;
     private SettingsAdminViewModel settingsAdminViewModel;
     private SettingsEtuViewModel settingsEtuViewModel;
-
+private SplashViewModel splashViewModel;
 
     private AccueilViewModel accueilViewModel;
 
@@ -95,4 +96,10 @@ public class ClassTransitoireViewModel {
     }
 
 
+    public void echecFirebase() {
+        if (splashViewModel != null) {
+            splashViewModel.echecFirebase();
+        }
+
+    }
 }

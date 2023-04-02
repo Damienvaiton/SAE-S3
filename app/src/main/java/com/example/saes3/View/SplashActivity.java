@@ -28,6 +28,7 @@ public class SplashActivity extends AppCompatActivity {
     SplashViewModel splashViewModel=null;
 
     boolean ready=false;
+    boolean getEtatFirebase=false;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -36,6 +37,7 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash_screen);
         splashViewModel = new ViewModelProvider(this).get(SplashViewModel.class);
         splashViewModel.getAppReady().observe(this, aBoolean -> ready=aBoolean);
+        splashViewModel.getFirebaseReady().observe(this, aBoolean -> getEtatFirebase=aBoolean);
 
         splash = findViewById(R.id.imageplante);
         text = findViewById(R.id.nameAPP);
@@ -81,7 +83,7 @@ public class SplashActivity extends AppCompatActivity {
                             transi();
                         }
                     }, 1000);
-                } else {
+                } else if(!ready){
                     AlertDialog.Builder pop = new AlertDialog.Builder(AppApplication.getCurrentActivity());
                     pop.setMessage("Merci de vous connectez à internet");
 pop.setCancelable(false);
@@ -95,6 +97,16 @@ pop.setCancelable(false);
                         } else {
                             pop.show();
                         }
+                    });
+                    pop.show();
+                }
+                else if(!getEtatFirebase){
+                    AlertDialog.Builder pop = new AlertDialog.Builder(AppApplication.getCurrentActivity());
+                    pop.setMessage("Firebase ne semble pas être disponible pour le moment, réessayer plus-tard");
+                    pop.setCancelable(false);
+
+                    pop.setPositiveButton("Quitter l'application", (dialog, which) -> {
+                            finishAffinity();
                     });
                     pop.show();
                 }

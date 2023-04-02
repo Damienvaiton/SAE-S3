@@ -30,6 +30,15 @@ public class SplashViewModel extends ViewModel {
 listenerAppReady.postValue(actif);
         }
 
+    MutableLiveData<Boolean> listenerFirebaseReady=new MutableLiveData<>(true);
+
+    public LiveData<Boolean> getFirebaseReady(){
+        return listenerFirebaseReady;
+    }
+
+    public void updateFirebaseReady(boolean actif){
+        listenerFirebaseReady.postValue(actif);
+    }
 
 
         public void checkCo() {
@@ -49,4 +58,7 @@ listenerAppReady.postValue(actif);
             }
         }
 
+    public void echecFirebase() {
+        updateFirebaseReady(false);
     }
+}
