@@ -1,10 +1,13 @@
 package com.example.saes3.View;
 
+import android.Manifest;
 import android.app.Activity;
 
 import android.app.AlertDialog;
+import android.app.Notification;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,14 +22,16 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.saes3.R;
 import com.example.saes3.Model.Axe;
 import com.example.saes3.Model.Data;
-import com.example.saes3.Util.notif;
 
+import com.example.saes3.Util.NotifMaker;
 import com.example.saes3.ViewModel.GraphViewModel;
 import com.example.saes3.Util.XAxisValueFormatter;
 import com.github.mikephil.charting.charts.LineChart;
@@ -84,6 +89,21 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.activity_graph_page);
 
         graphViewModel = new ViewModelProvider(this).get(GraphViewModel.class);
+      /*   Notification notif = NotifMaker.getInstance().creaNotif();
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+       if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        notificationManager.notify(1, notif);*/
+
 
         Handler handler = new Handler();
         Runnable runnable = new Runnable() {
@@ -99,7 +119,7 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
             graph.setData(linedata);
             graph.invalidate();
             handler.removeCallbacks(runnable);
-            handler.postDelayed(runnable, 7000);
+          //  handler.postDelayed(runnable, 7000);
         });
 
         /**
