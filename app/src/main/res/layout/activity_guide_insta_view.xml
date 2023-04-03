@@ -149,8 +149,8 @@
 
         <ImageView
             android:id="@+id/imageView4"
-            android:layout_width="315dp"
-            android:layout_height="318dp"
+            android:layout_width="288dp"
+            android:layout_height="211dp"
             android:layout_marginStart="48dp"
             android:layout_marginEnd="48dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -165,6 +165,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="9dp"
             android:layout_marginBottom="1dp"
+            android:gravity="center"
             android:text="Utilisation de la page d'accueil"
             android:textSize="24sp"
             android:textStyle="bold"
@@ -177,10 +178,6 @@
 
         </TextView>
 
-        <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
@@ -190,7 +187,7 @@
             android:layout_marginEnd="30dp"
             android:layout_marginBottom="25dp"
             android:text="Au lancement de l'application, vous arriez sur cette page"
-            app:layout_constraintBottom_toTopOf="@+id/textView4"
+            app:layout_constraintBottom_toTopOf="@+id/point1accueil"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView18" />
@@ -198,33 +195,33 @@
         <ImageView
             android:id="@+id/imageView5"
             android:layout_width="153dp"
-            android:layout_height="260dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="14dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="15dp"
-            android:layout_marginBottom="52dp"
+            android:layout_marginBottom="56dp"
             app:layout_constraintBottom_toTopOf="@+id/textView16"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textView14"
+            app:layout_constraintStart_toEndOf="@+id/point3accueil"
             app:layout_constraintTop_toBottomOf="@+id/textView"
             app:srcCompat="@drawable/accueil" />
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/point1accueil"
             android:layout_width="208dp"
             android:layout_height="101dp"
             android:layout_marginStart="19dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="15dp"
             android:text="En 1, vous avez une liste déroulante composée de tous les ESP actuellement disponible, il vous suffit d'en choir un pour d'appuyer sur le bouton 2 pour accéder à la page de graphisme"
-            app:layout_constraintBottom_toTopOf="@+id/textView14"
+            app:layout_constraintBottom_toTopOf="@+id/point3accueil"
             app:layout_constraintEnd_toStartOf="@+id/imageView5"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView" />
 
         <TextView
-            android:id="@+id/textView14"
+            android:id="@+id/point3accueil"
             android:layout_width="205dp"
             android:layout_height="127dp"
             android:layout_marginStart="19dp"
@@ -232,51 +229,99 @@
             android:layout_marginEnd="14dp"
             android:layout_marginBottom="38dp"
             android:text="En 3 : \n Un raccourci vers le mode administratif de l'application, cette partie ne sera pas aborder icin si vous voulez en savoir plus merci de vous référé au 'Guide d'utilisation'"
-            app:layout_constraintBottom_toTopOf="@+id/imageView6"
+            app:layout_constraintBottom_toTopOf="@+id/screengraph"
             app:layout_constraintEnd_toStartOf="@+id/imageView5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+            app:layout_constraintTop_toBottomOf="@+id/point1accueil" />
 
         <ImageView
-            android:id="@+id/imageView6"
+            android:id="@+id/screengraph"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="21dp"
             android:layout_marginTop="20dp"
+            android:layout_marginEnd="9dp"
+            android:layout_marginBottom="4dp"
+            app:layout_constraintBottom_toTopOf="@+id/point3graph"
+            app:layout_constraintEnd_toStartOf="@+id/textView16"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView14"
+            app:layout_constraintTop_toBottomOf="@+id/point3accueil"
             app:srcCompat="@drawable/graph" />
 
         <TextView
-            android:id="@+id/textView15"
-            android:layout_width="329dp"
-            android:layout_height="65dp"
+            android:id="@+id/point3graph"
+            android:layout_width="380dp"
+            android:layout_height="114dp"
+            android:layout_marginTop="30dp"
             android:text="En 3 : \n Voici le graphique, vous pouvez zoomer, dézooomer grâce à un pincement du doigts dessus, aussi, en cliquant sur un point de mesure il est possible de voir direment l'heure exacte ainsi que la valeurs enregistrée à ce moment là"
-            tools:layout_editor_absoluteX="52dp"
-            tools:layout_editor_absoluteY="1451dp" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.634"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/point2graph"
+            app:layout_constraintVertical_bias="0.029" />
 
         <TextView
             android:id="@+id/textView16"
-            android:layout_width="172dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="34dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="14dp"
+            android:layout_width="193dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="56dp"
             android:text="En 1 : \n Un panel où vous retrouverez les dernières valeurs connues "
-            app:layout_constraintBottom_toTopOf="@+id/textView17"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/imageView6"
+            app:layout_constraintHorizontal_bias="0.391"
+            app:layout_constraintStart_toEndOf="@+id/screengraph"
             app:layout_constraintTop_toBottomOf="@+id/imageView5" />
 
+
         <TextView
-            android:id="@+id/textView17"
-            android:layout_width="172dp"
+            android:id="@+id/point2graph"
+            android:layout_width="198dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="41dp"
+            android:layout_marginBottom="75dp"
             android:text="En 2 : \n Une rangée de case cochable pour sélectionner les mesures que vous voulez voir apparaître sur le graphique, il est recommander de n'en utiliser que 2 à la fois même si plus est possible."
-            tools:layout_editor_absoluteX="229dp"
-            tools:layout_editor_absoluteY="1268dp" />
-    </LinearLayout>
+            app:layout_constraintBottom_toTopOf="@+id/point3graph"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/screengraph"
+            app:layout_constraintTop_toBottomOf="@+id/textView16" />
+
+
+        <TextView
+            android:id="@+id/point4graph"
+            android:layout_width="384dp"
+            android:layout_height="46dp"
+            android:layout_marginTop="30dp"
+            android:text="En 4 :\n L'accès vers une page contenant une liste de toutes les données"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/point3graph"
+            app:layout_constraintVertical_bias="0.0" />
+
+
+        <TextView
+            android:id="@+id/point5graph"
+            android:layout_width="374dp"
+            android:layout_height="wrap_content"
+            android:text="En 5 :\n  Permet d'exporter toutes les données au moment T d'un ESP au format excel dans le dossier 'Download' du téléphone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.486"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/point4graph"
+            app:layout_constraintVertical_bias="0.308" />
+
+        <TextView
+            android:id="@+id/point6graph"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="En 6 : \n Accès vers la page paramètre du graphique"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/point5graph" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
