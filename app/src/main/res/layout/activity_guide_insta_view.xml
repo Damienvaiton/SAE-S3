@@ -36,10 +36,9 @@
                 tools:layout_editor_absoluteY="310dp" />
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/cap1"
-                android:size
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:src="@drawable/logo_app"></ImageView>
 
             <TextView
@@ -53,9 +52,10 @@
                 tools:layout_editor_absoluteY="105dp" />
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_below="@id/cap1"
                 android:layout_toEndOf="@id/cap2"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:src="@drawable/logo_app"></ImageView>
 
             <TextView
@@ -69,9 +69,11 @@
                 tools:layout_editor_absoluteY="105dp" />
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_below="@id/cap2"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:layout_toEndOf="@id/cap3"
+
                 android:src="@drawable/logo_app"></ImageView>
 
             <TextView
@@ -85,18 +87,15 @@
                 tools:layout_editor_absoluteY="171dp" />
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_below="@id/cap3"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="17dp"
                 android:layout_toEndOf="@id/cap4"
+
                 android:src="@drawable/logo_app"></ImageView>
         </RelativeLayout>
-        <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/cable_noir_1"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="324dp" />
+
         <TextView
             android:id="@+id/textView3"
             android:layout_width="373dp"
