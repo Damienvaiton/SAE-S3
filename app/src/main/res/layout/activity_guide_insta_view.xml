@@ -85,7 +85,6 @@
             android:layout_marginTop="30dp"
             android:layout_marginBottom="2dp"
             app:layout_constraintBottom_toTopOf="@+id/tr"
-            app:layout_constraintEnd_toEndOf="@+id/rela"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView3">
@@ -201,6 +200,62 @@
             app:layout_constraintTop_toBottomOf="@+id/relativeLayout2" />
 
         <ImageView
+            android:id="@+id/imgESP"
+            android:layout_width="288dp"
+            android:layout_height="211dp"
+            android:layout_marginStart="48dp"
+            android:layout_marginEnd="48dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tr"
+            app:srcCompat="@drawable/cable_noir_3z" />
+
+        <TextView
+            android:id="@+id/info2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="9dp"
+            android:layout_marginBottom="1dp"
+            android:gravity="center"
+            android:text="Utilisation de la page d'accueil"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView4"
+            app:layout_constraintVertical_bias="0.0">
+
+        </TextView>
+        <RelativeLayout
+            android:id="@+id/relativeLayoutPage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="2dp"
+            app:layout_constraintBottom_toTopOf="@+id/textView18"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView3">
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/info3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="31dp"
+            android:layout_marginTop="11dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="25dp"
+            android:text="Au lancement de l'application, vous arriez sur cette page"
+            app:layout_constraintBottom_toTopOf="@+id/point1accueil"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView18" />
+
+        <ImageView
             android:id="@+id/imageView4"
             android:layout_width="288dp"
             android:layout_height="211dp"
@@ -239,14 +294,14 @@
             android:layout_marginTop="11dp"
             android:layout_marginEnd="30dp"
             android:layout_marginBottom="25dp"
-            android:text="Au lancement de l'application, vous arriez sur cette page"
+            android:text="Au lancement de l'application, vous arrivez sur cette page"
             app:layout_constraintBottom_toTopOf="@+id/point1accueil"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
         <ImageView
-            android:id="@+id/imgAccueil"
+            android:id="@+id/imageView5"
             android:layout_width="153dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="14dp"
@@ -268,7 +323,7 @@
             android:layout_marginBottom="15dp"
             android:text="En 1, vous avez une liste déroulante composée de tous les ESP actuellement disponible, il vous suffit d'en choir un pour d'appuyer sur le bouton 2 pour accéder à la page de graphisme"
             app:layout_constraintBottom_toTopOf="@+id/point3accueil"
-            app:layout_constraintEnd_toStartOf="@+id/imgAccueil"
+            app:layout_constraintEnd_toStartOf="@+id/imageView5"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView" />
@@ -281,9 +336,9 @@
             android:layout_marginTop="2dp"
             android:layout_marginEnd="14dp"
             android:layout_marginBottom="38dp"
-            android:text="En 3 : \n Un raccourci vers le mode administratif de l'application, cette partie ne sera pas aborder ici si vous voulez en savoir plus merci de vous référé au 'Guide d'utilisation'"
+            android:text="En 3 : \n Un raccourci vers le mode administratif de l'application, cette partie ne sera pas aborder icin si vous voulez en savoir plus merci de vous référé au 'Guide d'utilisation'"
             app:layout_constraintBottom_toTopOf="@+id/screengraph"
-            app:layout_constraintEnd_toStartOf="@+id/imgAccueil"
+            app:layout_constraintEnd_toStartOf="@+id/imageView5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/point1accueil" />
 
@@ -323,7 +378,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.391"
             app:layout_constraintStart_toEndOf="@+id/screengraph"
-            app:layout_constraintTop_toBottomOf="@+id/imgAccueil" />
+            app:layout_constraintTop_toBottomOf="@+id/imageView5" />
 
 
         <TextView
@@ -374,15 +429,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/point5graph" />
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Documentation application"
-            android:textSize="34sp"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="16dp" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
