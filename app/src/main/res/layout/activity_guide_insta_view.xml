@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollView"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -13,29 +14,81 @@
         android:layout_height="match_parent">
 
         <TextView
+            android:id="@+id/txtTableMatiere"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="21dp"
+            android:layout_marginEnd="22dp"
+            android:gravity="center"
+            android:text="Table des matières"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+        <RelativeLayout
+            android:id="@+id/contenerButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtTableMatiere">
+
+            <Button
+
+                android:id="@+id/btn_scroll_esp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Branchement ESP" />
+
+            <Button
+
+
+                android:id="@+id/btn_scroll_home"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/btn_scroll_esp"
+                android:text="Page d'accueil" />
+
+            <Button
+
+                android:id="@+id/btn_scroll_graph"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/btn_scroll_home"
+                android:text="Page graphique" />
+        </RelativeLayout>
+
+        <TextView
             android:id="@+id/textView3"
-            android:layout_width="373dp"
-            android:layout_height="60dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="50dp"
             android:gravity="center"
             android:text="Guide d'installation de l'ESP"
             android:textSize="25sp"
             android:textStyle="bold"
-            tools:layout_editor_absoluteX="19dp"
-            tools:layout_editor_absoluteY="20dp" />
-
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/contenerButton" />
 
         <RelativeLayout
             android:id="@+id/relativeLayout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
-            android:layout_marginBottom="147dp"
-            app:layout_constraintBottom_toTopOf="@+id/imageView3"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="2dp"
+            app:layout_constraintBottom_toTopOf="@+id/tr"
+            app:layout_constraintEnd_toEndOf="@+id/rela"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView3"
-            app:layout_constraintVertical_bias="0.0">
+            app:layout_constraintTop_toBottomOf="@+id/textView3">
 
             <TextView
                 android:id="@+id/cap1"
@@ -193,7 +246,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
         <ImageView
-            android:id="@+id/imageView5"
+            android:id="@+id/imgAccueil"
             android:layout_width="153dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="14dp"
@@ -215,7 +268,7 @@
             android:layout_marginBottom="15dp"
             android:text="En 1, vous avez une liste déroulante composée de tous les ESP actuellement disponible, il vous suffit d'en choir un pour d'appuyer sur le bouton 2 pour accéder à la page de graphisme"
             app:layout_constraintBottom_toTopOf="@+id/point3accueil"
-            app:layout_constraintEnd_toStartOf="@+id/imageView5"
+            app:layout_constraintEnd_toStartOf="@+id/imgAccueil"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView" />
@@ -228,9 +281,9 @@
             android:layout_marginTop="2dp"
             android:layout_marginEnd="14dp"
             android:layout_marginBottom="38dp"
-            android:text="En 3 : \n Un raccourci vers le mode administratif de l'application, cette partie ne sera pas aborder icin si vous voulez en savoir plus merci de vous référé au 'Guide d'utilisation'"
+            android:text="En 3 : \n Un raccourci vers le mode administratif de l'application, cette partie ne sera pas aborder ici si vous voulez en savoir plus merci de vous référé au 'Guide d'utilisation'"
             app:layout_constraintBottom_toTopOf="@+id/screengraph"
-            app:layout_constraintEnd_toStartOf="@+id/imageView5"
+            app:layout_constraintEnd_toStartOf="@+id/imgAccueil"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/point1accueil" />
 
@@ -270,7 +323,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.391"
             app:layout_constraintStart_toEndOf="@+id/screengraph"
-            app:layout_constraintTop_toBottomOf="@+id/imageView5" />
+            app:layout_constraintTop_toBottomOf="@+id/imgAccueil" />
 
 
         <TextView
@@ -321,6 +374,15 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/point5graph" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Documentation application"
+            android:textSize="34sp"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="16dp" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

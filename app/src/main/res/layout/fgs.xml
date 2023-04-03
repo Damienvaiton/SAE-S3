@@ -14,7 +14,7 @@
         tools:layout_editor_absoluteY="30dp" />
 
     <ImageView
-        android:id="@+id/imageView5"
+        android:id="@+id/imgAccueil"
         android:layout_width="133dp"
         android:layout_height="266dp"
         app:srcCompat="@drawable/accueil"
