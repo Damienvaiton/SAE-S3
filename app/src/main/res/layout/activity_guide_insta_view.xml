@@ -12,9 +12,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="373dp"
+            android:layout_height="60dp"
+            android:gravity="center"
+            android:text="Guide d'installation de l'ESP"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            tools:layout_editor_absoluteX="19dp"
+            tools:layout_editor_absoluteY="20dp" />
 
 
         <RelativeLayout
+            android:id="@+id/relativeLayout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="28dp"
@@ -28,84 +39,244 @@
 
             <TextView
                 android:id="@+id/cap1"
-                android:layout_width="265dp"
+                android:layout_width="300dp"
                 android:layout_height="49dp"
+                android:layout_marginStart="15dp"
                 android:layout_marginBottom="20dp"
-                android:text="TextView"
+                android:text="Tout d'abord, brancher le capteur de température et d'humidité sur la borne A0 de l'appareil"
                 tools:layout_editor_absoluteX="19dp"
                 tools:layout_editor_absoluteY="310dp" />
 
             <ImageView
-                android:layout_toEndOf="@id/cap1"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:src="@drawable/logo_app"></ImageView>
+                android:layout_toEndOf="@id/cap1"
+                android:src="@drawable/borne_a0"></ImageView>
 
             <TextView
                 android:id="@+id/cap2"
-                android:layout_width="265dp"
+                android:layout_width="300dp"
                 android:layout_height="49dp"
                 android:layout_below="@id/cap1"
+                android:layout_marginStart="15dp"
                 android:layout_marginBottom="20dp"
-                android:text="TextView"
+                android:text="Rajoutez ensuite le capteur de lumière sur la borne A4 de l'appareil"
                 tools:layout_editor_absoluteX="19dp"
                 tools:layout_editor_absoluteY="105dp" />
 
             <ImageView
-                android:layout_below="@id/cap1"
-                android:layout_toEndOf="@id/cap2"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:src="@drawable/logo_app"></ImageView>
+                android:layout_below="@id/cap1"
+                android:layout_toEndOf="@id/cap2"
+                android:src="@drawable/bornea4"></ImageView>
 
             <TextView
                 android:id="@+id/cap3"
-                android:layout_width="265dp"
+                android:layout_width="300dp"
                 android:layout_height="49dp"
                 android:layout_below="@+id/cap2"
+                android:layout_marginStart="15dp"
                 android:layout_marginBottom="20dp"
-                android:text="TextView"
+                android:text="Poursuivez le branchement par le capteur d'oxygène en borne A2"
                 tools:layout_editor_absoluteX="19dp"
                 tools:layout_editor_absoluteY="105dp" />
 
             <ImageView
-                android:layout_below="@id/cap2"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
+                android:layout_below="@id/cap2"
                 android:layout_toEndOf="@id/cap3"
 
-                android:src="@drawable/logo_app"></ImageView>
+                android:src="@drawable/bornea2"></ImageView>
 
             <TextView
                 android:id="@+id/cap4"
-                android:layout_width="265dp"
+                android:layout_width="300dp"
                 android:layout_height="49dp"
                 android:layout_below="@+id/cap3"
+                android:layout_marginStart="15dp"
                 android:layout_marginBottom="20dp"
-                android:text="TextView"
+                android:text="Enfin, brancher le capteur de CO2 sur la boorne SCL à l'aide du câble noir fourni dans la boîte"
                 tools:layout_editor_absoluteX="19dp"
                 tools:layout_editor_absoluteY="171dp" />
 
             <ImageView
-                android:layout_below="@id/cap3"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
+                android:layout_below="@id/cap3"
                 android:layout_marginStart="17dp"
                 android:layout_toEndOf="@id/cap4"
+
+                android:src="@drawable/borne_scl"></ImageView>
+
+            <TextView
+                android:id="@+id/cap5"
+                android:layout_width="300dp"
+                android:layout_height="49dp"
+                android:layout_below="@+id/cap4"
+                android:layout_marginStart="15dp"
+                android:layout_marginBottom="20dp"
+                android:text="@string/addUbsCable"
+                tools:layout_editor_absoluteX="19dp"
+                tools:layout_editor_absoluteY="171dp" />
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_below="@id/cap4"
+                android:layout_marginStart="17dp"
+                android:layout_toEndOf="@id/cap5"
 
                 android:src="@drawable/logo_app"></ImageView>
         </RelativeLayout>
 
         <TextView
-            android:id="@+id/textView3"
-            android:layout_width="373dp"
-            android:layout_height="60dp"
-            android:gravity="center"
-            android:text="Guide d'installation de l'ESP"
-            android:textSize="25sp"
-            tools:layout_editor_absoluteX="19dp"
-            tools:layout_editor_absoluteY="20dp" />
+            android:id="@+id/tr"
+            android:layout_width="300dp"
+            android:layout_height="49dp"
+            android:layout_marginStart="31dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="80dp"
+            android:layout_marginBottom="37dp"
+            android:text="@string/branchementCapteurFinish"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/imageView4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/relativeLayout2" />
 
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="315dp"
+            android:layout_height="318dp"
+            android:layout_marginStart="48dp"
+            android:layout_marginEnd="48dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tr"
+            app:srcCompat="@drawable/cable_noir_3z" />
 
+        <TextView
+            android:id="@+id/textView18"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="9dp"
+            android:layout_marginBottom="1dp"
+            android:text="Utilisation de la page d'accueil"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView4"
+            app:layout_constraintVertical_bias="0.0">
+
+        </TextView>
+
+        <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="31dp"
+            android:layout_marginTop="11dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="25dp"
+            android:text="Au lancement de l'application, vous arriez sur cette page"
+            app:layout_constraintBottom_toTopOf="@+id/textView4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView18" />
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="153dp"
+            android:layout_height="260dp"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="52dp"
+            app:layout_constraintBottom_toTopOf="@+id/textView16"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textView14"
+            app:layout_constraintTop_toBottomOf="@+id/textView"
+            app:srcCompat="@drawable/accueil" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="208dp"
+            android:layout_height="101dp"
+            android:layout_marginStart="19dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="15dp"
+            android:text="En 1, vous avez une liste déroulante composée de tous les ESP actuellement disponible, il vous suffit d'en choir un pour d'appuyer sur le bouton 2 pour accéder à la page de graphisme"
+            app:layout_constraintBottom_toTopOf="@+id/textView14"
+            app:layout_constraintEnd_toStartOf="@+id/imageView5"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+        <TextView
+            android:id="@+id/textView14"
+            android:layout_width="205dp"
+            android:layout_height="127dp"
+            android:layout_marginStart="19dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="14dp"
+            android:layout_marginBottom="38dp"
+            android:text="En 3 : \n Un raccourci vers le mode administratif de l'application, cette partie ne sera pas aborder icin si vous voulez en savoir plus merci de vous référé au 'Guide d'utilisation'"
+            app:layout_constraintBottom_toTopOf="@+id/imageView6"
+            app:layout_constraintEnd_toStartOf="@+id/imageView5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="21dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView14"
+            app:srcCompat="@drawable/graph" />
+
+        <TextView
+            android:id="@+id/textView15"
+            android:layout_width="329dp"
+            android:layout_height="65dp"
+            android:text="En 3 : \n Voici le graphique, vous pouvez zoomer, dézooomer grâce à un pincement du doigts dessus, aussi, en cliquant sur un point de mesure il est possible de voir direment l'heure exacte ainsi que la valeurs enregistrée à ce moment là"
+            tools:layout_editor_absoluteX="52dp"
+            tools:layout_editor_absoluteY="1451dp" />
+
+        <TextView
+            android:id="@+id/textView16"
+            android:layout_width="172dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="34dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="14dp"
+            android:text="En 1 : \n Un panel où vous retrouverez les dernières valeurs connues "
+            app:layout_constraintBottom_toTopOf="@+id/textView17"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/imageView6"
+            app:layout_constraintTop_toBottomOf="@+id/imageView5" />
+
+        <TextView
+            android:id="@+id/textView17"
+            android:layout_width="172dp"
+            android:layout_height="wrap_content"
+            android:text="En 2 : \n Une rangée de case cochable pour sélectionner les mesures que vous voulez voir apparaître sur le graphique, il est recommander de n'en utiliser que 2 à la fois même si plus est possible."
+            tools:layout_editor_absoluteX="229dp"
+            tools:layout_editor_absoluteY="1268dp" />
+    </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

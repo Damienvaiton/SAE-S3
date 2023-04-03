@@ -71,6 +71,8 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
      */
     private BottomAppBar bottomNav;
     private BottomNavigationView bottomNavigationView;
+
+    private Boolean actif=false;
     /**
      * Object axis on the graph
      */
@@ -118,8 +120,15 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
         graphViewModel.getUpdateGraph().observe(this, (Observer<LineData>) linedata -> {
             graph.setData(linedata);
             graph.invalidate();
-            handler.removeCallbacks(runnable);
-          //  handler.postDelayed(runnable, 7000);
+
+           // if (actif) {
+                handler.removeCallbacks(runnable);
+            //}
+
+            if(Boolean.FALSE.equals(actif)) {
+                handler.postDelayed(runnable, 7000);
+
+            }
         });
 
         /**
