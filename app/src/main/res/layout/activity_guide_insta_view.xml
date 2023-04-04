@@ -95,6 +95,11 @@
 
                 android:src="@drawable/logo_app"></ImageView>
         </RelativeLayout>
+<ImageView
+    android:id="@+id/cafd"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:srcCompat="@drawable/cable_noir_1"></ImageView>
 
         <TextView
             android:id="@+id/textView3"
