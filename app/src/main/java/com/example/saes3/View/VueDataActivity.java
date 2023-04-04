@@ -27,7 +27,7 @@ public class VueDataActivity extends AppCompatActivity implements Serializable {
     private dataRecyclerAdapter dataRecyclerAdapter;
     private String ChoixTri = "Choix du Tri";
     private boolean Desc = false;
-    private ArrayList<Data> listData;
+    private ArrayList<Data> cloneListData;
 
     /**
      * The ViewModel for VueDataActivity
@@ -41,14 +41,15 @@ public class VueDataActivity extends AppCompatActivity implements Serializable {
         setContentView(R.layout.activity_vue_data);
 
         vueDataViewModel = new ViewModelProvider(this).get(VueDataViewModel.class);
-listData= (ArrayList<Data>) ListData.getInstance().getListAllData().clone();
+
+        cloneListData= (ArrayList<Data>) ListData.getInstance().getListAllData().clone();
 
         btnTriChoix = findViewById(R.id.SortChoise);
         switchDesc = findViewById(R.id.switch1);
         trid = findViewById(R.id.button8);
         btnTriChoix.setText(ChoixTri);
 
-        dataRecyclerAdapter = new dataRecyclerAdapter(getApplicationContext());
+        dataRecyclerAdapter = new dataRecyclerAdapter(getApplicationContext(),cloneListData);
         recyclerView = findViewById(R.id.recyclerview);
         recyclerView.setAdapter(dataRecyclerAdapter);
         recyclerView.setLayoutManager((new LinearLayoutManager((this))));
@@ -75,53 +76,52 @@ listData= (ArrayList<Data>) ListData.getInstance().getListAllData().clone();
  * Sort the value in adapter by the 'ChoixTri' value and the 'Desc' boolean
  */
         trid.setOnClickListener(v -> {
-            //Jpeux faire une enum
             switch (ChoixTri) {
                 case "Co²":
                     if (Desc) {
-                        listData.sort((e1, e2) -> Float.compare(e1.getCO2(), e2.getCO2()));
+                        cloneListData.sort((e1, e2) -> Float.compare(e1.getCO2(), e2.getCO2()));
                         dataRecyclerAdapter.notifyDataSetChanged();
 
                     } else {
-                        listData.sort((e1, e2) -> Float.compare(e1.getCO2(), e2.getCO2()));
+                        cloneListData.sort((e1, e2) -> Float.compare(e2.getCO2(), e1.getCO2()));
                         dataRecyclerAdapter.notifyDataSetChanged();
 
                     }
                     break;
                 case "Température":
                     if (Desc) {
-                        listData.sort((e1, e2) -> Float.compare(e1.getTemperature(), e2.getTemperature()));
+                        cloneListData.sort((e1, e2) -> Float.compare(e1.getTemperature(), e2.getTemperature()));
                         dataRecyclerAdapter.notifyDataSetChanged();
                         break;
                     } else {
-                        listData.sort((e1, e2) -> Float.compare(e1.getTemperature(), e2.getTemperature()));
+                        cloneListData.sort((e1, e2) -> Float.compare(e2.getTemperature(), e1.getTemperature()));
                         dataRecyclerAdapter.notifyDataSetChanged();
                     }
                     break;
                 case "Humidité":
                     if (Desc) {
-                        listData.sort((e1, e2) -> Float.compare(e1.getHumidite(), e2.getHumidite()));
+                        cloneListData.sort((e1, e2) -> Float.compare(e1.getHumidite(), e2.getHumidite()));
                         dataRecyclerAdapter.notifyDataSetChanged();
                     } else {
-                        listData.sort((e1, e2) -> Float.compare(e1.getHumidite(), e2.getHumidite()));
+                        cloneListData.sort((e1, e2) -> Float.compare(e2.getHumidite(), e1.getHumidite()));
                         dataRecyclerAdapter.notifyDataSetChanged();
                     }
                     break;
                 case "Luminiosité":
                     if (Desc) {
-                        listData.sort((e1, e2) -> Float.compare(e1.getLight(), e2.getLight()));
+                        cloneListData.sort((e1, e2) -> Float.compare(e1.getLight(), e2.getLight()));
                         dataRecyclerAdapter.notifyDataSetChanged();
                     } else {
-                        listData.sort((e1, e2) -> Float.compare(e1.getLight(), e2.getLight()));
+                        cloneListData.sort((e1, e2) -> Float.compare(e2.getLight(), e1.getLight()));
                         dataRecyclerAdapter.notifyDataSetChanged();
                     }
                     break;
                 case "O²":
                     if (Desc) {
-                        listData.sort((e1, e2) -> Float.compare(e1.getO2(), e2.getO2()));
+                        cloneListData.sort((e1, e2) -> Float.compare(e1.getO2(), e2.getO2()));
                         dataRecyclerAdapter.notifyDataSetChanged();
                     } else {
-                        listData.sort((e1, e2) -> Float.compare(e1.getO2(), e2.getO2()));
+                        cloneListData.sort((e1, e2) -> Float.compare(e2.getO2(), e1.getO2()));
                         dataRecyclerAdapter.notifyDataSetChanged();
                     }
                     break;

@@ -13,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.saes3.R;
-import com.example.saes3.Util.notif;
 import com.example.saes3.ViewModel.AccueilViewModel;
 import com.google.android.material.snackbar.Snackbar;
 

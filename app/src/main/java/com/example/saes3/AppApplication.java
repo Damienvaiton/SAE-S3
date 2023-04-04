@@ -32,7 +32,7 @@ public class AppApplication extends Application implements Application.ActivityL
             AppApplication.context= getApplicationContext();
             FirebaseAccess database = FirebaseAccess.getInstance();
             listenerCo();
-FirebaseAccess.getInstance().testFirebase();
+            FirebaseAccess.getInstance().testFirebase();
             sInstance = this;
             registerActivityLifecycleCallbacks(this);
         }
