@@ -102,7 +102,7 @@ pop.setCancelable(false);
                 }
                 else if(!getEtatFirebase){
                     AlertDialog.Builder pop = new AlertDialog.Builder(AppApplication.getCurrentActivity());
-                    pop.setMessage("Firebase ne semble pas être disponible pour le moment, réessayer plus-tard");
+                    pop.setMessage("Firebase ne semble pas être disponible pour le moment, réessayer plus tard");
                     pop.setCancelable(false);
 
                     pop.setPositiveButton("Quitter l'application", (dialog, which) -> {

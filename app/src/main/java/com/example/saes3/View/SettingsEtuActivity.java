@@ -137,7 +137,7 @@ public class SettingsEtuActivity extends AppCompatActivity implements View.OnCli
         tauxRefresh.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE && !tauxRefresh.getText().toString().equals("")) {
                 if (settingsEtuViewModel.editTemps((parseInt(tauxRefresh.getText().toString())))) {
-                    Toast.makeText(SettingsEtuActivity.this, "Refresh : " + tauxRefresh.getText().toString() + "s,\r\nVous pouvez redémarrer l'ESP", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SettingsEtuActivity.this, "Rafraichissement : " + tauxRefresh.getText().toString() + "s,\r\nVous pouvez redémarrer l'ESP", Toast.LENGTH_SHORT).show();
                     tauxRefresh.setText("");
                 } else {
                     Toast.makeText(SettingsEtuActivity.this, "Erreur", Toast.LENGTH_SHORT).show();
@@ -231,7 +231,7 @@ public class SettingsEtuActivity extends AppCompatActivity implements View.OnCli
     private void refreshSettings() {
         if (!tauxRefresh.getText().toString().equals("")) {
             if (settingsEtuViewModel.editTemps((parseInt(tauxRefresh.getText().toString())))) {
-                Toast.makeText(SettingsEtuActivity.this, "Refresh : " + tauxRefresh.getText().toString() + "s,\r\nVous pouvez redémarrer l'ESP", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SettingsEtuActivity.this, "Rafraichissement : " + tauxRefresh.getText().toString() + "s,\r\nVous pouvez redémarrer l'ESP", Toast.LENGTH_SHORT).show();
                 tauxRefresh.setText("");
             } else {
                 Toast.makeText(SettingsEtuActivity.this, "Erreur", Toast.LENGTH_SHORT).show();

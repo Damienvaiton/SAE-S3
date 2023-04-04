@@ -85,21 +85,22 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
 
         graphViewModel = new ViewModelProvider(this).get(GraphViewModel.class);
 
-        Handler handler = new Handler();
+       /* Handler handler = new Handler();
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
                 emptyESP();
             }
-        };
+        };*/
 /**
  * Observer of new LineData object available to refrest current graph
  */
         graphViewModel.getUpdateGraph().observe(this, (Observer<LineData>) linedata -> {
             graph.setData(linedata);
             graph.invalidate();
+            /*
             handler.removeCallbacks(runnable);
-            handler.postDelayed(runnable, 7000);
+            handler.postDelayed(runnable, 7000);*/
         });
 
         /**
@@ -316,7 +317,7 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
 
     public void emptyESP(){
         AlertDialog.Builder alertDialog=new AlertDialog.Builder(GraphiqueActivity.this);
-        alertDialog.setMessage("Il semblerait que l'ESP ne contienne aucune données, l'avez vous brancher?");
+        alertDialog.setMessage("Il semblerait que l'ESP ne contienne aucune donnée, l'avez vous branché?");
         alertDialog.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

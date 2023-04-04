@@ -121,7 +121,7 @@ int po=(dataRecyclerAdapter.getItemCount()-position);
         switch (v.getId()) {
             case R.id.rennoméA:
                 PopUpDialog customPopup = new PopUpDialog(this);
-                customPopup.build("Rennomé l'esp", "Nom", 1);
+                customPopup.build("Renommé l'esp", "Nom", 1);
                 customPopup.getYesButton().setOnClickListener(view -> {
                     if (!customPopup.getString().equals("")) {
                         settingsAdminViewModel.renameESP(customPopup.getString());
