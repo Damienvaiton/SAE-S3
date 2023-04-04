@@ -61,8 +61,7 @@ public class AppApplication extends Application implements Application.ActivityL
                         pop.setPositiveButton("Fait", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                boolean temp=checkCo();
-                                if(temp==true) {
+                                if(checkCo()) {
                                     dialog.cancel();
                                 } else {
                                     pop.show();
