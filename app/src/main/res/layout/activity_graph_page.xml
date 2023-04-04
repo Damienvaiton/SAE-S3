@@ -234,7 +234,7 @@
             android:textSize="12sp"
             app:layout_constraintBottom_toTopOf="@+id/guideline31"
             app:layout_constraintEnd_toEndOf="@+id/viewTemp"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="@+id/viewTemp"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -247,7 +247,7 @@
             android:textSize="12sp"
             app:layout_constraintBottom_toTopOf="@+id/guideline31"
             app:layout_constraintEnd_toEndOf="@+id/viewO2"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_bias="0.415"
             app:layout_constraintStart_toStartOf="@+id/viewO2"
             app:layout_constraintTop_toTopOf="parent" />
 
