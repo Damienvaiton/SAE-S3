@@ -18,21 +18,18 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
-import org.apache.poi.ss.usermodel.ConditionalFormattingRule;
-import org.apache.poi.ss.usermodel.IndexedColors;
-import org.apache.poi.ss.usermodel.PatternFormatting;
-import org.apache.poi.ss.usermodel.SheetConditionalFormatting;
-import org.apache.poi.ss.util.CellRangeAddress;
-import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
+import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.util.ArrayList;
 
 public class GraphViewModel extends ViewModel {
+    /**
+     * LiveData s'occupant de transiter l'objet du nouveau graphique du ViewModel à la Vue
+     */
+    private final MutableLiveData<LineData> updateGraph = new MutableLiveData<>();
+    private final MutableLiveData<String> updateTemps = new MutableLiveData<>();
+    private final MutableLiveData<Data> updateData = new MutableLiveData<>();
     private FirebaseAccess acess;
     private boolean leftAxisUsed = false;
     private boolean rightAxisUsed = false;
@@ -46,7 +43,6 @@ public class GraphViewModel extends ViewModel {
     private ArrayList<Entry> A_CO2 = new ArrayList<>();
     private ArrayList<Entry> A_humi = new ArrayList<>();
     private ArrayList<Entry> A_O2 = new ArrayList<>();
-
     /**
      * Tableaux des regroupant les ArrayList d'entry et le nom pour la construction du graphique
      */
@@ -55,16 +51,12 @@ public class GraphViewModel extends ViewModel {
     private LineDataSet setO2 = new LineDataSet(A_O2, "O2");
     private LineDataSet setTemp = new LineDataSet(A_temp, "Température");
     private LineDataSet setLux = new LineDataSet(A_lux, "Lux");
-
     private boolean boxCO2 = false;
     private boolean boxHumi = false;
     private boolean boxO2 = false;
     private boolean boxTemp = false;
     private boolean boxLux = false;
-
-
     private ArrayList<Data> listData;
-
     /**
      * Constructeur du ViewModel
      */
@@ -78,14 +70,6 @@ public class GraphViewModel extends ViewModel {
         listData = new ArrayList<>();
 
     }
-
-    /**
-     * LiveData s'occupant de transiter l'objet du nouveau graphique du ViewModel à la Vue
-     */
-    private final MutableLiveData<LineData> updateGraph = new MutableLiveData<>();
-
-    private final MutableLiveData<String> updateTemps = new MutableLiveData<>();
-    private final MutableLiveData<Data> updateData = new MutableLiveData<>();
 
     /**
      * LiveData s'occupant de transiter le taux de raffraichissemnt de l'ESP du ViewModel à la Vue
@@ -188,7 +172,7 @@ public class GraphViewModel extends ViewModel {
         creaGraph();
     }
 
-    public ListData returnValue(){
+    public ListData returnValue() {
         return ListData.getInstance();
     }
 
@@ -290,7 +274,7 @@ public class GraphViewModel extends ViewModel {
      */
 
     private boolean isDataValid(int cptLignes) {
-        ListData instanceListData= ListData.getInstance();
+        ListData instanceListData = ListData.getInstance();
         if (instanceListData.recup_data(cptLignes).getCO2() == 0) {
             return false;
         }
@@ -318,74 +302,33 @@ public class GraphViewModel extends ViewModel {
         if (!isDataValid(cptLignes)) {
             cptLignes--;
         }
-        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Mesure.xlsx");
-        XSSFWorkbook workbook = new XSSFWorkbook();
-        // Création de la feuille de calcul
-        XSSFSheet sheet = workbook.createSheet("Mesures");
-        // Création de la condition pour l'affichage en couleurs alternées
-        SheetConditionalFormatting sheetCF = sheet.getSheetConditionalFormatting();
-        ConditionalFormattingRule rule1 = sheetCF.createConditionalFormattingRule("MOD(ROW(),2)");
-        PatternFormatting fill1 = rule1.createPatternFormatting();
-        fill1.setFillBackgroundColor(IndexedColors.GREY_25_PERCENT.index);
-        fill1.setFillPattern(PatternFormatting.SOLID_FOREGROUND);
-        // Plage des cellules affectées par la condition
-        CellRangeAddress[] regions = {
-                CellRangeAddress.valueOf("A1:G" + (cptLignes + 1))
-        };
-        sheetCF.addConditionalFormatting(regions, rule1);
-        // Ajout de la 1ère ligne de titre
-        XSSFRow row0 = sheet.createRow(0);
-        // Cellule Numero
-        XSSFCell cellNumero = row0.createCell(0);
-        cellNumero.setCellValue("Numero mesure");
-        // Cellule Humidite
-        XSSFCell cellHum = row0.createCell(1);
-        cellHum.setCellValue("Humidite");
-        // Cellule Temperature
-        XSSFCell cellTemp = row0.createCell(2);
-        cellTemp.setCellValue("Temperature");
-        // Cellule CO2
-        XSSFCell cellCO2 = row0.createCell(3);
-        cellCO2.setCellValue("CO2");
-        // Cellule O2
-        XSSFCell cellO2 = row0.createCell(4);
-        cellO2.setCellValue("O2");
-        // Cellule Lux
-        XSSFCell cellLux = row0.createCell(5);
-        cellLux.setCellValue("Lux");
-        // Cellule Heure
-        XSSFCell cellHeure = row0.createCell(6);
-        cellHeure.setCellValue("Heure");
-        // Ajout des lignes de mesures
-        for (int i = 0; i < cptLignes; i++) {
-            XSSFRow row = sheet.createRow(i + 1);
-            row.createCell(0).setCellValue(i);
-            row.createCell(1).setCellValue(instanceListData.recup_data(i).getHumidite());
-            row.createCell(2).setCellValue(instanceListData.recup_data(i).getTemperature());
-            row.createCell(3).setCellValue(instanceListData.recup_data(i).getCO2());
-            row.createCell(4).setCellValue(instanceListData.recup_data(i).getO2());
-            row.createCell(5).setCellValue(instanceListData.recup_data(i).getLight());
-            row.createCell(6).setCellValue(instanceListData.recup_data(i).getTemps());
-        }
-        // Création du fichier
+        BufferedWriter writer;
+        File csvFile;
+        String titre = "Numero Mesure;Humidite;Temerature;CO2;O2;Lux;Heure";
+
         try {
-            if (file.exists()) {
-                file.delete();
+            csvFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Mesure.csv");
+            if (!csvFile.exists()) {
+                csvFile.createNewFile();
             }
-            try {
-                file.createNewFile();
-            } catch (Exception e) {
-                e.printStackTrace();
+            writer = new BufferedWriter(new FileWriter(csvFile));
+
+            writer.write(titre);
+            for (int i = 0; i < cptLignes; i++) {
+                String resultat = Integer.toString(i);
+                resultat += ";" + Math.round(instanceListData.recup_data(i).getHumidite() * 1000.0) / 1000.0;
+                resultat += ";" + Math.round(instanceListData.recup_data(i).getTemperature() * 100.0) / 100.0;
+                resultat += ";" + Math.round(instanceListData.recup_data(i).getCO2() * 1000.0) / 1000.0;
+                resultat += ";" + Math.round(instanceListData.recup_data(i).getO2() * 1000.0) / 1000.0;
+                resultat += ";" + Math.round(instanceListData.recup_data(i).getLight() * 1000.0) / 1000.0;
+                resultat += ";" + instanceListData.recup_data(i).getTemps();
+                writer.newLine();
+                writer.write(resultat);
             }
-            FileOutputStream fileOutputStream = new FileOutputStream(file);
-            workbook.write(fileOutputStream);
-            if (fileOutputStream != null) {
-                fileOutputStream.flush();
-                fileOutputStream.close();
-                return "Export de " + cptLignes + " mesures dans le dossier téléchargements";
-            }
+            writer.close();
         } catch (Exception e) {
             e.printStackTrace();
+            return "Erreur lors de l'export, annulation";
         }
         return "Export terminé, disponible dans votre dossier téléchargement";
     }
@@ -393,7 +336,6 @@ public class GraphViewModel extends ViewModel {
     public void onClose() {
         acess.deleteListener();
     }
-
 
     public LiveData<Data> getData() {
         return updateData;
