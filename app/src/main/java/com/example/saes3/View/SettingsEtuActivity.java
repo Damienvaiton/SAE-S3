@@ -110,7 +110,7 @@ public class SettingsEtuActivity extends AppCompatActivity implements View.OnCli
         if (!rightAxisName.equals("")) {
             textAxeRight.setText("Colonne " + rightAxisName);
         } else {
-            textAxeRight.setText("Colonne Y droit");
+            textAxeRight.setText("Colonne Y droite");
         }
         if (rightAxis.isAxisMaxCustom()) {
             auto_droit.setChecked(false);

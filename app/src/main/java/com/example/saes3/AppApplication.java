@@ -55,7 +55,7 @@ FirebaseAccess.getInstance().testFirebase();
                     @Override
                     public void run() {
                         AlertDialog.Builder pop = new AlertDialog.Builder(AppApplication.getCurrentActivity());
-                        pop.setMessage("Connection à internet perdu, reconnectez vous");
+                        pop.setMessage("Connexion à internet perdue, reconnectez vous");
                         pop.setCancelable(false);
                         pop.setPositiveButton("Fait", new DialogInterface.OnClickListener() {
                             @Override
