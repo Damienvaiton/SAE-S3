@@ -1,10 +1,14 @@
 package com.example.saes3.View;
 
+import static java.lang.Integer.parseInt;
+import static java.lang.Long.parseLong;
+
 import android.Manifest;
 import android.app.Activity;
 
 import android.app.AlertDialog;
 import android.app.Notification;
+import android.app.Service;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -77,6 +81,7 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
     private Axe Axis;
 
     private XAxis xl;
+    private Long refreshRate;
     /**
      * The ViewModel of this view
      */
@@ -86,23 +91,14 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Intent intent = new Intent(GraphiqueActivity.this, NotifMaker.class);
+        startService(intent);
         setContentView(R.layout.activity_graph_page);
-
-        graphViewModel = new ViewModelProvider(this).get(GraphViewModel.class);
-      /*   Notification notif = NotifMaker.getInstance().creaNotif();
-
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-       if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 1);
         }
-        notificationManager.notify(1, notif);*/
+        graphViewModel = new ViewModelProvider(this).get(GraphViewModel.class);
 
 
         Handler handler = new Handler();
@@ -112,20 +108,38 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
                 emptyESP();
             }
         };
+
+        Handler handler2 = new Handler();
+        Runnable runnable2 = new Runnable() {
+            @Override
+            public void run() {
+                lostESP();
+            }
+        };
 /**
  * Observer of new LineData object available to refrest current graph
  */
         graphViewModel.getUpdateGraph().observe(this, (Observer<LineData>) linedata -> {
             graph.setData(linedata);
             graph.invalidate();
+
             handler.removeCallbacks(runnable);
-          //  handler.postDelayed(runnable, 7000);
+
+            handler2.removeCallbacks(runnable2);
+            handler.postDelayed(runnable, refreshRate*2);
+
         });
 
         /**
          * Observer of new refresh rate of current ESP
          */
-        graphViewModel.getMoments().observe(this, s -> valTemp.setText(s));
+        graphViewModel.getMoments().observe(this, (Observer<String>) s-> {
+            valTemp.setText(s);
+            refreshRate=parseLong(s);
+            handler2.removeCallbacks(runnable2);
+            handler.postDelayed(runnable, 7000);
+            handler.postDelayed(runnable, (refreshRate*2));
+        });
 
         graphViewModel.getData().observe(this, (Observer<Data>) newData-> {
             actuValues(newData);
@@ -337,6 +351,17 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
     public void emptyESP(){
         AlertDialog.Builder alertDialog=new AlertDialog.Builder(GraphiqueActivity.this);
         alertDialog.setMessage("Il semblerait que l'ESP ne contienne aucune données, l'avez vous brancher?");
+        alertDialog.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        alertDialog.show();
+    }
+    public void lostESP(){
+        AlertDialog.Builder alertDialog=new AlertDialog.Builder(GraphiqueActivity.this);
+        alertDialog.setMessage("Il semblerait que l'ESP que le signal de l'ESP ai été perdu, vérifié son alimentation électrique");
         alertDialog.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

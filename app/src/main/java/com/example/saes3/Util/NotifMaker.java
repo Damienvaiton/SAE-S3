@@ -58,16 +58,19 @@ public class NotifMaker extends Service {
     }
 */
 
+
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        // Référence de la base de données Firebase à écouter pour les mises à jour
+
+
         myRef = FirebaseDatabase.getInstance().getReference("SAE_S3_BD").child(ESP.getInstance().getMacEsp()).child("Mesure");
 
-        // Création d'un écouteur de valeurs pour la référence Firebase
         valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Data newData = dataSnapshot.getValue(Data.class);
+                System.out.println(newData+"ssss");
                 updateNotification(newData);
             }
 
@@ -94,7 +97,6 @@ public class NotifMaker extends Service {
         Notification notification = creaNotif();
         notificationManager.notify(1, notification);
 
-        // Service démarré en mode START_STICKY pour qu'il continue à s'exécuter en arrière-plan
         return START_STICKY;
     }
 
@@ -108,7 +110,7 @@ public class NotifMaker extends Service {
     private void updateNotification(Data data) {
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getAppContext());
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getAppContext(), CHANNEL_ID);
-
+        System.out.println("yoyoyo"+data.getTemperature());
         builder.setContentText(data.toString());
 builder.setContentTitle(data.getTemps());
         builder.setSmallIcon(R.drawable.logo_app);
@@ -149,8 +151,6 @@ builder.setContentTitle(data.getTemps());
     private ValueEventListener valueEventListener;
 
     private void createNotificationChannel() {
-        // Create the NotificationChannel, but only on API 26+ because
-        // the NotificationChannel class is new and not in the support library
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = "Vegetabilis Auditor";
             String description = "c moa";
