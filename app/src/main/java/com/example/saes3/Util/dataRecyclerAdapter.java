@@ -33,9 +33,8 @@ public class dataRecyclerAdapter extends RecyclerView.Adapter<dataRecyclerAdapte
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(context).inflate(R.layout.blocdata, parent, false);
        // itemView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, originalHeight));
-        return new ViewHolder(itemView);
+        return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.blocdata, parent, false));
     }
 
     /**
