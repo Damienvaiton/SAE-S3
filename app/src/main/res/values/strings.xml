@@ -10,7 +10,7 @@
     <string name="co2">CO2</string>
     <string name="o2">O2</string>
     <string name="lux">LUX</string>
-    <string name="branchementCapteurFinish">Voici à quoi devrais ressembler l\'ESP une fois installé</string>
+    <string name="branchementCapteurFinish">Voici à quoi devrait ressembler l\'ESP une fois installé</string>
     <string name="addUbsCable">Pour finir l\'installation, relié votre appareil au courant via la prise USB fourni dans la boîte</string>
     <string-array name="setTime">
         <item>1s</item>
