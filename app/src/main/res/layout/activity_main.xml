@@ -105,4 +105,19 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="516dp" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/helper"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="19dp"
+        android:layout_marginEnd="11dp"
+        android:layout_marginBottom="330dp"
+        android:clickable="true"
+        app:layout_constraintBottom_toTopOf="@+id/textView9"
+        app:layout_constraintEnd_toStartOf="@+id/imageView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/baseline_help_24" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

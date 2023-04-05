@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.saes3.R;
 import com.example.saes3.ViewModel.AccueilViewModel;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ public class AccueilActivity extends AppCompatActivity {
     /**
      * Spinner who shows all ESP available
      */
+    private FloatingActionButton helper;
     private Spinner spinner;
     /**
      * Store the index of ESP actually selected
@@ -77,6 +79,7 @@ public class AccueilActivity extends AppCompatActivity {
         accueilViewModel = new ViewModelProvider(this).get(AccueilViewModel.class);
         spinner = findViewById(R.id.SpinnerID);
         btncoEtu = findViewById(R.id.Gobtn);
+        helper=findViewById(R.id.helper);
         btnCoAdmin = findViewById(R.id.adminbtnmain);
         tabESP = new ArrayList<>();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(AccueilActivity.this, android.R.layout.simple_spinner_dropdown_item, tabESP);
@@ -96,6 +99,12 @@ public class AccueilActivity extends AppCompatActivity {
         /**
          * Store the value selected into 'position'
          */
+        helper.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(AccueilActivity.this, GuideInstaView.class));
+            }
+        });
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {

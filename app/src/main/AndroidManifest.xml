@@ -1,18 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"></uses-permission>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+        <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"></uses-permission>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.BROADCAST_CLOSE_SYSTEM_DIALOGS"
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission
+        android:name="android.permission.BROADCAST_CLOSE_SYSTEM_DIALOGS"
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
-        android:allowBackup="true"
         android:name=".AppApplication"
+        android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher_tutu"
@@ -22,40 +26,46 @@
         android:theme="@style/Theme.saes3"
         tools:targetApi="31">
         <activity
-            android:name="com.example.saes3.View.VueDataActivity"
+            android:name=".View.GuideInstaView"
+            android:exported="false" />
+        <activity
+            android:name=".View.VueDataActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-        <receiver android:name=".Util.ActionReceive"></receiver>
+
+        <receiver android:name=".Util.ActionReceive" />
+
         <activity
-            android:name="com.example.saes3.View.SettingsAdminActivity"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name="com.example.saes3.View.SettingsEtuActivity"
+            android:name=".View.SettingsAdminActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name="com.example.saes3.View.GraphiqueActivity"
+            android:name=".View.SettingsEtuActivity"
             android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".View.GraphiqueActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".View.SplashActivity"
+            android:exported="true">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
 
-        </activity>
-        <activity android:name="com.example.saes3.View.SplashActivity"
-            android:exported="true">
-        <meta-data
-            android:name="android.app.lib_name"
-            android:value="" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -63,15 +73,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.saes3.View.AccueilActivity"
+            android:name=".View.AccueilActivity"
             android:exported="false">
-
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name="com.example.saes3.View.ConnecAdminActivity"
+            android:name=".View.ConnecAdminActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -81,7 +90,6 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-
     </application>
 
 </manifest>

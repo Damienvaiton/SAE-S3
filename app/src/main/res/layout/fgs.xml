@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Au lancement de l'application, vous arriez sur cette page"
+        tools:layout_editor_absoluteX="30dp"
+        tools:layout_editor_absoluteY="30dp" />
+
+    <TextView
+        android:id="@+id/point1accueil"
+        android:layout_width="208dp"
+        android:layout_height="101dp"
+        android:text="En 1, vous avez une liste déroulante composée de tous les ESP actuellement disponible, il vous suffit d'en choir un pour d'appuyer sur le bouton 2 pour accéder à la page de graphisme"
+        tools:layout_editor_absoluteX="30dp"
+        tools:layout_editor_absoluteY="86dp" />
+
+    <TextView
+        android:id="@+id/point3accueil"
+        android:layout_width="210dp"
+        android:layout_height="143dp"
+        android:text="En 3 : \n Un raccourci vers le mode administratif de l'application, cette partie ne sera pas aborder icin si vous voulez en savoir plus merci de vous référé au 'Guide d'utilisation'"
+        tools:layout_editor_absoluteX="30dp"
+        tools:layout_editor_absoluteY="210dp" />
+
+    <ImageView
+        android:id="@+id/screengraph"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/graph"
+        tools:layout_editor_absoluteX="249dp"
+        tools:layout_editor_absoluteY="86dp" />
+
+    <TextView
+        android:id="@+id/point6graph"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="En 3 : \n Voici le graphique, vous pouvez zoomer, dézooomer grâce à un pincement du doigts dessus, aussi, en cliquant sur un point de mesure il est possible de voir direment l'heure exacte ainsi que la valeurs enregistrée à ce moment là"
+        tools:layout_editor_absoluteX="30dp"
+        tools:layout_editor_absoluteY="574dp" />
+
+    <TextView
+        android:id="@+id/textView16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="En 1 : \n Un panel où vous retrouverez les dernières valeurs connues "
+        tools:layout_editor_absoluteX="30dp"
+        tools:layout_editor_absoluteY="386dp" />
+
+    <TextView
+        android:id="@+id/point2graph"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="En 2 : \n Une rangée de case cochable pour sélectionner les mesures que vous voulez voir apparaître sur le graphique, il est recommander de n'en utiliser que 2 à la fois même si plus est possible."
+        tools:layout_editor_absoluteX="30dp"
+        tools:layout_editor_absoluteY="460dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>
