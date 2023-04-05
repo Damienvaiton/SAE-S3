@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
+import android.net.NetworkInfo;
 import android.net.NetworkRequest;
 import android.os.Build;
 import android.os.Bundle;
@@ -60,7 +61,12 @@ public class AppApplication extends Application implements Application.ActivityL
                         pop.setPositiveButton("Fait", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
+                                if(checkCo()) {
+                                    dialog.cancel();
+                                } else {
+                                    pop.show();
+                                }
+
                             }
                         });
                         pop.show();
@@ -122,6 +128,29 @@ public class AppApplication extends Application implements Application.ActivityL
             return mCurrentActivityRef.get();
         }
         return null;
+    }
+
+    public boolean checkCo() {
+        boolean isWifiConn = false;
+        boolean isMobileConn = false;
+        ConnectivityManager connMgr =
+                (ConnectivityManager) AppApplication.getAppContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        for (Network network : connMgr.getAllNetworks()) {
+            NetworkInfo networkInfo = connMgr.getNetworkInfo(network);
+            if (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
+               isWifiConn |=networkInfo.isConnected();
+            }
+            if (networkInfo.getType() == ConnectivityManager.TYPE_MOBILE) {
+                isMobileConn |=networkInfo.isConnected();
+            }
+            if(isMobileConn || isWifiConn){
+                System.out.println("true");
+                return true;
+            }
+        }
+        System.out.println("false");
+        return false;
+
     }
 }
 // ...
