@@ -295,9 +295,9 @@ public class GraphViewModel extends ViewModel {
 
     public String exportFile() {
         ListData instanceListData = ListData.getInstance();
-        int cptLignes = instanceListData.list_size();
-        if (cptLignes < 1) {
-            return "Export excel annulé, pas de valeurs";
+        int cptLignes = instanceListData.list_size()-1;
+        if (cptLignes <= 1) {
+            return "Export excel annulé, pas assez de valeurs";
         }
         if (!isDataValid(cptLignes)) {
             cptLignes--;
