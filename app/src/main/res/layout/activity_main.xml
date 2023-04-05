@@ -117,6 +117,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.060000002"
-        app:srcCompat="@drawable/baseline_help_24" />
+        app:srcCompat="@drawable/baseline_help_50"
+
+        android:backgroundTint="@color/Vegetabilis_purple"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

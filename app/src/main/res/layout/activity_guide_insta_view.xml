@@ -78,9 +78,7 @@
             android:id="@+id/textViewGuideInsta"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="50dp"
+            android:layout_marginTop="30dp"
             android:gravity="center"
             android:text="Guide d'installation de l'ESP"
             android:textSize="25sp"
@@ -245,9 +243,7 @@
             android:id="@+id/imgESP"
             android:layout_width="0dp"
             android:layout_height="200dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="50dp"
-            app:layout_constraintBottom_toTopOf="@+id/séparateurImgESP"
+            android:layout_marginTop="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/texteViewPhotoESP"
@@ -257,6 +253,7 @@
             android:id="@+id/séparateurImgESP"
             android:layout_width="match_parent"
             android:layout_height="3dp"
+            android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:background="@color/black"
             app:layout_constraintBottom_toTopOf="@+id/layout_accueil"
@@ -344,7 +341,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/séparateurGraph"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/séparateurAccueil">
@@ -425,6 +423,82 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <LinearLayout
+            android:id="@+id/séparateurGraph"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/black"
+            app:layout_constraintBottom_toTopOf="@+id/layout_settings"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_settings"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="1dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/séparateurGraph">
+
+
+            <ImageView
+                android:id="@+id/imageSettingsEtu"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:src="@drawable/settingsetu"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/textView1settings"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <TextView
+                android:id="@+id/textView1settings"
+                android:layout_width="240dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:gravity="center"
+                android:justificationMode="inter_word"
+                android:text="En 1 : \nLes champs pour régler manuellement chaque axe, attetion, il faut désactibver 'auto' pour pouvoir y modifier"
+                android:textAlignment="textStart"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView2settings"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:justificationMode="inter_word"
+                android:text="En 2 : \nDe base le paramètre auto est activé, chaque axe se comporte automatiquement selon l'intervalle de données choisi "
+                android:textAlignment="textStart"
+                app:layout_constraintEnd_toEndOf="@+id/textView1settings"
+                app:layout_constraintStart_toStartOf="@+id/textView1settings"
+                app:layout_constraintTop_toBottomOf="@+id/textView1settings" />
+
+            <TextView
+                android:id="@+id/textView3settings"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:justificationMode="inter_word"
+                android:text="En 3 : \nAffichage le taux de rafraichissement de l'ESP, modifiable directement en mettant la durée voulue (en seconde) puis en validant \n"
+                android:textAlignment="textStart"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/textView1settings"
+                app:layout_constraintStart_toStartOf="@id/textView1settings"
+                app:layout_constraintTop_toBottomOf="@+id/textView2settings" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
+
