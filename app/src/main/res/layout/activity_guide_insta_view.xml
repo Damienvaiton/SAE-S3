@@ -217,10 +217,12 @@
             android:layout_width="match_parent"
             android:layout_height="3dp"
             android:background="@color/black"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/layout_accueil"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imgESP"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/imgESP" />
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/layout_accueil"
@@ -253,7 +255,7 @@
                     android:layout_weight="0.5"
                     android:gravity="center"
 
-                    android:text="Au lancement de l'application, vous arrivez sur cette page" />
+                    android:text="\nAu lancement de l'application, vous arrivez sur cette page\n\n" />
 
                 <TextView
                     android:id="@+id/textView2"
@@ -261,7 +263,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
                     android:gravity="center"
-                    android:text="En 1, vous avez une liste déroulante composée de tous les ESP actuellement disponible, il vous suffit d'en choir un pour d'appuyer sur le bouton 2 pour accéder à la page de graphisme" />
+                    android:text="En 1, vous avez une liste déroulante composée de tous les ESP actuellement disponible. Il vous suffit d'en choir un pour d'appuyer sur le bouton 2 pour accéder à la page de graphisme\n" />
 
                 <TextView
                     android:id="@+id/textView3"
@@ -270,20 +272,21 @@
                     android:layout_weight="0.5"
                     android:gravity="center"
 
-                    android:text="En 3 : \n Un raccourci vers le mode administratif de l'application, cette partie ne sera pas aborder icin si vous voulez en savoir plus merci de vous référé au 'Guide d'utilisation'" />
+                    android:text="En 3 : \n Un raccourci vers le mode administratif de l'application. Cette partie ne sera pas aborder icin si vous voulez en savoir plus merci de vous référé au 'Guide d'utilisation'\n" />
             </LinearLayout>
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <LinearLayout
             android:id="@+id/séparateurAccueil"
-                    android:layout_width="match_parent"
-                    android:layout_height="3dp"
-                    android:background="@color/black"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layout_accueil"/>
 
         <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/layout_graph"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
@@ -310,21 +313,24 @@
                 <TextView
                     android:id="@+id/textView1graph"
                     android:layout_width="match_parent"
+                    android:gravity="center"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
-                    android:text="En 1 : \n Un panel où vous retrouverez les dernières valeurs connues" />
+                    android:text="\nEn 1 : \n Un panel où vous retrouverez les dernières valeurs connues" />
 
                 <TextView
                     android:id="@+id/textView2graph"
                     android:layout_width="match_parent"
+                    android:gravity="center"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
-                    android:text="En 2 : \n Une rangée de case cochable pour sélectionner les mesures que vous voulez voir apparaître sur le graphique, il est recommander de n'en utiliser que 2 à la fois même si plus est possible." />
+                    android:text="En 2 : \n Une rangée de case cochable pour sélectionner les mesures que vous voulez voir apparaître sur le graphique. Il est recommander de n'en utiliser que 2 à la fois même si plus est possible." />
 
                 <TextView
                     android:id="@+id/textView3graph"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:layout_weight="0.5"
                     android:text="En 3 : \n Voici le graphique, vous pouvez zoomer, dézooomer grâce à un pincement du doigts dessus, aussi, en cliquant sur un point de mesure il est possible de voir direment l'heure exacte ainsi que la valeurs enregistrée à ce moment là" />
 
@@ -332,6 +338,7 @@
                     android:id="@+id/textView4graph"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:layout_weight="0.5"
                     android:text="En 4 :\n L'accès vers une page contenant une liste de toutes les données" />
 
@@ -339,18 +346,91 @@
                     android:id="@+id/textView5graph"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:layout_weight="0.5"
                     android:text="En 5 :\n  Permet d'exporter toutes les données au moment T d'un ESP au format excel dans le dossier 'Download' du téléphone" />
 
                 <TextView
                     android:id="@+id/textView6graph"
                     android:layout_width="match_parent"
+                    android:gravity="center"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
                     android:text="En 6 : \n Accès vers la page paramètre du graphique" />
             </LinearLayout>
         </androidx.appcompat.widget.LinearLayoutCompat>
 
+        <LinearLayout
+            android:id="@+id/séparateurGraph"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout_graph"
+
+            />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/layout_settings"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            tools:layout_editor_absoluteX="62dp"
+            tools:layout_editor_absoluteY="112dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/séparateurGraph">
+
+
+            <ImageView
+                android:id="@+id/imageSettingsEtu"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.45"
+                android:src="@drawable/settingsetu" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.55"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView1settings"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:text="\nEn 1 : \n Les champs pour régler manuellement chaque axe, attetion, il faut désactibver 'auto' pour pouvoir y modifier"
+                    />
+                <TextView
+                    android:id="@+id/textView2settings"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:text="En 2 : \n De base le paramètre auto est activé, chaque axe se comporte automatiquement selon l'intervalle de données choisi " />
+
+                <TextView
+                    android:id="@+id/textView3settings"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:text="En 3 : \n Affichage le taux de rafraichissement de l'ESP, modifiable directement en mettant la durée voulue (en seconde) puis en validant \n" />
+
+
+            </LinearLayout>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+
+
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
+

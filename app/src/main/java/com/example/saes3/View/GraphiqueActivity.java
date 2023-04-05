@@ -106,10 +106,10 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
                 handler.removeCallbacks(runnable);
             //}
 
-            if(Boolean.FALSE.equals(actif)) {
-                handler.postDelayed(runnable, 7000);
-
-            }
+            //if(Boolean.FALSE.equals(actif)) {
+              //  handler.postDelayed(runnable, 7000);
+//
+  //          }
         });
 
         /**
