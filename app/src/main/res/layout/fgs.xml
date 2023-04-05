@@ -13,14 +13,6 @@
         tools:layout_editor_absoluteX="30dp"
         tools:layout_editor_absoluteY="30dp" />
 
-    <ImageView
-        android:id="@+id/imgAccueil"
-        android:layout_width="133dp"
-        android:layout_height="266dp"
-        app:srcCompat="@drawable/accueil"
-        tools:layout_editor_absoluteX="249dp"
-        tools:layout_editor_absoluteY="86dp" />
-
     <TextView
         android:id="@+id/point1accueil"
         android:layout_width="208dp"
@@ -42,8 +34,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/graph"
-        tools:layout_editor_absoluteX="206dp"
-        tools:layout_editor_absoluteY="386dp" />
+        tools:layout_editor_absoluteX="249dp"
+        tools:layout_editor_absoluteY="86dp" />
 
     <TextView
         android:id="@+id/point6graph"

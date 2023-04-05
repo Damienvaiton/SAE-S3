@@ -12,7 +12,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="0.45"
-        android:src="@drawable/graph" />
+        android:src="@drawable/accueil" />
 
     <LinearLayout
         android:layout_width="0dp"
@@ -25,43 +25,28 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.5"
-            android:text="En 1 : \n Un panel où vous retrouverez les dernières valeurs connues" />
+            android:gravity="center"
 
+            android:text="Au lancement de l'application, vous arrivez sur cette page"
+/>
         <TextView
             android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.5"
-            android:text="En 2 : \n Une rangée de case cochable pour sélectionner les mesures que vous voulez voir apparaître sur le graphique, il est recommander de n'en utiliser que 2 à la fois même si plus est possible." />
-
+            android:gravity="center"
+            android:text="En 1, vous avez une liste déroulante composée de tous les ESP actuellement disponible, il vous suffit d'en choir un pour d'appuyer sur le bouton 2 pour accéder à la page de graphisme"
+/>
         <TextView
             android:id="@+id/textView3"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.5"
-            android:text="En 3 : \n Voici le graphique, vous pouvez zoomer, dézooomer grâce à un pincement du doigts dessus, aussi, en cliquant sur un point de mesure il est possible de voir direment l'heure exacte ainsi que la valeurs enregistrée à ce moment là"
+            android:gravity="center"
+
+            android:text="En 3 : \n Un raccourci vers le mode administratif de l'application, cette partie ne sera pas aborder icin si vous voulez en savoir plus merci de vous référé au 'Guide d'utilisation'"
             />
 
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.5"
-            android:text="En 4 :\n L'accès vers une page contenant une liste de toutes les données"
-            />
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.5"
-            android:text="En 5 :\n  Permet d'exporter toutes les données au moment T d'un ESP au format excel dans le dossier 'Download' du téléphone"
-            />
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.5"
-            android:text="En 6 : \n Accès vers la page paramètre du graphique"
-            />
+
     </LinearLayout>
 </androidx.appcompat.widget.LinearLayoutCompat>
