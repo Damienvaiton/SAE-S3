@@ -85,13 +85,13 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
 
         graphViewModel = new ViewModelProvider(this).get(GraphViewModel.class);
 
-        Handler handler = new Handler();
+       /* Handler handler = new Handler();
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
                 emptyESP();
             }
-        };
+        };*/
 /**
  * Observer of new LineData object available to refrest current graph
  */
@@ -99,8 +99,8 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
             graph.setData(linedata);
             graph.invalidate();
 
-            handler.removeCallbacks(runnable);
-            handler.postDelayed(runnable, 7000);
+            /*handler.removeCallbacks(runnable);
+            handler.postDelayed(runnable, 7000);*/
         });
 
         /**
