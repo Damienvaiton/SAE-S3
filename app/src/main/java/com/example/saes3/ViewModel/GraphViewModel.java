@@ -2,6 +2,7 @@ package com.example.saes3.ViewModel;
 
 import android.graphics.Color;
 import android.os.Environment;
+import android.os.Handler;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -11,6 +12,7 @@ import com.example.saes3.Model.Data;
 import com.example.saes3.Model.FirebaseAccess;
 import com.example.saes3.Model.ListData;
 import com.example.saes3.R;
+import com.example.saes3.Util.AlertDialog;
 import com.example.saes3.Util.ClassTransitoireViewModel;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -57,6 +59,8 @@ public class GraphViewModel extends ViewModel {
     private boolean boxTemp = false;
     private boolean boxLux = false;
     private ArrayList<Data> listData;
+    Handler handlerLostESP = new Handler();
+    Runnable runnableLostESP;
     /**
      * Constructeur du ViewModel
      */
@@ -68,7 +72,13 @@ public class GraphViewModel extends ViewModel {
         acess.setRealtimeDataListener();
         acess.setEspTimeListener();
         listData = new ArrayList<>();
-
+        handlerLostESP = new Handler();
+        runnableLostESP = new Runnable() {
+            @Override
+            public void run() {
+                AlertDialog.getInstance().lostESP();
+            }
+        };
     }
 
     /**
@@ -76,6 +86,8 @@ public class GraphViewModel extends ViewModel {
      */
     public void updateRefresh(String refresh) {
         updateTemps.postValue(refresh);
+        handlerLostESP.postDelayed(runnableLostESP, FirebaseAccess.refresh);
+
     }
 
     /**

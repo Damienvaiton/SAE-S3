@@ -10,7 +10,6 @@ public class VueDataViewModel extends ViewModel{
 
 
 
-       // getMoments().observeForever(s -> System.out.println("dd"));
         MutableLiveData<Boolean> listenerDonnées=new MutableLiveData<>(true);
 
 

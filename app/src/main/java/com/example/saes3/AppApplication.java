@@ -2,6 +2,8 @@ package com.example.saes3;
 
 import android.app.Activity;
 import android.app.Application;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.net.ConnectivityManager;
@@ -25,11 +27,14 @@ import java.lang.ref.WeakReference;
 
 public class AppApplication extends Application implements Application.ActivityLifecycleCallbacks {
     public static Context context;
+    public static final String CHANNEL_ID="notif";
+
     private Handler mHandler = new Handler(Looper.getMainLooper());
     private static AppApplication sInstance;
     private static WeakReference<Activity> mCurrentActivityRef;
         public void onCreate() {
             super.onCreate();
+            createNotificationChannel();
             AppApplication.context= getApplicationContext();
             FirebaseAccess database = FirebaseAccess.getInstance();
             listenerCo();
@@ -151,6 +156,23 @@ public class AppApplication extends Application implements Application.ActivityL
         System.out.println("false");
         return false;
 
+    }
+    private void createNotificationChannel(){
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Vegetabilis Auditor";
+            String description = "c moa";
+            //CharSequence name = getString(R.string.channel_name);
+            // String description = getString(R.string.channel_description);
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getApplicationContext().getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 }
 // ...

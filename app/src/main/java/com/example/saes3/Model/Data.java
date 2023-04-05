@@ -2,11 +2,10 @@ package com.example.saes3.Model;
 
 
 import java.io.Serializable;
-import java.lang.reflect.Field;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 
-public class Data extends ArrayList<Data> implements Serializable {
+
+public class Data implements Serializable {
     private float humidite;
     private float temperature;
     private float light;

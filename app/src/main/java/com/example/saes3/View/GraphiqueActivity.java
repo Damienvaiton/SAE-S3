@@ -1,11 +1,16 @@
 package com.example.saes3.View;
 
+import static com.example.saes3.AppApplication.context;
+
 import android.app.Activity;
 
 import android.app.AlertDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MenuItem;
@@ -22,11 +27,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.saes3.Model.FirebaseAccess;
 import com.example.saes3.R;
 import com.example.saes3.Model.Axe;
 import com.example.saes3.Model.Data;
 
 
+import com.example.saes3.Util.NotifMaker;
 import com.example.saes3.ViewModel.GraphViewModel;
 import com.example.saes3.Util.XAxisValueFormatter;
 import com.github.mikephil.charting.charts.LineChart;
@@ -42,7 +49,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView.OnNavig
 import java.text.DecimalFormat;
 
 public class GraphiqueActivity extends AppCompatActivity implements View.OnClickListener, OnNavigationItemSelectedListener {
-
+public static final String CHANNEL_ID="notif";
     private LineChart graph;
     /**
      * TextView to display real time value at the top of the screen
@@ -66,8 +73,6 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
      */
     private BottomAppBar bottomNav;
     private BottomNavigationView bottomNavigationView;
-
-    private Boolean actif=false;
     /**
      * Object axis on the graph
      */
@@ -80,6 +85,7 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
     ActivityResultLauncher<Intent> mStartForResult;
     private GraphViewModel graphViewModel = null;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,14 +93,6 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
 
         graphViewModel = new ViewModelProvider(this).get(GraphViewModel.class);
 
-
-        Handler handler = new Handler();
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                emptyESP();
-            }
-        };
 /**
  * Observer of new LineData object available to refrest current graph
  */
@@ -102,23 +100,23 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
             graph.setData(linedata);
             graph.invalidate();
 
-           // if (actif) {
-                handler.removeCallbacks(runnable);
-            //}
 
-            //if(Boolean.FALSE.equals(actif)) {
-              //  handler.postDelayed(runnable, 7000);
-//
-  //          }
         });
+
 
         /**
          * Observer of new refresh rate of current ESP
          */
-        graphViewModel.getMoments().observe(this, s -> valTemp.setText(s));
+        graphViewModel.getMoments().observe(this, (Observer<String>) s -> {
+            valTemp.setText(s);
+
+
+        });
 
         graphViewModel.getData().observe(this, (Observer<Data>) newData-> {
             actuValues(newData);
+
+            startService(newData);
          //   notif.getInstance().creaNotif(newData);
         });
 
@@ -177,7 +175,10 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
          */
         xl.setValueFormatter(new XAxisValueFormatter(graphViewModel.getListData()));
 
-        Axis=Axe.getInstance();
+
+
+
+    Axis=Axe.getInstance();
         //Création Axe Y droit
         Axis.setRightAxis(graph.getAxisRight());
         Axis.getRightAxis().setEnabled(true);
@@ -324,28 +325,6 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
         return false;
     }
 
-    public void emptyESP(){
-        AlertDialog.Builder alertDialog=new AlertDialog.Builder(GraphiqueActivity.this);
-        alertDialog.setMessage("Il semblerait que l'ESP ne contienne aucune données, l'avez vous brancher?");
-        alertDialog.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        alertDialog.show();
-    }
-    public void lostESP(){
-        AlertDialog.Builder alertDialog=new AlertDialog.Builder(GraphiqueActivity.this);
-        alertDialog.setMessage("Il semblerait que l'ESP que le signal de l'ESP ai été perdu, vérifié son alimentation électrique");
-        alertDialog.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        alertDialog.show();
-    }
 
 
 
@@ -392,5 +371,15 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
         }
 
 
+
     }
+
+    public void startService(Data data){
+        Intent newNotification=new Intent(this, NotifMaker.class);
+        startService(newNotification);
+    }
+public void stopService(){
+    Intent newNotification=new Intent(this, NotifMaker.class);
+    stopService(newNotification);
+}
 }

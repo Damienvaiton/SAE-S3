@@ -38,6 +38,7 @@
 
         <receiver android:name=".Util.ActionReceive" />
 
+        <service android:name=".Util.NotifMaker"/>
         <activity
             android:name=".View.SettingsAdminActivity"
             android:exported="false">

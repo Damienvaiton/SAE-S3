@@ -1,8 +1,12 @@
 package com.example.saes3.Util;
 
+import android.os.Handler;
+
 import androidx.annotation.Nullable;
 
+import com.example.saes3.AppApplication;
 import com.example.saes3.Model.Data;
+import com.example.saes3.View.GraphiqueActivity;
 import com.example.saes3.ViewModel.AccueilViewModel;
 import com.example.saes3.ViewModel.GraphViewModel;
 import com.example.saes3.ViewModel.SettingsAdminViewModel;
@@ -10,6 +14,10 @@ import com.example.saes3.ViewModel.SettingsEtuViewModel;
 import com.example.saes3.ViewModel.SplashViewModel;
 
 public class ClassTransitoireViewModel {
+    Handler handlerEmptyESP = new Handler();
+    Runnable runnableEmptyESP;
+
+    boolean alive=false;
     private GraphViewModel graphViewModel;
     private SettingsAdminViewModel settingsAdminViewModel;
     private SettingsEtuViewModel settingsEtuViewModel;
@@ -31,7 +39,17 @@ private SplashViewModel splashViewModel;
             return instance;
         }
     }
+private ClassTransitoireViewModel(){
+    runnableEmptyESP = new Runnable() {
+        @Override
+        public void run() {
+             if(AppApplication.getCurrentActivity().equals(GraphiqueActivity.class)){
+            AlertDialog.getInstance().emptyESP();}
+        }
+    };
+    handlerEmptyESP.postDelayed(runnableEmptyESP, 7000);
 
+}
     public void setAccueilViewModel(AccueilViewModel accueilViewModel) {
         this.accueilViewModel = accueilViewModel;
     }
@@ -68,6 +86,9 @@ private SplashViewModel splashViewModel;
     }
 
     public void updateData(Data data) {
+        if(!alive) {
+            handlerEmptyESP.removeCallbacks(runnableEmptyESP);
+        }
         if (graphViewModel != null) {
             graphViewModel.updateData(data);
         }

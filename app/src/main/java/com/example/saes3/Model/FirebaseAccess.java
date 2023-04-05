@@ -1,5 +1,6 @@
 package com.example.saes3.Model;
 
+import android.os.Handler;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -29,7 +30,7 @@ public class FirebaseAccess {
     public static final String MEASURE = "Mesure";
 
     private ClassTransitoireViewModel transitoireViewModel;
-
+public static Long refresh;
     private ESP currentESP;
 
 
@@ -137,7 +138,6 @@ public class FirebaseAccess {
      * Query to the database for load datas already on
      */
     public boolean loadInData() {
-        System.out.println(currentESP.getMacEsp());
         ListData listData = ListData.getInstance();
         myRef.child(ESP32).child(currentESP.getMacEsp()).child(MEASURE).get().addOnCompleteListener(task -> {
             DataSnapshot tab = task.getResult();
@@ -162,6 +162,7 @@ public class FirebaseAccess {
                 String heure = "";
                 String minute = "";
                 String seconde = "";
+                refresh=snapshot.getValue(Long.class);
                 if (snapshot.exists()) {
 
                     if (snapshot.getValue(Long.class) >= 3600000) {
@@ -173,6 +174,7 @@ public class FirebaseAccess {
                     if (snapshot.getValue(Long.class) >= 1000) {
                         seconde = (snapshot.getValue(Long.class) % (1000 * 60)) / 1000 + "s";
                     }
+
                     transitoireViewModel.updateRefresh(heure+minute+seconde);
                 }
             }
