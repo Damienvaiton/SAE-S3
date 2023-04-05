@@ -1,6 +1,7 @@
 package com.example.saes3.Util;
 
 import static com.example.saes3.AppApplication.getAppContext;
+import static com.example.saes3.AppApplication.getCurrentActivity;
 
 import android.Manifest;
 import android.app.Notification;
@@ -62,7 +63,7 @@ public class NotifMaker extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
+        System.out.println("dscc");
 
         myRef = FirebaseDatabase.getInstance().getReference("SAE_S3_BD").child(ESP.getInstance().getMacEsp()).child("Mesure");
 
@@ -92,10 +93,16 @@ public class NotifMaker extends Service {
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
+            ActivityCompat.requestPermissions(getCurrentActivity(), new String[]{Manifest.permission.POST_NOTIFICATIONS}, 1);
             return Service.START_NOT_STICKY;
         }
+        createNotificationChannel();
         Notification notification = creaNotif();
         notificationManager.notify(1, notification);
+
+        notificationManager = (NotificationManager) getAppContext().getSystemService(Context.NOTIFICATION_SERVICE);
+
+
 
         return START_STICKY;
     }

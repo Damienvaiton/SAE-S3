@@ -27,6 +27,7 @@ import com.example.saes3.Model.Axe;
 import com.example.saes3.Model.Data;
 
 
+import com.example.saes3.Util.NotifMaker;
 import com.example.saes3.ViewModel.GraphViewModel;
 import com.example.saes3.Util.XAxisValueFormatter;
 import com.github.mikephil.charting.charts.LineChart;
@@ -84,6 +85,9 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph_page);
+
+        Intent intent = new Intent(this, NotifMaker.class);
+        startService(intent);
 
         graphViewModel = new ViewModelProvider(this).get(GraphViewModel.class);
 
