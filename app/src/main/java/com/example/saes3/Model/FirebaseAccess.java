@@ -5,8 +5,10 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.saes3.AppApplication;
 import com.example.saes3.Util.AlertDialog;
 import com.example.saes3.Util.ClassTransitoireViewModel;
+import com.example.saes3.View.GraphiqueActivity;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -147,7 +149,8 @@ public static Long refresh;
                 for (DataSnapshot dataSnapshot : tab.getChildren()) {
                     handleDataSnapshot(dataSnapshot,listData);
                 }
-            } else {
+            } else if(AppApplication.getCurrentActivity()!=null && AppApplication.getCurrentActivity() instanceof GraphiqueActivity)
+            {
                 AlertDialog.getInstance().emptyESP();
             }
         });
@@ -175,15 +178,16 @@ public static Long refresh;
                     if (snapshot.getValue(Long.class) >= 1000) {
                         seconde = (snapshot.getValue(Long.class) % (1000 * 60)) / 1000 + "s";
                     }
-
                     transitoireViewModel.updateRefresh(heure+minute+seconde);
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                AlertDialog.getInstance().emptyESP();
-            }
+                if(AppApplication.getCurrentActivity()!=null && AppApplication.getCurrentActivity() instanceof GraphiqueActivity)
+                {
+                    AlertDialog.getInstance().emptyESP();
+            }}
         };
         myRef.child(ESP32).child(ESP.getInstance().getMacEsp()).child(REFRESH_TIME).addValueEventListener(valueEventListenerTemps);
     }

@@ -12,10 +12,7 @@ import com.example.saes3.ViewModel.SettingsEtuViewModel;
 import com.example.saes3.ViewModel.SplashViewModel;
 
 public class ClassTransitoireViewModel {
-    Handler handlerEmptyESP = new Handler();
-    Runnable runnableEmptyESP;
 
-    boolean alive=false;
     private GraphViewModel graphViewModel;
     private SettingsAdminViewModel settingsAdminViewModel;
     private SettingsEtuViewModel settingsEtuViewModel;
@@ -37,11 +34,7 @@ private SplashViewModel splashViewModel;
             return instance;
         }
     }
-private ClassTransitoireViewModel(){
-    runnableEmptyESP = () -> AlertDialog.getInstance().emptyESP();
-    handlerEmptyESP.postDelayed(runnableEmptyESP, 7000);
 
-}
     public void setAccueilViewModel(AccueilViewModel accueilViewModel) {
         this.accueilViewModel = accueilViewModel;
     }
@@ -78,9 +71,6 @@ private ClassTransitoireViewModel(){
     }
 
     public void updateData(Data data) {
-        if(!alive) {
-            handlerEmptyESP.removeCallbacks(runnableEmptyESP);
-        }
         if (graphViewModel != null) {
             graphViewModel.updateData(data);
         }

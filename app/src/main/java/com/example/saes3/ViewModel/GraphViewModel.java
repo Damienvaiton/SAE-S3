@@ -9,12 +9,14 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.saes3.AppApplication;
 import com.example.saes3.Model.Data;
 import com.example.saes3.Model.FirebaseAccess;
 import com.example.saes3.Model.ListData;
 import com.example.saes3.R;
 import com.example.saes3.Util.AlertDialog;
 import com.example.saes3.Util.ClassTransitoireViewModel;
+import com.example.saes3.View.GraphiqueActivity;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
@@ -74,15 +76,21 @@ public class GraphViewModel extends ViewModel {
         acess.setEspTimeListener();
         listData = new ArrayList<>();
         handlerLostESP = new Handler();
-        runnableLostESP = () -> AlertDialog.getInstance().lostESP();
+
+        runnableLostESP = () -> {
+            if(AppApplication.getCurrentActivity() != null && AppApplication.getCurrentActivity() instanceof GraphiqueActivity) {
+                AlertDialog.getInstance().lostESP();
+            }
+        };
     }
+
 
     /**
      * LiveData s'occupant de transiter le taux de raffraichissemnt de l'ESP du ViewModel à la Vue
      */
     public void updateRefresh(String refresh) {
         updateTemps.postValue(refresh);
-        handlerLostESP.postDelayed(runnableLostESP, FirebaseAccess.refresh);
+        handlerLostESP.postDelayed(runnableLostESP, FirebaseAccess.refresh*2);
 
     }
 
