@@ -3,6 +3,7 @@ package com.example.saes3.ViewModel;
 import android.graphics.Color;
 import android.os.Environment;
 import android.os.Handler;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -73,12 +74,7 @@ public class GraphViewModel extends ViewModel {
         acess.setEspTimeListener();
         listData = new ArrayList<>();
         handlerLostESP = new Handler();
-        runnableLostESP = new Runnable() {
-            @Override
-            public void run() {
-                AlertDialog.getInstance().lostESP();
-            }
-        };
+        runnableLostESP = () -> AlertDialog.getInstance().lostESP();
     }
 
     /**
@@ -111,7 +107,6 @@ public class GraphViewModel extends ViewModel {
      */
     public void updateData(Data data) {
         if (data != null) {
-            System.out.println("update data");
             listData.add(data);
             chargerDonner(data);
             updateData.postValue(data);
@@ -168,7 +163,10 @@ public class GraphViewModel extends ViewModel {
                 boxLux = !boxLux;
                 creaGraph();
                 break;
+            default:
+                Log.w("Switch checkbox gra","ID inconnu");
         }
+
     }
 
     /**
@@ -177,8 +175,7 @@ public class GraphViewModel extends ViewModel {
      * @param data
      */
     void chargerDonner(Data data) {
-        System.out.println("charger donner");
-        A_CO2.add(new Entry(A_CO2.size() - 1, data.getCO2()));
+        A_CO2.add(new Entry(A_CO2.size() - 1, data.getCo2()));
         A_temp.add(new Entry(A_temp.size() - 1, data.getTemperature()));
         A_humi.add(new Entry(A_CO2.size() - 1, data.getHumidite()));
         A_O2.add(new Entry(A_CO2.size() - 1, data.getO2()));
@@ -198,7 +195,7 @@ public class GraphViewModel extends ViewModel {
 
 
     void creaGraph() {
-        System.out.println("créa graph");
+
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
 
 
@@ -291,27 +288,27 @@ public class GraphViewModel extends ViewModel {
 
     private boolean isDataValid(int cptLignes) {
         ListData instanceListData = ListData.getInstance();
-        if (instanceListData.recup_data(cptLignes).getCO2() == 0) {
+        if (instanceListData.recupData(cptLignes).getCo2() == 0) {
             return false;
         }
-        if (instanceListData.recup_data(cptLignes).getTemperature() == 0) {
+        if (instanceListData.recupData(cptLignes).getTemperature() == 0) {
             return false;
         }
-        if (instanceListData.recup_data(cptLignes).getHumidite() == 0) {
+        if (instanceListData.recupData(cptLignes).getHumidite() == 0) {
             return false;
         }
-        if (instanceListData.recup_data(cptLignes).getO2() == 0) {
+        if (instanceListData.recupData(cptLignes).getO2() == 0) {
             return false;
         }
-        if (instanceListData.recup_data(cptLignes).getLight() == 0) {
+        if (instanceListData.recupData(cptLignes).getLight() == 0) {
             return false;
         }
-        return instanceListData.recup_data(cptLignes).getTemps() != "";
+        return instanceListData.recupData(cptLignes).getTemps() != "";
     }
 
     public String exportFile() {
         ListData instanceListData = ListData.getInstance();
-        int cptLignes = instanceListData.list_size()-1;
+        int cptLignes = instanceListData.listSize()-1;
         if (cptLignes <= 1) {
             return "Export excel annulé, pas assez de valeurs";
         }
@@ -332,12 +329,12 @@ public class GraphViewModel extends ViewModel {
             writer.write(titre);
             for (int i = 0; i < cptLignes; i++) {
                 String resultat = Integer.toString(i);
-                resultat += ";" + Math.round(instanceListData.recup_data(i).getHumidite() * 1000.0) / 1000.0;
-                resultat += ";" + Math.round(instanceListData.recup_data(i).getTemperature() * 100.0) / 100.0;
-                resultat += ";" + Math.round(instanceListData.recup_data(i).getCO2() * 1000.0) / 1000.0;
-                resultat += ";" + Math.round(instanceListData.recup_data(i).getO2() * 1000.0) / 1000.0;
-                resultat += ";" + Math.round(instanceListData.recup_data(i).getLight() * 1000.0) / 1000.0;
-                resultat += ";" + instanceListData.recup_data(i).getTemps();
+                resultat += ";" + Math.round(instanceListData.recupData(i).getHumidite() * 1000.0) / 1000.0;
+                resultat += ";" + Math.round(instanceListData.recupData(i).getTemperature() * 100.0) / 100.0;
+                resultat += ";" + Math.round(instanceListData.recupData(i).getCo2() * 1000.0) / 1000.0;
+                resultat += ";" + Math.round(instanceListData.recupData(i).getO2() * 1000.0) / 1000.0;
+                resultat += ";" + Math.round(instanceListData.recupData(i).getLight() * 1000.0) / 1000.0;
+                resultat += ";" + instanceListData.recupData(i).getTemps();
                 writer.newLine();
                 writer.write(resultat);
             }

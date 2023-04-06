@@ -59,13 +59,13 @@ public class DataTest {
 
     @Test
     public void getCO2() {
-        assertEquals(14.0f, data.getCO2(), 0.0);
+        assertEquals(14.0f, data.getCo2(), 0.0);
     }
 
     @Test
     public void setCO2() {
-        data.setCO2(5.0f);
-        assertEquals(5.0f, data.getCO2(), 0.0);
+        data.setCo2(5.0f);
+        assertEquals(5.0f, data.getCo2(), 0.0);
     }
 
     @Test

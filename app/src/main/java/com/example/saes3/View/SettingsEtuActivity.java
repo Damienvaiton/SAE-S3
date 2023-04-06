@@ -84,6 +84,12 @@ public class SettingsEtuActivity extends AppCompatActivity implements View.OnCli
         auto_droit.setOnClickListener(this);
         auto_gauche.setOnClickListener(this);
 
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         ESP esp = ESP.getInstance();
         Intent intent = getIntent();
         if (intent != null) {
@@ -126,12 +132,12 @@ public class SettingsEtuActivity extends AppCompatActivity implements View.OnCli
             auto_gauche.setChecked(false);
             min_g.setHint(leftAxis.getAxisMinimum() + "");
             max_g.setHint(leftAxis.getAxisMaximum() + "");}
-            else{
+        else{
             min_g.setHint("auto");
             max_g.setHint("auto");}
 
 
-            settingsEtuViewModel.getMoments().observe(this, s -> tauxRefresh.setHint(s));
+        settingsEtuViewModel.getMoments().observe(this, s -> tauxRefresh.setHint(s));
 
 
         tauxRefresh.setOnEditorActionListener((v, actionId, event) -> {
@@ -148,6 +154,7 @@ public class SettingsEtuActivity extends AppCompatActivity implements View.OnCli
             return false;
         });
     }
+
 
     /**
      *

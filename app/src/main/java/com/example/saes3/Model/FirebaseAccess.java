@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.saes3.Util.AlertDialog;
 import com.example.saes3.Util.ClassTransitoireViewModel;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -127,10 +128,12 @@ public static Long refresh;
      */
     public void resetValueFirebase() {
         myRef.child(ESP32).child(currentESP.getMacEsp()).child(MEASURE).removeValue().addOnSuccessListener(aVoid -> Log.d("Firebase", "Données enregistrées avec succès")).addOnFailureListener(e -> {
-            Log.e("Firebase", "Erreur lors de l'enregistrement des données", e);
+            AlertDialog.getInstance().errorFirebase();
         });
 
-        myRef.child(ESP32).child(currentESP.getMacEsp()).child("MesureNumber").removeValue().addOnSuccessListener(aVoid -> Log.d("Firebase", "Données enregistrées avec succès")).addOnFailureListener(e -> Log.e("Firebase", "Erreur lors de l'enregistrement des données", e));
+        myRef.child(ESP32).child(currentESP.getMacEsp()).child("MesureNumber").removeValue().addOnSuccessListener(aVoid -> Log.d("Firebase", "Données enregistrées avec succès")).addOnFailureListener(e -> {
+            AlertDialog.getInstance().errorFirebase();
+    });
     }
 
     /**
@@ -145,7 +148,7 @@ public static Long refresh;
                     handleDataSnapshot(dataSnapshot,listData);
                 }
             } else {
-                System.out.println("Impossible d'accéder au données précharge");
+                AlertDialog.getInstance().emptyESP();
             }
         });
         return true;
@@ -179,7 +182,7 @@ public static Long refresh;
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.e("Firebase", "Erreur lors de l'enregistrement des données : " + error);
+                AlertDialog.getInstance().emptyESP();
             }
         };
         myRef.child(ESP32).child(ESP.getInstance().getMacEsp()).child(REFRESH_TIME).addValueEventListener(valueEventListenerTemps);
@@ -189,7 +192,7 @@ public static Long refresh;
             Data data = dataSnapshot.getValue(Data.class);
             if (data != null) {
                 transitoireViewModel.updateData(data);
-                listData.list_add_data(data);
+                listData.listAddData(data);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -226,7 +229,7 @@ public static Long refresh;
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-Log.w("Erreur",error.toString());}
+                AlertDialog.getInstance().errorFirebase();}
         };
         myRef.child(ESP32).child(currentESP.getMacEsp()).child(MEASURE).addChildEventListener(realtimeDataListener);
     }
@@ -283,6 +286,7 @@ public boolean testFirebase() {
         @Override
         public void onCancelled(@NonNull DatabaseError databaseError) {
             transitoireViewModel.echecFirebase();
+            AlertDialog.getInstance().errorFirebase();
 
         }
     });

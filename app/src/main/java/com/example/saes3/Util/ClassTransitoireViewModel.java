@@ -4,9 +4,7 @@ import android.os.Handler;
 
 import androidx.annotation.Nullable;
 
-import com.example.saes3.AppApplication;
 import com.example.saes3.Model.Data;
-import com.example.saes3.View.GraphiqueActivity;
 import com.example.saes3.ViewModel.AccueilViewModel;
 import com.example.saes3.ViewModel.GraphViewModel;
 import com.example.saes3.ViewModel.SettingsAdminViewModel;
@@ -40,13 +38,7 @@ private SplashViewModel splashViewModel;
         }
     }
 private ClassTransitoireViewModel(){
-    runnableEmptyESP = new Runnable() {
-        @Override
-        public void run() {
-            if(AppApplication.getCurrentActivity().equals(GraphiqueActivity.class)){
-                AlertDialog.getInstance().emptyESP();}
-        }
-    };
+    runnableEmptyESP = () -> AlertDialog.getInstance().emptyESP();
     handlerEmptyESP.postDelayed(runnableEmptyESP, 7000);
 
 }
@@ -63,14 +55,6 @@ private ClassTransitoireViewModel(){
 
     public void setGraphViewModel(GraphViewModel graphViewModel) {
         this.graphViewModel = graphViewModel;
-        runnableEmptyESP = new Runnable() {
-            @Override
-            public void run() {
-                if(AppApplication.getCurrentActivity().equals(GraphiqueActivity.class)){
-                    AlertDialog.getInstance().emptyESP();}
-            }
-        };
-        handlerEmptyESP.postDelayed(runnableEmptyESP, 7000);
     }
 
     public SettingsAdminViewModel getSettingsAdminViewModel() {

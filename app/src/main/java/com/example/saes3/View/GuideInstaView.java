@@ -21,24 +21,15 @@ ScrollView scrollView;
         scrollView=  findViewById(R.id.scrollView);
         scrollAcueil=findViewById(R.id.btn_scroll_home);
         scrollEsp=findViewById(R.id.btn_scroll_esp);
-        scrollEsp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                scrollView.smoothScrollTo(0, 600);
-            }
-        });
-        scrollAcueil.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                        scrollView.smoothScrollTo(0, 2425);
-                    }
-                });
         scrollGraph=findViewById(R.id.btn_scroll_graph);
-        scrollGraph.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                scrollView.smoothScrollTo(0, 3500);
-            }
-        });
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        scrollEsp.setOnClickListener(v -> scrollView.smoothScrollTo(0, 600));
+        scrollAcueil.setOnClickListener(v -> scrollView.smoothScrollTo(0, 2425));
+        scrollGraph.setOnClickListener(v -> scrollView.smoothScrollTo(0, 3500));
     }
 }

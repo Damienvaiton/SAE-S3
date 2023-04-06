@@ -36,8 +36,6 @@ public class SettingsAdminActivity extends AppCompatActivity implements View.OnC
     private Button grouper;
     private Button reini;
 
-    private String choixESP;
-
     private ArrayAdapter<String> adapterRecyclerESP;
     private ArrayList<String> tabESP;
 
@@ -137,7 +135,7 @@ int po=(dataRecyclerAdapter.getItemCount()-position);
                 break;
             case R.id.suppA:
                 PopUpDialog deletePopup = new PopUpDialog(this);
-                deletePopup.build("Supprimer l'esp " + choixESP);
+                deletePopup.build("Supprimer l'esp ?");
                 deletePopup.getYesButton().setOnClickListener(view -> {
                     settingsAdminViewModel.suppESP();
                     deletePopup.dismiss();

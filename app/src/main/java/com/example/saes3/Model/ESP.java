@@ -41,6 +41,5 @@ public class ESP {
     protected void finalize() throws Throwable {
         super.finalize();
         FirebaseAccess.getInstance().deleteListener();
-        //remove listener
     }
 }

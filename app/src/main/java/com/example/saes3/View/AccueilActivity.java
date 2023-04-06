@@ -99,12 +99,7 @@ public class AccueilActivity extends AppCompatActivity {
         /**
          * Store the value selected into 'position'
          */
-        helper.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(AccueilActivity.this, GuideInstaView.class));
-            }
-        });
+        helper.setOnClickListener(v -> startActivity(new Intent(AccueilActivity.this, GuideInstaView.class)));
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {

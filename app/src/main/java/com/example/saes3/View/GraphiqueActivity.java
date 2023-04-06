@@ -1,18 +1,11 @@
 package com.example.saes3.View;
 
-import static com.example.saes3.AppApplication.context;
-
 import android.app.Activity;
 
 import android.app.AlertDialog;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
@@ -27,13 +20,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.saes3.Model.FirebaseAccess;
 import com.example.saes3.R;
 import com.example.saes3.Model.Axe;
 import com.example.saes3.Model.Data;
 
 
-import com.example.saes3.Util.NotifMaker;
 import com.example.saes3.ViewModel.GraphViewModel;
 import com.example.saes3.Util.XAxisValueFormatter;
 import com.github.mikephil.charting.charts.LineChart;
@@ -49,7 +40,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView.OnNavig
 import java.text.DecimalFormat;
 
 public class GraphiqueActivity extends AppCompatActivity implements View.OnClickListener, OnNavigationItemSelectedListener {
-public static final String CHANNEL_ID="notif";
     private LineChart graph;
     /**
      * TextView to display real time value at the top of the screen
@@ -107,18 +97,9 @@ public static final String CHANNEL_ID="notif";
         /**
          * Observer of new refresh rate of current ESP
          */
-        graphViewModel.getMoments().observe(this, (Observer<String>) s -> {
-            valTemp.setText(s);
+        graphViewModel.getMoments().observe(this, (Observer<String>) s -> {valTemp.setText(s);});
 
-
-        });
-
-        graphViewModel.getData().observe(this, (Observer<Data>) newData-> {
-            actuValues(newData);
-
-            startService(newData);
-         //   notif.getInstance().creaNotif(newData);
-        });
+        graphViewModel.getData().observe(this, (Observer<Data>) this::actuValues);
 
 
         valTemp = findViewById(R.id.viewTime);
@@ -215,7 +196,7 @@ public static final String CHANNEL_ID="notif";
                 } else {
                     label = "X =";
                 }
-                Toast.makeText(getApplicationContext(), "Heure = " + graphViewModel.returnValue().recup_data((int) h.getX()+1 ).getTemps()+ ", " + label + h.getY(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Heure = " + graphViewModel.returnValue().recupData((int) h.getX()+1 ).getTemps()+ ", " + label + h.getY(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -242,8 +223,8 @@ public static final String CHANNEL_ID="notif";
         if (data.getLight() != 0) {
             viewLux.setText(a.format(data.getLight()) + "l");
         }
-        if (data.getCO2() != 0) {
-            viewCO2.setText(a.format(data.getCO2()) + "%");
+        if (data.getCo2() != 0) {
+            viewCO2.setText(a.format(data.getCo2()) + "%");
         }
         if (data.getO2() != 0) {
             viewO2.setText(a.format(data.getO2()) + "%");
@@ -278,6 +259,7 @@ public static final String CHANNEL_ID="notif";
     /**
      * Delete listener on FirebaseAccess if we left this view
      */
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -306,7 +288,7 @@ public static final String CHANNEL_ID="notif";
                 }
                 if (!graphViewModel.getRightAxisName().equals("")) {
                     openSetting.putExtra("rightAxisName", graphViewModel.getRightAxisName());
-                };
+                }
                 startActivity(openSetting);
                 break;
             case R.id.btnExport:
@@ -358,13 +340,7 @@ public static final String CHANNEL_ID="notif";
             builder.setMessage("VOus avez une erreur de données dans la base de données\n" +
                     "Veuillez identifier l'erreur et la corriger");
 
-            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
+            builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
 
         } catch (Exception e) {
             Toast.makeText(getApplicationContext(), "Erreur inconnue", Toast.LENGTH_SHORT).show();
@@ -374,13 +350,4 @@ public static final String CHANNEL_ID="notif";
 
     }
 
-
-    public void startService(Data data){
-        Intent newNotification=new Intent(this, NotifMaker.class);
-        startService(newNotification);
-    }
-public void stopService(){
-    Intent newNotification=new Intent(this, NotifMaker.class);
-    stopService(newNotification);
-}
 }

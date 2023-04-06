@@ -83,7 +83,7 @@ public class SettingsAdminViewModel extends ViewModel {
     }
 
     public void clearTab(){
-        ListData.getInstance().list_supAll_data();
+        ListData.getInstance().listSupAllData();
 
 
     }
@@ -137,7 +137,7 @@ public class SettingsAdminViewModel extends ViewModel {
 
     public void resetESP(){
         database.resetValueFirebase();
-        ListData.getInstance().list_supAll_data();
+        ListData.getInstance().listSupAllData();
     }
     public void setESPrefresh(String temps){
         database.setEspRefreshRate(Integer.parseInt(temps));

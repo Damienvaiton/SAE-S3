@@ -16,8 +16,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
 import com.example.saes3.Model.FirebaseAccess;
@@ -32,11 +30,11 @@ public class AppApplication extends Application implements Application.ActivityL
     private Handler mHandler = new Handler(Looper.getMainLooper());
     private static AppApplication sInstance;
     private static WeakReference<Activity> mCurrentActivityRef;
+    @Override
         public void onCreate() {
             super.onCreate();
             createNotificationChannel();
             AppApplication.context= getApplicationContext();
-            FirebaseAccess database = FirebaseAccess.getInstance();
             listenerCo();
             FirebaseAccess.getInstance().testFirebase();
             sInstance = this;
@@ -57,25 +55,22 @@ public class AppApplication extends Application implements Application.ActivityL
             @Override
             public void onLost(Network network) {
 
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        AlertDialog.Builder pop = new AlertDialog.Builder(AppApplication.getCurrentActivity());
-                        pop.setMessage("Connexion à internet perdue, reconnectez vous");
-                        pop.setCancelable(false);
-                        pop.setPositiveButton("Fait", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                if(checkCo()) {
-                                    dialog.cancel();
-                                } else {
-                                    pop.show();
-                                }
-
+                mHandler.post(() -> {
+                    AlertDialog.Builder pop = new AlertDialog.Builder(AppApplication.getCurrentActivity());
+                    pop.setMessage("Connexion à internet perdue, reconnectez vous");
+                    pop.setCancelable(false);
+                    pop.setPositiveButton("Fait", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            if(checkCo()) {
+                                dialog.cancel();
+                            } else {
+                                pop.show();
                             }
-                        });
-                        pop.show();
-                    }
+
+                        }
+                    });
+                    pop.show();
                 });
             }
         };
@@ -149,27 +144,19 @@ public class AppApplication extends Application implements Application.ActivityL
                 isMobileConn |=networkInfo.isConnected();
             }
             if(isMobileConn || isWifiConn){
-                System.out.println("true");
                 return true;
             }
         }
-        System.out.println("false");
         return false;
 
     }
     private void createNotificationChannel(){
-        // Create the NotificationChannel, but only on API 26+ because
-        // the NotificationChannel class is new and not in the support library
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = "Vegetabilis Auditor";
             String description = "c moa";
-            //CharSequence name = getString(R.string.channel_name);
-            // String description = getString(R.string.channel_description);
             int importance = NotificationManager.IMPORTANCE_HIGH;
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
             channel.setDescription(description);
-            // Register the channel with the system; you can't change the importance
-            // or other notification behaviors after this
             NotificationManager notificationManager = getApplicationContext().getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }

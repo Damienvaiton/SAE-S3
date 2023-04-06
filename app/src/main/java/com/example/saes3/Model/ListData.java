@@ -32,23 +32,23 @@ public class ListData implements Serializable {
         listAllData=new ObservableArrayList<>();
     }
 
-    public Data recup_data(int i) {
-        return (Data) listAllData.get(i);
+    public Data recupData(int position) {
+        return (Data) listAllData.get(position);
     }
 
     public void deleteAllData() {
         listAllData.clear();
     }
 
-    public void list_add_data(Data a) {
-        listAllData.add(a);
+    public void listAddData(Data data) {
+        listAllData.add(data);
     }
 
-    public void list_supAll_data() {
+    public void listSupAllData() {
         listAllData.clear();
     }
 
-    public int list_size() {
+    public int listSize() {
         return listAllData.size();
     }
 

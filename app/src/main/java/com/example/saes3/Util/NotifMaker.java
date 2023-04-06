@@ -50,14 +50,6 @@ public class NotifMaker extends Service {
         }
     }
 
-    /*public notif() {
-        this.context = AppApplication.getAppContext();
-        builder = new NotificationCompat.Builder(context, CHANNEL_ID);
-        notificationManager = NotificationManager.from(context);
-        createNotificationChannel();
-    }
-*/
-
 
 
     @Override
@@ -70,7 +62,6 @@ public class NotifMaker extends Service {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Data newData = dataSnapshot.getValue(Data.class);
-                System.out.println(newData+"ssss");
                 updateNotification(newData);
             }
 
@@ -110,7 +101,6 @@ public class NotifMaker extends Service {
     private void updateNotification(Data data) {
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getAppContext());
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getAppContext(), CHANNEL_ID);
-        System.out.println("yoyoyo"+data.getTemperature());
         builder.setContentText(data.toString());
         builder.setContentTitle(data.getTemps());
         builder.setSmallIcon(R.drawable.logo_app);
@@ -133,8 +123,6 @@ public class NotifMaker extends Service {
 
     public Notification creaNotif() {
         Intent intentAction = new Intent(getAppContext(),ActionReceive.class);
-//This is optional if you have more than one buttons and want to differentiate between two
-        // intentAction.putExtra("action","actionName");
         PendingIntent pIntentlogin = PendingIntent.getBroadcast(getAppContext(), 1, intentAction, PendingIntent.FLAG_IMMUTABLE);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getAppContext(), CHANNEL_ID);
 

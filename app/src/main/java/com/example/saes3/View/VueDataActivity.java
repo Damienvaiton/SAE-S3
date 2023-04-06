@@ -79,11 +79,11 @@ public class VueDataActivity extends AppCompatActivity implements Serializable {
             switch (ChoixTri) {
                 case "Co²":
                     if (Desc) {
-                        cloneListData.sort((e1, e2) -> Float.compare(e1.getCO2(), e2.getCO2()));
+                        cloneListData.sort((e1, e2) -> Float.compare(e1.getCo2(), e2.getCo2()));
                         dataRecyclerAdapter.notifyDataSetChanged();
 
                     } else {
-                        cloneListData.sort((e1, e2) -> Float.compare(e2.getCO2(), e1.getCO2()));
+                        cloneListData.sort((e1, e2) -> Float.compare(e2.getCo2(), e1.getCo2()));
                         dataRecyclerAdapter.notifyDataSetChanged();
 
                     }
@@ -130,6 +130,11 @@ public class VueDataActivity extends AppCompatActivity implements Serializable {
 
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 }
 

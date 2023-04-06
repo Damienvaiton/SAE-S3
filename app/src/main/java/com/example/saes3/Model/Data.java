@@ -9,19 +9,19 @@ public class Data implements Serializable {
     private float humidite;
     private float temperature;
     private float light;
-    private float O2;
-    private float CO2;
+    private float o2;
+    private float co2;
     private String temps;
 
     public Data() {
     }
 
-    public Data(float humidite, float temperature, float light, float o2, float CO2, String temps) {
+    public Data(float humidite, float temperature, float light, float o2, float co2, String temps) {
         this.humidite = humidite;
         this.temperature = temperature;
         this.light = light;
-        this.O2 = o2;
-        this.CO2 = CO2;
+        this.o2 = o2;
+        this.co2 = co2;
         this.temps = temps;
     }
 
@@ -51,19 +51,19 @@ public class Data implements Serializable {
     }
 
     public float getO2() {
-        return O2;
+        return o2;
     }
 
     public void setO2(float o2) {
-        O2 = o2;
+        this.o2 = o2;
     }
 
-    public float getCO2() {
-        return CO2;
+    public float getCo2() {
+        return co2;
     }
 
-    public void setCO2(float CO2) {
-        this.CO2 = CO2;
+    public void setCo2(float co2) {
+        this.co2 = co2;
     }
 
     public String getTemps() {
@@ -81,7 +81,7 @@ public class Data implements Serializable {
         String message="";
         message+=(a.format(getTemperature()) + "° | ");
         message+=a.format(getHumidite()) + "% | ";
-        message+=a.format(getCO2()) + "% | ";
+        message+=a.format(getCo2()) + "% | ";
         message+=a.format(getO2()) + "% | ";
         message+=a.format(getLight()) + "L";
         message+=getTemps();

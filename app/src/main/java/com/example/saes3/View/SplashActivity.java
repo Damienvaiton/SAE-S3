@@ -72,44 +72,36 @@ public class SplashActivity extends AppCompatActivity {
         super.onStart();
         splashViewModel.checkCo();
         Handler handlerTest=new Handler();
-        handlerTest.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (ready) {
-                    Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            transi();
-                        }
-                    }, 500);
-                } else if(!ready){
-                    AlertDialog.Builder pop = new AlertDialog.Builder(AppApplication.getCurrentActivity());
-                    pop.setMessage("Merci de vous connectez à internet");
+        handlerTest.postDelayed(() -> {
+            if (ready) {
+                Handler handler = new Handler();
+                handler.postDelayed(() -> transi(), 500);
+            } else if(!ready){
+                AlertDialog.Builder pop = new AlertDialog.Builder(AppApplication.getCurrentActivity());
+                pop.setMessage("Merci de vous connectez à internet");
 pop.setCancelable(false);
 
-                    pop.setPositiveButton("Fait", (dialog, which) -> {
-                        splashViewModel.checkCo();
-                        if (ready) {
-                            dialog.cancel();
-                            transi();
+                pop.setPositiveButton("Fait", (dialog, which) -> {
+                    splashViewModel.checkCo();
+                    if (ready) {
+                        dialog.cancel();
+                        transi();
 
-                        } else {
-                            pop.show();
-                        }
-                    });
-                    pop.show();
-                }
-                else if(!getEtatFirebase){
-                    AlertDialog.Builder pop = new AlertDialog.Builder(AppApplication.getCurrentActivity());
-                    pop.setMessage("Firebase ne semble pas être disponible pour le moment, réessayer plus tard");
-                    pop.setCancelable(false);
+                    } else {
+                        pop.show();
+                    }
+                });
+                pop.show();
+            }
+            else if(!getEtatFirebase){
+                AlertDialog.Builder pop = new AlertDialog.Builder(AppApplication.getCurrentActivity());
+                pop.setMessage("Firebase ne semble pas être disponible pour le moment, réessayer plus tard");
+                pop.setCancelable(false);
 
-                    pop.setPositiveButton("Quitter l'application", (dialog, which) -> {
-                            finishAffinity();
-                    });
-                    pop.show();
-                }
+                pop.setPositiveButton("Quitter l'application", (dialog, which) -> {
+                        finishAffinity();
+                });
+                pop.show();
             }
         },2000);
 
