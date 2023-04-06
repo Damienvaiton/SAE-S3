@@ -28,7 +28,7 @@ public class AlertDialog {
         alertDialog.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
+                dialog.dismiss();
             }
         });
         alertDialog.show();
@@ -40,7 +40,7 @@ public class AlertDialog {
         alertDialog.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
+                dialog.dismiss();
             }
         });
         alertDialog.show();

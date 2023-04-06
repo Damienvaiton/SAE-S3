@@ -131,6 +131,8 @@ public class GraphViewModel extends ViewModel {
         return listData;
     }
 
+
+
     /**
      * Si ce ViewModel est détruit alors les listeners de la class FirebaseAccess sont détruit
      */
@@ -256,6 +258,8 @@ public class GraphViewModel extends ViewModel {
         set.setDrawValues(false);
 
     }
+
+
 
     /**
      * Choice of axe for the LineDataSet in param

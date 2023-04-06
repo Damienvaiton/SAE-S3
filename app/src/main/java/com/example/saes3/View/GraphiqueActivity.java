@@ -374,6 +374,7 @@ public static final String CHANNEL_ID="notif";
 
     }
 
+
     public void startService(Data data){
         Intent newNotification=new Intent(this, NotifMaker.class);
         startService(newNotification);
