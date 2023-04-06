@@ -30,8 +30,7 @@ import java.util.ArrayList;
 
 public class GraphViewModel extends ViewModel {
     /**
-     * LiveData s'occupant de transiter l'objet du nouveau graphique du ViewModel à la Vue
-     */
+     * LiveData taking care of transiting the object of the new graph from the ViewModel to the View     */
     private final MutableLiveData<LineData> updateGraph = new MutableLiveData<>();
     private final MutableLiveData<String> updateTemps = new MutableLiveData<>();
     private final MutableLiveData<Data> updateData = new MutableLiveData<>();
@@ -41,7 +40,7 @@ public class GraphViewModel extends ViewModel {
     private String leftAxisName = "";
     private String rightAxisName = "";
     /**
-     * Tableaux de chaque entrée des LineDataSet
+     * Arrays of each LineDataSet entry
      */
     private ArrayList<Entry> A_temp = new ArrayList<>();
     private ArrayList<Entry> A_lux = new ArrayList<>();
@@ -49,8 +48,7 @@ public class GraphViewModel extends ViewModel {
     private ArrayList<Entry> A_humi = new ArrayList<>();
     private ArrayList<Entry> A_O2 = new ArrayList<>();
     /**
-     * Tableaux des regroupant les ArrayList d'entry et le nom pour la construction du graphique
-     */
+     * Tables grouping the ArrayList of entry and the name for the construction of the graph     */
     private LineDataSet setHumi = new LineDataSet(A_humi, "Humidité");
     private LineDataSet setCO2 = new LineDataSet(A_CO2, "CO2");
     private LineDataSet setO2 = new LineDataSet(A_O2, "O2");
@@ -61,11 +59,14 @@ public class GraphViewModel extends ViewModel {
     private boolean boxO2 = false;
     private boolean boxTemp = false;
     private boolean boxLux = false;
-    private ArrayList<Data> listData;
+
+    /**
+     * Handler to observe if ESP stop respond
+     */
     Handler handlerLostESP = new Handler();
     Runnable runnableLostESP;
     /**
-     * Constructeur du ViewModel
+     * Constructor of ViewModel
      */
 
     public GraphViewModel() {
@@ -74,7 +75,7 @@ public class GraphViewModel extends ViewModel {
         acess.loadInData();
         acess.setRealtimeDataListener();
         acess.setEspTimeListener();
-        listData = new ArrayList<>();
+
         handlerLostESP = new Handler();
 
         runnableLostESP = () -> {
@@ -86,8 +87,7 @@ public class GraphViewModel extends ViewModel {
 
 
     /**
-     * LiveData s'occupant de transiter le taux de raffraichissemnt de l'ESP du ViewModel à la Vue
-     */
+     * LiveData taking care of passing ESP refresh rate from ViewModel to View     */
     public void updateRefresh(String refresh) {
         updateTemps.postValue(refresh);
         handlerLostESP.postDelayed(runnableLostESP, FirebaseAccess.refresh*2);
@@ -95,27 +95,27 @@ public class GraphViewModel extends ViewModel {
     }
 
     /**
-     * Getter du LiveData du graphique
+     * Getter LiveData of graphique
      */
     public LiveData getUpdateGraph() {
         return updateGraph;
     }
 
     /**
-     * Getter du LiveData du temps de raffraichissement ESP
+     * Getter LiveData of refresh time ESP
      */
     public LiveData<String> getMoments() {
         return updateTemps;
     }
 
     /**
-     * Fonction d'update du LiveData avec dernière valeur disponible
+     * update Function of data LiveData
      *
      * @param data Objet Data récupéré de Firebase
      */
     public void updateData(Data data) {
         if (data != null) {
-            listData.add(data);
+
             chargerDonner(data);
             updateData.postValue(data);
         }
@@ -130,14 +130,12 @@ public class GraphViewModel extends ViewModel {
         return rightAxisName;
     }
 
-    public ArrayList getListData() {
-        return listData;
-    }
+
 
 
 
     /**
-     * Si ce ViewModel est détruit alors les listeners de la class FirebaseAccess sont détruit
+     *if this instance was destruct, listener of Firebase was also destruct
      */
     @Override
     protected void onCleared() {
@@ -146,7 +144,7 @@ public class GraphViewModel extends ViewModel {
     }
 
     /**
-     * Détermine quel checkButton à été coché
+     * Find which checkButton is checked
      */
 
     public void notifyCheck(int id) {
@@ -196,7 +194,7 @@ public class GraphViewModel extends ViewModel {
     }
 
     /**
-     * Fonction qui crée l'objet du graphique
+     * Fonction who create the graphic objet
      *
      * @param
      */

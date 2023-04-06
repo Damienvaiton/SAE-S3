@@ -20,8 +20,14 @@ public class SplashViewModel extends ViewModel {
     boolean isWifiConn = false;
     boolean isMobileConn = false;
 
+    /**
+     * Send true if mobile was connected too internet
+     */
         MutableLiveData<Boolean> listenerAppReady=new MutableLiveData<>();
-
+    /**
+     * Fallse if Firebase was not available
+     */
+    MutableLiveData<Boolean> listenerFirebaseReady=new MutableLiveData<>(true);
     public LiveData<Boolean> getAppReady(){
         return listenerAppReady;
     }
@@ -30,7 +36,7 @@ public class SplashViewModel extends ViewModel {
 listenerAppReady.postValue(actif);
         }
 
-    MutableLiveData<Boolean> listenerFirebaseReady=new MutableLiveData<>(true);
+
 
     public LiveData<Boolean> getFirebaseReady(){
         return listenerFirebaseReady;
@@ -41,6 +47,9 @@ listenerAppReady.postValue(actif);
     }
 
 
+    /**
+     * Check if internet is available
+     */
         public void checkCo() {
             ConnectivityManager connMgr =
                     (ConnectivityManager) AppApplication.getAppContext().getSystemService(Context.CONNECTIVITY_SERVICE);

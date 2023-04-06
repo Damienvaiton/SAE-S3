@@ -30,8 +30,12 @@ public class AccueilActivity extends AppCompatActivity {
     /**
      * Spinner who shows all ESP available
      */
-    private FloatingActionButton helper;
     private Spinner spinner;
+    /**
+     * Button for switch in the GuideInstaView
+     */
+    private FloatingActionButton helper;
+
     /**
      * Store the index of ESP actually selected
      */
@@ -50,7 +54,7 @@ public class AccueilActivity extends AppCompatActivity {
     private ArrayList<String> tabESP;
 
     /**
-     *
+     * Erase his instance when we left the page
      */
     @Override
     protected void onPause() {
@@ -59,7 +63,7 @@ public class AccueilActivity extends AppCompatActivity {
     }
 
     /**
-     *
+     * Set his instance to the transiClass in restart for obtain data
      */
     @Override
     protected void onRestart() {
@@ -68,7 +72,7 @@ public class AccueilActivity extends AppCompatActivity {
     }
 
     /**
-     *
+     * OnCreate initialize objet in the view
      */
 
 
@@ -99,7 +103,6 @@ public class AccueilActivity extends AppCompatActivity {
         /**
          * Store the value selected into 'position'
          */
-        helper.setOnClickListener(v -> startActivity(new Intent(AccueilActivity.this, GuideInstaView.class)));
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
@@ -135,7 +138,10 @@ public class AccueilActivity extends AppCompatActivity {
             startActivity(admin);
 
         });
-
+        /**
+         * Launch GuideInstaView if triggered
+         */
+        helper.setOnClickListener(v -> startActivity(new Intent(AccueilActivity.this, GuideInstaView.class)));
 
     }
 

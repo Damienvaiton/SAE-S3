@@ -10,17 +10,5 @@ public class VueDataViewModel extends ViewModel{
 
 
 
-        MutableLiveData<Boolean> listenerDonnées=new MutableLiveData<>(true);
-
-
-        public LiveData getData(){
-        return listenerDonnées;
-    }
-
-    public void updateData(Data data) {
-        if (data != null) {
-            listenerDonnées.postValue(null);
-        }
-    }
 
     }

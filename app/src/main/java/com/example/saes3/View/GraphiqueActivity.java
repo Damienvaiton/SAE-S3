@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.saes3.Model.ListData;
 import com.example.saes3.R;
 import com.example.saes3.Model.Axe;
 import com.example.saes3.Model.Data;
@@ -154,7 +155,7 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
         /**
          * add formatter of value on the top X axis
          */
-        xl.setValueFormatter(new XAxisValueFormatter(graphViewModel.getListData()));
+        xl.setValueFormatter(new XAxisValueFormatter(ListData.getInstance().getListAllData()));
 
 
 

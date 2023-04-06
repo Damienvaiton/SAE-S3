@@ -94,11 +94,6 @@ public class SettingsAdminViewModel extends ViewModel {
     }
 
 
-    /**
-     * Function trigger if a new ESP has been add to the databse
-     * Add value to hashmap ESP and name to tabESP if he has one, macAdress if not
-     */
-
     public void addESP(String esp, @Nullable String nom) {
         if (nom == null) {
             hashmapESP.putIfAbsent(esp, null);
@@ -110,9 +105,9 @@ public class SettingsAdminViewModel extends ViewModel {
         listener.postValue(tabESP);
     }
 
-    /**
-     * Function trigger if a ESP has been delete to the databse
-     * Remove the ESP name of tabESP if @param nameESP has been find in tabESP
+    /**nameES
+     *      * Function trigger if a ESP has been delete to the databse
+     *      * Remove the ESP name of tabESP if @param P has been find in tabESP
      */
     public void deleteESP(String nameESP) {
         for (String s : tabESP) {
@@ -121,6 +116,26 @@ public class SettingsAdminViewModel extends ViewModel {
             }
             listener.postValue(tabESP);
         }
+    }
+
+    /**
+     * Define the selected ESP to FirebaseAcess
+     */
+    public void creaESP(int pos) {
+        int curseur = 0;
+        for (Map.Entry<String, String> entry : hashmapESP.entrySet()) {
+            if (curseur == pos) {
+                if (entry.getValue() == null) {
+                    database.setEsp(new ESP(entry.getKey(), null));
+                    return;
+                }
+                database.setEsp(new ESP(entry.getKey(), null));
+                return;
+            }
+            curseur++;
+        }
+
+
     }
 
     /**
@@ -142,18 +157,6 @@ public class SettingsAdminViewModel extends ViewModel {
     public void setESPrefresh(String temps){
         database.setEspRefreshRate(Integer.parseInt(temps));
     }
-    public void creaESP(int pos) {
-        int curseur = 0;
-        for (Map.Entry<String, String> entry : hashmapESP.entrySet()) {
-            if (curseur == pos) {
-                if (entry.getValue() == null) {
-                    database.setEsp(new ESP(entry.getKey(), null));
-                    return;
-                }
-                database.setEsp(new ESP(entry.getKey(), null));
-                return;
-            }
-            curseur++;
-        }
-    }
+
+
 }

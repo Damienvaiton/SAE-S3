@@ -54,9 +54,6 @@ public class VueDataActivity extends AppCompatActivity implements Serializable {
         recyclerView.setAdapter(dataRecyclerAdapter);
         recyclerView.setLayoutManager((new LinearLayoutManager((this))));
 
-
-        vueDataViewModel.getData().observe(this, data -> dataRecyclerAdapter.notifyItemInserted(dataRecyclerAdapter.getItemCount() - 1));
-
         btnTriChoix.setOnClickListener(view -> {
             PopupMenu popupMenu = new PopupMenu(VueDataActivity.this, btnTriChoix);
             popupMenu.getMenuInflater().inflate(R.menu.menu_tri_choix, popupMenu.getMenu());
@@ -132,9 +129,6 @@ public class VueDataActivity extends AppCompatActivity implements Serializable {
         });
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-    }
+
 }
 

@@ -27,6 +27,7 @@ public class AppApplication extends Application implements Application.ActivityL
     public static Context context;
     public static final String CHANNEL_ID="notif";
 
+
     private Handler mHandler = new Handler(Looper.getMainLooper());
     private static AppApplication sInstance;
     private static WeakReference<Activity> mCurrentActivityRef;
@@ -45,6 +46,9 @@ public class AppApplication extends Application implements Application.ActivityL
             return AppApplication.context;
         }
 
+    /**
+     * Monitors internet status
+     */
     public void listenerCo() {
         ConnectivityManager.NetworkCallback networkCallback = new ConnectivityManager.NetworkCallback() {
             @Override
@@ -130,6 +134,9 @@ public class AppApplication extends Application implements Application.ActivityL
         return null;
     }
 
+    /**
+     * Check if user was connected to internet
+     */
     public boolean checkCo() {
         boolean isWifiConn = false;
         boolean isMobileConn = false;
@@ -150,10 +157,13 @@ public class AppApplication extends Application implements Application.ActivityL
         return false;
 
     }
+    /**
+     * Create a notification channel
+     */
     private void createNotificationChannel(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = "Vegetabilis Auditor";
-            String description = "c moa";
+            String description = "Valeurs";
             int importance = NotificationManager.IMPORTANCE_HIGH;
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
             channel.setDescription(description);
@@ -162,11 +172,4 @@ public class AppApplication extends Application implements Application.ActivityL
         }
     }
 }
-// ...
-// Initialize Firebase Auth
-
-        // je peux initialiser des données ici.
-        //lancé une seule fois à l'init de l'app
-        // pour repasser ici il faut killer l'application et la relancer
-        // si on la passe en background et qu'on la relance on ne repasse pas ici
 
