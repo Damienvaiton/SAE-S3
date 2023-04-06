@@ -111,7 +111,7 @@ pop.setCancelable(false);
                     pop.show();
                 }
             }
-        },1500);
+        },2000);
 
     }
 

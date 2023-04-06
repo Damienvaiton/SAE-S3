@@ -1,6 +1,5 @@
 package com.example.saes3.Model;
 
-import android.os.Handler;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -143,8 +142,7 @@ public static Long refresh;
             DataSnapshot tab = task.getResult();
             if (tab.exists()) {
                 for (DataSnapshot dataSnapshot : tab.getChildren()) {
-                    transitoireViewModel.updateData(dataSnapshot.getValue(Data.class));
-                    listData.list_add_data(dataSnapshot.getValue(Data.class));
+                    handleDataSnapshot(dataSnapshot,listData);
                 }
             } else {
                 System.out.println("Impossible d'accéder au données précharge");
@@ -186,7 +184,17 @@ public static Long refresh;
         };
         myRef.child(ESP32).child(ESP.getInstance().getMacEsp()).child(REFRESH_TIME).addValueEventListener(valueEventListenerTemps);
     }
-
+    private void handleDataSnapshot(DataSnapshot dataSnapshot, ListData listData) {
+        try {
+            Data data = dataSnapshot.getValue(Data.class);
+            if (data != null) {
+                transitoireViewModel.updateData(data);
+                listData.list_add_data(data);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     /**
      * Set a listener to the value data on the database, this  function is triggered each new value add on the database
      */
@@ -202,8 +210,7 @@ public static Long refresh;
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 if (snapshot.getChildrenCount() == 6) {
-                    listData.list_add_data(snapshot.getValue(Data.class));
-                    transitoireViewModel.updateData(snapshot.getValue(Data.class));
+                    handleDataSnapshot(snapshot,listData);
                 }
             }
 
@@ -264,8 +271,10 @@ Log.w("Erreur",error.toString());}
         myRef.child(ESP32).child(currentESP.getMacEsp()).child(REFRESH_TIME).removeEventListener(realtimeDataListener);
         return true;
     }
-public void testFirebase() {
+public boolean testFirebase() {
+
     myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -274,7 +283,11 @@ public void testFirebase() {
         @Override
         public void onCancelled(@NonNull DatabaseError databaseError) {
             transitoireViewModel.echecFirebase();
+
         }
     });
+
+    return true;
 }
 }
+

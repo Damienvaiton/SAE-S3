@@ -43,8 +43,8 @@ private ClassTransitoireViewModel(){
     runnableEmptyESP = new Runnable() {
         @Override
         public void run() {
-             if(AppApplication.getCurrentActivity().equals(GraphiqueActivity.class)){
-            AlertDialog.getInstance().emptyESP();}
+            if(AppApplication.getCurrentActivity().equals(GraphiqueActivity.class)){
+                AlertDialog.getInstance().emptyESP();}
         }
     };
     handlerEmptyESP.postDelayed(runnableEmptyESP, 7000);
@@ -63,6 +63,14 @@ private ClassTransitoireViewModel(){
 
     public void setGraphViewModel(GraphViewModel graphViewModel) {
         this.graphViewModel = graphViewModel;
+        runnableEmptyESP = new Runnable() {
+            @Override
+            public void run() {
+                if(AppApplication.getCurrentActivity().equals(GraphiqueActivity.class)){
+                    AlertDialog.getInstance().emptyESP();}
+            }
+        };
+        handlerEmptyESP.postDelayed(runnableEmptyESP, 7000);
     }
 
     public SettingsAdminViewModel getSettingsAdminViewModel() {

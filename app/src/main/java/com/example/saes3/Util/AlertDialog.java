@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 
 import com.example.saes3.AppApplication;
 import com.example.saes3.Model.ListData;
+import com.example.saes3.View.GraphiqueActivity;
 
 public class AlertDialog {
 
@@ -35,6 +36,9 @@ public class AlertDialog {
     }
 
     public void emptyESP(){
+        if(!AppApplication.getCurrentActivity().equals(GraphiqueActivity.class)){
+            return;
+        }
         android.app.AlertDialog.Builder alertDialog=new android.app.AlertDialog.Builder(AppApplication.getCurrentActivity());
         alertDialog.setMessage("Il semblerait que l'ESP ne contienne aucune données, l'avez vous brancher?");
         alertDialog.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
