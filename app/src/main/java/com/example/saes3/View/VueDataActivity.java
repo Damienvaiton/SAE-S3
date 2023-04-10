@@ -32,16 +32,13 @@ public class VueDataActivity extends AppCompatActivity implements Serializable {
     /**
      * The ViewModel for VueDataActivity
      */
-    private VueDataViewModel vueDataViewModel = null;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vue_data);
-
-        vueDataViewModel = new ViewModelProvider(this).get(VueDataViewModel.class);
-
+        
         cloneListData= (ArrayList<Data>) ListData.getInstance().getListAllData().clone();
 
         btnTriChoix = findViewById(R.id.SortChoise);
