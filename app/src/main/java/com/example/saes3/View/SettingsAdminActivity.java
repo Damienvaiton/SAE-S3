@@ -88,10 +88,13 @@ settingsAdminViewModel.getListenerData().observe(this, data -> dataRecyclerAdapt
         settingsAdminViewModel.getHashmapESP().observe(this, strings -> {
             tabESP.clear();
             for (String ESP : strings) {
-                tabESP.add(ESP);
+                if (!tabESP.contains(ESP)) {
+                    tabESP.add(ESP);
+                }
             }
             adapterRecyclerESP.notifyDataSetChanged();
         });
+
 
 
         settingsAdminViewModel.getTempsAdmin().observe(this, s -> refresh.setHint(s));
@@ -103,8 +106,7 @@ settingsAdminViewModel.getListenerData().observe(this, data -> dataRecyclerAdapt
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 settingsAdminViewModel.clearTab();
 dataRecyclerAdapter.notifyDataSetChanged();
-int po=(dataRecyclerAdapter.getItemCount()-position);
-            settingsAdminViewModel.creaESP(po);
+            settingsAdminViewModel.creaESP(parent.getItemAtPosition(position).toString());
                 settingsAdminViewModel.setListenerESP(); // Mettre tout les listener dedans
             }
 

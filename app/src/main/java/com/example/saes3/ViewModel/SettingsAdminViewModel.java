@@ -15,6 +15,7 @@ import com.example.saes3.Util.ClassTransitoireViewModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public class SettingsAdminViewModel extends ViewModel {
@@ -22,7 +23,7 @@ public class SettingsAdminViewModel extends ViewModel {
     private FirebaseAccess database;
 
     private ClassTransitoireViewModel transit;
-    
+
     private MutableLiveData<ArrayList<String>> listener = new MutableLiveData<>();
 
     private MutableLiveData<Data> listenerData = new MutableLiveData<>();
@@ -108,21 +109,22 @@ public class SettingsAdminViewModel extends ViewModel {
      *      * Remove the ESP name of tabESP if @param P has been find in tabESP
      */
     public void deleteESP(String nameESP) {
-        for (String s : tabESP) {
+        Iterator<String> iterator = tabESP.iterator();
+        while (iterator.hasNext()) {
+            String s = iterator.next();
             if (s.equals(nameESP)) {
-                tabESP.remove(s);
+                iterator.remove(); // Utiliser l'itérateur pour supprimer l'élément de la liste
             }
-            listener.postValue(tabESP);
         }
+        listener.postValue(tabESP);
     }
 
     /**
      * Define the selected ESP to FirebaseAcess
      */
-    public void creaESP(int pos) {
-        int curseur = 0;
+    public void creaESP(String nom) {
         for (Map.Entry<String, String> entry : hashmapESP.entrySet()) {
-            if (curseur == pos) {
+            if (entry.getValue()==nom || entry.getKey()==nom) {
                 if (entry.getValue() == null) {
                     database.setEsp(new ESP(entry.getKey(), null));
                     return;
@@ -130,11 +132,11 @@ public class SettingsAdminViewModel extends ViewModel {
                 database.setEsp(new ESP(entry.getKey(), null));
                 return;
             }
-            curseur++;
         }
 
 
     }
+
 
     /**
      * Define the selected ESP to FirebaseAcess

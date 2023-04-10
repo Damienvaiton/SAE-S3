@@ -39,7 +39,7 @@ public class AccueilActivity extends AppCompatActivity {
     /**
      * Store the index of ESP actually selected
      */
-    private int position;
+    private String nomESP;
     /**
      * Button for switch to 'GraphView'
      */
@@ -106,7 +106,7 @@ public class AccueilActivity extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-                position = adapter.getCount()-pos-1;
+                nomESP = parent.getItemAtPosition(pos).toString();
             }
 
             @Override
@@ -121,7 +121,7 @@ public class AccueilActivity extends AppCompatActivity {
         btncoEtu.setOnClickListener(view -> {
             if(!adapter.isEmpty() ) {
                 Intent graph;
-                accueilViewModel.creaESP(position);
+                accueilViewModel.creaESP(nomESP);
                 graph = new Intent(AccueilActivity.this, GraphiqueActivity.class);
                 startActivity(graph);
             }else{

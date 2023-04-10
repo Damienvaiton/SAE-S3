@@ -12,6 +12,7 @@ import com.example.saes3.Util.ClassTransitoireViewModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public class AccueilViewModel extends ViewModel {
@@ -70,21 +71,22 @@ public class AccueilViewModel extends ViewModel {
      * Remove the ESP name of tabESP if @param nameESP has been find in tabESP
      */
     public void deleteESP(String nameESP) {
-        for (String s : tabESP) {
+        Iterator<String> iterator = tabESP.iterator();
+        while (iterator.hasNext()) {
+            String s = iterator.next();
             if (s.equals(nameESP)) {
-                tabESP.remove(s);
+                iterator.remove(); // Utiliser l'itérateur pour supprimer l'élément de la liste
             }
-            listener.postValue(tabESP);
         }
+        listener.postValue(tabESP);
     }
 
     /**
      * Define the selected ESP to FirebaseAcess
      */
-    public void creaESP(int pos) {
-        int curseur = 0;
+    public void creaESP(String nom) {
         for (Map.Entry<String, String> entry : hashESP.entrySet()) {
-            if (curseur == pos) {
+            if (entry.getValue()==nom || entry.getKey()==nom) {
                 if (entry.getValue() == null) {
                     acess.setEsp(new ESP(entry.getKey(), null));
                     return;
@@ -92,7 +94,6 @@ public class AccueilViewModel extends ViewModel {
                 acess.setEsp(new ESP(entry.getKey(), null));
                 return;
             }
-            curseur++;
         }
 
 
