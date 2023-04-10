@@ -17,17 +17,17 @@ import com.example.saes3.AppApplication;
 
 public class SplashViewModel extends ViewModel {
 
-    boolean isWifiConn = false;
-    boolean isMobileConn = false;
+    private boolean isWifiConn = false;
+    private boolean isMobileConn = false;
 
     /**
      * Send true if mobile was connected too internet
      */
-        MutableLiveData<Boolean> listenerAppReady=new MutableLiveData<>();
+    private MutableLiveData<Boolean> listenerAppReady=new MutableLiveData<>();
     /**
      * Fallse if Firebase was not available
      */
-    MutableLiveData<Boolean> listenerFirebaseReady=new MutableLiveData<>(true);
+    private MutableLiveData<Boolean> listenerFirebaseReady=new MutableLiveData<>(true);
     public LiveData<Boolean> getAppReady(){
         return listenerAppReady;
     }

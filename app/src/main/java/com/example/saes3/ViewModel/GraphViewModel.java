@@ -180,7 +180,7 @@ public class GraphViewModel extends ViewModel {
      *
      * @param data
      */
-    void chargerDonner(Data data) {
+    private void chargerDonner(Data data) {
         A_CO2.add(new Entry(A_CO2.size() - 1, data.getCo2()));
         A_temp.add(new Entry(A_temp.size() - 1, data.getTemperature()));
         A_humi.add(new Entry(A_CO2.size() - 1, data.getHumidite()));
@@ -200,7 +200,7 @@ public class GraphViewModel extends ViewModel {
      */
 
 
-    void creaGraph() {
+    private void creaGraph() {
 
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
 
@@ -271,7 +271,7 @@ public class GraphViewModel extends ViewModel {
      */
 
 
-    void choixAxe(LineDataSet data) {
+    private void choixAxe(LineDataSet data) {
         if (!leftAxisUsed) {
             data.setAxisDependency(YAxis.AxisDependency.LEFT);
             leftAxisName = data.getLabel();

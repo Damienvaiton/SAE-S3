@@ -10,10 +10,10 @@ import android.widget.ScrollView;
 import com.example.saes3.R;
 
 public class GuideInstaView extends AppCompatActivity {
-Button scrollGraph;
-Button scrollEsp;
-Button scrollAcueil;
-ScrollView scrollView;
+    private Button scrollGraph;
+    private Button scrollEsp;
+    private Button scrollAcueil;
+    private ScrollView scrollView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

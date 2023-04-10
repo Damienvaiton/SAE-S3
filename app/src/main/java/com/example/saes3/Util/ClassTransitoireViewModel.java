@@ -16,8 +16,7 @@ public class ClassTransitoireViewModel {
     private GraphViewModel graphViewModel;
     private SettingsAdminViewModel settingsAdminViewModel;
     private SettingsEtuViewModel settingsEtuViewModel;
-private SplashViewModel splashViewModel;
-
+    private SplashViewModel splashViewModel;
     private AccueilViewModel accueilViewModel;
 
     private static ClassTransitoireViewModel instance;
@@ -42,16 +41,8 @@ private SplashViewModel splashViewModel;
         this.settingsEtuViewModel=settingsEtuViewModel;
     }
 
-    public GraphViewModel getGraphViewModel() {
-        return graphViewModel;
-    }
-
     public void setGraphViewModel(GraphViewModel graphViewModel) {
         this.graphViewModel = graphViewModel;
-    }
-
-    public SettingsAdminViewModel getSettingsAdminViewModel() {
-        return settingsAdminViewModel;
     }
 
     public void setSettingsAdminViewModel(SettingsAdminViewModel settingsAdminViewModel) {
@@ -92,12 +83,6 @@ private SplashViewModel splashViewModel;
             settingsAdminViewModel.deleteESP(esp);
         }
     }
-    public void creationESP(int pos){
-        if(accueilViewModel!=null){
-            accueilViewModel.creaESP(pos);
-        }
-    }
-
 
     public void echecFirebase() {
         if (splashViewModel != null) {

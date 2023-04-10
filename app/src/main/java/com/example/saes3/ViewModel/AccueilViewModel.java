@@ -36,11 +36,11 @@ public class AccueilViewModel extends ViewModel {
     /**
      * LiveData who pass tabESP to the view
      */
-    MutableLiveData<ArrayList<String>> listener = new MutableLiveData<>();
+    private MutableLiveData<ArrayList<String>> listener = new MutableLiveData<>();
     /**
      * ArrayList wich contains nickname of each ESP if it has, mac adress if not
      */
-    ArrayList<String> tabESP = new ArrayList<>();
+    private ArrayList<String> tabESP = new ArrayList<>();
 
     /**
      * Getter of LiveData object who contains tabESP

@@ -23,7 +23,7 @@ public class Axe {
         this.rightAxis = rightAxis;
     }
 
-    public Axe() {
+    private Axe() {
         this.leftAxis = new YAxis();
         this.rightAxis = new YAxis();
     }

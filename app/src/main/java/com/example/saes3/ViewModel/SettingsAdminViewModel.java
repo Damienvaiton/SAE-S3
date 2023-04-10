@@ -22,13 +22,11 @@ public class SettingsAdminViewModel extends ViewModel {
     private FirebaseAccess database;
 
     private ClassTransitoireViewModel transit;
+    
+    private MutableLiveData<ArrayList<String>> listener = new MutableLiveData<>();
 
-    MutableLiveData<String> listenerTempsAdmin = new MutableLiveData<>();
-
-    MutableLiveData<ArrayList<String>> listener = new MutableLiveData<>();
-
-    MutableLiveData<Data> listenerData = new MutableLiveData<>();
-
+    private MutableLiveData<Data> listenerData = new MutableLiveData<>();
+    private ArrayList<String> tabESP = new ArrayList<>();
 
 
     public SettingsAdminViewModel() {
@@ -87,7 +85,7 @@ public class SettingsAdminViewModel extends ViewModel {
 
 
     }
-    ArrayList<String> tabESP = new ArrayList<>();
+
 
     public LiveData<ArrayList<String>> getHashmapESP() {
         return listener;

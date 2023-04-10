@@ -22,13 +22,13 @@ import com.example.saes3.ViewModel.SplashViewModel;
 
 public class SplashActivity extends AppCompatActivity {
 
-    ImageView splash;
+    private ImageView splash;
 
-    TextView text;
-    SplashViewModel splashViewModel=null;
+    private TextView text;
+    private SplashViewModel splashViewModel=null;
 
-    boolean ready=false;
-    boolean getEtatFirebase=false;
+    private boolean ready=false;
+    private boolean getEtatFirebase=false;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -42,24 +42,14 @@ public class SplashActivity extends AppCompatActivity {
         splash = findViewById(R.id.imageplante);
         text = findViewById(R.id.nameAPP);
 
-
-
-
-
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.animimgsplashscreen);
         Animation animation2 = AnimationUtils.loadAnimation(this, R.anim.animtxtsplashscreen);
-
-
         ScaleAnimation scaleAnimation = new ScaleAnimation(0.5f, 1.0f, 0.5f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         scaleAnimation.setDuration(1000);
         animation2.setStartOffset(1000);
-
-
         AnimationSet animationSet = new AnimationSet(true);
-
         animationSet.addAnimation(animation);
         animationSet.addAnimation(scaleAnimation);
-
 
         splash.startAnimation(animationSet);
         text.startAnimation(animation2);
@@ -107,7 +97,7 @@ pop.setCancelable(false);
 
     }
 
-    public void transi() {
+    private void transi() {
         startActivity(new Intent(this, AccueilActivity.class));
         finish();
     }

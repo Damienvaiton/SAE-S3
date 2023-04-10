@@ -28,7 +28,7 @@ public class ListData implements Serializable {
         return listAllData;
     }
 
-    public ListData() {
+    private ListData() {
         listAllData=new ObservableArrayList<>();
     }
 
@@ -36,9 +36,6 @@ public class ListData implements Serializable {
         return (Data) listAllData.get(position);
     }
 
-    public void deleteAllData() {
-        listAllData.clear();
-    }
 
     public void listAddData(Data data) {
         listAllData.add(data);

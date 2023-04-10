@@ -73,7 +73,7 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
     /**
      * The ViewModel of this view
      */
-    ActivityResultLauncher<Intent> mStartForResult;
+     private ActivityResultLauncher<Intent> mStartForResult;
     private GraphViewModel graphViewModel = null;
 
 
@@ -216,7 +216,7 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
      * Set new Data values to the textView in the top
      * @param data lastest Data value available
      */
-    void actuValues(Data data) {
+    private void actuValues(Data data) {
         DecimalFormat a = new DecimalFormat("##.###");
         if (data.getTemperature() != 0) {
             viewTemp.setText(a.format(data.getTemperature()) + "°");
@@ -238,7 +238,7 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
     /**
      * Configure the parameters of the graph
      */
-    void paramGraph() {
+    private void paramGraph() {
         graph.setNoDataText("Aucune données reçu pour le moment");
         graph.setNoDataTextColor(Color.BLACK);
         graph.setTouchEnabled(true);

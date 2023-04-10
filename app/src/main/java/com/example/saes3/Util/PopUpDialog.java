@@ -43,6 +43,7 @@ public class PopUpDialog extends Dialog {
         return valeur.getText().toString();
     }
 
+    // required to work
     public void build() {
         show();
     }

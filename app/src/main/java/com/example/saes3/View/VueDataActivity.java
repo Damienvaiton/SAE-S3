@@ -6,14 +6,12 @@ import android.widget.PopupMenu;
 import android.widget.Switch;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.saes3.Model.Data;
 import com.example.saes3.Model.ListData;
 import com.example.saes3.R;
-import com.example.saes3.ViewModel.VueDataViewModel;
 import com.example.saes3.Util.dataRecyclerAdapter;
 
 import java.io.Serializable;
@@ -38,7 +36,7 @@ public class VueDataActivity extends AppCompatActivity implements Serializable {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vue_data);
-        
+
         cloneListData= (ArrayList<Data>) ListData.getInstance().getListAllData().clone();
 
         btnTriChoix = findViewById(R.id.SortChoise);
