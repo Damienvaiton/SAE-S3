@@ -1,15 +1,22 @@
 package com.example.saes3.ViewModel;
 
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
+import android.Manifest;
+
 import android.util.Log;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.saes3.AppApplication;
+
 import com.example.saes3.Model.Data;
 import com.example.saes3.Model.FirebaseAccess;
 import com.example.saes3.Model.ListData;
@@ -312,45 +319,8 @@ public class GraphViewModel extends ViewModel {
         return instanceListData.recupData(cptLignes).getTemps() != "";
     }
 
-    public String exportFile() {
-        ListData instanceListData = ListData.getInstance();
-        int cptLignes = instanceListData.listSize()-1;
-        if (cptLignes <= 1) {
-            return "Export excel annulé, pas assez de valeurs";
-        }
-        if (!isDataValid(cptLignes)) {
-            cptLignes--;
-        }
-        BufferedWriter writer;
-        File csvFile;
-        String titre = "Numero Mesure;Humidite;Temerature;CO2;O2;Lux;Heure";
 
-        try {
-            csvFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Mesure.csv");
-            if (!csvFile.exists()) {
-                csvFile.createNewFile();
-            }
-            writer = new BufferedWriter(new FileWriter(csvFile));
 
-            writer.write(titre);
-            for (int i = 0; i < cptLignes; i++) {
-                String resultat = Integer.toString(i);
-                resultat += ";" + Math.round(instanceListData.recupData(i).getHumidite() * 1000.0) / 1000.0;
-                resultat += ";" + Math.round(instanceListData.recupData(i).getTemperature() * 100.0) / 100.0;
-                resultat += ";" + Math.round(instanceListData.recupData(i).getCo2() * 1000.0) / 1000.0;
-                resultat += ";" + Math.round(instanceListData.recupData(i).getO2() * 1000.0) / 1000.0;
-                resultat += ";" + Math.round(instanceListData.recupData(i).getLight() * 1000.0) / 1000.0;
-                resultat += ";" + instanceListData.recupData(i).getTemps();
-                writer.newLine();
-                writer.write(resultat);
-            }
-            writer.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "Erreur lors de l'export, annulation";
-        }
-        return "Export terminé, disponible dans votre dossier téléchargement";
-    }
 
     public void onClose() {
         acess.deleteListener();

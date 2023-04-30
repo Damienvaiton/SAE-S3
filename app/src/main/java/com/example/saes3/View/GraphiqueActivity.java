@@ -1,11 +1,15 @@
 package com.example.saes3.View;
 
+import android.Manifest;
 import android.app.Activity;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
@@ -17,9 +21,12 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.saes3.AppApplication;
 import com.example.saes3.Model.ListData;
 import com.example.saes3.R;
 import com.example.saes3.Model.Axe;
@@ -38,6 +45,9 @@ import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomnavigation.BottomNavigationView.OnNavigationItemSelectedListener;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.text.DecimalFormat;
 
 public class GraphiqueActivity extends AppCompatActivity implements View.OnClickListener, OnNavigationItemSelectedListener {
@@ -73,7 +83,7 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
     /**
      * The ViewModel of this view
      */
-     private ActivityResultLauncher<Intent> mStartForResult;
+    private ActivityResultLauncher<Intent> mStartForResult;
     private GraphViewModel graphViewModel = null;
 
 
@@ -98,13 +108,14 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
         /**
          * Observer of new refresh rate of current ESP
          */
-        graphViewModel.getMoments().observe(this, (Observer<String>) s -> {valTemp.setText(s);});
+        graphViewModel.getMoments().observe(this, (Observer<String>) s -> {
+            valTemp.setText(s);
+        });
 
         graphViewModel.getData().observe(this, (Observer<Data>) this::actuValues);
 
 
         valTemp = findViewById(R.id.viewTime);
-
 
 
         viewTemp = findViewById(R.id.viewTemp);
@@ -158,9 +169,7 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
         xl.setValueFormatter(new XAxisValueFormatter(ListData.getInstance().getListAllData()));
 
 
-
-
-    Axis=Axe.getInstance();
+        Axis = Axe.getInstance();
         //Création Axe Y droit
         Axis.setRightAxis(graph.getAxisRight());
         Axis.getRightAxis().setEnabled(true);
@@ -197,7 +206,7 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
                 } else {
                     label = "X =";
                 }
-                Toast.makeText(getApplicationContext(), "Heure = " + graphViewModel.returnValue().recupData((int) h.getX()+1 ).getTemps()+ ", " + label + h.getY(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Heure = " + graphViewModel.returnValue().recupData((int) h.getX() + 1).getTemps() + ", " + label + h.getY(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -205,8 +214,8 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
                 registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                         result -> {
                             if (result.getResultCode() == Activity.RESULT_OK) {
-                               graph.notifyDataSetChanged();
-                               graph.invalidate();
+                                graph.notifyDataSetChanged();
+                                graph.invalidate();
                             }
                         });
     }
@@ -214,6 +223,7 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
 
     /**
      * Set new Data values to the textView in the top
+     *
      * @param data lastest Data value available
      */
     private void actuValues(Data data) {
@@ -269,8 +279,7 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
 
     /**
      * @param item The selected item
-     * @return
-     * performs different action depending on the returned id, return false if failed
+     * @return performs different action depending on the returned id, return false if failed
      */
 
     @Override
@@ -295,8 +304,7 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
             case R.id.btnExport:
                 try {
                     Toast.makeText(getApplicationContext(), "Export excel commencé ", Toast.LENGTH_SHORT).show();
-                    String response=graphViewModel.exportFile();
-                    Toast.makeText(this, response, Toast.LENGTH_SHORT).show();
+                    requestAuto();
                 } catch (Exception e) {
                     e.printStackTrace();
                     Toast.makeText(this, "échec", Toast.LENGTH_SHORT).show();
@@ -309,10 +317,9 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
     }
 
 
-
-
     /**
      * send CheckBox clicked to the ViewModel
+     *
      * @param v The view that was clicked.
      */
     @Override
@@ -348,7 +355,90 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
         }
 
 
-
     }
 
+    public void requestAuto() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(AppApplication.getCurrentActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(AppApplication.getCurrentActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+            } else {
+                exportFile();
+            }
+        } else {
+            exportFile();
+        }
+    }
+
+    public void exportFile() {
+
+        ListData instanceListData = ListData.getInstance();
+        int cptLignes = instanceListData.listSize() - 1;
+        if (cptLignes <= 1) {
+            Toast.makeText(this, "Export excel annulé, pas assez de valeurs", Toast.LENGTH_SHORT).show();
+        }
+        if (!isDataValid(cptLignes)) {
+            cptLignes--;
+        }
+        BufferedWriter writer;
+        File csvFile;
+        String titre = "Numero Mesure;Humidite;Temerature;CO2;O2;Lux;Heure";
+        try {
+            csvFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Mesure.csv");
+            if (!csvFile.exists()) {
+                csvFile.createNewFile();
+            }
+            writer = new BufferedWriter(new FileWriter(csvFile));
+
+            writer.write(titre);
+            for (int i = 0; i < cptLignes; i++) {
+                String resultat = Integer.toString(i);
+                resultat += ";" + Math.round(instanceListData.recupData(i).getHumidite() * 1000.0) / 1000.0;
+                resultat += ";" + Math.round(instanceListData.recupData(i).getTemperature() * 100.0) / 100.0;
+                resultat += ";" + Math.round(instanceListData.recupData(i).getCo2() * 1000.0) / 1000.0;
+                resultat += ";" + Math.round(instanceListData.recupData(i).getO2() * 1000.0) / 1000.0;
+                resultat += ";" + Math.round(instanceListData.recupData(i).getLight() * 1000.0) / 1000.0;
+                resultat += ";" + instanceListData.recupData(i).getTemps();
+                writer.newLine();
+                writer.write(resultat);
+            }
+            writer.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Erreur lors de l'export, annulation", Toast.LENGTH_SHORT).show();
+        }
+        Toast.makeText(this, "Export terminé, disponible dans votre dossier téléchargement", Toast.LENGTH_SHORT).show();
+    }
+
+    private boolean isDataValid(int cptLignes) {
+        ListData instanceListData = ListData.getInstance();
+        if (instanceListData.recupData(cptLignes).getCo2() == 0) {
+            return false;
+        }
+        if (instanceListData.recupData(cptLignes).getTemperature() == 0) {
+            return false;
+        }
+        if (instanceListData.recupData(cptLignes).getHumidite() == 0) {
+            return false;
+        }
+        if (instanceListData.recupData(cptLignes).getO2() == 0) {
+            return false;
+        }
+        if (instanceListData.recupData(cptLignes).getLight() == 0) {
+            return false;
+        }
+        return instanceListData.recupData(cptLignes).getTemps() != "";
+    }
+
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission accordée
+                exportFile();
+            } else {
+                // Permission refusée
+                Toast.makeText(AppApplication.getCurrentActivity(), "La permission de stockage est requise pour exporter le fichier.", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 }

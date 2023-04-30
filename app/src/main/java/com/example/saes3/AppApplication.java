@@ -34,7 +34,6 @@ public class AppApplication extends Application implements Application.ActivityL
     @Override
         public void onCreate() {
             super.onCreate();
-            createNotificationChannel();
             AppApplication.context= getApplicationContext();
             listenerCo();
             FirebaseAccess.getInstance().testFirebase();
