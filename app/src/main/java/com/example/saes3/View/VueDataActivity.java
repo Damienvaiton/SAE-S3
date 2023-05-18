@@ -37,14 +37,14 @@ public class VueDataActivity extends AppCompatActivity implements Serializable {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vue_data);
 
-        cloneListData= (ArrayList<Data>) ListData.getInstance().getListAllData().clone();
+        cloneListData = (ArrayList<Data>) ListData.getInstance().getListAllData().clone();
 
         btnTriChoix = findViewById(R.id.SortChoise);
         switchDesc = findViewById(R.id.switch1);
         trid = findViewById(R.id.button8);
         btnTriChoix.setText(ChoixTri);
 
-        dataRecyclerAdapter = new dataRecyclerAdapter(getApplicationContext(),cloneListData);
+        dataRecyclerAdapter = new dataRecyclerAdapter(getApplicationContext(), cloneListData);
         recyclerView = findViewById(R.id.recyclerview);
         recyclerView.setAdapter(dataRecyclerAdapter);
         recyclerView.setLayoutManager((new LinearLayoutManager((this))));

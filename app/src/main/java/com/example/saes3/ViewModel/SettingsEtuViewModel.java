@@ -14,7 +14,7 @@ public class SettingsEtuViewModel extends ViewModel {
     private ClassTransitoireViewModel transit;
 
     public SettingsEtuViewModel() {
-        transit=ClassTransitoireViewModel.getInstance();
+        transit = ClassTransitoireViewModel.getInstance();
         transit.setSettingsEtuViewModel(this);
         acess = FirebaseAccess.getInstance();
         acess.setEspTimeListener();
@@ -25,7 +25,9 @@ public class SettingsEtuViewModel extends ViewModel {
         return true;
 
     }
+
     private final MutableLiveData<String> updateTemps = new MutableLiveData<>();
+
     public void updateRefresh(String refresh) {
         updateTemps.postValue(refresh);
     }

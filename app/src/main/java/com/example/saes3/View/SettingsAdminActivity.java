@@ -83,7 +83,7 @@ public class SettingsAdminActivity extends AppCompatActivity implements View.OnC
         });
         pop.show();
 
-settingsAdminViewModel.getListenerData().observe(this, data -> dataRecyclerAdapter.notifyDataSetChanged());
+        settingsAdminViewModel.getListenerData().observe(this, data -> dataRecyclerAdapter.notifyDataSetChanged());
 
         settingsAdminViewModel.getHashmapESP().observe(this, strings -> {
             tabESP.clear();
@@ -96,17 +96,15 @@ settingsAdminViewModel.getListenerData().observe(this, data -> dataRecyclerAdapt
         });
 
 
-
         settingsAdminViewModel.getTempsAdmin().observe(this, s -> refresh.setHint(s));
-
 
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 settingsAdminViewModel.clearTab();
-dataRecyclerAdapter.notifyDataSetChanged();
-            settingsAdminViewModel.creaESP(parent.getItemAtPosition(position).toString());
+                dataRecyclerAdapter.notifyDataSetChanged();
+                settingsAdminViewModel.creaESP(parent.getItemAtPosition(position).toString());
                 settingsAdminViewModel.setListenerESP(); // Mettre tout les listener dedans
             }
 
@@ -130,7 +128,7 @@ dataRecyclerAdapter.notifyDataSetChanged();
                     } else {
                         Toast.makeText(getApplicationContext(), "Merci d'entrer un nom", Toast.LENGTH_SHORT).show();
 
-                        }
+                    }
                 });
                 customPopup.getNoButton().setOnClickListener(view -> customPopup.dismiss());
                 //Faire dans pop up

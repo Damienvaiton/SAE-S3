@@ -32,7 +32,7 @@ public class SettingsAdminViewModel extends ViewModel {
 
     public SettingsAdminViewModel() {
         database = FirebaseAccess.getInstance();
-        transit=ClassTransitoireViewModel.getInstance();
+        transit = ClassTransitoireViewModel.getInstance();
         transit.setSettingsAdminViewModel(this);
         database.getAllESP();
         hashmapESP = new HashMap<>();
@@ -64,16 +64,21 @@ public class SettingsAdminViewModel extends ViewModel {
             }
         });
     }
+
     public void setListenerESP() {
 
         database.setRealtimeDataListener();
         database.loadInData();
         database.setEspTimeListener();
     }
+
     private final MutableLiveData<String> liveDataRefresh = new MutableLiveData<>();
 
-    public LiveData<Data> getListenerData(){return listenerData;}
-    public void updateRefresh(String refresh){
+    public LiveData<Data> getListenerData() {
+        return listenerData;
+    }
+
+    public void updateRefresh(String refresh) {
         liveDataRefresh.postValue(refresh);
     }
 
@@ -81,7 +86,7 @@ public class SettingsAdminViewModel extends ViewModel {
         return liveDataRefresh;
     }
 
-    public void clearTab(){
+    public void clearTab() {
         ListData.getInstance().listSupAllData();
 
 
@@ -104,9 +109,10 @@ public class SettingsAdminViewModel extends ViewModel {
         listener.postValue(tabESP);
     }
 
-    /**nameES
-     *      * Function trigger if a ESP has been delete to the databse
-     *      * Remove the ESP name of tabESP if @param P has been find in tabESP
+    /**
+     * nameES
+     * * Function trigger if a ESP has been delete to the databse
+     * * Remove the ESP name of tabESP if @param P has been find in tabESP
      */
     public void deleteESP(String nameESP) {
         Iterator<String> iterator = tabESP.iterator();
@@ -124,7 +130,7 @@ public class SettingsAdminViewModel extends ViewModel {
      */
     public void creaESP(String nom) {
         for (Map.Entry<String, String> entry : hashmapESP.entrySet()) {
-            if (entry.getValue()==nom || entry.getKey()==nom) {
+            if (entry.getValue() == nom || entry.getKey() == nom) {
                 if (entry.getValue() == null) {
                     database.setEsp(new ESP(entry.getKey(), null));
                     return;
@@ -143,18 +149,20 @@ public class SettingsAdminViewModel extends ViewModel {
      */
 
 
-    public void renameESP(String nickname){
+    public void renameESP(String nickname) {
         database.setNicknameEsp(nickname);
     }
-    public void suppESP(){
+
+    public void suppESP() {
         database.deleteEsp();
     }
 
-    public void resetESP(){
+    public void resetESP() {
         database.resetValueFirebase();
         ListData.getInstance().listSupAllData();
     }
-    public void setESPrefresh(String temps){
+
+    public void setESPrefresh(String temps) {
         database.setEspRefreshRate(Integer.parseInt(temps));
     }
 

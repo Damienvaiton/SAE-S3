@@ -25,10 +25,10 @@ public class SplashActivity extends AppCompatActivity {
     private ImageView splash;
 
     private TextView text;
-    private SplashViewModel splashViewModel=null;
+    private SplashViewModel splashViewModel = null;
 
-    private boolean ready=false;
-    private boolean getEtatFirebase=false;
+    private boolean ready = false;
+    private boolean getEtatFirebase = false;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -36,8 +36,8 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
         splashViewModel = new ViewModelProvider(this).get(SplashViewModel.class);
-        splashViewModel.getAppReady().observe(this, aBoolean -> ready=aBoolean);
-        splashViewModel.getFirebaseReady().observe(this, aBoolean -> getEtatFirebase=aBoolean);
+        splashViewModel.getAppReady().observe(this, aBoolean -> ready = aBoolean);
+        splashViewModel.getFirebaseReady().observe(this, aBoolean -> getEtatFirebase = aBoolean);
 
         splash = findViewById(R.id.imageplante);
         text = findViewById(R.id.nameAPP);
@@ -61,15 +61,15 @@ public class SplashActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         splashViewModel.checkCo();
-        Handler handlerTest=new Handler();
+        Handler handlerTest = new Handler();
         handlerTest.postDelayed(() -> {
             if (ready) {
                 Handler handler = new Handler();
                 handler.postDelayed(() -> transi(), 500);
-            } else if(!ready){
+            } else if (!ready) {
                 AlertDialog.Builder pop = new AlertDialog.Builder(AppApplication.getCurrentActivity());
                 pop.setMessage("Merci de vous connectez à internet");
-pop.setCancelable(false);
+                pop.setCancelable(false);
 
                 pop.setPositiveButton("Fait", (dialog, which) -> {
                     splashViewModel.checkCo();
@@ -82,18 +82,17 @@ pop.setCancelable(false);
                     }
                 });
                 pop.show();
-            }
-            else if(!getEtatFirebase){
+            } else if (!getEtatFirebase) {
                 AlertDialog.Builder pop = new AlertDialog.Builder(AppApplication.getCurrentActivity());
                 pop.setMessage("Firebase ne semble pas être disponible pour le moment, réessayer plus tard");
                 pop.setCancelable(false);
 
                 pop.setPositiveButton("Quitter l'application", (dialog, which) -> {
-                        finishAffinity();
+                    finishAffinity();
                 });
                 pop.show();
             }
-        },2000);
+        }, 2000);
 
     }
 

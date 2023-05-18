@@ -22,7 +22,7 @@ public class dataRecyclerAdapter extends RecyclerView.Adapter<dataRecyclerAdapte
 
     public dataRecyclerAdapter(Context context, ArrayList<Data> listData) {
         this.context = context;
-        this.listData=listData;
+        this.listData = listData;
     }
 
     @NonNull
@@ -50,6 +50,7 @@ public class dataRecyclerAdapter extends RecyclerView.Adapter<dataRecyclerAdapte
         holder.lux.setText(a.format(listData.get(position).getLight()) + "L");
         holder.temps.setText(listData.get(position).getTemps());
     }
+
     @Override
     public int getItemCount() {
         return listData.size();

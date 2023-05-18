@@ -29,7 +29,7 @@ public class ListData implements Serializable {
     }
 
     private ListData() {
-        listAllData=new ObservableArrayList<>();
+        listAllData = new ObservableArrayList<>();
     }
 
     public Data recupData(int position) {

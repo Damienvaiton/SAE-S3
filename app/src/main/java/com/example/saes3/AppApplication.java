@@ -25,25 +25,26 @@ import java.lang.ref.WeakReference;
 
 public class AppApplication extends Application implements Application.ActivityLifecycleCallbacks {
     public static Context context;
-    public static final String CHANNEL_ID="notif";
+    public static final String CHANNEL_ID = "notif";
 
 
     private Handler mHandler = new Handler(Looper.getMainLooper());
     private static AppApplication sInstance;
     private static WeakReference<Activity> mCurrentActivityRef;
-    @Override
-        public void onCreate() {
-            super.onCreate();
-            AppApplication.context= getApplicationContext();
-            listenerCo();
-            FirebaseAccess.getInstance().testFirebase();
-            sInstance = this;
-            registerActivityLifecycleCallbacks(this);
-        }
 
-        public static Context getAppContext() {
-            return AppApplication.context;
-        }
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        AppApplication.context = getApplicationContext();
+        listenerCo();
+        FirebaseAccess.getInstance().testFirebase();
+        sInstance = this;
+        registerActivityLifecycleCallbacks(this);
+    }
+
+    public static Context getAppContext() {
+        return AppApplication.context;
+    }
 
     /**
      * Monitors internet status
@@ -65,7 +66,7 @@ public class AppApplication extends Application implements Application.ActivityL
                     pop.setPositiveButton("Fait", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            if(checkCo()) {
+                            if (checkCo()) {
                                 dialog.cancel();
                             } else {
                                 pop.show();
@@ -144,22 +145,23 @@ public class AppApplication extends Application implements Application.ActivityL
         for (Network network : connMgr.getAllNetworks()) {
             NetworkInfo networkInfo = connMgr.getNetworkInfo(network);
             if (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
-               isWifiConn |=networkInfo.isConnected();
+                isWifiConn |= networkInfo.isConnected();
             }
             if (networkInfo.getType() == ConnectivityManager.TYPE_MOBILE) {
-                isMobileConn |=networkInfo.isConnected();
+                isMobileConn |= networkInfo.isConnected();
             }
-            if(isMobileConn || isWifiConn){
+            if (isMobileConn || isWifiConn) {
                 return true;
             }
         }
         return false;
 
     }
+
     /**
      * Create a notification channel
      */
-    private void createNotificationChannel(){
+    private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = "Vegetabilis Auditor";
             String description = "Valeurs";

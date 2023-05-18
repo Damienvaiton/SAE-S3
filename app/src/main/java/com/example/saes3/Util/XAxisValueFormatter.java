@@ -20,7 +20,6 @@ public class XAxisValueFormatter extends IndexAxisValueFormatter {
     }
 
 
-
     /**
      * Format the top X axe with the "Temps" fields
      */

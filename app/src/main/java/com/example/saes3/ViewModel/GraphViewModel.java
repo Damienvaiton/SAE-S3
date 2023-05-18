@@ -37,7 +37,8 @@ import java.util.ArrayList;
 
 public class GraphViewModel extends ViewModel {
     /**
-     * LiveData taking care of transiting the object of the new graph from the ViewModel to the View     */
+     * LiveData taking care of transiting the object of the new graph from the ViewModel to the View
+     */
     private final MutableLiveData<LineData> updateGraph = new MutableLiveData<>();
     private final MutableLiveData<String> updateTemps = new MutableLiveData<>();
     private final MutableLiveData<Data> updateData = new MutableLiveData<>();
@@ -55,7 +56,8 @@ public class GraphViewModel extends ViewModel {
     private ArrayList<Entry> A_humi = new ArrayList<>();
     private ArrayList<Entry> A_O2 = new ArrayList<>();
     /**
-     * Tables grouping the ArrayList of entry and the name for the construction of the graph     */
+     * Tables grouping the ArrayList of entry and the name for the construction of the graph
+     */
     private LineDataSet setHumi = new LineDataSet(A_humi, "Humidité");
     private LineDataSet setCO2 = new LineDataSet(A_CO2, "CO2");
     private LineDataSet setO2 = new LineDataSet(A_O2, "O2");
@@ -72,6 +74,7 @@ public class GraphViewModel extends ViewModel {
      */
     Handler handlerLostESP = new Handler();
     Runnable runnableLostESP;
+
     /**
      * Constructor of ViewModel
      */
@@ -86,7 +89,7 @@ public class GraphViewModel extends ViewModel {
         handlerLostESP = new Handler();
 
         runnableLostESP = () -> {
-            if(AppApplication.getCurrentActivity() != null && AppApplication.getCurrentActivity() instanceof GraphiqueActivity) {
+            if (AppApplication.getCurrentActivity() != null && AppApplication.getCurrentActivity() instanceof GraphiqueActivity) {
                 AlertDialog.getInstance().lostESP();
             }
         };
@@ -94,10 +97,11 @@ public class GraphViewModel extends ViewModel {
 
 
     /**
-     * LiveData taking care of passing ESP refresh rate from ViewModel to View     */
+     * LiveData taking care of passing ESP refresh rate from ViewModel to View
+     */
     public void updateRefresh(String refresh) {
         updateTemps.postValue(refresh);
-        handlerLostESP.postDelayed(runnableLostESP, FirebaseAccess.refresh*2);
+        handlerLostESP.postDelayed(runnableLostESP, FirebaseAccess.refresh * 2);
 
     }
 
@@ -138,11 +142,8 @@ public class GraphViewModel extends ViewModel {
     }
 
 
-
-
-
     /**
-     *if this instance was destruct, listener of Firebase was also destruct
+     * if this instance was destruct, listener of Firebase was also destruct
      */
     @Override
     protected void onCleared() {
@@ -177,7 +178,7 @@ public class GraphViewModel extends ViewModel {
                 creaGraph();
                 break;
             default:
-                Log.w("Switch checkbox gra","ID inconnu");
+                Log.w("Switch checkbox gra", "ID inconnu");
         }
 
     }
@@ -270,7 +271,6 @@ public class GraphViewModel extends ViewModel {
     }
 
 
-
     /**
      * Choice of axe for the LineDataSet in param
      *
@@ -298,29 +298,6 @@ public class GraphViewModel extends ViewModel {
     /**
      * Delete listener when the activity is close
      */
-
-    private boolean isDataValid(int cptLignes) {
-        ListData instanceListData = ListData.getInstance();
-        if (instanceListData.recupData(cptLignes).getCo2() == 0) {
-            return false;
-        }
-        if (instanceListData.recupData(cptLignes).getTemperature() == 0) {
-            return false;
-        }
-        if (instanceListData.recupData(cptLignes).getHumidite() == 0) {
-            return false;
-        }
-        if (instanceListData.recupData(cptLignes).getO2() == 0) {
-            return false;
-        }
-        if (instanceListData.recupData(cptLignes).getLight() == 0) {
-            return false;
-        }
-        return instanceListData.recupData(cptLignes).getTemps() != "";
-    }
-
-
-
 
     public void onClose() {
         acess.deleteListener();

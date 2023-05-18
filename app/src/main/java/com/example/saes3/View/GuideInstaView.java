@@ -14,14 +14,15 @@ public class GuideInstaView extends AppCompatActivity {
     private Button scrollEsp;
     private Button scrollAcueil;
     private ScrollView scrollView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guide_insta_view);
-        scrollView=  findViewById(R.id.scrollView);
-        scrollAcueil=findViewById(R.id.btn_scroll_home);
-        scrollEsp=findViewById(R.id.btn_scroll_esp);
-        scrollGraph=findViewById(R.id.btn_scroll_graph);
+        scrollView = findViewById(R.id.scrollView);
+        scrollAcueil = findViewById(R.id.btn_scroll_home);
+        scrollEsp = findViewById(R.id.btn_scroll_esp);
+        scrollGraph = findViewById(R.id.btn_scroll_graph);
 
     }
 

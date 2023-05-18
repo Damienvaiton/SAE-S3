@@ -23,26 +23,26 @@ public class SplashViewModel extends ViewModel {
     /**
      * Send true if mobile was connected too internet
      */
-    private MutableLiveData<Boolean> listenerAppReady=new MutableLiveData<>();
+    private MutableLiveData<Boolean> listenerAppReady = new MutableLiveData<>();
     /**
      * Fallse if Firebase was not available
      */
-    private MutableLiveData<Boolean> listenerFirebaseReady=new MutableLiveData<>(true);
-    public LiveData<Boolean> getAppReady(){
+    private MutableLiveData<Boolean> listenerFirebaseReady = new MutableLiveData<>(true);
+
+    public LiveData<Boolean> getAppReady() {
         return listenerAppReady;
     }
 
-        public void updateAppReady(boolean actif){
-listenerAppReady.postValue(actif);
-        }
+    public void updateAppReady(boolean actif) {
+        listenerAppReady.postValue(actif);
+    }
 
 
-
-    public LiveData<Boolean> getFirebaseReady(){
+    public LiveData<Boolean> getFirebaseReady() {
         return listenerFirebaseReady;
     }
 
-    public void updateFirebaseReady(boolean actif){
+    public void updateFirebaseReady(boolean actif) {
         listenerFirebaseReady.postValue(actif);
     }
 
@@ -50,22 +50,22 @@ listenerAppReady.postValue(actif);
     /**
      * Check if internet is available
      */
-        public void checkCo() {
-            ConnectivityManager connMgr =
-                    (ConnectivityManager) AppApplication.getAppContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-            for (Network network : connMgr.getAllNetworks()) {
-                NetworkInfo networkInfo = connMgr.getNetworkInfo(network);
-                if (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
-                    isWifiConn |=networkInfo.isConnected();
-                }
-                if (networkInfo.getType() == ConnectivityManager.TYPE_MOBILE) {
-                    isWifiConn |=networkInfo.isConnected();
-                }
-                if(isMobileConn || isWifiConn){
-                    updateAppReady(true);
-                }
+    public void checkCo() {
+        ConnectivityManager connMgr =
+                (ConnectivityManager) AppApplication.getAppContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        for (Network network : connMgr.getAllNetworks()) {
+            NetworkInfo networkInfo = connMgr.getNetworkInfo(network);
+            if (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
+                isWifiConn |= networkInfo.isConnected();
+            }
+            if (networkInfo.getType() == ConnectivityManager.TYPE_MOBILE) {
+                isWifiConn |= networkInfo.isConnected();
+            }
+            if (isMobileConn || isWifiConn) {
+                updateAppReady(true);
             }
         }
+    }
 
     public void echecFirebase() {
         updateFirebaseReady(false);

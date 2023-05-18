@@ -37,8 +37,9 @@ public class ClassTransitoireViewModel {
     public void setAccueilViewModel(AccueilViewModel accueilViewModel) {
         this.accueilViewModel = accueilViewModel;
     }
+
     public void setSettingsEtuViewModel(SettingsEtuViewModel settingsEtuViewModel) {
-        this.settingsEtuViewModel=settingsEtuViewModel;
+        this.settingsEtuViewModel = settingsEtuViewModel;
     }
 
     public void setGraphViewModel(GraphViewModel graphViewModel) {
@@ -56,7 +57,7 @@ public class ClassTransitoireViewModel {
         if (settingsAdminViewModel != null) {
             settingsAdminViewModel.updateRefresh(s);
         }
-        if(settingsEtuViewModel!=null){
+        if (settingsEtuViewModel != null) {
             settingsEtuViewModel.updateRefresh(s);
         }
     }
@@ -67,16 +68,18 @@ public class ClassTransitoireViewModel {
         }
 
     }
-    public void ajoutESP(String esp, @Nullable String nom){
-        if(accueilViewModel!=null){
-            accueilViewModel.addESP(esp,nom);
+
+    public void ajoutESP(String esp, @Nullable String nom) {
+        if (accueilViewModel != null) {
+            accueilViewModel.addESP(esp, nom);
         }
         if (settingsAdminViewModel != null) {
             settingsAdminViewModel.addESP(esp, nom);
         }
     }
-    public void suppESP(String esp){
-        if(accueilViewModel!=null){
+
+    public void suppESP(String esp) {
+        if (accueilViewModel != null) {
             accueilViewModel.deleteESP(esp);
         }
         if (settingsAdminViewModel != null) {

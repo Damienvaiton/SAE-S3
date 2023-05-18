@@ -123,18 +123,18 @@ public class SettingsEtuActivity extends AppCompatActivity implements View.OnCli
             min_d.setHint(rightAxis.getAxisMinimum() + "");
             max_d.setHint(rightAxis.getAxisMaximum() + "");
 
-        }
-        else{
+        } else {
             min_d.setHint("auto");
             max_d.setHint("auto");
         }
         if (leftAxis.isAxisMaxCustom()) {
             auto_gauche.setChecked(false);
             min_g.setHint(leftAxis.getAxisMinimum() + "");
-            max_g.setHint(leftAxis.getAxisMaximum() + "");}
-        else{
+            max_g.setHint(leftAxis.getAxisMaximum() + "");
+        } else {
             min_g.setHint("auto");
-            max_g.setHint("auto");}
+            max_g.setHint("auto");
+        }
 
 
         settingsEtuViewModel.getMoments().observe(this, s -> tauxRefresh.setHint(s));
@@ -163,8 +163,8 @@ public class SettingsEtuActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent myItent=new Intent();
-        setResult(RESULT_OK,myItent);
+        Intent myItent = new Intent();
+        setResult(RESULT_OK, myItent);
         finish();
     }
 
@@ -194,13 +194,13 @@ public class SettingsEtuActivity extends AppCompatActivity implements View.OnCli
                 }
                 break;
             case R.id.btn_droit:
-                if(auto_droit.isChecked()){
+                if (auto_droit.isChecked()) {
                     Toast.makeText(this, "L'axe est bloqué en mode auto", Toast.LENGTH_SHORT).show();
                 }
                 setAxisMinMax(rightAxis, min_d.getText().toString(), max_d.getText().toString(), "Fait");
                 break;
             case R.id.btn_gauche:
-                if(auto_gauche.isChecked()){
+                if (auto_gauche.isChecked()) {
                     Toast.makeText(this, "L'axe est bloqué en mode auto", Toast.LENGTH_SHORT).show();
                 }
                 setAxisMinMax(leftAxis, min_g.getText().toString(), max_g.getText().toString(), "Fait");
@@ -221,7 +221,7 @@ public class SettingsEtuActivity extends AppCompatActivity implements View.OnCli
 
 
     private void setAxisMinMax(YAxis axis, String min, String max, String message) {
-        if (((min.trim().length() == 0) || (max.trim().length() == 0)) ) {
+        if (((min.trim().length() == 0) || (max.trim().length() == 0))) {
             Toast.makeText(getApplicationContext(), "Un champ est vide", Toast.LENGTH_SHORT).show();
         } else {
             if (Float.parseFloat(max) > Float.parseFloat(min)) {

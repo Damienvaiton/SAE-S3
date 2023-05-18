@@ -358,7 +358,7 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
     }
 
     public void requestAuto() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
             if (ContextCompat.checkSelfPermission(AppApplication.getCurrentActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(AppApplication.getCurrentActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
             } else {
@@ -369,8 +369,8 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
-    public void exportFile() {
 
+    public void exportFile() {
         ListData instanceListData = ListData.getInstance();
         int cptLignes = instanceListData.listSize() - 1;
         if (cptLignes <= 1) {
@@ -382,6 +382,7 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
         BufferedWriter writer;
         File csvFile;
         String titre = "Numero Mesure;Humidite;Temerature;CO2;O2;Lux;Heure";
+
         try {
             csvFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Mesure.csv");
             if (!csvFile.exists()) {
@@ -405,6 +406,7 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(this, "Erreur lors de l'export, annulation", Toast.LENGTH_SHORT).show();
+            ;
         }
         Toast.makeText(this, "Export terminé, disponible dans votre dossier téléchargement", Toast.LENGTH_SHORT).show();
     }
@@ -433,10 +435,8 @@ public class GraphiqueActivity extends AppCompatActivity implements View.OnClick
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 1) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Permission accordée
                 exportFile();
             } else {
-                // Permission refusée
                 Toast.makeText(AppApplication.getCurrentActivity(), "La permission de stockage est requise pour exporter le fichier.", Toast.LENGTH_SHORT).show();
             }
         }

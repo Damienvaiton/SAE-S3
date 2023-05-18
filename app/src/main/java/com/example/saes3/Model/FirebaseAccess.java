@@ -32,7 +32,7 @@ public class FirebaseAccess {
     public static final String MEASURE = "Mesure";
 
     private ClassTransitoireViewModel transitoireViewModel;
-public static Long refresh;
+    public static Long refresh;
     private ESP currentESP;
 
 
@@ -135,7 +135,7 @@ public static Long refresh;
 
         myRef.child(ESP32).child(currentESP.getMacEsp()).child("MesureNumber").removeValue().addOnSuccessListener(aVoid -> Log.d("Firebase", "Données enregistrées avec succès")).addOnFailureListener(e -> {
             AlertDialog.getInstance().errorFirebase();
-    });
+        });
     }
 
     /**
@@ -147,10 +147,9 @@ public static Long refresh;
             DataSnapshot tab = task.getResult();
             if (tab.exists()) {
                 for (DataSnapshot dataSnapshot : tab.getChildren()) {
-                    handleDataSnapshot(dataSnapshot,listData);
+                    handleDataSnapshot(dataSnapshot, listData);
                 }
-            } else if(AppApplication.getCurrentActivity()!=null && AppApplication.getCurrentActivity() instanceof GraphiqueActivity)
-            {
+            } else if (AppApplication.getCurrentActivity() != null && AppApplication.getCurrentActivity() instanceof GraphiqueActivity) {
                 AlertDialog.getInstance().emptyESP();
             }
         });
@@ -166,7 +165,7 @@ public static Long refresh;
                 String heure = "";
                 String minute = "";
                 String seconde = "";
-                refresh=snapshot.getValue(Long.class);
+                refresh = snapshot.getValue(Long.class);
                 if (snapshot.exists()) {
 
                     if (snapshot.getValue(Long.class) >= 3600000) {
@@ -178,19 +177,20 @@ public static Long refresh;
                     if (snapshot.getValue(Long.class) >= 1000) {
                         seconde = (snapshot.getValue(Long.class) % (1000 * 60)) / 1000 + "s";
                     }
-                    transitoireViewModel.updateRefresh(heure+minute+seconde);
+                    transitoireViewModel.updateRefresh(heure + minute + seconde);
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                if(AppApplication.getCurrentActivity()!=null && AppApplication.getCurrentActivity() instanceof GraphiqueActivity)
-                {
+                if (AppApplication.getCurrentActivity() != null && AppApplication.getCurrentActivity() instanceof GraphiqueActivity) {
                     AlertDialog.getInstance().emptyESP();
-            }}
+                }
+            }
         };
         myRef.child(ESP32).child(ESP.getInstance().getMacEsp()).child(REFRESH_TIME).addValueEventListener(valueEventListenerTemps);
     }
+
     private void handleDataSnapshot(DataSnapshot dataSnapshot, ListData listData) {
         try {
             Data data = dataSnapshot.getValue(Data.class);
@@ -202,6 +202,7 @@ public static Long refresh;
             e.printStackTrace();
         }
     }
+
     /**
      * Set a listener to the value data on the database, this  function is triggered each new value add on the database
      */
@@ -217,7 +218,7 @@ public static Long refresh;
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 if (snapshot.getChildrenCount() == 6) {
-                    handleDataSnapshot(snapshot,listData);
+                    handleDataSnapshot(snapshot, listData);
                 }
             }
 
@@ -233,7 +234,8 @@ public static Long refresh;
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                AlertDialog.getInstance().errorFirebase();}
+                AlertDialog.getInstance().errorFirebase();
+            }
         };
         myRef.child(ESP32).child(currentESP.getMacEsp()).child(MEASURE).addChildEventListener(realtimeDataListener);
     }
@@ -278,24 +280,25 @@ public static Long refresh;
         myRef.child(ESP32).child(currentESP.getMacEsp()).child(REFRESH_TIME).removeEventListener(realtimeDataListener);
         return true;
     }
-public boolean testFirebase() {
 
-    myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+    public boolean testFirebase() {
 
-        @Override
-        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
 
-        }
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-        @Override
-        public void onCancelled(@NonNull DatabaseError databaseError) {
-            transitoireViewModel.echecFirebase();
-            AlertDialog.getInstance().errorFirebase();
+            }
 
-        }
-    });
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                transitoireViewModel.echecFirebase();
+                AlertDialog.getInstance().errorFirebase();
 
-    return true;
-}
+            }
+        });
+
+        return true;
+    }
 }
 

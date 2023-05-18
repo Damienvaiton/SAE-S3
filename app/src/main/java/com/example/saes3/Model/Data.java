@@ -78,13 +78,13 @@ public class Data implements Serializable {
     @Override
     public String toString() {
         DecimalFormat a = new DecimalFormat("##.###");
-        String message="";
-        message+=(a.format(getTemperature()) + "° | ");
-        message+=a.format(getHumidite()) + "% | ";
-        message+=a.format(getCo2()) + "% | ";
-        message+=a.format(getO2()) + "% | ";
-        message+=a.format(getLight()) + "L";
-        message+=getTemps();
+        String message = "";
+        message += (a.format(getTemperature()) + "° | ");
+        message += a.format(getHumidite()) + "% | ";
+        message += a.format(getCo2()) + "% | ";
+        message += a.format(getO2()) + "% | ";
+        message += a.format(getLight()) + "L";
+        message += getTemps();
         return message;
 
     }

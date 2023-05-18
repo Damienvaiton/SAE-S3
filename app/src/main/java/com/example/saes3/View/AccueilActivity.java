@@ -83,7 +83,7 @@ public class AccueilActivity extends AppCompatActivity {
         accueilViewModel = new ViewModelProvider(this).get(AccueilViewModel.class);
         spinner = findViewById(R.id.SpinnerID);
         btncoEtu = findViewById(R.id.Gobtn);
-        helper=findViewById(R.id.helper);
+        helper = findViewById(R.id.helper);
         btnCoAdmin = findViewById(R.id.adminbtnmain);
         tabESP = new ArrayList<>();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(AccueilActivity.this, android.R.layout.simple_spinner_dropdown_item, tabESP);
@@ -119,13 +119,13 @@ public class AccueilActivity extends AppCompatActivity {
          * Launch ConnecAdminActivity if "btnCoAdmin" triggered
          */
         btncoEtu.setOnClickListener(view -> {
-            if(!adapter.isEmpty() ) {
+            if (!adapter.isEmpty()) {
                 Intent graph;
                 accueilViewModel.creaESP(nomESP);
                 graph = new Intent(AccueilActivity.this, GraphiqueActivity.class);
                 startActivity(graph);
-            }else{
-                Snackbar.make(btncoEtu,"Merci de patienter jusqu'à la fin du chargement",Snackbar.LENGTH_LONG).show();
+            } else {
+                Snackbar.make(btncoEtu, "Merci de patienter jusqu'à la fin du chargement", Snackbar.LENGTH_LONG).show();
             }
         });
 

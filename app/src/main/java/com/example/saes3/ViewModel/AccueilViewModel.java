@@ -27,9 +27,9 @@ public class AccueilViewModel extends ViewModel {
      * Constructor who initialiaze the viewModel
      */
     public AccueilViewModel() {
-       acess = FirebaseAccess.getInstance();
+        acess = FirebaseAccess.getInstance();
         acess.getAllESP();
-        transit=ClassTransitoireViewModel.getInstance();
+        transit = ClassTransitoireViewModel.getInstance();
         transit.setAccueilViewModel(this);
         hashESP = new HashMap<>();
     }
@@ -86,7 +86,7 @@ public class AccueilViewModel extends ViewModel {
      */
     public void creaESP(String nom) {
         for (Map.Entry<String, String> entry : hashESP.entrySet()) {
-            if (entry.getValue()==nom || entry.getKey()==nom) {
+            if (entry.getValue() == nom || entry.getKey() == nom) {
                 if (entry.getValue() == null) {
                     acess.setEsp(new ESP(entry.getKey(), null));
                     return;
@@ -99,10 +99,11 @@ public class AccueilViewModel extends ViewModel {
 
     }
 
-    public void pause(){
+    public void pause() {
         transit.setAccueilViewModel(null);
     }
-    public void setInstance(){
+
+    public void setInstance() {
         transit.setAccueilViewModel(this);
     }
 
